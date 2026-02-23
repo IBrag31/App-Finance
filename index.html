@@ -182,7 +182,9 @@ td{
     pointer-events:none;
     transition:opacity 0.3s ease;
     backdrop-filter:blur(10px);
-    z-index:9999;   
+    z-index:9999;
+    isolation:isolate;
+    transition:opacity 0.25s ease, transform 0.25s ease;
 }
 </style>
 </head>
@@ -477,14 +479,20 @@ function updateObjectifs(){
     input.click();
 }
 
+let toastTimeout;
+
 function showToast(message){
     const toast = document.getElementById("toast");
+
+    clearTimeout(toastTimeout);
+
     toast.innerText = message;
     toast.style.opacity = "1";
 
-    setTimeout(()=>{
+    toastTimeout = setTimeout(()=>{
         toast.style.opacity = "0";
     },1500);
+        toast.style.transform = "translateX(-50%) translateY(-5px)";
 }
 
 window.onload = function(){

@@ -6,6 +6,11 @@
 <title>Mon Budget</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+    *{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 body{
     font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     background: radial-gradient(circle at top left, #1e293b, #0f172a 60%);
@@ -118,6 +123,15 @@ td{
 }
     .section{
     display:none;
+    opacity:0;
+    transform:translateY(8px);
+    transition:0.25s ease;
+}
+
+.section.active{
+    display:block;
+    opacity:1;
+    transform:translateY(0);
 }
 
 .section.active{
@@ -145,6 +159,7 @@ td{
     font-size:18px;
     opacity:0.5;
     transition:0.2s ease;
+    padding-top:6px;
 }
 
 .tab span{
@@ -156,6 +171,21 @@ td{
 .tab.active{
     opacity:1;
     transform:translateY(-2px);
+}
+    #toast{
+    position:fixed;
+    bottom:100px; /* au-dessus de la tabbar */
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,0.75);
+    color:white;
+    padding:10px 18px;
+    border-radius:14px;
+    font-size:14px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+    backdrop-filter:blur(10px);
 }
 </style>
 </head>
@@ -356,7 +386,7 @@ function supprimer(i){
   sauvegardeAuto();
 }
 function sauvegardeAuto(){
-    alert("Sauvegarde déclenchée");
+    showToast("✔ Sauvegardé");
 
     const dataStr = "data:text/json;charset=utf-8," +
         encodeURIComponent(JSON.stringify({historique: historique}, null, 2));
@@ -398,7 +428,7 @@ function sauvegardeAuto(){
         afficherHistorique();
         majGraph();
 
-        alert("Données restaurées avec succès ✅");
+     showToast("📥 Données restaurées");
     };
 
     reader.readAsText(file, "UTF-8");
@@ -444,22 +474,32 @@ function updateObjectifs(){
     document.getElementById("section-" + name).classList.add("active");
     element.classList.add("active");
 }
+
+function showToast(message){
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.style.opacity = "1";
+
+    setTimeout(()=>{
+        toast.style.opacity = "0";
+    },1500);
+}
+
 window.onload = function(){
 
-    // afficher d'abord la section
     document.getElementById("section-budget")
         .classList.add("active");
 
-    // ensuite calculer / afficher
     initChart();
     afficherHistorique();
     majGraph();
     update();
     updateObjectifs();
 };
-    
-</script>
-</div>
-</body>
 
+</script>
+
+<div id="toast">✔ Sauvegardé</div>
+
+</body>
 </html>

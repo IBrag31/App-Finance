@@ -317,6 +317,16 @@ function initChart(){
         }
     });
 }
+       function majGraph(){
+
+    if(!historyChart) return;
+
+    historyChart.data.labels = historique.map(m => m.mois);
+    historyChart.data.datasets[0].data = historique.map(m => m.depenses);
+    historyChart.data.datasets[1].data = historique.map(m => m.epargne);
+
+    historyChart.update();
+}
 
 function update(){
     const revenus = +revenus.value;

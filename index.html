@@ -445,12 +445,17 @@ function updateObjectifs(){
     element.classList.add("active");
 }
 window.onload = function(){
+
+    // afficher d'abord la section
+    document.getElementById("section-budget")
+        .classList.add("active");
+
+    // ensuite calculer / afficher
     initChart();
     afficherHistorique();
     majGraph();
     update();
     updateObjectifs();
-    document.getElementById("section-budget").classList.add("active");
 };
     
 </script>

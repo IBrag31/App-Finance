@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mon Budget">
+<meta name="theme-color" content="#0f172a">
+   
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Mon Budget</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -302,6 +309,7 @@ Divers
 let historique = JSON.parse(localStorage.getItem("historique")) || [];
 let cumulTotal = 0;
 let historyChart;
+let autoSaveTimeout;
 
 function initChart(){
     const ctx = document.getElementById("historyChart").getContext("2d");
@@ -338,7 +346,7 @@ function update(){
 
     const epargne = +epargneMois.value;
 
-    const cumulTotal = getEpargneTotale();
+    cumulTotal = getEpargneTotale();
 
     totalDepenses.innerText = "Total Dépenses : " + depenses + " €";
     reste.innerText = "Reste : " + (revenus - depenses - epargne) + " €";
@@ -356,6 +364,12 @@ function ajouterMois(){
 
     const [annee, mois] = moisInput.split("-");
     const moisFinal = mois + "/" + annee;
+    const existeDeja = historique.some(m => m.mois === moisFinal);
+
+if(existeDeja){
+    showToast("⚠️ Ce mois existe déjà");
+    return;
+}
 
     const depenses =
         +charges.value +
@@ -367,11 +381,11 @@ function ajouterMois(){
     const epargne = +epargneMois.value;
 
     historique.push({mois: moisFinal, depenses, epargne});
-    autoSave();
+    autoSaveDebounced();
     afficherHistorique();
     majGraph();
-    updateObjectifs()
-   
+    updateObjectifs();
+    update();
     showToast("📅 Mois ajouté");
 }
 function getEpargneTotale(){
@@ -393,7 +407,7 @@ function afficherHistorique(){
         
 function supprimer(i){
     historique.splice(i,1);
-    autoSave();
+    autoSaveDebounced();
     afficherHistorique();
     majGraph();
     updateObjectifs();
@@ -438,7 +452,7 @@ function sauvegardeAuto(){
 
         historique = data.historique || [];
 
-       autoSave();
+        autoSaveDebounced();
 
         afficherHistorique();
         majGraph();
@@ -523,6 +537,15 @@ function showToast(message){
        
 function autoSave(){
     localStorage.setItem("historique", JSON.stringify(historique));
+}
+function autoSaveDebounced(){
+
+    clearTimeout(autoSaveTimeout);
+
+    autoSaveTimeout = setTimeout(() => {
+        autoSave();
+        console.log("💾 auto-save");
+    }, 500); // délai en ms
 }
        
 window.onload = function(){

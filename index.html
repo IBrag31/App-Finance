@@ -365,8 +365,9 @@ function ajouterMois(){
 
     afficherHistorique();
     majGraph();
-
-    sauvegardeAuto();
+    updateObjectifs()
+   
+    showToast("📅 Mois ajouté");
 }
 function getEpargneTotale(){
     return historique.reduce((total, mois) => total + mois.epargne, 0);

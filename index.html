@@ -570,6 +570,8 @@ function updateObjectifs(){
 
     document.getElementById("section-" + name).classList.add("active");
     element.classList.add("active");
+    
+    currentSectionIndex = sections.indexOf(name);
 }
    function restaurerDepuisIcloud(){
     const input = document.getElementById("fileInput");
@@ -612,11 +614,62 @@ function autoSaveDebounced(){
         console.log("💾 auto-save");
     }, 500); // délai en ms
 }
+
+let startX = 0;
+let endX = 0;
+
+const sections = ["budget","objectifs","historique","sauvegarde"];
+let currentSectionIndex = 0;
+
+function goToSection(index){
+
+    if(index < 0 || index >= sections.length) return;
+
+    const tabs = document.querySelectorAll(".tab");
+
+    currentSectionIndex = index;
+
+    document.querySelectorAll(".section").forEach(sec=>{
+        sec.classList.remove("active");
+    });
+
+    tabs.forEach(tab=>tab.classList.remove("active"));
+
+    document
+        .getElementById("section-" + sections[index])
+        .classList.add("active");
+
+    tabs[index].classList.add("active");
+}
+       document.addEventListener("touchstart", (e)=>{
+    startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", (e)=>{
+
+    endX = e.changedTouches[0].clientX;
+
+    const diff = endX - startX;
+
+    // seuil minimum pour éviter faux swipe
+    if(Math.abs(diff) < 50) return;
+
+    // swipe gauche
+    if(diff < 0){
+        goToSection(currentSectionIndex + 1);
+    }
+
+    // swipe droite
+    if(diff > 0){
+        goToSection(currentSectionIndex - 1);
+    }
+});
        
 window.onload = function(){
 
     document.getElementById("section-budget").classList.add("active");
-
+    currentSectionIndex = 0;
+   
     initChart();
     afficherHistorique();
     majGraph();

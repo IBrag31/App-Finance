@@ -377,6 +377,10 @@ td{
     border-radius:14px;
     background:rgba(255,255,255,0.06);
 }
+
+.sections-container{
+    position:relative;
+    min-height:calc(100vh - 220px);
 }
    
 </style>
@@ -394,6 +398,8 @@ td{
 <div class="sections-container">
 
 <!-- 💰 SECTION BUDGET -->
+<div class="card section" id="section-budget">
+
 <div class="budget-row">
   <span>Revenus</span>
   <input type="number" id="revenus" value="1971">
@@ -429,18 +435,13 @@ td{
   <input type="number" id="epargneMois" value="300">
 </div>
 
-   <div class="card section" id="section-budget">
-
-    <div class="budget-row">
-      <span>Revenus</span>
-      <input type="number" id="revenus" value="1971">
-    </div>
-
 <div class="budget-summary">
   <h4 id="totalDepenses"></h4>
   <h4 id="reste"></h4>
   <h4 id="cumul"></h4>
 </div>
+
+</div> <!-- FIN section-budget -->
 
 <!-- 🎯 SECTION OBJECTIFS -->
 <div class="card section" id="section-objectifs">

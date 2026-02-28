@@ -13,7 +13,7 @@
 
 <title>Mon Budget</title>
 
-   <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
    <script>
 window.onerror = function(err){
@@ -161,14 +161,9 @@ td{
     bottom:0;
     left:0;
     right:0;
-    height:78px;
-    background:rgba(15,23,42,0.92);
-    backdrop-filter:blur(25px);
-    -webkit-backdrop-filter:blur(25px);
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    border-top:1px solid rgba(255,255,255,0.08);
+
+    padding-bottom: env(safe-area-inset-bottom);
+    height: calc(78px + env(safe-area-inset-bottom));
 }
 
 .tab{
@@ -260,6 +255,15 @@ td{
 
   .sections-wrapper{
     overflow:hidden; 
+}
+
+   html{
+    background:#0f172a;
+}
+
+body{
+    min-height:100vh;
+    background:#0f172a;
 }
    
 </style>

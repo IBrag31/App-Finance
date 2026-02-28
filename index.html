@@ -382,6 +382,42 @@ td{
     position:relative;
     min-height:calc(100vh - 220px);
 }
+
+   /* ===== APPLE BUDGET UI ===== */
+
+.budget-card{
+    background:rgba(255,255,255,0.05);
+    border-radius:16px;
+    padding:12px 14px;
+    margin-bottom:10px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.budget-card label{
+    font-size:16px;
+    opacity:0.9;
+}
+
+.budget-card input{
+    width:110px;
+    text-align:right;
+    background:rgba(255,255,255,0.08);
+    border:none;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:17px;
+}
+
+.budget-summary{
+    margin-top:14px;
+    padding:14px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(20px);
+}
    
 </style>
 </head>
@@ -400,38 +436,40 @@ td{
 <!-- 💰 SECTION BUDGET -->
 <div class="card section" id="section-budget">
 
-<div class="budget-row">
-  <span>Revenus</span>
+   <h3>💰 Budget</h3>
+
+<div class="budget-card">
+  <label>Revenus</label>
   <input type="number" id="revenus" value="1971">
 </div>
 
-<div class="budget-row">
-  <span>Charges</span>
+<div class="budget-card">
+  <label>Charges</label>
   <input type="number" id="charges" value="812">
 </div>
 
-<div class="budget-row">
-  <span>Courses</span>
+<div class="budget-card">
+  <label>Courses</label>
   <input type="number" id="courses" value="0">
 </div>
 
-<div class="budget-row">
-  <span>Essence</span>
+<div class="budget-card">
+  <label>Essence</label>
   <input type="number" id="essence" value="0">
 </div>
 
-<div class="budget-row">
-  <span>Loisirs</span>
+<div class="budget-card">
+  <label>Loisirs</label>
   <input type="number" id="loisirs" value="0">
 </div>
 
-<div class="budget-row">
-  <span>Divers</span>
+<div class="budget-card">
+  <label>Divers</label>
   <input type="number" id="divers" value="0">
 </div>
 
-<div class="budget-row">
-  <span>Épargne</span>
+<div class="budget-card">
+  <label>Épargne</label>
   <input type="number" id="epargneMois" value="300">
 </div>
 
@@ -441,7 +479,7 @@ td{
   <h4 id="cumul"></h4>
 </div>
 
-</div> <!-- FIN section-budget -->
+</div>
 
 <!-- 🎯 SECTION OBJECTIFS -->
 <div class="card section" id="section-objectifs">

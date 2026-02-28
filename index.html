@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+<head> <meta name="color-scheme" content="dark">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,7 +13,7 @@
 
 <title>Mon Budget</title>
 
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
    <script>
 window.onerror = function(err){
@@ -30,16 +30,23 @@ window.onerror = function(err){
   
 body{
     font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-    background: radial-gradient(circle at top left, #1e293b, #0f172a 60%);
     color:white;
     margin:0;
+
     padding:20px;
-    padding-bottom:90px; /* évite que la tabbar cache le contenu */
     padding-top: env(safe-area-inset-top);
     padding-bottom: calc(90px + env(safe-area-inset-bottom));
-    overscroll-behavior: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at top left,
+    #1f2937 0%,
+    #0f172a 65%);
+
+    overscroll-behavior:none;
+    -webkit-user-select:none;
+    -webkit-tap-highlight-color:transparent;
 }
  
 h1{
@@ -50,34 +57,33 @@ h1{
 }
 
 .card{
-    background:rgba(255,255,255,0.06);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-radius:24px;
+    background:rgba(255,255,255,0.07);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+
+    border-radius:28px;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 4px 20px rgba(0,0,0,0.18);
     padding:20px;
     margin-bottom:22px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.35);
 }
 
 input{
-    width:100%;
-    padding:14px;
-    margin:8px 0;
-    border-radius:16px;
-    border:none;
-    font-size:16px;
-    background:rgba(255,255,255,0.08);
-    color:white;
-    outline:none;
-    transition:0.2s;
+    background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px;
+
+    padding:16px;
+    font-size:17px;
 }
 
 input:focus{
     background:rgba(255,255,255,0.12);
 }
-*{
-    box-sizing:border-box;
-}
+
 button,
 .restore-btn{
     display:block;
@@ -147,7 +153,7 @@ td{
     display:none;
     opacity:0;
     transform:translateY(8px);
-    transition:0.25s ease;
+    transition:opacity .35s ease, transform .35s ease;
 }
 
 .section.active{
@@ -158,23 +164,27 @@ td{
 
 .tabbar{
     position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
+    left:12px;
+    right:12px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
 
-    height: calc(78px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
-
-    background:rgba(15,23,42,0.92);
-    backdrop-filter:blur(25px);
-    -webkit-backdrop-filter:blur(25px);
+    height:64px;
 
     display:flex;
     justify-content:space-around;
     align-items:center;
 
-    border-top:1px solid rgba(255,255,255,0.08);
+    background:rgba(20,25,35,0.65);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+
     z-index:1000;
+    touch-action: manipulation;
 }
 
 .tab{
@@ -184,6 +194,8 @@ td{
     opacity:0.5;
     transition:0.2s ease;
     padding-top:6px;
+    cursor:pointer;
+    user-select:none;
 }
 
 .tab span{
@@ -262,6 +274,7 @@ td{
 
    html, body{
     overflow-x:hidden;
+    height:100%;
 }
 
   .sections-wrapper{
@@ -272,9 +285,8 @@ td{
     background:#0f172a;
 }
 
-body{
-    min-height:100vh;
-    background:#0f172a;
+   *{
+    -webkit-font-smoothing:antialiased;
 }
    
 </style>
@@ -470,12 +482,12 @@ if(existeDeja){
     return;
 }
 
-    const depenses =
-        +charges.value +
-        +courses.value +
-        +essence.value +
-        +loisirs.value +
-        +divers.value;
+   const depenses =
+    +document.getElementById("charges").value +
+    +document.getElementById("courses").value +
+    +document.getElementById("essence").value +
+    +document.getElementById("loisirs").value +
+    +document.getElementById("divers").value;
 
     const epargne = +epargneMois.value;
 

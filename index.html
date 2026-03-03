@@ -73,7 +73,6 @@ h1{
         0 4px 20px rgba(0,0,0,0.18);
     padding:20px;
      margin-bottom:0;
-    height:100%;
 }
 
 input{
@@ -161,6 +160,7 @@ td{
     display:block;
     opacity:1;
     transform:translateY(0);
+    pointer-events:auto;
     z-index:10;
 }
 
@@ -295,28 +295,24 @@ td{
 
 .section{
     position:absolute;
-    inset:0;
+    top:0;
+    left:0;
     width:100%;
-    padding:20px;
+    height:100%;
 
+    padding:20px;
     overflow:auto;
 
     opacity:0;
-    transform:translateX(30px);
+    transform:translateX(20px);
     pointer-events:none;
 
     transition:opacity .25s ease, transform .25s ease;
 }
 
-.section.active{
-    opacity:1;
-    transform:translateX(0);
-    pointer-events:auto;
-}
-
 .sections-container{
     position:relative;
-    height:calc(100vh - 160px);
+    height:calc(100vh - 140px);
     overflow:hidden;
 }
 

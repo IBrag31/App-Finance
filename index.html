@@ -292,11 +292,10 @@ td{
    /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-    display:block; /* plus de display none */
-    position:relative;
-    width:100%;
-    left:0;
+    position:absolute;
     top:0;
+    left:0;
+    width:100%;
     min-height:calc(100vh - 220px);
 
     opacity:0;
@@ -306,8 +305,6 @@ td{
     transition:
         transform 0.38s cubic-bezier(.22,.61,.36,1),
         opacity 0.28s ease;
-   box-sizing:border-box;
-   
 }
 
 .section.active{

@@ -580,6 +580,76 @@ font-size:17px;
 font-weight:500;
 opacity:.9;
 }
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.35);
+
+display:flex;
+align-items:flex-end;
+
+opacity:0;
+pointer-events:none;
+transition:.25s;
+}
+
+.modal.show{
+opacity:1;
+pointer-events:auto;
+}
+
+.modal-content{
+width:100%;
+background:#1f2937;
+
+border-radius:24px 24px 0 0;
+
+padding:20px;
+
+animation:modalSlide .25s ease;
+}
+
+@keyframes modalSlide{
+from{
+transform:translateY(100%);
+}
+to{
+transform:translateY(0);
+}
+}
+
+.modal-content input{
+margin-top:10px;
+}
+
+.modal-types{
+margin-top:15px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.modal-types label{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:15px;
+}
+
+.modal-actions{
+margin-top:18px;
+display:flex;
+gap:10px;
+}
+
+.modal-cancel{
+background:rgba(255,255,255,.08);
+}
+
+.modal-add{
+background:linear-gradient(145deg,#22c55e,#16a34a);
+}
    
 </style>
 </head>
@@ -659,7 +729,7 @@ opacity:.9;
 </div>
 
 <div class="depenses-actions">
-<button class="fab fab-add" onclick="ajouterDepense()">+</button>
+<button class="fab fab-add" onclick="ouvrirModal()">+</button>
 <button class="fab fab-delete" onclick="activerSuppression()">✕</button>
 </div>
 
@@ -818,6 +888,34 @@ function updateRing(){
     updateRing();
 }
 
+    function ouvrirModal(){
+document.getElementById("depenseModal").classList.add("show");
+}
+
+function fermerModal(){
+document.getElementById("depenseModal").classList.remove("show");
+}
+
+function validerDepense(){
+
+const nom = document.getElementById("depenseNom").value;
+const montant = parseFloat(document.getElementById("depenseMontant").value);
+
+const type = document.querySelector('input[name="typeDepense"]:checked').value;
+
+if(!nom || isNaN(montant)) return;
+
+depensesDetail.push({nom, montant, type});
+
+renderDepenses();
+updateRing();
+
+document.getElementById("depenseNom").value="";
+document.getElementById("depenseMontant").value="";
+
+fermerModal();
+}
+
     function ajouterDepense(){
 
     const nom = prompt("Nom de la dépense ?");
@@ -826,7 +924,11 @@ function updateRing(){
     const montant = parseFloat(prompt("Montant ?"));
     if(isNaN(montant)) return;
 
-    const type = prompt("Type : fixe ou variable ?");
+    let type = prompt("Type : fixe ou variable ?");
+
+if(!type) return;
+
+type = type.toLowerCase().trim();
 
     depensesDetail.push({nom, montant});
     renderDepenses();
@@ -1210,6 +1312,35 @@ function goToSection(index){
 
 <!-- TOAST EN DEHORS DU SCRIPT -->
 <div id="toast">✔ Sauvegardé</div>
+
+<div id="depenseModal" class="modal" onclick="fermerModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+
+    <h3>Nouvelle dépense</h3>
+
+    <input type="text" id="depenseNom" placeholder="Nom">
+
+    <input type="number" id="depenseMontant" placeholder="Montant">
+
+    <div class="modal-types">
+      <label>
+        <input type="radio" name="typeDepense" value="fixe" checked>
+        Dépense fixe
+      </label>
+
+      <label>
+        <input type="radio" name="typeDepense" value="variable">
+        Dépense variable
+      </label>
+    </div>
+
+    <div class="modal-actions">
+      <button onclick="fermerModal()" class="modal-cancel">Annuler</button>
+      <button onclick="validerDepense()" class="modal-add">Ajouter</button>
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>

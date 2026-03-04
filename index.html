@@ -566,6 +566,12 @@ margin-bottom:10px;
 background:rgba(255,255,255,0.04);
 border:1px solid rgba(255,255,255,0.05);
 border-radius:14px;
+transition:transform .18s ease, background .18s ease;
+will-change: transform;
+}
+
+.depense-row.swiping{
+background:#ef4444;
 }
 
 .budget-title{
@@ -712,6 +718,10 @@ opacity:.7;
 .depenses-category span{
 font-weight:600;
 opacity:.9;
+}
+
+.depense-row span{
+pointer-events:none;
 }
    
 </style>
@@ -996,7 +1006,7 @@ if(!type) return;
 
 type = type.toLowerCase().trim();
 
-    depensesDetail.push({nom, montant});
+    depensesDetail.push({nom, montant, type});
     renderDepenses();
     updateRing();
 }
@@ -1045,19 +1055,40 @@ document.getElementById("totalFixes").innerText = totalFixes + " €";
 document.getElementById("totalVariables").innerText = totalVariables + " €";
 
 }
+
 let swipeStartX = 0;
+let currentRow = null;
 
 function startSwipe(e,index){
+
 swipeStartX = e.touches[0].clientX;
+currentRow = e.currentTarget;
+
 }
 
 function endSwipe(e,index){
 
 const diff = e.changedTouches[0].clientX - swipeStartX;
 
+if(diff < -20 && currentRow){
+currentRow.style.transform = "translateX(-40px)";
+currentRow.classList.add("swiping");
+}
+
 if(diff < -80){
+
+currentRow.style.transform = "translateX(-100%)";
+
+setTimeout(()=>{
 supprimerDepense(index);
 showToast("🗑️ Dépense supprimée");
+},200);
+
+}else if(currentRow){
+
+currentRow.style.transform = "translateX(0)";
+currentRow.classList.remove("swiping");
+
 }
 
 }

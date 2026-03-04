@@ -683,6 +683,17 @@ cursor:pointer;
 accent-color:#22c55e;
 transform:scale(1.2);
 }
+
+.modal-content select{
+margin-top:10px;
+background:rgba(255,255,255,0.10);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:14px;
+padding:16px;
+font-size:17px;
+width:100%;
+color:white;
+}
    
 </style>
 </head>
@@ -934,7 +945,7 @@ function validerDepense(){
 const nom = document.getElementById("depenseNom").value;
 const montant = parseFloat(document.getElementById("depenseMontant").value);
 
-const type = document.querySelector('input[name="typeDepense"]:checked').value;
+const type = document.getElementById("typeDepense").value;
 
 if(!nom || isNaN(montant)) return;
 
@@ -1355,18 +1366,11 @@ function goToSection(index){
 
     <input type="number" id="depenseMontant" placeholder="Montant">
 
-    <div class="modal-types">
-      <label>
-        <input type="radio" name="typeDepense" value="fixe" checked>
-        Dépense fixe
-      </label>
-
-      <label>
-        <input type="radio" name="typeDepense" value="variable">
-        Dépense variable
-      </label>
-    </div>
-
+    <select id="typeDepense">
+  <option value="fixe">Dépense fixe</option>
+  <option value="variable">Dépense variable</option>
+</select>
+     
     <div class="modal-actions">
       <button onclick="fermerModal()" class="modal-cancel">Annuler</button>
       <button onclick="validerDepense()" class="modal-add">Ajouter</button>

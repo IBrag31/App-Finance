@@ -15,9 +15,9 @@
 
  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-   <script>
-window.onerror = function(err){
-    alert("Erreur JS: " + err);
+ <script>
+window.onerror = function(message, source, lineno, colno){
+    alert("Erreur JS: " + message + " ligne: " + lineno);
 };
 </script>
    

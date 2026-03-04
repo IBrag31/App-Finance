@@ -22,10 +22,10 @@ window.onerror = function(message, source, lineno, colno){
 </script>
    
 <style>
-    *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+   *, *::before, *::after{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
   
 body{
@@ -308,12 +308,14 @@ td{
     pointer-events:none;
 
     transition:opacity .25s ease, transform .25s ease;
+
+    will-change: transform, opacity;
 }
 
 .sections-container{
-    position:relative;
-    height:calc(100vh - 140px);
-    overflow:hidden;
+position:relative;
+height:calc(100vh - 140px - env(safe-area-inset-bottom));
+overflow:hidden;   
 }
 
    /* ===== APPLE BUDGET UI ===== */
@@ -449,6 +451,44 @@ td{
     background:none;
     color:#ef4444;
 }
+
+/* ===== BUDGET SLIDER DOTS ===== */
+
+.budget-indicator{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-top:12px;
+}
+
+.dot{
+width:6px;
+height:6px;
+border-radius:50%;
+background:rgba(255,255,255,0.25);
+transition:all .25s ease;
+}
+
+.dot.active{
+background:white;
+transform:scale(1.35);
+}
+
+.objectif{
+margin-bottom:18px;
+}
+
+   *{
+-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility;
+}
+
+.app-container{
+max-width:500px;
+margin:auto;
+position:relative;
+}
+
    
 </style>
 </head>
@@ -458,7 +498,7 @@ td{
     <img src="icon-180.png" alt="Mon Budget">
 </div>
 
-<div style="max-width:500px;margin:auto;">
+<div class="app-container">
 
 <div class="sections-container">
 
@@ -521,28 +561,46 @@ td{
     <!-- PAGE 2 : DETAIL DEPENSES -->
     <div class="budget-page" id="budgetDetail">
 
-        <div id="depensesList"></div>
+    <div id="depensesList"></div>
 
-        <button onclick="ajouterDepense()">+ Ajouter une dépense</button>
-
-    </div>
+    <button onclick="ajouterDepense()">+ Ajouter une dépense</button>
 
 </div>
 
-   </div>  <!-- FIN SECTION BUDGET -->
+</div> <!-- FIN budget-pages -->
+
+<div class="budget-indicator">
+    <div class="dot active" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+</div>
+
+</div> <!-- FIN SECTION BUDGET -->
 
 <!-- 🎯 SECTION OBJECTIFS -->
 <div class="card section" id="section-objectifs">
 <h3>🎯 Objectifs</h3>
 
-<p>Fonds de sécurité (6000€)</p>
-<div class="progress"><div id="bar1" class="progress-bar"></div></div>
+<div class="objectif">
+    <p>Fonds de sécurité (6000€)</p>
+    <div class="progress">
+        <div id="bar1" class="progress-bar"></div>
+    </div>
+</div>
 
-<p>Vacances (1500€)</p>
-<div class="progress"><div id="bar2" class="progress-bar"></div></div>
+<div class="objectif">
+    <p>Vacances (1500€)</p>
+    <div class="progress">
+        <div id="bar2" class="progress-bar"></div>
+    </div>
+</div>
 
-<p>Projet perso (3000€)</p>
-<div class="progress"><div id="bar3" class="progress-bar"></div></div>
+<div class="objectif">
+    <p>Projet perso (3000€)</p>
+    <div class="progress">
+        <div id="bar3" class="progress-bar"></div>
+    </div>
+</div>
+
 </div>
 
 <!-- 📅 SECTION HISTORIQUE -->
@@ -566,7 +624,7 @@ td{
 <tbody></tbody>
 </table>
 
-<canvas id="historyChart"></canvas>
+<canvas id="historyChart" height="180"></canvas>
 </div>
 <!-- ⚙️ SECTION SAUVEGARDE -->
 <div class="card section" id="section-sauvegarde">
@@ -608,9 +666,22 @@ td{
 </div>
     <script>
 let historique = JSON.parse(localStorage.getItem("historique")) || [];
+
 let historyChart;
 let autoSaveTimeout;
+
 let depensesDetail = [];
+
+/* slider budget */
+let currentBudgetPage = 0;
+let budgetStartX = 0;
+
+/* swipe sections */
+let startX = 0;
+let endX = 0;
+
+const sections = ["budget","objectifs","historique","sauvegarde"];
+let currentSectionIndex = 0;
 
 function calculTotalDepenses(){
     return depensesDetail.reduce((total, d) => total + d.montant, 0);
@@ -683,6 +754,23 @@ function renderDepenses(){
             </div>
         `;
     });
+}
+
+function goToBudgetPage(index){
+
+    if(index < 0 || index > 1) return;
+
+    const pages = document.getElementById("budgetPages");
+
+    pages.style.transform = `translateX(-${index * 50}%)`;
+
+    document.querySelectorAll(".dot")
+        .forEach(dot => dot.classList.remove("active"));
+
+    document.getElementById("dot" + (index + 1))
+        .classList.add("active");
+
+    currentBudgetPage = index;
 }
 
 function initChart(){
@@ -902,12 +990,6 @@ function autoSaveDebounced(){
     }, 500); // délai en ms
 }
 
-let startX = 0;
-let endX = 0;
-
-const sections = ["budget","objectifs","historique","sauvegarde"];
-let currentSectionIndex = 0;
-
 function goToSection(index){
 
     if(index < 0 || index >= sections.length) return;
@@ -962,6 +1044,32 @@ document.addEventListener("touchend", (e)=>{
         input.addEventListener("input", update);
     });
 
+    const budgetSection = document.getElementById("section-budget");
+
+    if(budgetSection){
+
+        budgetSection.addEventListener("touchstart",(e)=>{
+            budgetStartX = e.touches[0].clientX;
+        });
+
+        budgetSection.addEventListener("touchend",(e)=>{
+
+            const diff = e.changedTouches[0].clientX - budgetStartX;
+
+            if(Math.abs(diff) < 50) return;
+
+            if(diff < 0){
+                goToBudgetPage(currentBudgetPage + 1);
+            }
+
+            if(diff > 0){
+                goToBudgetPage(currentBudgetPage - 1);
+            }
+
+        });
+
+    }
+
     // Animation splash
     setTimeout(() => {
 
@@ -975,8 +1083,8 @@ document.addEventListener("touchend", (e)=>{
         }, 600);
 
     }, 700);
-       
-};      
+
+};
 </script>
 
 <!-- TOAST EN DEHORS DU SCRIPT -->

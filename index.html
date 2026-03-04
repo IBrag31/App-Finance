@@ -379,6 +379,7 @@ overflow:hidden;
 .budget-page{
     width:50%;
     padding:10px;
+    position:relative;
 }
 
 .ring-container{
@@ -489,6 +490,52 @@ margin:auto;
 position:relative;
 }
 
+.depenses-actions{
+    position:absolute;
+    bottom:90px;
+    left:0;
+    right:0;
+    display:flex;
+    justify-content:space-between;
+    padding:0 20px;
+}
+
+.fab{
+width:56px;
+height:56px;
+
+border-radius:50%;
+border:none;
+
+font-size:28px;
+font-weight:500;
+
+color:white;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+backdrop-filter:blur(20px);
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.35);
+
+transition:transform .15s ease, box-shadow .15s ease;
+}
+
+.fab:active{
+transform:scale(0.9);
+box-shadow:0 6px 18px rgba(0,0,0,0.4);
+}
+
+.fab-add{
+    background:linear-gradient(145deg,#22c55e,#16a34a);
+}
+
+.fab-delete{
+    background:linear-gradient(145deg,#ef4444,#dc2626);
+}
    
 </style>
 </head>
@@ -558,12 +605,15 @@ position:relative;
 
     </div>
 
-    <!-- PAGE 2 : DETAIL DEPENSES -->
-    <div class="budget-page" id="budgetDetail">
+  <!-- PAGE 2 : DETAIL DEPENSES -->
+<div class="budget-page" id="budgetDetail">
 
     <div id="depensesList"></div>
 
-    <button onclick="ajouterDepense()">+ Ajouter une dépense</button>
+    <div class="depenses-actions">
+        <button class="fab fab-add" onclick="ajouterDepense()">+</button>
+        <button class="fab fab-delete" onclick="activerSuppression()">✕</button>
+    </div>
 
 </div>
 

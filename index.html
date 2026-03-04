@@ -585,6 +585,12 @@ font-weight:600;
 margin-bottom:18px;
 opacity:.9;
 }
+
+#dashboardDepenses{
+font-size:17px;
+font-weight:500;
+opacity:.9;
+}
    
 </style>
 </head>
@@ -613,6 +619,11 @@ opacity:.9;
     <div class="budget-card">
     <label>Revenus</label>
     <input type="number" id="revenus" value="2000">
+</div>
+
+    <div class="budget-card">
+<label>Dépenses</label>
+<span id="dashboardDepenses">0 €</span>
 </div>
 
 <div class="budget-card">
@@ -813,6 +824,11 @@ function updateRing(){
 
     const circumference = 440;
     const offset = circumference - percent * circumference;
+
+    const depensesEl = document.getElementById("dashboardDepenses");
+    if(depensesEl){
+         depensesEl.innerText = depenses + " €";
+}
 
     document.querySelector(".ring-progress")
         .style.strokeDashoffset = offset;

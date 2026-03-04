@@ -431,17 +431,6 @@ overflow:hidden;
     opacity:0.6;
 }
 
-.dashboard-stats{
-    margin-top:20px;
-}
-
-.stat{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:12px;
-    font-size:16px;
-}
-
 .depense-row{
     display:flex;
     justify-content:space-between;
@@ -652,21 +641,6 @@ opacity:.9;
             </div>
         </div>
 
-        <div class="dashboard-stats">
-            <div class="stat">
-                <span>Revenus</span>
-                <strong id="statRevenus">0 €</strong>
-            </div>
-            <div class="stat">
-                <span>Dépenses</span>
-                <strong id="statDepenses">0 €</strong>
-            </div>
-            <div class="stat">
-                <span>Épargne</span>
-                <strong id="statEpargne">0 €</strong>
-            </div>
-        </div>
-
     </div>
 
   <!-- PAGE 2 : DETAIL DEPENSES -->
@@ -838,11 +812,7 @@ function updateRing(){
 
     document.getElementById("ringAmount").innerText =
         (budgetMax - depenses) + " € restant";
-
-    document.getElementById("statRevenus").innerText = revenus + " €";
-    document.getElementById("statDepenses").innerText = depenses + " €";
-    document.getElementById("statEpargne").innerText = epargne + " €";
-}
+   }
 
    function update(){
     updateRing();

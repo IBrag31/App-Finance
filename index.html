@@ -1044,6 +1044,8 @@ document.addEventListener("touchend", (e)=>{
         input.addEventListener("input", update);
     });
 
+    /* SWIPE PAGES BUDGET */
+
     const budgetSection = document.getElementById("section-budget");
 
     if(budgetSection){
@@ -1064,6 +1066,35 @@ document.addEventListener("touchend", (e)=>{
 
             if(diff > 0){
                 goToBudgetPage(currentBudgetPage - 1);
+            }
+
+        });
+
+    }
+
+    /* SWIPE SECTIONS SUR TABBAR */
+
+    const tabbar = document.querySelector(".tabbar");
+    let tabStartX = 0;
+
+    if(tabbar){
+
+        tabbar.addEventListener("touchstart",(e)=>{
+            tabStartX = e.touches[0].clientX;
+        });
+
+        tabbar.addEventListener("touchend",(e)=>{
+
+            const diff = e.changedTouches[0].clientX - tabStartX;
+
+            if(Math.abs(diff) < 50) return;
+
+            if(diff < 0){
+                goToSection(currentSectionIndex + 1);
+            }
+
+            if(diff > 0){
+                goToSection(currentSectionIndex - 1);
             }
 
         });

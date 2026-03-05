@@ -920,9 +920,16 @@ let historique = JSON.parse(localStorage.getItem("historique")) || [];
 
 let historyChart;
 let autoSaveTimeout;
-
+       
 let depensesDetail =
 JSON.parse(localStorage.getItem("depensesDetail")) || [];
+
+function euro(n){
+return n.toLocaleString("fr-FR",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}) + " €";
+}
 
 /* slider budget */
 let currentBudgetPage = 0;
@@ -936,7 +943,8 @@ const sections = ["budget","objectifs","historique","sauvegarde"];
 let currentSectionIndex = 0;
 
 function calculTotalDepenses(){
-    return depensesDetail.reduce((total, d) => total + d.montant, 0);
+    const total = depensesDetail.reduce((sum, d) => sum + d.montant, 0);
+    return Math.round(total * 100) / 100;
 }
 
 function updateRing(){
@@ -955,7 +963,7 @@ function updateRing(){
 
     const depensesEl = document.getElementById("dashboardDepenses");
     if(depensesEl){
-         depensesEl.innerText = depenses + " €";
+         depensesEl.innerText = euro(depenses);
 }
 
     document.querySelector(".ring-progress")
@@ -965,7 +973,7 @@ function updateRing(){
         Math.round(percent * 100) + "%";
 
     document.getElementById("ringAmount").innerText =
-        (budgetMax - depenses) + " € restant";
+euro(budgetMax - depenses) + " restant";
    }
 
    function update(){
@@ -1054,7 +1062,7 @@ ontouchstart="startSwipe(event,${i})"
 ontouchend="endSwipe(event,${i})">
 
 <span>${d.nom}</span>
-<span>${d.montant} €</span>
+<span>${euro(d.montant)}</span>
 
 </div>
 `;
@@ -1069,8 +1077,8 @@ totalVariables += d.montant;
 
 });
 
-document.getElementById("totalFixes").innerText = totalFixes + " €";
-document.getElementById("totalVariables").innerText = totalVariables + " €";
+document.getElementById("totalFixes").innerText = euro(totalFixes);
+document.getElementById("totalVariables").innerText = euro(totalVariables);
 
 }
 
@@ -1192,8 +1200,8 @@ function afficherHistorique(){
         tbody.innerHTML+=`
         <tr>
         <td>${m.mois}</td>
-        <td>${m.depenses}€</td>
-        <td>${m.epargne}€</td>
+        <td>${euro(m.depenses)}</td>
+        <td>${euro(m.epargne)}</td>
         <td><button onclick="supprimer(${i})" style="background:#ef4444">X</button></td>
         </tr>`;
     });

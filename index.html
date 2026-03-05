@@ -1316,18 +1316,27 @@ function supprimer(i){
     showToast("🗑️ Mois supprimé");
 }
 function sauvegardeAuto(){
-    showToast("✔ Sauvegardé");
 
-    const dataStr = "data:text/json;charset=utf-8," +
-        encodeURIComponent(JSON.stringify({historique: historique}, null, 2));
+showToast("✔ Sauvegardé");
 
-    const a = document.createElement("a");
-    a.setAttribute("href", dataStr);
-    a.setAttribute("download", "sauvegarde_budget.json");
+const data = {
+historique: historique,
+depensesDetail: depensesDetail,
+revenus: document.getElementById("revenus").value,
+epargneMois: document.getElementById("epargneMois").value
+};
 
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+const dataStr = "data:text/json;charset=utf-8," +
+encodeURIComponent(JSON.stringify(data, null, 2));
+
+const a = document.createElement("a");
+a.setAttribute("href", dataStr);
+a.setAttribute("download", "sauvegarde_budget.json");
+
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
 }
  function handleImport(e){
 
@@ -1352,6 +1361,21 @@ function sauvegardeAuto(){
         }
 
         historique = data.historique || [];
+depensesDetail = data.depensesDetail || [];
+
+if(data.revenus){
+document.getElementById("revenus").value = data.revenus;
+localStorage.setItem("revenus", data.revenus);
+}
+
+if(data.epargneMois){
+document.getElementById("epargneMois").value = data.epargneMois;
+localStorage.setItem("epargneMois", data.epargneMois);
+}
+
+saveDepenses();
+renderDepenses();
+updateRing();
 
         autoSaveDebounced();
 

@@ -888,6 +888,11 @@ filter: drop-shadow(0 0 6px rgba(255,255,255,0.05));
     <input type="number" id="epargneMois" value="300">
 </div>
 
+<div class="budget-card">
+<label>Épargne actuelle</label>
+<input type="number" id="epargneTotale" value="0">
+</div>
+
         <div class="ring-container">
 
 <svg class="progress-ring" width="200" height="200">
@@ -1228,11 +1233,15 @@ requestAnimationFrame(animate);
 
    function update(){
 
+function update(){
+
 const revenus = document.getElementById("revenus").value;
 const epargne = document.getElementById("epargneMois").value;
+const epargneTotale = document.getElementById("epargneTotale").value;
 
 localStorage.setItem("revenus", revenus);
 localStorage.setItem("epargneMois", epargne);
+localStorage.setItem("epargneTotale", epargneTotale);
 
 updateRing();
 
@@ -1698,6 +1707,9 @@ function goToSection(index){
 
     const savedRevenus = localStorage.getItem("revenus");
     const savedEpargne = localStorage.getItem("epargneMois");
+    const savedEpargneTotale = localStorage.getItem("epargneTotale");
+
+
 
 if(savedRevenus){
 document.getElementById("revenus").value = savedRevenus;
@@ -1705,6 +1717,10 @@ document.getElementById("revenus").value = savedRevenus;
 
 if(savedEpargne){
 document.getElementById("epargneMois").value = savedEpargne;
+}
+
+if(savedEpargneTotale){
+document.getElementById("epargneTotale").value = savedEpargneTotale;
 }
 
     initChart();

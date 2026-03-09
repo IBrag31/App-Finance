@@ -1169,9 +1169,6 @@ variables += d.montant;
     let percent = budgetMax > 0 ? depenses / budgetMax : 0;
     if(percent > 1) percent = 1;
 
-    const circumference = 440;
-    const offset = circumference - percent * circumference;
-
    const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
    const variablesPercent = depenses > 0 ? variables / depenses : 0;
    const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
@@ -1188,11 +1185,6 @@ document.querySelector(".ring-total")
     const depensesEl = document.getElementById("dashboardDepenses");
     if(depensesEl){
          depensesEl.innerText = euro(depenses);
-}
-
-    const ringProgress = document.querySelector(".ring-progress");
-    if(ringProgress){
-    ringProgress.style.strokeDashoffset = offset;
 }
 
     animatePercent(Math.round(percent * 100));
@@ -1233,11 +1225,9 @@ requestAnimationFrame(animate);
 
    function update(){
 
-function update(){
-
-const revenus = document.getElementById("revenus").value;
-const epargne = document.getElementById("epargneMois").value;
-const epargneTotale = document.getElementById("epargneTotale").value;
+const revenus = +document.getElementById("revenus").value;
+const epargne = +document.getElementById("epargneMois").value;
+const epargneTotale = +document.getElementById("epargneTotale").value;
 
 localStorage.setItem("revenus", revenus);
 localStorage.setItem("epargneMois", epargne);

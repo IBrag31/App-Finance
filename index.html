@@ -853,8 +853,9 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 
-padding:22px;
+gap:16px;
 
+padding:20px;
 }
 
 .activity-left{
@@ -934,10 +935,11 @@ color:#64d2ff;
 <input type="number" id="epargneTotale" value="0">
 </div>
 
-        <div class="ring-container">
+       <div class="card card-activity">
+
+<div class="activity-left">
 
 <svg class="progress-ring" width="200" height="200">
-
 <defs>
 
 <linearGradient id="gradientFixes" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1021,16 +1023,28 @@ opacity="0.35"
 
 </svg>
 
-<div class="ring-center">
-<div id="ringPercent">0%</div>
-<div id="ringAmount">0 €</div>
+</div>
+
+<div class="activity-right">
+
+<div class="activity-item red">
+<span>Épargne</span>
+<strong id="resumeEpargne">0 €</strong>
+</div>
+
+<div class="activity-item green">
+<span>Dépenses</span>
+<strong id="resumeDepenses">0 €</strong>
+</div>
+
+<div class="activity-item blue">
+<span>Budget restant</span>
+<strong id="resumeRestant">0 €</strong>
 </div>
 
 </div>
 
-       <canvas id="depensesChart" height="140"></canvas>
-
-    </div>
+</div>
 
   <!-- PAGE 2 : DETAIL DEPENSES -->
 <div class="budget-page" id="budgetDetail">
@@ -1228,6 +1242,13 @@ document.querySelector(".ring-total")
          depensesEl.innerText = euro(depenses);
 }
 
+const rDep = document.getElementById("resumeDepenses");
+const rRest = document.getElementById("resumeRestant");
+const rEpar = document.getElementById("resumeEpargne");
+
+if(rDep) rDep.innerText = euro(depenses);
+if(rRest) rRest.innerText = euro(budgetMax - depenses);
+if(rEpar) rEpar.innerText = euro(epargne);
     animatePercent(Math.round(percent * 100));
 
     document.getElementById("ringAmount").innerText =

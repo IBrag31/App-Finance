@@ -1250,9 +1250,6 @@ if(rDep) rDep.innerText = euro(depenses);
 if(rRest) rRest.innerText = euro(budgetMax - depenses);
 if(rEpar) rEpar.innerText = euro(epargne);
     animatePercent(Math.round(percent * 100));
-
-    document.getElementById("ringAmount").innerText =
-euro(budgetMax - depenses) + " restant";
    }
 
    function animatePercent(target){

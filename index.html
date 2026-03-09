@@ -1064,7 +1064,6 @@ Dépenses variables <span id="totalVariables">0 €</span>
 <!-- ACTIONS -->
 <div class="depenses-actions">
 <button class="fab fab-add" onclick="ouvrirModal()">+</button>
-<button class="fab fab-delete" onclick="activerSuppression()">✕</button>
 </div>
 
 </div>
@@ -1204,14 +1203,14 @@ return Math.round(total * 100) / 100;
 
 function updateRing(){
 
-    const revenus = +document.getElementById("revenus").value;
-    const epargne = +document.getElementById("epargneMois").value;
-    const depenses = calculTotalDepenses();
+const revenus = +document.getElementById("revenus").value || 0;
+const epargne = +document.getElementById("epargneMois").value || 0;
+const depenses = calculTotalDepenses();
 
-    const budgetMax = revenus - epargne;
+const budgetMax = revenus - epargne;
 
-    let fixes = 0;
-    let variables = 0;
+let fixes = 0;
+let variables = 0;
 
 depensesDetail.forEach(d=>{
 if(d.type === "fixe"){
@@ -1221,40 +1220,43 @@ variables += d.montant;
 }
 });
 
-    let percent = budgetMax > 0 ? depenses / budgetMax : 0;
-    if(percent > 1) percent = 1;
+let percent = budgetMax > 0 ? depenses / budgetMax : 0;
+if(percent > 1) percent = 1;
 
-   const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
-   const variablesPercent = depenses > 0 ? variables / depenses : 0;
-   const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
+const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
+const variablesPercent = depenses > 0 ? variables / depenses : 0;
+const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
 
-document.querySelector(".ring-fixes")
-.style.strokeDashoffset = 515 - fixesPercent * 515;
+const ringFixes = document.querySelector(".ring-fixes");
+const ringVariables = document.querySelector(".ring-variables");
+const ringTotal = document.querySelector(".ring-total");
 
-document.querySelector(".ring-variables")
-.style.strokeDashoffset = 402 - variablesPercent * 402;
+if(ringFixes) ringFixes.style.strokeDashoffset = 515 - fixesPercent * 515;
+if(ringVariables) ringVariables.style.strokeDashoffset = 402 - variablesPercent * 402;
+if(ringTotal) ringTotal.style.strokeDashoffset = 289 - totalPercent * 289;
 
-document.querySelector(".ring-total")
-.style.strokeDashoffset = 289 - totalPercent * 289;
-
-    const depensesEl = document.getElementById("dashboardDepenses");
-    if(depensesEl){
-         depensesEl.innerText = euro(depenses);
+const depensesEl = document.getElementById("dashboardDepenses");
+if(depensesEl){
+depensesEl.innerText = euro(depenses);
 }
 
 const rDep = document.getElementById("resumeDepenses");
 const rRest = document.getElementById("resumeRestant");
 const rEpar = document.getElementById("resumeEpargne");
 
-if(rDep) rDep.innerText = euro(depenses);
-if(rRest) rRest.innerText = euro(budgetMax - depenses);
-if(rEpar) rEpar.innerText = euro(epargne);
-    animatePercent(Math.round(percent * 100));
-   }
+const restant = Math.max(budgetMax - depenses, 0);
 
+if(rDep) rDep.innerText = euro(depenses);
+if(rRest) rRest.innerText = euro(restant);
+if(rEpar) rEpar.innerText = euro(epargne);
+
+animatePercent(Math.round(percent * 100));
+}
    function animatePercent(target){
 
 let percentEl = document.getElementById("ringPercent");
+
+if(!percentEl) return;
 
 let start = 0;
 let duration = 700;

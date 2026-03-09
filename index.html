@@ -24,43 +24,51 @@ window.onerror = function(message, source, lineno, colno){
 </script>
    
 <style>
-   *, *::before, *::after{
+*,
+*::before,
+*::after{
 box-sizing:border-box;
 margin:0;
 padding:0;
 }
-  
+
+html{
+background:#000;
+}
+
 body{
-    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-    color:white;
-    margin:0;
+font-family:-apple-system, BlinkMacSystemFont,"SF Pro Text",sans-serif;
+color:white;
 
-    padding:20px;
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: calc(90px + env(safe-area-inset-bottom));
+padding:20px;
+padding-top:env(safe-area-inset-top);
+padding-bottom:calc(90px + env(safe-area-inset-bottom));
 
-    min-height:100vh;
+min-height:100vh;
 
-    body{
 background:#000;
 
-    overscroll-behavior:none;
-    -webkit-user-select:none;
-    -webkit-tap-highlight-color:transparent;
-}
- 
-h1{
-    text-align:center;
-    font-weight:700;
-    font-size:24px;
-    margin-bottom:25px;
+overscroll-behavior:none;
+-webkit-user-select:none;
+-webkit-tap-highlight-color:transparent;
 }
 
-   #section-budget h3{
-    margin-bottom:16px;
+/* TITRES */
+
+h1{
+text-align:center;
+font-weight:700;
+font-size:24px;
+margin-bottom:25px;
 }
-   
-    .card{
+
+#section-budget h3{
+margin-bottom:16px;
+}
+
+/* CARTE */
+
+.card{
 background:#1c1c1e;
 border-radius:24px;
 border:1px solid rgba(255,255,255,0.05);
@@ -74,7 +82,7 @@ input{
     border-radius:14px;
 
     padding:16px;
-    font-size:17px;
+    font-size:16px;
     width:100%;
     display:block;
 }
@@ -169,7 +177,7 @@ td{
     justify-content:space-around;
     align-items:center;
 
-    background:rgba(20,25,35,0.65);
+    background:#1c1c1e;
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
 
@@ -284,7 +292,7 @@ transform:scale(1);
 }
 
    html{
-    background:#0f172a;
+background:#000;
 }
 
    *{
@@ -343,15 +351,14 @@ overflow:hidden;
     backdrop-filter:blur(20px);
 }
 
-   .budget-card{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.budget-card{
+display:flex;
+justify-content:space-between;
+align-items:center;
 
-    padding:12px 14px;
-    margin-bottom:10px;
+padding:12px 14px;
+margin-bottom:10px;
 
-    .budget-card{
 background:#2c2c2e;
 border:1px solid rgba(255,255,255,0.04);
 border-radius:14px;
@@ -419,25 +426,6 @@ stroke-width:20;
 stroke-linecap:round;
 }
 
-.ring-fixes,
-.ring-variables,
-.ring-total{
-stroke-linecap:round;
-transition:stroke-dashoffset 1.2s cubic-bezier(.22,.61,.36,1);
-}
-
-.ring-fixes{
-transition-delay:0s;
-}
-
-.ring-variables{
-transition-delay:0.2s;
-}
-
-.ring-total{
-transition-delay:0.4s;
-}
-
 .ring-center{
     position:absolute;
     inset:0;
@@ -457,16 +445,6 @@ transition-delay:0.4s;
 #ringAmount{
     font-size:14px;
     opacity:0.6;
-}
-
-.ring-fixes,
-.ring-variables,
-.ring-total{
-
-filter:
-drop-shadow(0 0 1px rgba(0,0,0,0.9))
-drop-shadow(0 6px 12px rgba(0,0,0,0.35));
-
 }
 
 .depense-row{
@@ -759,13 +737,6 @@ opacity:.9;
 pointer-events:none;
 }
 
-.ring-bg{
-fill:none;
-stroke:rgba(255,255,255,0.05);
-stroke-width:10;
-stroke-linecap:round;
-}
-
 .ring-fixes,
 .ring-variables,
 .ring-total{
@@ -773,9 +744,13 @@ stroke-width:20;
 stroke-linecap:round;
 }
 
+.progress-ring circle{
+fill:none;
+}
+
 .ring-fixes{
 fill:none;
-stroke:red;
+stroke:url(#gradientFixes);
 stroke-width:20;
 stroke-linecap:round;
 
@@ -821,6 +796,8 @@ transition-delay:0.4s;
 .progress-ring{
 transform: rotate(-90deg);
 transform-origin: 50% 50%;
+overflow:visible;
+}
 
 animation: ringLight 8s linear infinite;
 }
@@ -838,7 +815,7 @@ filter: drop-shadow(0 0 6px rgba(255,255,255,0.05));
 }
 
 .card-activity{
-
+margin-bottom:16px;
 display:flex;
 align-items:center;
 justify-content:space-between;
@@ -1222,13 +1199,18 @@ const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
 const variablesPercent = depenses > 0 ? variables / depenses : 0;
 const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
 
-const ringFixes = document.querySelector(".ring-fixes");
-const ringVariables = document.querySelector(".ring-variables");
-const ringTotal = document.querySelector(".ring-total");
+const fixesRing = document.querySelector(".ring-fixes");
+const variablesRing = document.querySelector(".ring-variables");
+const totalRing = document.querySelector(".ring-total");
 
-if(ringFixes) ringFixes.style.strokeDashoffset = 515 - fixesPercent * 515;
-if(ringVariables) ringVariables.style.strokeDashoffset = 402 - variablesPercent * 402;
-if(ringTotal) ringTotal.style.strokeDashoffset = 289 - totalPercent * 289;
+if(fixesRing)
+fixesRing.style.strokeDashoffset = 515 - fixesPercent * 515;
+
+if(variablesRing)
+variablesRing.style.strokeDashoffset = 402 - variablesPercent * 402;
+
+if(totalRing)
+totalRing.style.strokeDashoffset = 289 - totalPercent * 289;
 
 const depensesEl = document.getElementById("dashboardDepenses");
 if(depensesEl){
@@ -1281,7 +1263,7 @@ requestAnimationFrame(animate);
 
    function update(){
 
-const revenus = +document.getElementById("revenus").value;
+const revenus = Number(document.getElementById("revenus").value) || 0;
 const epargne = +document.getElementById("epargneMois").value;
 const epargneTotale = +document.getElementById("epargneTotale").value;
 

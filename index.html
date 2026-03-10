@@ -50,12 +50,10 @@ padding-top:env(safe-area-inset-top);
 padding-bottom:calc(90px + env(safe-area-inset-bottom));
 padding-left:16px;
 padding-right:16px;
-}
 
 min-height:100vh;
-
 background:#000;
-
+}
 overscroll-behavior:none;
 -webkit-user-select:none;
 -webkit-tap-highlight-color:transparent;
@@ -990,7 +988,9 @@ Anneaux Budget
 
   <div class="activity-row activity-main">
   
-   <div class="activity-rings">
+  <div class="activity-rings">
+
+<svg class="progress-ring" width="125" height="125">
 
 <defs>
 
@@ -1015,54 +1015,19 @@ Anneaux Budget
 <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
 </linearGradient>
 
-<svg class="progress-ring" width="125" height="125">
-
 </defs>
-  
-<!-- FIXES -->
-<circle
-class="ring-bg-fixes"
-cx="62.5"
-cy="62.5"
-r="52"
-/>
 
-<circle
-class="ring-fixes"
-cx="62.5"
-cy="62.5"
-r="52"
-/>
+<!-- FIXES -->
+<circle class="ring-bg-fixes" cx="62.5" cy="62.5" r="52"/>
+<circle class="ring-fixes" cx="62.5" cy="62.5" r="52"/>
 
 <!-- VARIABLES -->
-<circle
-class="ring-bg-variables"
-cx="62.5"
-cy="62.5"
-r="42"
-/>
-
-<circle
-class="ring-variables"
-cx="62.5"
-cy="62.5"
-r="42"
-/>
+<circle class="ring-bg-variables" cx="62.5" cy="62.5" r="42"/>
+<circle class="ring-variables" cx="62.5" cy="62.5" r="42"/>
 
 <!-- TOTAL -->
-<circle
-class="ring-bg-total"
-cx="62.5"
-cy="62.5"
-r="30"
-/>
-
-<circle
-class="ring-total"
-cx="62.5"
-cy="62.5"
-r="30"
-/>
+<circle class="ring-bg-total" cx="62.5" cy="62.5" r="30"/>
+<circle class="ring-total" cx="62.5" cy="62.5" r="30"/>
 
 <!-- GLOSS -->
 <circle

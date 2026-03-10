@@ -47,7 +47,7 @@ font-family:-apple-system, BlinkMacSystemFont,"SF Pro Text",sans-serif;
 color:white;
 
 padding:16px;
-padding-top:24px;
+padding-top:calc(env(safe-area-inset-top) + 6px);
 padding-bottom:calc(90px + env(safe-area-inset-bottom));
 
 min-height:100vh;
@@ -791,7 +791,7 @@ padding:18px 20px 20px 20px;
 display:flex;
 flex-direction:column;
 
-min-height:260px;
+min-height:300px;
 
 width:100%;
 overflow:hidden;
@@ -875,6 +875,7 @@ display:none;
 }
 
 .activity-main{
+flex:1;
 display:flex;
 align-items:center;
 justify-content:space-between;

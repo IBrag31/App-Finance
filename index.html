@@ -1331,10 +1331,7 @@ if(rDep) rDep.innerText = euro(depenses);
 if(rRest) rRest.innerText = euro(restant);
 if(rEpar){
 rEpar.innerText =
-Math.round(epargneActuelle).toLocaleString("fr-FR") +
-" € / " +
-Math.round(objectifEpargne).toLocaleString("fr-FR") +
-" €";
+euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
 }
 
 animatePercent(Math.round(percent * 100));

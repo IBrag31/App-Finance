@@ -62,7 +62,6 @@ overscroll-behavior:none;
 /* TITRES */
 
 h1{
-text-align:center;
 font-weight:700;
 font-size:24px;
 margin-bottom:25px;
@@ -465,9 +464,11 @@ text-rendering:optimizeLegibility;
 }
 
 .app-container{
+width:100%;
 max-width:500px;
 margin:auto;
 position:relative;
+padding:0 6px;
 }
 
 .depenses-actions{
@@ -834,6 +835,8 @@ gap:10px;
 
 min-width:0;
 overflow:hidden;
+
+padding-left:10px;
 }
 
 .activity-item span{
@@ -842,7 +845,7 @@ opacity:0.6;
 }
 
 .activity-item strong{
-font-size:20px;
+font-size:18px;
 font-weight:600;
 }
 
@@ -875,7 +878,7 @@ display:none;
 display:flex;
 align-items:center;
 justify-content:flex-start;
-gap:18px;
+gap:12px;
 }
 
 .activity-footer{
@@ -891,10 +894,10 @@ opacity:0.35;
 }
 
 .activity-rings{
-flex:0 0 140px;
+flex:0 0 130px;
 display:flex;
 align-items:center;
-justify-content:center;
+justify-content:flex-start;
 }
 
 .activity-header{

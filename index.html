@@ -723,8 +723,8 @@ stroke:url(#gradientFixes);
 stroke-width:20;
 stroke-linecap:round;
 
-stroke-dasharray:515;
-stroke-dashoffset:515;
+stroke-dasharray:339;
+stroke-dashoffset:339;
 
 filter: drop-shadow(0 0 4px rgba(255,45,85,0.35));
 
@@ -738,8 +738,8 @@ stroke:url(#gradientVariables);
 stroke-width:20;
 stroke-linecap:round;
 
-stroke-dasharray:402;
-stroke-dashoffset:402;
+stroke-dasharray:264;
+stroke-dashoffset:264;
 
 filter: drop-shadow(0 0 5px rgba(50,215,75,0.35));
 
@@ -753,8 +753,8 @@ stroke:url(#gradientTotal);
 stroke-width:20;
 stroke-linecap:round;
 
-stroke-dasharray:289;
-stroke-dashoffset:289;
+stroke-dasharray:188;
+stroke-dashoffset:188;
 
 filter: drop-shadow(0 0 5px rgba(10,132,255,0.35));
 
@@ -1012,56 +1012,58 @@ Anneaux Budget
 
 </defs>
 
-<!-- FIXES (anneau extérieur) -->
+<svg class="progress-ring" width="125" height="125">
+
+<!-- FIXES -->
 <circle
 class="ring-bg-fixes"
-cx="62,5"
-cy="62,5"
-r="82"
+cx="62.5"
+cy="62.5"
+r="54"
 />
 
 <circle
 class="ring-fixes"
-cx="62,5"
-cy="62,5"
-r="82"
+cx="62.5"
+cy="62.5"
+r="54"
 />
 
-<!-- VARIABLES (anneau milieu) -->
+<!-- VARIABLES -->
 <circle
 class="ring-bg-variables"
-cx="62,5"
-cy="62,5"
-r="64"
+cx="62.5"
+cy="62.5"
+r="42"
 />
 
 <circle
 class="ring-variables"
-cx="62,5"
-cy="62,5"
-r="64"
+cx="62.5"
+cy="62.5"
+r="42"
 />
 
-<!-- TOTAL (anneau intérieur) -->
+<!-- TOTAL -->
 <circle
 class="ring-bg-total"
-cx="62,5"
-cy="62,5"
-r="46"
+cx="62.5"
+cy="62.5"
+r="30"
 />
 
 <circle
 class="ring-total"
-cx="62,5"
-cy="62,5"
-r="46"
+cx="62.5"
+cy="62.5"
+r="30"
 />
 
 <!-- GLOSS -->
 <circle
-cx="62,5"
-cy="62,5"
-r="40"
+cx="62.5"
+cy="62.5"
+r="26"
 stroke="url(#ringGloss)"
 stroke-width="18"
 fill="none"
@@ -1297,13 +1299,13 @@ const variablesRing = document.querySelector(".ring-variables");
 const totalRing = document.querySelector(".ring-total");
 
 if(fixesRing)
-fixesRing.style.strokeDashoffset = 515 - fixesPercent * 515;
+fixesRing.style.strokeDashoffset = 339 - fixesPercent * 339;
 
 if(variablesRing)
-variablesRing.style.strokeDashoffset = 402 - variablesPercent * 402;
+variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
 
 if(totalRing)
-totalRing.style.strokeDashoffset = 289 - totalPercent * 289;
+totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
 
 const depensesEl = document.getElementById("dashboardDepenses");
 if(depensesEl){

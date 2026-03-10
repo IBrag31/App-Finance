@@ -781,16 +781,15 @@ filter: drop-shadow(0 0 6px rgba(255,255,255,0.05));
 
 .card-activity{
 background:
-radial-gradient(circle at 30% 30%,
-rgba(255,255,255,0.05),
-rgba(255,255,255,0.02) 40%,
-#1c1c1e 70%);
+radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06), transparent 60%),
+#1c1c1e;
+}
 
 border-radius:26px;
 padding:18px 20px 20px 20px;
 display:flex;
 flex-direction:column;
-min-height:300px;
+min-height:210px;
 width:100%;
 
 overflow:hidden;
@@ -831,7 +830,7 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 
-gap:10px;
+gap:14px;
 
 min-width:0;
 overflow:hidden;
@@ -882,10 +881,14 @@ gap:12px;
 }
 
 .activity-footer{
+position:absolute;
 text-align:right;
 font-size:20px;
-opacity:.35;
+opacity:0.35;
 margin-top:8px;
+right:14px
+bottom:14px
+font-size:22px
 }
 
 .arrow{
@@ -894,7 +897,8 @@ opacity:0.35;
 }
 
 .activity-rings{
-flex:0 0 130px;
+flex:0 0 120px;
+margin-top:18px;
 display:flex;
 align-items:center;
 justify-content:flex-start;
@@ -959,7 +963,7 @@ Anneaux Budget
   
    <div class="activity-rings">
 
-<svg class="progress-ring" width="150" height="150">
+<svg class="progress-ring" width="140" height="140">
 <defs>
 
 <linearGradient id="gradientFixes" x1="0%" y1="0%" x2="100%" y2="0%">

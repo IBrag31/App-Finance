@@ -787,14 +787,13 @@ rgba(255,255,255,0.02) 40%,
 
 border-radius:26px;
 padding:18px 20px 20px 20px;
-
 display:flex;
 flex-direction:column;
-
 min-height:300px;
-
 width:100%;
-overflow:hidden;
+overflow:hidden
+margin-left:-4px;
+margin-right:-4px;
 }
 
 .card-activity:active{
@@ -845,7 +844,7 @@ opacity:0.6;
 }
 
 .activity-item strong{
-font-size:24px;
+font-size:20px;
 font-weight:600;
 }
 
@@ -907,6 +906,23 @@ font-weight:600;
 margin-bottom:6px;
 line-height:1.2;
 }
+
+.page-header{
+margin-top:2px;
+margin-bottom:14px;
+}
+
+.page-header h1{
+font-size:32px;
+font-weight:700;
+letter-spacing:-0.5px;
+}
+
+.page-date{
+font-size:15px;
+opacity:0.6;
+margin-top:2px;
+}
    
 </style>
 </head>
@@ -927,7 +943,10 @@ line-height:1.2;
       
     <div class="section-scroll">
 
-    <h3 class="budget-title">Résumé</h3>
+    <div class="page-header">
+<h1>Résumé</h1>
+<div class="page-date" id="todayDate"></div>
+</div>
  
   <div class="card card-activity">
   
@@ -939,7 +958,7 @@ Anneaux Budget
   
    <div class="activity-rings">
 
-<svg class="progress-ring" width="170" height="170">
+<svg class="progress-ring" width="150" height="150">
 <defs>
 
 <linearGradient id="gradientFixes" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1047,6 +1066,7 @@ opacity="0.25"
 </div> <!-- activity-row -->
 
 <div class="activity-footer">
+  
 <span class="arrow">›</span>
 </div>
 
@@ -1785,6 +1805,19 @@ document.getElementById("epargneTotale").value = savedEpargneTotale;
     updateObjectifs();
 
     renderDepenses();
+
+    const dateElement = document.getElementById("todayDate");
+
+if(dateElement){
+const d = new Date();
+
+dateElement.textContent =
+d.toLocaleDateString("fr-FR",{
+weekday:"long",
+day:"numeric",
+month:"long"
+});
+}
 
     setTimeout(()=>{
     updateRing();

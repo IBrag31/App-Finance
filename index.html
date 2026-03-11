@@ -1249,10 +1249,15 @@ const total = depensesDetail.reduce(
 return Math.round(total * 100) / 100;
 }
 
+const objectifEpargne = 5000;
+
 function updateRing(){
 
 const revenus = +document.getElementById("revenus").value || 0;
 const epargne = +document.getElementById("epargneMois").value || 0;
+const epargneActuelle =
+Number(document.getElementById("epargneTotale").value) || 0;
+
 const depenses = calculTotalDepenses();
 
 const budgetMax = Math.max(revenus - epargne, 0);
@@ -1298,9 +1303,6 @@ const rRest = document.getElementById("resumeRestant");
 const rEpar = document.getElementById("resumeEpargne");
 
 const restant = Math.max(budgetMax - depenses, 0);
-const epargneActuelle =
-Number(document.getElementById("epargneTotale").value) || 0;
-
 
 if(rEpar){
 rEpar.innerText =

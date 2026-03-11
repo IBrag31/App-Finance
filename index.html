@@ -392,7 +392,7 @@ border-radius:14px;
 .ring-bg-fixes{
 fill:none;
 stroke:rgba(255,45,85,0.18);
-stroke-width:20;
+stroke-width:18;
 stroke-linecap:round;
 }
 
@@ -832,16 +832,17 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 
-gap:14px;
+gap:18px;
 
 min-width:0;
 
-padding-left:10px;
+padding-left:12px;
 }
 
 .activity-item span{
 font-size:14px;
 opacity:0.55;
+color:white;
 }
 
 .activity-item strong{
@@ -901,8 +902,8 @@ opacity:0.35;
 
 .activity-rings{
 flex:0 0 120px;
-margin-top:28px;
-margin-left:6px;
+margin-top:38px;
+margin-left:4px;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -954,6 +955,18 @@ text-transform:capitalize;
 display:flex;
 flex-direction:column;
 gap:4px;
+}
+
+.activity-item.red strong{
+color:#ff375f;
+}
+
+.activity-item.green strong{
+color:#30d158;
+}
+
+.activity-item.blue strong{
+color:#64d2ff;
 }
    
 </style>
@@ -1292,8 +1305,16 @@ const epargneActuelle =
 Number(document.getElementById("epargneTotale").value) || 0;
 
 
-if(rDep) rDep.innerText = euro(depenses);
-if(rRest) rRest.innerText = euro(restant);
+if(rDep){
+rDep.innerText =
+euro(depenses) + " / " + euro(budgetMax);
+}
+
+if(rRest){
+rRest.innerText =
+euro(restant) + " / " + euro(budgetMax);
+}
+
 if(rEpar){
 rEpar.innerText =
 euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);

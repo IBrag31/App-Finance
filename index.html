@@ -704,59 +704,67 @@ opacity:.9;
 pointer-events:none;
 }
 
+.ring-bg-fixes,
+.ring-bg-variables,
+.ring-bg-total{
+stroke:#2a2a2c;
+stroke-width:18;
+}
+
 .ring-fixes,
 .ring-variables,
 .ring-total{
-stroke-width:20;
-stroke-linecap:round;
-}
-
-.progress-ring circle{
-fill:none;
+animation:ringLight 8s linear infinite;
 }
 
 .ring-fixes{
 fill:none;
 stroke:url(#gradientFixes);
-stroke-width:20;
+stroke-width18;
 stroke-linecap:round;
 
-stroke-dasharray:326;
-stroke-dashoffset:326;
+stroke-dasharray:314;
+stroke-dashoffset:314;
 
-filter: drop-shadow(0 0 4px rgba(255,45,85,0.35));
+filter:
+drop-shadow(0 0 6px rgba(255,55,95,0.6))
+drop-shadow(0 0 12px rgba(255,55,95,0.25));
 
-transition:stroke-dashoffset 1.2s cubic-bezier(.22,.61,.36,1);
+transition:stroke-dashoffset 1.4s cubic-bezier(.22,.61,.36,1);
 transition-delay:0s;
 }
 
 .ring-variables{
 fill:none;
 stroke:url(#gradientVariables);
-stroke-width:20;
+stroke-width:18;
 stroke-linecap:round;
 
-stroke-dasharray:264;
-stroke-dashoffset:264;
+stroke-dasharray:238;
+stroke-dashoffset:238;
 
-filter: drop-shadow(0 0 5px rgba(50,215,75,0.35));
+filter:
+drop-shadow(0 0 6px rgba(48,209,88,0.6))
+drop-shadow(0 0 12px rgba(48,209,88,0.25));
 
-transition:stroke-dashoffset 1.2s cubic-bezier(.22,.61,.36,1);
+transition:stroke-dashoffset 1.4s cubic-bezier(.22,.61,.36,1);
 transition-delay:0.2s;
 }
 
 .ring-total{
 fill:none;
 stroke:url(#gradientTotal);
-stroke-width:20;
+stroke-width:18;
 stroke-linecap:round;
 
-stroke-dasharray:188;
-stroke-dashoffset:188;
+stroke-dasharray:163;
+stroke-dashoffset:163;
 
-filter: drop-shadow(0 0 5px rgba(10,132,255,0.35));
+filter:  
+drop-shadow(0 0 6px rgba(10,132,255,0.6))
+drop-shadow(0 0 12px rgba(10,132,255,0.25));
 
-transition:stroke-dashoffset 1.2s cubic-bezier(.22,.61,.36,1);
+transition:stroke-dashoffset 1.4s cubic-bezier(.22,.61,.36,1);
 transition-delay:0.4s;
 }
    
@@ -764,7 +772,7 @@ transition-delay:0.4s;
 transform: rotate(-90deg);
 transform-origin: 50% 50%;
 overflow:visible;
-animation: ringLight 8s linear infinite;
+will-change:transform;
 }
 
 @keyframes ringLight{
@@ -835,8 +843,9 @@ justify-content:center;
 gap:18px;
 
 min-width:0;
+overflow:hidden;
 
-padding-left:12px;
+padding-left:28px;
 }
 
 .activity-item span{
@@ -1031,16 +1040,16 @@ Anneaux Budget
 </defs>
 
 <!-- FIXES -->
-<circle class="ring-bg-fixes" cx="62.5" cy="62.5" r="52"/>
-<circle class="ring-fixes" cx="62.5" cy="62.5" r="52"/>
+<circle class="ring-bg-fixes" cx="62.5" cy="62.5" r="50"/>
+<circle class="ring-fixes" cx="62.5" cy="62.5" r="50"/>
 
 <!-- VARIABLES -->
-<circle class="ring-bg-variables" cx="62.5" cy="62.5" r="42"/>
-<circle class="ring-variables" cx="62.5" cy="62.5" r="42"/>
+<circle class="ring-bg-variables" cx="62.5" cy="62.5" r="38"/>
+<circle class="ring-variables" cx="62.5" cy="62.5" r="38"/>
 
 <!-- TOTAL -->
-<circle class="ring-bg-total" cx="62.5" cy="62.5" r="30"/>
-<circle class="ring-total" cx="62.5" cy="62.5" r="30"/>
+<circle class="ring-bg-total" cx="62.5" cy="62.5" r="26"/>
+<circle class="ring-total" cx="62.5" cy="62.5" r="26"/>
 
 <!-- GLOSS -->
 <circle
@@ -1286,13 +1295,13 @@ const variablesRing = document.querySelector(".ring-variables");
 const totalRing = document.querySelector(".ring-total");
 
 if(fixesRing)
-fixesRing.style.strokeDashoffset = 326 - fixesPercent * 326;
+fixesRing.style.strokeDashoffset = 314 - fixesPercent * 314;
 
 if(variablesRing)
-variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
+variablesRing.style.strokeDashoffset = 238 - variablesPercent * 238;
 
 if(totalRing)
-totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
+totalRing.style.strokeDashoffset = 163 - totalPercent * 163;
 
 const depensesEl = document.getElementById("dashboardDepenses");
 if(depensesEl){

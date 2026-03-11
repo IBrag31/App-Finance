@@ -1232,10 +1232,7 @@ JSON.parse(localStorage.getItem("depensesDetail")) || [];
 const OBJECTIF_EPARGNE = 5000;
 
 function euro(n){
-return n.toLocaleString("fr-FR",{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}) + " €";
+return Math.round(n).toLocaleString("fr-FR");
 }
 
 /* swipe sections */

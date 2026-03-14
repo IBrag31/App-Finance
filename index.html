@@ -960,11 +960,6 @@ opacity="0.25"
 
 </svg>
 
-<div class="ring-center">
-<div id="ringPercent">0%</div>
-<div id="ringAmount"></div>
-</div>
-
 </div>
 
 <div class="activity-stats">
@@ -1259,43 +1254,6 @@ if(rRest) rRest.innerText = euro(restant);
 if(rEpar){
 rEpar.innerText =
 euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
-}
-
-animatePercent(Math.round(percent * 100));
-
-}
-
-
-function animatePercent(target){
-
-let percentEl = document.getElementById("ringPercent");
-
-if(!percentEl) return;
-
-let duration = 700;
-let startTime = null;
-
-function animate(time){
-
-if(!startTime) startTime = time;
-
-let progress = time - startTime;
-
-let value = Math.min(
-Math.round(progress / duration * target),
-target
-);
-
-percentEl.innerText = value + "%";
-
-if(value < target){
-requestAnimationFrame(animate);
-}
-
-}
-
-requestAnimationFrame(animate);
-
 }
 
 function update(){

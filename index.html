@@ -51,8 +51,9 @@ body{
 font-family:-apple-system, BlinkMacSystemFont,"SF Pro Text",sans-serif;
 color:white;
 
-padding:20px;
-padding-top:env(safe-area-inset-top);
+body{
+padding:16px;
+padding-top:calc(env(safe-area-inset-top) + 10px);
 padding-bottom:calc(90px + env(safe-area-inset-bottom));
 
 min-height:100vh;
@@ -636,8 +637,9 @@ fill:none;
 /* APP CONTAINER */
 
 .app-container{
-max-width:500px;
-margin:auto;
+width:100%;
+max-width:100%;
+margin:0;
 position:relative;
 }
 
@@ -841,7 +843,8 @@ align-items:flex-start;
 
 margin-top:-4px;
 margin-bottom:14px;
-padding-left:4px;
+
+padding-left:2px;
 
 gap:2px;
 }
@@ -858,13 +861,9 @@ line-height:1;
 }
 
 .page-date{
-font-size:14px;
+font-size:15px;
 opacity:0.6;
-
-margin:0;
-padding:0;
-
-line-height:1.2;
+margin-top:2px;
 text-transform:capitalize;
 }
 

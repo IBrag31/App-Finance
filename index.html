@@ -408,7 +408,7 @@ align-items:center;
 }
 
 #ringPercent{
-font-size:38px;
+font-size:28px;
 font-weight:700;
 letter-spacing:-1px;
 line-height:1;
@@ -763,9 +763,8 @@ font-size:14px;
 opacity:0.6;
 }
 
-.activity-item strong{
-font-size:22px;
-font-weight:600;
+.activity-item.red strong{
+font-size:20px;
 }
 
 .activity-item.green strong{
@@ -840,17 +839,18 @@ display:flex;
 flex-direction:column;
 align-items:flex-start;
 
-margin-top:-8px;
-margin-bottom:12px;
-margin-left:-16px;
+margin-top:-4px;
+margin-bottom:14px;
+padding-left:4px;
 
 gap:2px;
 }
 
 .page-header h1{
-font-size:22px;
+font-size:24px;
 font-weight:700;
-letter-spacing:-0.2px;
+letter-spacing:-0.3px;
+}
 
 margin:0;
 padding:0;
@@ -960,6 +960,11 @@ opacity="0.25"
 />
 
 </svg>
+
+<div class="ring-center">
+<div id="ringPercent">0%</div>
+<div id="ringAmount"></div>
+</div>
 
 </div>
 
@@ -1364,15 +1369,15 @@ if(!nom) return;
 const montant = parseFloat(prompt("Montant ?"));
 if(isNaN(montant)) return;
 
+let type = prompt("Type : fixe ou variable ?");
+if(!type) return;
+
 type = type.toLowerCase().trim();
 
 if(type !== "fixe" && type !== "variable"){
 showToast("Type invalide");
 return;
 }
-if(!type) return;
-
-type = type.toLowerCase().trim();
 
 depensesDetail.push({
 nom,

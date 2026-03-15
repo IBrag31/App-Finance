@@ -1,4 +1,4 @@
-const CACHE_NAME = "financeplus-v2.86";
+const CACHE_NAME = "financeplus-v2.87";
 
 const urlsToCache = [
 "./",

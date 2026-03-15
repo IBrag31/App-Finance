@@ -297,10 +297,6 @@ input[type="month"]::-webkit-calendar-picker-indicator{
 filter:invert(1);
 }
 
-.sections-wrapper{
-overflow:hidden;
-}
-
 *{
 -webkit-font-smoothing:antialiased;
 }
@@ -327,7 +323,7 @@ transition:opacity .25s ease, transform .25s ease;
 
 .sections-container{
 position:relative;
-height:100%;
+height:calc(100vh - 90px - env(safe-area-inset-bottom));
 overflow:hidden;
 }
 
@@ -370,12 +366,6 @@ backdrop-filter:blur(20px);
 }
 
 /* RINGS */
-
-.ring-container{
-position:relative;
-width:180px;
-margin:20px auto;
-}
 
 .ring-bg-fixes{
 fill:none;
@@ -727,13 +717,6 @@ overflow:hidden;
 display:flex;
 align-items:center;
 gap:20px;
-}
-
-.activity-left{
-flex:0 0 180px;
-display:flex;
-align-items:center;
-justify-content:center;
 }
 
 .activity-right{
@@ -1157,9 +1140,6 @@ maximumFractionDigits:2
 }
 
 /* swipe sections */
-
-let startX = 0;
-let endX = 0;
 
 const sections = ["budget","objectifs","historique","sauvegarde"];
 

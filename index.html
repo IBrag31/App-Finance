@@ -702,23 +702,25 @@ filter:drop-shadow(0 0 4px rgba(255,255,255,0.05));
 /* CARTE ACTIVITÉ */
 
 .card-activity{
-margin-bottom:16px;
+
+background:
+radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06), transparent 60%),
+#1c1c1e;
+
+border-radius:26px;
+padding:18px 20px 20px 20px;
 
 display:flex;
 flex-direction:column;
 
-padding:20px;
-min-height:200px;
+min-height:260px;
 
-background:linear-gradient(180deg,#1c1c1e,#161618);
-border-radius:26px;
-}
+/* effet bord à bord Apple */
+width:calc(100% + 20px);
+margin-left:-10px;
+margin-right:-10px;
 
-.activity-title{
-font-size:18px;
-font-weight:600;
-margin-bottom:16px;
-opacity:0.9;
+overflow:hidden;
 }
 
 .activity-row{
@@ -827,8 +829,9 @@ align-items:flex-start;
 margin-top:-6px;
 margin-bottom:14px;
 
+margin-left:-16px;
+
 padding-top:4px;
-padding-left:2px;
 
 gap:2px;
 }

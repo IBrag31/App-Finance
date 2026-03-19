@@ -1727,10 +1727,24 @@ function autoSaveDebounced(){
 clearTimeout(autoSaveTimeout);
 
 autoSaveTimeout = setTimeout(() => {
-autoSave();
-console.log("💾 auto-save");
-}, 500); // délai en ms
 
+const data = {
+historique,
+depensesDetail,
+revenus: document.getElementById("revenus").value,
+epargneMois: document.getElementById("epargneMois").value,
+epargneTotale: document.getElementById("epargneTotale").value
+};
+
+// sauvegarde principale
+localStorage.setItem("financeData", JSON.stringify(data));
+
+// backup de sécurité
+localStorage.setItem("financeBackup", JSON.stringify(data));
+
+console.log("💾 autosave");
+
+}, 300);
 }
 
 function goToSection(index){
@@ -1756,6 +1770,31 @@ currentSectionIndex = index;
 
 window.onload = function(){
 
+const saved = localStorage.getItem("financeData");
+
+if(saved){
+try{
+const data = JSON.parse(saved);
+
+historique = data.historique || [];
+depensesDetail = data.depensesDetail || [];
+
+if(data.revenus)
+document.getElementById("revenus").value = data.revenus;
+
+if(data.epargneMois)
+document.getElementById("epargneMois").value = data.epargneMois;
+
+if(data.epargneTotale)
+document.getElementById("epargneTotale").value = data.epargneTotale;
+
+}catch(e){
+console.warn("Erreur chargement données");
+}
+}
+else{
+// fallback ancien système UNIQUEMENT si pas de financeData
+
 const savedRevenus = localStorage.getItem("revenus");
 const savedEpargne = localStorage.getItem("epargneMois");
 const savedEpargneTotale = localStorage.getItem("epargneTotale");
@@ -1770,6 +1809,7 @@ document.getElementById("epargneMois").value = savedEpargne;
 
 if(savedEpargneTotale){
 document.getElementById("epargneTotale").value = savedEpargneTotale;
+}
 }
 
 initChart();
@@ -1803,6 +1843,20 @@ input.addEventListener("input", update);
 });
 
 }
+
+window.addEventListener("beforeunload", () => {
+autoSave();
+});
+
+window.addEventListener("pagehide", () => {
+autoSave();
+});
+
+document.addEventListener("visibilitychange", () => {
+if(document.visibilityState === "hidden"){
+autoSaveDebounced();
+}
+});
 
 /* SWIPE SECTIONS SUR TABBAR */
 

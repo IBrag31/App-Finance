@@ -326,13 +326,9 @@ pointer-events:none;
 .sections-container{
 position:relative;
 height:calc(100dvh - 90px - env(safe-area-inset-bottom));
-overflow:hidden;
-}
 
-.sections-container,
-.section,
-.section-scroll{
-overflow-x:hidden;
+overflow-y:auto;      /* scroll vertical OK */
+overflow-x:visible;   /* laisse vivre les cartes */
 }
 
 /* ===== APPLE BUDGET UI ===== */

@@ -323,8 +323,8 @@ transition:opacity .25s ease, transform .25s ease;
 
 .sections-container{
 position:relative;
-height:calc(100vh - 90px - env(safe-area-inset-bottom));
-overflow:hidden;
+height:calc(100dvh - 90px - env(safe-area-inset-bottom));
+overflow-x:hidden;
 }
 
 /* ===== APPLE BUDGET UI ===== */
@@ -707,9 +707,9 @@ min-height:260px;
 
 /* bord à bord Apple */
 
-width:calc(100% + 16px);
-margin-left:-8px;
-margin-right:-8px;
+width:calc(100% + 24px);
+margin-left:-12px;
+margin-right:-12px;
 
 overflow:hidden;
 }
@@ -762,10 +762,6 @@ height:100%;
 padding-bottom:120px;
 
 -webkit-overflow-scrolling:touch;
-}
-      
-.section-scroll .page-header{
-margin-top:-4px;
 }
 
 .activity-main{

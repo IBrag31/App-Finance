@@ -701,7 +701,7 @@ background:
 radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06), transparent 60%),
 #1c1c1e;
 
-border-radius:26px;
+border-radius:22px;
 padding:18px 16px 20px 16px;
 
 display:flex;
@@ -709,12 +709,10 @@ flex-direction:column;
 
 min-height:260px;
 
-/* bord à bord Apple */
-margin-left:-6px;
-margin-right:-6px;
+/* ✅ propre */
+width:100%;
+margin:0;
 
-width:calc(100% + 12px);
-            
 overflow:hidden;
 }
 
@@ -757,8 +755,8 @@ display:flex;
 flex-direction:column;
 gap:16px;
 
-padding-left:0;
-padding-right:0;
+padding-left:8px;
+padding-right:8px;
 
 overflow-y:auto;
 height:100%;

@@ -335,7 +335,7 @@ position:relative;
 height:calc(100dvh - 90px - env(safe-area-inset-bottom));
 
 overflow-y:auto;      /* scroll vertical OK */
-overflow-x:visible;   /* laisse vivre les cartes */
+overflow-x:hidden; /* 🔥 IMPORTANT */
 }
 
 /* ===== APPLE BUDGET UI ===== */
@@ -721,6 +721,7 @@ width:100%;
 margin:0;
 
 overflow:hidden;
+position:relative;
 }
 
 .activity-row{
@@ -776,6 +777,13 @@ padding-bottom:120px;
 -webkit-overflow-scrolling:touch;
 }
 
+/* 🔥 ANTI SCROLL HORIZONTAL GLOBAL */
+.section,
+.section-scroll,
+.app-container{
+overflow-x:hidden;
+}
+
 .activity-main{
 display:flex;
 align-items:center;
@@ -786,7 +794,7 @@ position:relative;
 
 .activity-footer{
 position:absolute;
-right:12px;
+right:8px;
 top:50%;
 transform:translateY(-50%);
 pointer-events:none;

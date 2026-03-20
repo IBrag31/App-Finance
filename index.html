@@ -56,6 +56,12 @@ color:white;
 margin:0;
 padding:0;
 
+/* 🔥 important */
+overflow-x:hidden;
+
+/* optionnel mais propre */
+position:relative;
+
 min-height:100vh;
 
 overscroll-behavior:none;
@@ -312,6 +318,7 @@ left:0;
 right:0;
 bottom:0;
 
+overflow:visible;
 padding-left:6px;
 padding-right:6px;
 padding-bottom:16px;
@@ -758,8 +765,11 @@ gap:16px;
 padding-left:8px;
 padding-right:8px;
 
+overflow-x:hidden;
 overflow-y:auto;
-height:100%;
+
+flex:1;
+min-height:0;
 
 padding-bottom:120px;
 

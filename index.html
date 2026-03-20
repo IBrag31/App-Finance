@@ -864,6 +864,66 @@ flex-direction:column;
 gap:4px;
 }
 
+.cards-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.card-mini{
+background:
+radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06), transparent 60%),
+linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+#1c1c1e;
+
+border-radius:22px;
+padding:16px;
+
+display:flex;
+flex-direction:column;
+gap:6px;
+
+min-height:120px;
+
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.06),
+0 6px 20px rgba(0,0,0,0.5);
+
+transition:transform 0.15s ease;
+}
+
+.card-mini:active{
+transform:scale(0.97);
+}
+
+.card-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.title{
+font-size:16px;
+font-weight:500;
+opacity:0.9;
+}
+
+.subtitle{
+font-size:12px;
+opacity:0.5;
+}
+
+.value{
+font-size:24px;
+font-weight:600;
+letter-spacing:-0.3px;
+}
+
+.arrow{
+font-size:16px;
+opacity:0.3;
+}
+
 </style>
 
 </head>
@@ -978,29 +1038,53 @@ opacity="0.25"
 <span class="arrow">›</span>
 </div>
 
-</div> <!-- card -->
+<div class="cards-grid">
 
-<div class="budget-card">
-<label>Revenus</label>
-<input type="number" id="revenus" value="2000">
+  <!-- Revenus -->
+  <div class="card-mini">
+    <div class="card-header">
+      <span class="title">Revenus</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="subtitle">Ce mois</div>
+    <div class="value" id="revenusDisplay">2000 €</div>
+  </div>
+
+  <!-- Dépenses -->
+  <div class="card-mini">
+    <div class="card-header">
+      <span class="title">Dépenses</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="subtitle">Total</div>
+    <div class="value" id="depensesDisplay">0 €</div>
+  </div>
+
+  <!-- Épargne prévue -->
+  <div class="card-mini">
+    <div class="card-header">
+      <span class="title">Épargne prévue</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="subtitle">Objectif</div>
+    <div class="value" id="epargneMoisDisplay">300 €</div>
+  </div>
+
+  <!-- Épargne actuelle -->
+  <div class="card-mini">
+    <div class="card-header">
+      <span class="title">Épargne actuelle</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="subtitle">Total</div>
+    <div class="value" id="epargneTotaleDisplay">0 €</div>
+  </div>
+
 </div>
 
-<div class="budget-card">
-<label>Dépenses</label>
-<span id="dashboardDepenses">0 €</span>
-</div>
-
-<div class="budget-card">
-<label>Épargne prévue</label>
-<input type="number" id="epargneMois" value="300">
-</div>
-
-<div class="budget-card">
-<label>Épargne actuelle</label>
-<input type="number" id="epargneTotale" value="0">
-</div>
-
-</div> <!-- FIN PAGE 1 -->
+<!-- 🔥 ANCIEN UI (désactivé)
+<div class="budget-card">...</div>
+-->
 
 <!-- PAGE 2 : DETAIL DEPENSES -->
 
@@ -1242,6 +1326,26 @@ if(rRest) rRest.innerText = euro(restant);
 if(rEpar){
 rEpar.innerText =
 euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
+}
+
+// 🔥 NOUVEAU DASHBOARD (cartes Apple)
+
+const revenusVal = document.getElementById("revenus").value;
+const epargneMoisVal = document.getElementById("epargneMois").value;
+const epargneTotaleVal = document.getElementById("epargneTotale").value;
+
+const depensesVal = calculTotalDepenses();
+
+const r1 = document.getElementById("revenusDisplay");
+const r2 = document.getElementById("depensesDisplay");
+const r3 = document.getElementById("epargneMoisDisplay");
+const r4 = document.getElementById("epargneTotaleDisplay");
+
+if(r1) r1.innerText = euro(revenusVal);
+if(r2) r2.innerText = euro(depensesVal);
+if(r3) r3.innerText = euro(epargneMoisVal);
+if(r4) r4.innerText = euro(epargneTotaleVal);
+
 }
 
 }

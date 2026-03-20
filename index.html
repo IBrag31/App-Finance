@@ -800,12 +800,6 @@ transform:translateY(-50%);
 pointer-events:none;
 }
 
-.arrow{
-font-size:20px;
-opacity:0.25;
-transform:translateX(2px);
-}
-
 .activity-main{
 overflow:hidden;
 }
@@ -1037,6 +1031,11 @@ opacity="0.25"
 <div class="activity-footer">
 <span class="arrow">›</span>
 </div>
+
+<!-- 🔥 INPUTS CACHÉS (IMPORTANT) -->
+<input type="hidden" id="revenus" value="2000">
+<input type="hidden" id="epargneMois" value="300">
+<input type="hidden" id="epargneTotale" value="0">
 
 <div class="cards-grid">
 
@@ -1345,8 +1344,6 @@ if(r1) r1.innerText = euro(revenusVal);
 if(r2) r2.innerText = euro(depensesVal);
 if(r3) r3.innerText = euro(epargneMoisVal);
 if(r4) r4.innerText = euro(epargneTotaleVal);
-
-}
 
 }
 

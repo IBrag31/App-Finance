@@ -173,6 +173,13 @@ width:0%;
 transition:width 0.5s ease;
 }
 
+.section.active{
+display:block;
+opacity:1;
+transform:translateY(0);
+pointer-events:auto;
+z-index:10;
+}
 
 /* TABBAR */
 
@@ -305,13 +312,22 @@ filter:invert(1);
 /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-display:none;
-width:100%;
-height:100%;
-}
+position:absolute;
+top:0;
+left:0;
+right:0;
+bottom:0;
 
-.section.active{
-display:block;
+overflow:hidden;
+padding-left:6px;
+padding-right:6px;
+padding-bottom:16px;
+
+box-sizing:border-box;
+
+opacity:0;
+transform:translateX(20px);
+pointer-events:none;
 }
 
 .sections-container{
@@ -1107,7 +1123,24 @@ opacity="0.25"
 <div class="budget-card">...</div>
 -->
 
-</div> <!-- ✅ fermeture section-budget -->
+<!-- PAGE 2 : DETAIL DEPENSES -->
+
+<div class="section-scroll">
+
+<h4 class="depenses-category">
+Dépenses fixes <span id="totalFixes">0 €</span>
+</h4>
+
+<div id="depensesFixes"></div>
+
+<h4 class="depenses-category">
+Dépenses variables <span id="totalVariables">0 €</span>
+</h4>
+
+<div id="depensesVariables"></div>
+
+</div> <!-- FIN section-scroll -->
+</div> <!-- 🔥 AJOUT : fermeture section-budget -->
 
 <div class="section" id="section-depenses">
 
@@ -1154,112 +1187,87 @@ opacity="0.25"
 
 
 <!-- 🎯 SECTION OBJECTIFS -->
-<div class="section" id="section-objectifs">
+<div class="card section" id="section-objectifs">
 
-  <div class="section-scroll">
+<h3>🎯 Objectifs</h3>
 
-    <div class="page-header">
-      <h1>Objectifs</h1>
-      <div class="page-date">Suivi</div>
-    </div>
-
-    <div class="card">
-
-      <div class="objectif">
-        <p>Fonds de sécurité (6000€)</p>
-        <div class="progress">
-          <div id="bar1" class="progress-bar"></div>
-        </div>
-      </div>
-
-      <div class="objectif">
-        <p>Vacances (1500€)</p>
-        <div class="progress">
-          <div id="bar2" class="progress-bar"></div>
-        </div>
-      </div>
-
-      <div class="objectif">
-        <p>Projet perso (3000€)</p>
-        <div class="progress">
-          <div id="bar3" class="progress-bar"></div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
+<div class="objectif">
+<p>Fonds de sécurité (6000€)</p>
+<div class="progress">
+<div id="bar1" class="progress-bar"></div>
+</div>
 </div>
 
-<div class="section" id="section-historique">
+<div class="objectif">
+<p>Vacances (1500€)</p>
+<div class="progress">
+<div id="bar2" class="progress-bar"></div>
+</div>
+</div>
 
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <h1>Historique</h1>
-      <div class="page-date">Suivi</div>
-    </div>
-
-    <div class="card">
-
-      <label>Choisir un mois</label>
-      <input type="month" id="moisSelect">
-
-      <button onclick="ajouterMois()">Ajouter ce mois</button>
-
-      <table id="historiqueTable">
-        <thead>
-          <tr>
-            <th>Mois</th>
-            <th>Dépenses</th>
-            <th>Épargne</th>
-            <th>❌</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <canvas id="historyChart" height="180"></canvas>
-
-    </div>
-
-  </div>
+<div class="objectif">
+<p>Projet perso (3000€)</p>
+<div class="progress">
+<div id="bar3" class="progress-bar"></div>
+</div>
+</div>
 
 </div>
 
 
-<div class="section" id="section-sauvegarde">
+<!-- 📅 SECTION HISTORIQUE -->
+<div class="card section" id="section-historique">
 
-  <div class="section-scroll">
+<h3>📅 Historique</h3>
 
-    <div class="page-header">
-      <h1>Sauvegarde</h1>
-      <div class="page-date">Données</div>
-    </div>
+<label>Choisir un mois</label>
+<input type="month" id="moisSelect">
 
-    <div class="card">
+<button onclick="ajouterMois()">Ajouter ce mois</button>
 
-      <button onclick="sauvegardeAuto()">
-        💾 Sauvegarder sur iCloud
-      </button>
+<table id="historiqueTable">
+<thead>
+<tr>
+<th>Mois</th>
+<th>Dépenses</th>
+<th>Épargne</th>
+<th>❌</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
 
-      <button class="restore-btn" onclick="restaurerDepuisIcloud()">
-        📥 Restaurer depuis iCloud
-      </button>
-
-      <input
-        type="file"
-        id="fileInput"
-        accept=".json"
-        onchange="handleImport(event)"
-        hidden>
-
-    </div>
-
-  </div>
+<canvas id="historyChart" height="180"></canvas>
 
 </div>
+
+
+<!-- ⚙️ SECTION SAUVEGARDE -->
+<div class="card section" id="section-sauvegarde">
+
+<h3>💾 Sauvegarde</h3>
+
+<button onclick="sauvegardeAuto()">
+💾 Sauvegarder sur iCloud
+</button>
+
+<button class="restore-btn" onclick="restaurerDepuisIcloud()">
+📥 Restaurer depuis iCloud
+</button>
+
+<input
+type="file"
+id="fileInput"
+accept=".json"
+onchange="handleImport(event)"
+hidden>
+
+</div>
+
+
+</div> <!-- FIN sections-container -->
+
+</div> <!-- FIN CONTAINER PRINCIPAL -->
 
 
 <!-- 🧭 TABBAR EN BAS -->

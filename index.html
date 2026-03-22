@@ -1123,8 +1123,9 @@ opacity="0.25"
 
 <!-- 🔥 ANCIEN UI (désactivé)
 <div class="budget-card">...</div>
+-->
 
-</div> <!-- 🔥 AJOUT : fermeture section-budget -->
+</div> <!-- ✅ fermeture section-budget -->
 
 <div class="section" id="section-depenses">
 
@@ -1209,59 +1210,74 @@ opacity="0.25"
 
 </div>
 
-<!-- 📅 SECTION HISTORIQUE -->
-<div class="card section" id="section-historique">
+<div class="section" id="section-historique">
 
-<h3>📅 Historique</h3>
+  <div class="section-scroll">
 
-<label>Choisir un mois</label>
-<input type="month" id="moisSelect">
+    <div class="page-header">
+      <h1>Historique</h1>
+      <div class="page-date">Suivi</div>
+    </div>
 
-<button onclick="ajouterMois()">Ajouter ce mois</button>
+    <div class="card">
 
-<table id="historiqueTable">
-<thead>
-<tr>
-<th>Mois</th>
-<th>Dépenses</th>
-<th>Épargne</th>
-<th>❌</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+      <label>Choisir un mois</label>
+      <input type="month" id="moisSelect">
 
-<canvas id="historyChart" height="180"></canvas>
+      <button onclick="ajouterMois()">Ajouter ce mois</button>
 
-</div>
+      <table id="historiqueTable">
+        <thead>
+          <tr>
+            <th>Mois</th>
+            <th>Dépenses</th>
+            <th>Épargne</th>
+            <th>❌</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
+      <canvas id="historyChart" height="180"></canvas>
 
-<!-- ⚙️ SECTION SAUVEGARDE -->
-<div class="card section" id="section-sauvegarde">
+    </div>
 
-<h3>💾 Sauvegarde</h3>
-
-<button onclick="sauvegardeAuto()">
-💾 Sauvegarder sur iCloud
-</button>
-
-<button class="restore-btn" onclick="restaurerDepuisIcloud()">
-📥 Restaurer depuis iCloud
-</button>
-
-<input
-type="file"
-id="fileInput"
-accept=".json"
-onchange="handleImport(event)"
-hidden>
+  </div>
 
 </div>
 
 
-</div> <!-- FIN sections-container -->
+<div class="section" id="section-sauvegarde">
 
-</div> <!-- FIN CONTAINER PRINCIPAL -->
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <h1>Sauvegarde</h1>
+      <div class="page-date">Données</div>
+    </div>
+
+    <div class="card">
+
+      <button onclick="sauvegardeAuto()">
+        💾 Sauvegarder sur iCloud
+      </button>
+
+      <button class="restore-btn" onclick="restaurerDepuisIcloud()">
+        📥 Restaurer depuis iCloud
+      </button>
+
+      <input
+        type="file"
+        id="fileInput"
+        accept=".json"
+        onchange="handleImport(event)"
+        hidden>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <!-- 🧭 TABBAR EN BAS -->

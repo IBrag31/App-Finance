@@ -836,6 +836,7 @@ margin-bottom:14px;
 
 padding-top:8px;
 padding-right:50px;
+padding-left:36px; /* 🔥 AJOUT IMPORTANT */
 
 position:relative;
 
@@ -934,6 +935,18 @@ font-size:16px;
 opacity:0.3;
 }
 
+.back-btn{
+position:absolute;
+left:6px;
+top:2px;
+
+background:none;
+border:none;
+color:white;
+font-size:20px;
+opacity:0.7;
+}
+      
 </style>
 
 </head>
@@ -1070,7 +1083,7 @@ opacity="0.25"
   </div>
 
   <!-- Dépenses -->
-  <div class="card-mini">
+ <div class="card-mini" onclick="ouvrirPageDepenses()">
     <div class="card-header">
       <span class="title">Dépenses</span>
       <span class="arrow">›</span>
@@ -1122,6 +1135,49 @@ Dépenses variables <span id="totalVariables">0 €</span>
 <div id="depensesVariables"></div>
 
 </div> <!-- FIN SECTION BUDGET -->
+
+<div class="section" id="section-depenses">
+
+  <div class="section-scroll">
+
+  <div class="page-header">
+
+  <button class="back-btn" onclick="goToSection(0)">←</button>
+
+  <h1>Dépenses</h1>
+  <div class="page-date">Vue détaillée</div>
+
+  <button class="fab fab-add header-add" onclick="ouvrirModal()">+</button>
+
+</div>
+    <!-- TOTAL -->
+    <div class="card">
+      <div class="depenses-title">Total des dépenses</div>
+      <div class="value" id="depensesTotalPage">0 €</div>
+    </div>
+
+    <!-- LISTES -->
+    <div class="card depenses-card">
+
+      <div class="depenses-category">
+        <span>Dépenses fixes</span>
+        <span id="totalFixesPage">0 €</span>
+      </div>
+
+      <div id="depensesFixesPage"></div>
+
+      <div class="depenses-category">
+        <span>Dépenses variables</span>
+        <span id="totalVariablesPage">0 €</span>
+      </div>
+
+      <div id="depensesVariablesPage"></div>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <!-- 🎯 SECTION OBJECTIFS -->
@@ -1256,7 +1312,7 @@ maximumFractionDigits:2
 
 /* swipe sections */
 
-const sections = ["budget","objectifs","historique","sauvegarde"];
+const sections = ["budget","depenses","objectifs","historique","sauvegarde"];
 
 let currentSectionIndex = 0;
 
@@ -1379,6 +1435,17 @@ function ouvrirModal(){
 const modal = document.getElementById("depenseModal");
 if(modal) modal.classList.add("show");
 
+}
+
+function ouvrirPageDepenses(){
+
+  document.querySelectorAll(".section")
+    .forEach(sec => sec.classList.remove("active"));
+
+  document.getElementById("section-depenses")
+    .classList.add("active");
+
+  renderDepensesPage();
 }
 
 function fermerModal(){
@@ -1545,6 +1612,46 @@ totalVariables += montant;
 document.getElementById("totalFixes").innerText = euro(totalFixes);
 document.getElementById("totalVariables").innerText = euro(totalVariables);
 
+}
+
+function renderDepensesPage(){
+
+  const fixes = document.getElementById("depensesFixesPage");
+  const variables = document.getElementById("depensesVariablesPage");
+
+  fixes.innerHTML = "";
+  variables.innerHTML = "";
+
+  let totalFixes = 0;
+  let totalVariables = 0;
+
+  depensesDetail.forEach((d,i)=>{
+
+    const montant = Number(d.montant) || 0;
+
+    const row = document.createElement("div");
+    row.className = "depense-row";
+
+    row.innerHTML = `
+      <span>${d.nom}</span>
+      <span>${euro(montant)}</span>
+    `;
+
+    if(d.type === "fixe"){
+      fixes.appendChild(row);
+      totalFixes += montant;
+    } else {
+      variables.appendChild(row);
+      totalVariables += montant;
+    }
+
+  });
+
+  document.getElementById("totalFixesPage").innerText = euro(totalFixes);
+  document.getElementById("totalVariablesPage").innerText = euro(totalVariables);
+
+  const total = totalFixes + totalVariables;
+  document.getElementById("depensesTotalPage").innerText = euro(total);
 }
 
 let currentRow = null;

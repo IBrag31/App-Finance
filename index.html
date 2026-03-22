@@ -1090,7 +1090,7 @@ opacity="0.25"
 <div class="cards-grid">
 
   <!-- Revenus -->
-  <div class="card-mini">
+  <div class="card-mini" onclick="showSection('revenus')">
     <div class="card-header">
       <span class="title">Revenus</span>
       <span class="arrow">›</span>
@@ -1110,7 +1110,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne prévue -->
-  <div class="card-mini">
+  <div class="card-mini" onclick="showSection('epargne')">
     <div class="card-header">
       <span class="title">Épargne prévue</span>
       <span class="arrow">›</span>
@@ -1120,7 +1120,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne actuelle -->
-  <div class="card-mini">
+  <div class="card-mini" onclick="showSection('epargneTotale')">
     <div class="card-header">
       <span class="title">Épargne actuelle</span>
       <span class="arrow">›</span>
@@ -1181,6 +1181,71 @@ opacity="0.25"
 
   </div>
 
+</div>
+
+<!-- 💰 SECTION REVENUS -->
+<div class="section" id="section-revenus">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <button class="back-btn" onclick="goToSection(0)">←</button>
+
+      <div class="header-center">
+        <h1>Revenus</h1>
+        <div class="page-date">Ce mois</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="depenses-title">Total revenus</div>
+      <div class="value" id="revenusPage">0 €</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- 🎯 SECTION ÉPARGNE PRÉVUE -->
+<div class="section" id="section-epargne">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <button class="back-btn" onclick="goToSection(0)">←</button>
+
+      <div class="header-center">
+        <h1>Épargne prévue</h1>
+        <div class="page-date">Objectif</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="depenses-title">Objectif mensuel</div>
+      <div class="value" id="epargneMoisPage">0 €</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- 🏦 SECTION ÉPARGNE ACTUELLE -->
+<div class="section" id="section-epargneTotale">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <button class="back-btn" onclick="goToSection(0)">←</button>
+
+      <div class="header-center">
+        <h1>Épargne actuelle</h1>
+        <div class="page-date">Total</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="depenses-title">Épargne cumulée</div>
+      <div class="value" id="epargneTotalePage">0 €</div>
+    </div>
+
+  </div>
 </div>
 
 
@@ -1297,7 +1362,7 @@ hidden>
 <div class="tabbar">
 
 <div class="tab active" onclick="showSection('budget', this)">
-💰<span>Budget</span>
+📊<span>Résumé</span>
 </div>
 
 <div class="tab" onclick="showSection('objectifs', this)">
@@ -1340,7 +1405,16 @@ maximumFractionDigits:2
 
 /* swipe sections */
 
-const sections = ["budget","depenses","objectifs","historique","sauvegarde"];
+const sections = [
+"budget",
+"depenses",
+"revenus",
+"epargne",
+"epargneTotale",
+"objectifs",
+"historique",
+"sauvegarde"
+];
 
 let currentSectionIndex = 0;
 
@@ -1380,6 +1454,18 @@ variables += montant;
 
 });
 
+const revenusVal = document.getElementById("revenus").value;
+const epargneMoisVal = document.getElementById("epargneMois").value;
+const epargneTotaleVal = document.getElementById("epargneTotale").value;
+
+const rPage = document.getElementById("revenusPage");
+const ePage = document.getElementById("epargneMoisPage");
+const etPage = document.getElementById("epargneTotalePage");
+
+if(rPage) rPage.innerText = euro(revenusVal);
+if(ePage) ePage.innerText = euro(epargneMoisVal);
+if(etPage) etPage.innerText = euro(epargneTotaleVal);
+
 let percent = budgetMax > 0 ? depenses / budgetMax : 0;
 if(percent > 1) percent = 1;
 
@@ -1400,12 +1486,6 @@ variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
 if(totalRing)
 totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
 
-const depensesEl = document.getElementById("dashboardDepenses");
-
-if(depensesEl){
-depensesEl.innerText = euro(depenses);
-}
-
 const rDep = document.getElementById("resumeDepenses");
 const rRest = document.getElementById("resumeRestant");
 const rEpar = document.getElementById("resumeEpargne");
@@ -1425,10 +1505,6 @@ euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
 }
 
 // 🔥 NOUVEAU DASHBOARD (cartes Apple)
-
-const revenusVal = document.getElementById("revenus").value;
-const epargneMoisVal = document.getElementById("epargneMois").value;
-const epargneTotaleVal = document.getElementById("epargneTotale").value;
 
 const depensesVal = calculTotalDepenses();
 
@@ -2085,12 +2161,14 @@ if(dateElement){
 
 const d = new Date();
 
-dateElement.textContent =
-d.toLocaleDateString("fr-FR",{
+let dateStr = d.toLocaleDateString("fr-FR",{
 weekday:"long",
 day:"numeric",
 month:"long"
 });
+
+dateElement.textContent =
+dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
 
 }
 

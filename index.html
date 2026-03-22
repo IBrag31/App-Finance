@@ -312,32 +312,21 @@ filter:invert(1);
 /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-position:absolute;
-top:0;
-left:0;
-right:0;
-bottom:0;
+display:none;
+width:100%;
+height:100%;
+}
 
-overflow:hidden;
-padding-left:6px;
-padding-right:6px;
-padding-bottom:16px;
-
-box-sizing:border-box;
-
-opacity:0;
-transform:translateX(20px);
-pointer-events:none;
+.section.active{
+display:block;
 }
 
 .sections-container{
 position:relative;
 height:calc(100dvh - 90px - env(safe-area-inset-bottom));
 
-overflow-y:auto;      /* scroll vertical OK */
-overflow-x:hidden; /* 🔥 IMPORTANT */
+overflow:hidden; /* suffit à lui seul */
 }
-
 /* ===== APPLE BUDGET UI ===== */
 
 .budget-card{

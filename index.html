@@ -1077,7 +1077,7 @@ opacity="0.25"
   </div>
 
   <!-- Dépenses -->
- <div class="card-mini" onclick="ouvrirPageDepenses()">
+<div class="card-mini" onclick="showSection('depenses')">
     <div class="card-header">
       <span class="title">Dépenses</span>
       <span class="arrow">›</span>
@@ -1430,17 +1430,6 @@ function ouvrirModal(){
 const modal = document.getElementById("depenseModal");
 if(modal) modal.classList.add("show");
 
-}
-
-function ouvrirPageDepenses(){
-
-  document.querySelectorAll(".section")
-    .forEach(sec => sec.classList.remove("active"));
-
-  document.getElementById("section-depenses")
-    .classList.add("active");
-
-  renderDepensesPage();
 }
 
 function fermerModal(){
@@ -1905,14 +1894,18 @@ function showSection(name, element){
     document.querySelectorAll(".tab")
         .forEach(tab => tab.classList.remove("active"));
 
-    document.getElementById("section-" + name)
-        .classList.add("active");
+    const section = document.getElementById("section-" + name);
+    if(section) section.classList.add("active");
 
-    element.classList.add("active");
+    if(element) element.classList.add("active");
 
     currentSectionIndex = sections.indexOf(name);
-}
 
+    // 🔥 IMPORTANT : charger les données si on est sur dépenses
+    if(name === "depenses"){
+        renderDepensesPage();
+    }
+}
 function restaurerDepuisIcloud(){
     const input = document.getElementById("fileInput");
     input.value = "";

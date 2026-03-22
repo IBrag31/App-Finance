@@ -1187,18 +1187,29 @@ opacity="0.25"
 <div class="section" id="section-revenus">
   <div class="section-scroll">
 
-    <div class="page-header">
+    <div class="page-header page-header-depenses">
+
       <button class="back-btn" onclick="goToSection(0)">←</button>
 
       <div class="header-center">
         <h1>Revenus</h1>
         <div class="page-date">Ce mois</div>
       </div>
+
+      <button class="fab fab-add header-add" onclick="ouvrirModalRevenu()">+</button>
+
     </div>
 
+    <!-- TOTAL -->
     <div class="card">
       <div class="depenses-title">Total revenus</div>
       <div class="value" id="revenusPage">0 €</div>
+    </div>
+
+    <!-- 🔥 LISTE DES REVENUS (ICI) -->
+    <div class="card">
+      <div class="depenses-title">Détail des revenus</div>
+      <div id="revenusList"></div>
     </div>
 
   </div>
@@ -1392,6 +1403,9 @@ let autoSaveTimeout;
 let depensesDetail =
 JSON.parse(localStorage.getItem("depensesDetail")) || [];
 
+let revenusDetail =
+JSON.parse(localStorage.getItem("revenusDetail")) || [];
+
 const OBJECTIF_EPARGNE = 5000;
 
 function euro(n){
@@ -1432,7 +1446,8 @@ return Math.round(total * 100) / 100;
 
 function updateRing(){
 
-const revenus = +document.getElementById("revenus").value || 0;
+const mois = getMoisActuel();
+const revenus = getRevenusDuMois(mois);
 const epargne = +document.getElementById("epargneMois").value || 0;
 
 const depenses = calculTotalDepenses();
@@ -1454,7 +1469,7 @@ variables += montant;
 
 });
 
-const revenusVal = document.getElementById("revenus").value;
+const revenusVal = revenus;
 const epargneMoisVal = document.getElementById("epargneMois").value;
 const epargneTotaleVal = document.getElementById("epargneTotale").value;
 
@@ -2010,11 +2025,16 @@ function showSection(name, element){
 
     currentSectionIndex = sections.indexOf(name);
 
-    // 🔥 IMPORTANT : charger les données si on est sur dépenses
     if(name === "depenses"){
         renderDepensesPage();
     }
+
+    if(name === "revenus"){
+        renderRevenusPage();
+    }
+
 }
+      
 function restaurerDepuisIcloud(){
     const input = document.getElementById("fileInput");
     input.value = "";
@@ -2104,6 +2124,89 @@ currentSectionIndex = index;
 
 }
 
+function ouvrirModalRevenu(){
+  const modal = document.getElementById("revenuModal");
+
+    // 🔥 auto mois actuel
+  document.getElementById("revenuMois").value = getMoisActuel();
+
+  if(modal) modal.classList.add("show");
+}
+
+function fermerModalRevenu(){
+  const modal = document.getElementById("revenuModal");
+  if(modal) modal.classList.remove("show");
+}
+
+function validerRevenu(){
+
+  const nom = document.getElementById("revenuNom").value.trim();
+  const montant = parseFloat(document.getElementById("revenuMontant").value);
+  const mois = document.getElementById("revenuMois").value;
+
+  if(!nom || isNaN(montant) || !mois) return;
+
+  revenusDetail.push({
+    nom,
+    montant,
+    mois
+  });
+
+  localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
+
+  // 🔥 RESET DES CHAMPS (ICI)
+  document.getElementById("revenuNom").value = "";
+  document.getElementById("revenuMontant").value = "";
+  document.getElementById("revenuMois").value = "";
+
+  showToast("💰 Revenu ajouté");
+
+  fermerModalRevenu();
+  renderRevenusPage();
+  updateRing();
+}
+function getRevenusDuMois(mois){
+
+  return revenusDetail
+    .filter(r => r.mois === mois)
+    .reduce((sum, r) => sum + r.montant, 0);
+}
+
+function getMoisActuel(){
+  const d = new Date();
+  return d.toISOString().slice(0,7); // format YYYY-MM
+}
+
+function renderRevenusPage(){
+
+  const mois = getMoisActuel();
+
+  const revenusMois = revenusDetail.filter(r => r.mois === mois);
+
+  const total = revenusMois.reduce((sum, r) => sum + r.montant, 0);
+
+  const el = document.getElementById("revenusPage");
+  if(el) el.innerText = euro(total);
+
+  const list = document.getElementById("revenusList");
+  if(!list) return;
+
+  list.innerHTML = "";
+
+  revenusMois.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "depense-row";
+
+    div.innerHTML = `
+      <span>${r.nom}</span>
+      <span>${euro(r.montant)}</span>
+    `;
+
+    list.appendChild(div);
+  });
+
+}
+
 window.onload = function(){
 
 const saved = localStorage.getItem("financeData");
@@ -2154,6 +2257,7 @@ majGraph();
 updateObjectifs();
 
 renderDepenses();
+renderRevenusPage();
 
 const dateElement = document.getElementById("todayDate");
 
@@ -2260,7 +2364,6 @@ navigator.serviceWorker
     <h3>Nouvelle dépense</h3>
 
     <input type="text" id="depenseNom" placeholder="Nom">
-
     <input type="number" id="depenseMontant" placeholder="Montant">
 
     <select id="typeDepense">
@@ -2271,6 +2374,24 @@ navigator.serviceWorker
     <div class="modal-actions">
       <button onclick="fermerModal()" class="modal-cancel">Annuler</button>
       <button onclick="validerDepense()" class="modal-add">Ajouter</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ✅ MODAL REVENU SÉPARÉ -->
+<div id="revenuModal" class="modal" onclick="fermerModalRevenu()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+
+    <h3>Nouveau revenu</h3>
+
+    <input type="text" id="revenuNom" placeholder="Ex: Salaire">
+    <input type="number" id="revenuMontant" placeholder="Montant">
+    <input type="month" id="revenuMois">
+
+    <div class="modal-actions">
+      <button onclick="fermerModalRevenu()" class="modal-cancel">Annuler</button>
+      <button onclick="validerRevenu()" class="modal-add">Ajouter</button>
     </div>
 
   </div>

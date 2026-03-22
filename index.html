@@ -173,14 +173,6 @@ width:0%;
 transition:width 0.5s ease;
 }
 
-.section.active{
-display:block;
-opacity:1;
-transform:translateY(0);
-pointer-events:auto;
-z-index:10;
-}
-
 /* TABBAR */
 
 .tabbar{
@@ -1160,7 +1152,11 @@ opacity="0.25"
 
 
 <!-- 🎯 SECTION OBJECTIFS -->
-<div class="card section" id="section-objectifs">
+<div class="section" id="section-objectifs">
+
+  <div class="section-scroll">
+
+    <div class="card">
 
 <h3>🎯 Objectifs</h3>
 
@@ -1187,9 +1183,17 @@ opacity="0.25"
 
 </div>
 
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-objectifs -->
+
 
 <!-- 📅 SECTION HISTORIQUE -->
-<div class="card section" id="section-historique">
+<div class="section" id="section-historique">
+
+  <div class="section-scroll">
+
+    <div class="card">
 
 <h3>📅 Historique</h3>
 
@@ -1214,9 +1218,17 @@ opacity="0.25"
 
 </div>
 
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-historique -->
+
 
 <!-- ⚙️ SECTION SAUVEGARDE -->
-<div class="card section" id="section-sauvegarde">
+<div class="section" id="section-sauvegarde">
+
+  <div class="section-scroll">
+
+    <div class="card">
 
 <h3>💾 Sauvegarde</h3>
 
@@ -1236,6 +1248,10 @@ onchange="handleImport(event)"
 hidden>
 
 </div>
+
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-sauvegarde -->
 
 
 </div> <!-- FIN sections-container -->

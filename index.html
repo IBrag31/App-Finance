@@ -328,6 +328,8 @@ box-sizing:border-box;
 opacity:0;
 transform:translateX(20px);
 pointer-events:none;
+
+display:none; /* 🔥 AJOUT CRITIQUE */
 }
 
 .sections-container{
@@ -1169,33 +1171,43 @@ opacity="0.25"
 
 
 <!-- 🎯 SECTION OBJECTIFS -->
-<div class="card section" id="section-objectifs">
+<div class="section" id="section-objectifs">
 
-<h3>🎯 Objectifs</h3>
+  <div class="section-scroll">
 
-<div class="objectif">
-<p>Fonds de sécurité (6000€)</p>
-<div class="progress">
-<div id="bar1" class="progress-bar"></div>
-</div>
-</div>
+    <div class="page-header">
+      <h1>Objectifs</h1>
+      <div class="page-date">Suivi</div>
+    </div>
 
-<div class="objectif">
-<p>Vacances (1500€)</p>
-<div class="progress">
-<div id="bar2" class="progress-bar"></div>
-</div>
-</div>
+    <div class="card">
 
-<div class="objectif">
-<p>Projet perso (3000€)</p>
-<div class="progress">
-<div id="bar3" class="progress-bar"></div>
-</div>
-</div>
+      <div class="objectif">
+        <p>Fonds de sécurité (6000€)</p>
+        <div class="progress">
+          <div id="bar1" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="objectif">
+        <p>Vacances (1500€)</p>
+        <div class="progress">
+          <div id="bar2" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="objectif">
+        <p>Projet perso (3000€)</p>
+        <div class="progress">
+          <div id="bar3" class="progress-bar"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
-
 
 <!-- 📅 SECTION HISTORIQUE -->
 <div class="card section" id="section-historique">

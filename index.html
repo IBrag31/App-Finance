@@ -173,13 +173,6 @@ width:0%;
 transition:width 0.5s ease;
 }
 
-.section.active{
-display:block;
-opacity:1;
-transform:translateY(0);
-pointer-events:auto;
-z-index:10;
-}
 
 /* TABBAR */
 
@@ -312,24 +305,13 @@ filter:invert(1);
 /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-position:absolute;
-top:0;
-left:0;
-right:0;
-bottom:0;
+display:none;
+width:100%;
+height:100%;
+}
 
-overflow:hidden;
-padding-left:6px;
-padding-right:6px;
-padding-bottom:16px;
-
-box-sizing:border-box;
-
-opacity:0;
-transform:translateX(20px);
-pointer-events:none;
-
-display:none; /* 🔥 AJOUT CRITIQUE */
+.section.active{
+display:block;
 }
 
 .sections-container{

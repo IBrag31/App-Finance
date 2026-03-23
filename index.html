@@ -176,7 +176,6 @@ transition:width 0.5s ease;
 /* TABBAR */
 
 .tabbar{
-    
   position:fixed;
   overflow:hidden;
   left:50%;
@@ -186,7 +185,6 @@ transition:width 0.5s ease;
 
   width:92%;
   max-width:420px;
-
   height:70px;
 
   display:flex;
@@ -199,7 +197,6 @@ transition:width 0.5s ease;
   backdrop-filter:blur(30px);
 
   border-radius:28px;
-
   border:1px solid rgba(255,255,255,0.06);
 
   box-shadow:
@@ -207,6 +204,9 @@ transition:width 0.5s ease;
     inset 0 1px 0 rgba(255,255,255,0.06);
 
   z-index:1000;
+
+  /* 🔥 mieux que none */
+  touch-action: pan-y;
 }
 
 .tab{
@@ -270,9 +270,9 @@ transition:width 0.5s ease;
 
   will-change: transform, width;
 
-  transition: 
-    transform 0.35s cubic-bezier(.22,.61,.36,1),
-    width 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(.22,.61,.36,1),
+    width 0.2s ease;
 
   z-index:0;
 
@@ -2678,32 +2678,65 @@ autoSaveDebounced();
 
 /* SWIPE SECTIONS SUR TABBAR */
 
-const tabbar = document.querySelector(".tabbar");
-let tabStartX = 0;
+let isDraggingTab = false;
 
-if(tabbar){
-
-tabbar.addEventListener("touchstart",(e)=>{
-tabStartX = e.touches[0].clientX;
+tabbar.addEventListener("touchstart", () => {
+  isDraggingTab = true;
 });
 
-tabbar.addEventListener("touchend",(e)=>{
+tabbar.addEventListener("touchmove", (e) => {
 
-const diff = e.changedTouches[0].clientX - tabStartX;
+  e.preventDefault();
 
-if(Math.abs(diff) < 50) return;
+  if(!isDraggingTab) return;
 
-if(diff < 0){
-goToSection(currentSectionIndex + 1);
-}
+  const touchX = e.touches[0].clientX;
+  const tabs = document.querySelectorAll(".tab");
+  
+  const indicator = document.querySelector(".tab-indicator");
+  if(!indicator) return;
+  
+  const parentRect = tabbar.getBoundingClientRect();
 
-if(diff > 0){
-goToSection(currentSectionIndex - 1);
-}
+  const x = touchX - parentRect.left;
+
+  indicator.style.transform =
+    `translateX(${x - indicator.offsetWidth / 2}px) translateY(-50%)`;
+
+  indicator.style.width = "70px";
+
+  tabs.forEach((tab, index) => {
+
+    const rect = tab.getBoundingClientRect();
+
+    if(touchX >= rect.left && touchX <= rect.right){
+
+      if(index !== currentSectionIndex){
+        goToSection(index);
+      }
+
+    }
+
+  });
+
+}, { passive: false });
+
+tabbar.addEventListener("touchend", () => {
+
+  isDraggingTab = false;
+
+  const indicator = document.querySelector(".tab-indicator");
+  if(!indicator) return;
+
+  indicator.style.width = "";
+  moveIndicator(currentSectionIndex);
 
 });
 
-}
+// ✅ DOIT ÊTRE À PART
+tabbar.addEventListener("touchcancel", () => {
+  isDraggingTab = false;
+});
 
 // Animation splash
 setTimeout(() => {

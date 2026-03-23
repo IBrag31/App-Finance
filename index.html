@@ -1648,7 +1648,7 @@ const nouveauMontant = parseFloat(
 prompt("Montant :", depense.montant)
 );
 
-if(isNaN(nouveauMontant)) return;
+if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
 
 let nouveauType = prompt(
 "Type : fixe ou variable",
@@ -1801,6 +1801,81 @@ currentRow.classList.remove("swiping");
 
 }
 
+}
+
+/* ===== SWIPE REVENUS ===== */
+
+let revenuSwipeStartX = 0;
+let currentRevenuRow = null;
+
+function startSwipeRevenu(e, revenu){
+  revenuSwipeStartX = e.touches[0].clientX;
+  currentRevenuRow = e.currentTarget;
+  currentRevenu = revenu;
+}
+
+let currentRevenu = null;
+
+function endSwipeRevenu(e){
+
+  const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
+
+  if(diff < -20 && currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(-40px)";
+    currentRevenuRow.classList.add("swiping");
+  }
+
+  if(diff < -120){
+
+    navigator.vibrate?.(10);
+
+    currentRevenuRow.style.transform = "translateX(-100%)";
+
+    setTimeout(()=>{
+      supprimerRevenu(currentRevenu);
+      showToast("🗑️ Revenu supprimé");
+    },200);
+
+  } else if(currentRevenuRow){
+
+    currentRevenuRow.style.transform = "translateX(0)";
+    currentRevenuRow.classList.remove("swiping");
+
+  }
+}
+
+function supprimerRevenu(revenu){
+
+  const index = revenusDetail.indexOf(revenu);
+  if(index !== -1){
+    revenusDetail.splice(index,1);
+  }
+
+  localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
+
+  renderRevenusPage();
+  updateRing();
+}
+
+function modifierRevenu(revenu){
+
+  const nouveauNom = prompt("Nom :", revenu.nom);
+  if(!nouveauNom || nouveauNom.trim() === "") return;
+
+  const nouveauMontant = parseFloat(prompt("Montant :", revenu.montant));
+  
+  // 🔥 AJOUT ICI
+  if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
+
+  revenu.nom = nouveauNom;
+  revenu.montant = nouveauMontant;
+
+  localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
+
+  renderRevenusPage();
+  updateRing();
+
+  showToast("✏️ Revenu modifié");
 }
 
 function initChart(){
@@ -2144,7 +2219,10 @@ function validerRevenu(){
   const montant = parseFloat(document.getElementById("revenuMontant").value);
   const mois = document.getElementById("revenuMois").value;
 
-  if(!nom || isNaN(montant) || !mois) return;
+  if(!nom || isNaN(montant) || montant <= 0 || !mois){
+  showToast("⚠️ Montant invalide");
+  return;
+}
 
   revenusDetail.push({
     nom,
@@ -2202,12 +2280,16 @@ function renderRevenusPage(){
 
   [...revenusDetail]
   .sort((a, b) => b.mois.localeCompare(a.mois))
-  .forEach(r => {
+  .forEach((r, index) => {
 
     total += r.montant;
 
     const div = document.createElement("div");
     div.className = "depense-row";
+    
+    div.onclick = () => modifierRevenu(r);
+div.ontouchstart = (e) => startSwipeRevenu(e, r);
+div.ontouchend = (e) => endSwipeRevenu(e, r);
 
     div.innerHTML = `
   <span>${r.nom}</span>

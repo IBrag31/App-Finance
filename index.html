@@ -2337,7 +2337,7 @@ function renderRevenusPage(){
 
   [...revenusDetail]
   .sort((a, b) => b.mois.localeCompare(a.mois))
-  .forEach((r, index) => {
+  .forEach((r) => {
 
     total += r.montant;
 
@@ -2345,23 +2345,26 @@ function renderRevenusPage(){
     div.className = "depense-row";
     
     div.onclick = () => modifierRevenu(r);
-div.ontouchstart = (e) => startSwipeRevenu(e, r);
-div.ontouchend = (e) => endSwipeRevenu(e, r);
+    div.ontouchstart = (e) => startSwipeRevenu(e, r);
+    div.ontouchend = (e) => endSwipeRevenu(e, r);
 
     div.innerHTML = `
-  <span>${r.nom}</span>
- <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
-`;
+      <span>${r.nom}</span>
+      <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+    `;
 
     list.appendChild(div);
   });
 
+  // total global
   const el = document.getElementById("revenusPage");
   if(el) el.innerText = euro(total);
 
+  // 🔥 PARTIE SÉPARÉE (plus propre)
   const label = document.getElementById("moisActuelLabel");
-if(label){
-  label.innerText = formatMois(getMoisActuel());
+  if(label){
+    label.innerText = formatMois(getMoisActuel());
+  }
 
   const moisActuel = getMoisActuel();
   const totalMois = getRevenusDuMois(moisActuel);
@@ -2369,12 +2372,9 @@ if(label){
   const elMois = document.getElementById("revenusMois");
   if(elMois){
     elMois.innerText = euro(totalMois);
-    }
   }
 
-} // ✅ fermeture de la fonction
-
-; // 🔥 AJOUT IMPORTANT (safe parsing)
+}
 
 window.onload = function(){
 

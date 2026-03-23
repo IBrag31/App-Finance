@@ -41,6 +41,10 @@ margin:0;
 padding:0;
 }
 
+:root{
+  --tabbar-height: 70px;
+}
+
 html, body{
 background:#000;
 overflow-x:hidden;
@@ -832,8 +836,7 @@ flex:1;
 height:100%;
 min-height:0;
 
-/* 🔥 espace pour la tabbar */
-padding-bottom:calc(100px + env(safe-area-inset-bottom));
+padding-bottom:calc(var(--tabbar-height) + 50px + env(safe-area-inset-bottom));
 
 -webkit-overflow-scrolling:touch;
 }

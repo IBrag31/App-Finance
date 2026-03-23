@@ -2368,10 +2368,13 @@ if(label){
 
   const elMois = document.getElementById("revenusMois");
   if(elMois){
-  elMois.innerText = euro(totalMois);
-}
+    elMois.innerText = euro(totalMois);
+    }
+  }
 
-} // ✅ ICI !!!
+} // ✅ fermeture de la fonction
+
+; // 🔥 AJOUT IMPORTANT (safe parsing)
 
 window.onload = function(){
 
@@ -2518,6 +2521,8 @@ navigator.serviceWorker
 .catch(err => console.log("Erreur SW :", err));
 });
 }
+
+console.log("SCRIPT OK"); // 👈 ICI
 
 </script>
 

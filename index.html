@@ -2177,34 +2177,48 @@ function getMoisActuel(){
   return d.toISOString().slice(0,7); // format YYYY-MM
 }
 
+function formatMois(moisStr){
+
+  const [annee, mois] = moisStr.split("-");
+
+  const date = new Date(annee, mois - 1);
+
+  let str = date.toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric"
+  });
+
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function renderRevenusPage(){
-
-  const mois = getMoisActuel();
-
-  const revenusMois = revenusDetail.filter(r => r.mois === mois);
-
-  const total = revenusMois.reduce((sum, r) => sum + r.montant, 0);
-
-  const el = document.getElementById("revenusPage");
-  if(el) el.innerText = euro(total);
 
   const list = document.getElementById("revenusList");
   if(!list) return;
 
   list.innerHTML = "";
 
-  revenusMois.forEach(r => {
+  let total = 0;
+
+  [...revenusDetail]
+  .sort((a, b) => b.mois.localeCompare(a.mois))
+  .forEach(r => {
+
+    total += r.montant;
+
     const div = document.createElement("div");
     div.className = "depense-row";
 
     div.innerHTML = `
-      <span>${r.nom}</span>
-      <span>${euro(r.montant)}</span>
-    `;
+  <span>${r.nom}</span>
+ <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+`;
 
     list.appendChild(div);
   });
 
+  const el = document.getElementById("revenusPage");
+  if(el) el.innerText = euro(total);
 }
 
 window.onload = function(){

@@ -275,12 +275,12 @@ transition:width 0.5s ease;
   bottom:8px;
   left:0;
 
-  height:44px;
+  height:38px;
   width:60px;
 
   background:rgba(255,255,255,0.08);
 
-  border-radius:22px;
+  border-radius:20px;
 
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px); /* 🔥 iOS fix */
@@ -2581,21 +2581,20 @@ function moveIndicator(index){
   const indicator = document.querySelector(".tab-indicator");
   const tabs = document.querySelectorAll(".tab");
 
-  // 🔒 Sécurités indispensables
   if(!indicator || !tabs.length) return;
   if(index < 0 || index >= tabs.length) return;
 
   const tab = tabs[index];
-  if(!tab) return;
-
   const rect = tab.getBoundingClientRect();
   const parentRect = tab.parentElement.getBoundingClientRect();
 
-  const offset = rect.left - parentRect.left;
+  const width = rect.width * 0.7;
+  const offset = rect.left - parentRect.left + (rect.width - width) / 2;
 
-  indicator.style.width = rect.width + "px";
+  indicator.style.width = width + "px";
   indicator.style.transform = `translateX(${offset}px)`;
 }
+
 window.onload = function(){
 
 const saved = localStorage.getItem("financeData");

@@ -836,7 +836,11 @@ flex:1;
 height:100%;
 min-height:0;
 
-padding-bottom:calc(var(--tabbar-height) + 50px + env(safe-area-inset-bottom));
+padding-bottom:calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+
+#section-sauvegarde .section-scroll{
+  justify-content:center;
+
 
 -webkit-overflow-scrolling:touch;
 }

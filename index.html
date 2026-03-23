@@ -1398,6 +1398,16 @@ hidden>
 
 let swipeStartX = 0;
 
+let armedRow = null;
+
+document.addEventListener("touchstart", (e) => {
+  if(armedRow && !e.target.closest(".depense-row")){
+    armedRow.style.transform = "translateX(0)";
+    armedRow.classList.remove("swiping");
+    armedRow = null;
+  }
+});
+
 let historique =
 JSON.parse(localStorage.getItem("historique")) || [];
 
@@ -1813,7 +1823,7 @@ function endSwipe(e,index){
 
     armedRow = currentRow;
 
-    currentRow.style.transform = "translateX(-80px)";
+    currentRow.style.transform = "translateX(-72px)";
     currentRow.classList.add("swiping");
 
     showToast("👉 Glisse encore pour supprimer");
@@ -1828,8 +1838,6 @@ function endSwipe(e,index){
 }
 
 /* ===== SWIPE REVENUS ===== */
-
-let armedRow = null;
 
 let revenuSwipeStartX = 0;
 let currentRevenuRow = null;

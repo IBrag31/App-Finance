@@ -1206,6 +1206,11 @@ opacity="0.25"
 
     <!-- TOTAL -->
     <div class="card">
+  <div class="depenses-title">Ce mois-ci • <span id="moisActuelLabel"></span></div>
+  <div class="value" id="revenusMois">0 €</div>
+</div>
+
+    <div class="card">
       <div class="depenses-title">Total revenus</div>
       <div class="value" id="revenusPage">0 €</div>
     </div>
@@ -2353,7 +2358,20 @@ div.ontouchend = (e) => endSwipeRevenu(e, r);
 
   const el = document.getElementById("revenusPage");
   if(el) el.innerText = euro(total);
+
+  const label = document.getElementById("moisActuelLabel");
+if(label){
+  label.innerText = formatMois(getMoisActuel());
+
+  const moisActuel = getMoisActuel();
+  const totalMois = getRevenusDuMois(moisActuel);
+
+  const elMois = document.getElementById("revenusMois");
+  if(elMois){
+  elMois.innerText = euro(totalMois);
 }
+
+} // ✅ ICI !!!
 
 window.onload = function(){
 

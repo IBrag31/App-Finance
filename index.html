@@ -388,21 +388,28 @@ filter:invert(1);
 /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-display:none;
-width:100%;
-height:100%;
-}
-
-.section.active{
-display:block;
+  min-width:100%;
+  height:100%;
+  flex-shrink:0;
 }
 
 .sections-container{
-position:relative;
-height:calc(100dvh - 90px - env(safe-area-inset-bottom));
+  position:relative;
+  height:calc(100dvh - 90px - env(safe-area-inset-bottom));
 
-overflow:hidden; /* suffit à lui seul */
+  overflow:hidden;
 }
+
+/* 🔥 NOUVEAU */
+.sections-track{
+  display:flex;
+  width:100%;
+  height:100%;
+  will-change: transform;
+
+  transition:transform 0.4s cubic-bezier(.22,.61,.36,1);
+}
+
 /* ===== APPLE BUDGET UI ===== */
 
 .budget-card{
@@ -1101,6 +1108,8 @@ box-shadow:0 4px 12px rgba(0,0,0,0.4);
 <div class="app-container">
 
 <div class="sections-container">
+    
+    <div class="sections-track" id="sectionsTrack">
 
 <!-- 💰 SECTION BUDGET -->
 <div class="section active" id="section-budget">
@@ -1215,7 +1224,7 @@ opacity="0.25"
 <div class="cards-grid">
 
   <!-- Revenus -->
-  <div class="card-mini" onclick="showSection('revenus')">
+  <div class="card-mini" onclick="showSection('revenus', this)">
     <div class="card-header">
       <span class="title">Revenus</span>
       <span class="arrow">›</span>
@@ -1225,7 +1234,7 @@ opacity="0.25"
   </div>
 
   <!-- Dépenses -->
-<div class="card-mini" onclick="showSection('depenses')">
+<div class="card-mini" onclick="showSection('depenses', this)">
     <div class="card-header">
       <span class="title">Dépenses</span>
       <span class="arrow">›</span>
@@ -1235,7 +1244,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne prévue -->
-  <div class="card-mini" onclick="showSection('epargne')">
+  <div class="card-mini" onclick="showSection('epargne', this)">
     <div class="card-header">
       <span class="title">Épargne prévue</span>
       <span class="arrow">›</span>
@@ -1245,7 +1254,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne actuelle -->
-  <div class="card-mini" onclick="showSection('epargneTotale')">
+  <div class="card-mini" onclick="showSection('epargneTotale', this)">
     <div class="card-header">
       <span class="title">Épargne actuelle</span>
       <span class="arrow">›</span>
@@ -1506,6 +1515,7 @@ hidden>
 </div> <!-- section-scroll -->
 </div> <!-- section-sauvegarde -->
 
+ </div>
 
 </div> <!-- FIN sections-container -->
 
@@ -2285,29 +2295,41 @@ function updateObjectifs(){
         (projetRempli / objectif3) * 100 + "%";
 }
 
+function showSection(name, element){
+
+  const index = sections.indexOf(name);
+
+  if(index === -1){
+    console.warn("Section inconnue :", name);
+    return;
+  }
+
+  goToSection(index);
+
+}
+
 function goToSection(index){
 
   if(index < 0 || index >= sections.length) return;
 
+  currentSectionIndex = index;
+
+  const track = document.getElementById("sectionsTrack");
+
+  // 🔥 SLIDE
+  track.style.transform = `translateX(-${index * 100}%)`;
+
   const name = sections[index];
-
   const section = document.getElementById("section-" + name);
-  if(!section){
-    console.warn("Section DOM introuvable :", name);
-    return;
-  }
 
-  document.querySelectorAll(".section")
-    .forEach(sec => sec.classList.remove("active"));
+  // 🔥 reset scroll
+  const scroll = section.querySelector(".section-scroll");
+  if(scroll) scroll.scrollTop = 0;
 
+  // reset tabs
   document.querySelectorAll(".tab")
     .forEach(tab => tab.classList.remove("active"));
 
-  section.classList.add("active");
-
-  currentSectionIndex = index;
-
-  // 🔥 SYNCHRO INDICATOR + TAB
   const tabMap = {
     budget: 0,
     objectifs: 1,
@@ -2316,17 +2338,14 @@ function goToSection(index){
   };
 
   if(tabMap[name] !== undefined){
-
     const tabs = document.querySelectorAll(".tab");
     const tab = tabs[tabMap[name]];
-
-    if(tab){
-      tab.classList.add("active");
-    }
+    if(tab) tab.classList.add("active");
 
     moveIndicator(tabMap[name]);
   }
 
+  // rendu dynamique
   if(name === "depenses") renderDepensesPage();
   if(name === "revenus") renderRevenusPage();
 }

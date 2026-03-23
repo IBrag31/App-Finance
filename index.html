@@ -963,6 +963,10 @@ margin-bottom:0 !important;
 .page-header-dashboard .page-date{
 margin-top:0;
 }
+
+.depense-row.swiping{
+  background: linear-gradient(145deg,#ef4444,#dc2626);
+}
       
 </style>
 
@@ -1773,37 +1777,59 @@ currentRow = e.currentTarget;
 
 function endSwipe(e,index){
 
-const diff = e.changedTouches[0].clientX - swipeStartX;
+  const diff = e.changedTouches[0].clientX - swipeStartX;
 
-if(diff < -20 && currentRow){
-currentRow.style.transform = "translateX(-40px)";
-currentRow.classList.add("swiping");
-}
+  // 👉 petit swipe = feedback visuel
+  if(diff < -20 && currentRow){
+    currentRow.style.transform = "translateX(-40px)";
+    currentRow.classList.add("swiping");
+  }
 
-if(diff < -120){
+  // 👉 swipe fort
+  if(diff < -100){
 
-// petite vibration (si supportée)
-navigator.vibrate?.(10);
+    // 🔥 1️⃣ SI déjà armé → SUPPRESSION
+    if(armedRow === currentRow){
 
-currentRow.style.transform = "translateX(-100%)";
+      navigator.vibrate?.(10);
 
-setTimeout(()=>{
-supprimerDepense(index);
-showToast("🗑️ Dépense supprimée");
-},200);
+      currentRow.style.transform = "translateX(-100%)";
 
-}
+      setTimeout(()=>{
+        supprimerDepense(index);
+        showToast("🗑️ Dépense supprimée");
+      },200);
 
-else if(currentRow){
+      armedRow = null;
+      return;
+    }
 
-currentRow.style.transform = "translateX(0)";
-currentRow.classList.remove("swiping");
+    // 🔥 2️⃣ SINON → on arme la ligne
+    if(armedRow){
+      // reset ancienne ligne
+      armedRow.style.transform = "translateX(0)";
+      armedRow.classList.remove("swiping");
+    }
 
-}
+    armedRow = currentRow;
 
+    currentRow.style.transform = "translateX(-80px)";
+    currentRow.classList.add("swiping");
+
+    showToast("👉 Glisse encore pour supprimer");
+  }
+
+  // 👉 swipe annulé
+  else if(currentRow){
+    currentRow.style.transform = "translateX(0)";
+    currentRow.classList.remove("swiping");
+    armedRow = null;
+  }
 }
 
 /* ===== SWIPE REVENUS ===== */
+
+let armedRow = null;
 
 let revenuSwipeStartX = 0;
 let currentRevenuRow = null;
@@ -1825,22 +1851,40 @@ function endSwipeRevenu(e){
     currentRevenuRow.classList.add("swiping");
   }
 
-  if(diff < -120){
+  if(diff < -100){
 
-    navigator.vibrate?.(10);
+    if(armedRow === currentRevenuRow){
 
-    currentRevenuRow.style.transform = "translateX(-100%)";
+      navigator.vibrate?.(10);
 
-    setTimeout(()=>{
-      supprimerRevenu(currentRevenu);
-      showToast("🗑️ Revenu supprimé");
-    },200);
+      currentRevenuRow.style.transform = "translateX(-100%)";
 
-  } else if(currentRevenuRow){
+      setTimeout(()=>{
+        supprimerRevenu(currentRevenu);
+        showToast("🗑️ Revenu supprimé");
+      },200);
 
+      armedRow = null;
+      return;
+    }
+
+    if(armedRow){
+      armedRow.style.transform = "translateX(0)";
+      armedRow.classList.remove("swiping");
+    }
+
+    armedRow = currentRevenuRow;
+
+    currentRevenuRow.style.transform = "translateX(-80px)";
+    currentRevenuRow.classList.add("swiping");
+
+    showToast("👉 Glisse encore pour supprimer");
+  }
+
+  else if(currentRevenuRow){
     currentRevenuRow.style.transform = "translateX(0)";
     currentRevenuRow.classList.remove("swiping");
-
+    armedRow = null;
   }
 }
 

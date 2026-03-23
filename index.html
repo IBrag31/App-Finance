@@ -1653,6 +1653,7 @@ depensesDetail.splice(index,1);
 
 saveDepenses();
 renderDepenses();
+renderDepensesPage();
 updateRing();
 
 }
@@ -1744,6 +1745,8 @@ function renderDepensesPage(){
   const fixes = document.getElementById("depensesFixesPage");
   const variables = document.getElementById("depensesVariablesPage");
 
+  if(!fixes || !variables) return;
+
   fixes.innerHTML = "";
   variables.innerHTML = "";
 
@@ -1756,6 +1759,11 @@ function renderDepensesPage(){
 
     const row = document.createElement("div");
     row.className = "depense-row";
+
+    // 🔥 AJOUT IMPORTANT
+    row.onclick = () => modifierDepense(i);
+    row.ontouchstart = (e) => startSwipe(e, i);
+    row.ontouchend = (e) => endSwipe(e, i);
 
     row.innerHTML = `
       <span>${d.nom}</span>

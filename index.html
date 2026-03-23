@@ -968,6 +968,43 @@ margin-top:0;
   background: linear-gradient(145deg,#ef4444,#dc2626);
 }
       
+.especes-container{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-top:14px;
+}
+
+.especes-btn{
+width:44px;
+height:44px;
+border-radius:50%;
+border:none;
+
+font-size:22px;
+font-weight:500;
+color:white;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(255,255,255,0.08);
+
+backdrop-filter:blur(20px);
+
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.15),
+0 8px 20px rgba(0,0,0,0.35);
+
+transition:all 0.15s ease;
+}
+
+.especes-btn:active{
+transform:scale(0.88);
+box-shadow:0 4px 12px rgba(0,0,0,0.4);
+}
+
 </style>
 
 </head>
@@ -1208,6 +1245,20 @@ opacity="0.25"
     <div class="card">
   <div class="depenses-title">Ce mois-ci • <span id="moisActuelLabel"></span></div>
   <div class="value" id="revenusMois">0 €</div>
+</div>
+
+<div class="card">
+  <div class="depenses-title">Espèces</div>
+
+  <div class="especes-container">
+
+    <button class="especes-btn" onclick="retirerEspeces()">−</button>
+
+    <div class="value" id="especesValue">0 €</div>
+
+    <button class="especes-btn" onclick="ajouterEspeces()">+</button>
+
+  </div>
 </div>
 
     <div class="card">
@@ -1466,7 +1517,7 @@ return Math.round(total * 100) / 100;
 function updateRing(){
 
 const mois = getMoisActuel();
-const revenus = getRevenusDuMois(mois);
+const revenus = getRevenusDuMois(mois) + especes;
 const epargne = +document.getElementById("epargneMois").value || 0;
 
 const depenses = calculTotalDepenses();
@@ -2382,6 +2433,45 @@ function renderRevenusPage(){
 
 }
 
+let especes = Number(localStorage.getItem("especes")) || 0;
+
+function renderEspeces(){
+  const el = document.getElementById("especesValue");
+  if(!el) return;
+
+  el.innerText = euro(especes);
+
+  // petite animation visuelle ✨
+  el.style.transform = "scale(1.1)";
+  setTimeout(()=> el.style.transform = "scale(1)", 120);
+}
+
+function initUI(){
+  renderDepenses();
+  renderRevenusPage();
+  renderEspeces();
+}
+
+// ✅ AJOUTER ESPÈCES
+function ajouterEspeces(){
+  especes += 5;
+  saveEspeces();
+}
+
+// ✅ RETIRER ESPÈCES
+function retirerEspeces(){
+  especes -= 5;
+  if(especes < 0) especes = 0;
+  saveEspeces();
+}
+
+// ✅ SAVE
+function saveEspeces(){
+  localStorage.setItem("especes", especes);
+  renderEspeces();
+  updateRing();
+}
+
 window.onload = function(){
 
 const saved = localStorage.getItem("financeData");
@@ -2431,8 +2521,9 @@ afficherHistorique();
 majGraph();
 updateObjectifs();
 
-renderDepenses();
-renderRevenusPage();
+initUI();
+
+renderEspeces();
 
 const dateElement = document.getElementById("todayDate");
 

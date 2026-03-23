@@ -239,23 +239,6 @@ transition:width 0.5s ease;
   animation:bounceTab 0.3s ease;
 }
 
-.tab.active::before{
-  content:"";
-  position:absolute;
-
-  width:42px;
-  height:42px;
-
-  background:rgba(255,255,255,0.08);
-  border-radius:50%;
-
-  z-index:-1;
-
-  box-shadow:
-    0 6px 20px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.15);
-}
-
 .tab.active::after{
   content:"";
   position:absolute;

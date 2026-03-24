@@ -47,7 +47,6 @@ padding:0;
 
 html, body{
 background:#000;
-overflow-x:hidden;
 height:100%;
 position:relative;
 max-width:100%;
@@ -364,6 +363,7 @@ filter:invert(1);
 
 *{
 -webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility;
 }
 
 @keyframes bounceTab{
@@ -697,11 +697,6 @@ padding-bottom:0;
 }
 /* RENDERING */
 
-*{
--webkit-font-smoothing:antialiased;
-text-rendering:optimizeLegibility;
-}
-
 .ring-fixes{
 fill:none;
 stroke:url(#gradientFixes);
@@ -834,7 +829,6 @@ color:#64d2ff;
   padding-left:8px;
   padding-right:8px;
 
-  overflow-x:hidden;
   overflow-y:auto;
 
   flex:1;
@@ -859,7 +853,7 @@ color:#64d2ff;
 .section,
 .section-scroll,
 .app-container{
-overflow-x:hidden;
+	overflow-x:hidden;
 }
 
 .activity-main{
@@ -1103,6 +1097,18 @@ transform:scale(0.88);
 box-shadow:0 4px 12px rgba(0,0,0,0.4);
 }
 
+.hidden{
+  display:none;
+}
+
+.section.overlay{
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:2000;
+  overflow-y:auto;
+}
+
 </style>
 
 </head>
@@ -1231,7 +1237,7 @@ opacity="0.25"
 <div class="cards-grid">
 
   <!-- Revenus -->
-  <div class="card-mini" onclick="showSection('revenus', this)">
+  <div class="card-mini" onclick="openPage('revenus')">
     <div class="card-header">
       <span class="title">Revenus</span>
       <span class="arrow">›</span>
@@ -1241,7 +1247,7 @@ opacity="0.25"
   </div>
 
   <!-- Dépenses -->
-<div class="card-mini" onclick="showSection('depenses', this)">
+<div class="card-mini" onclick="openPage('depenses')">
     <div class="card-header">
       <span class="title">Dépenses</span>
       <span class="arrow">›</span>
@@ -1251,7 +1257,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne prévue -->
-  <div class="card-mini" onclick="showSection('epargne', this)">
+  <div class="card-mini" onclick="openPage('epargne')">
     <div class="card-header">
       <span class="title">Épargne prévue</span>
       <span class="arrow">›</span>
@@ -1261,7 +1267,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne actuelle -->
-  <div class="card-mini" onclick="showSection('epargneTotale', this)">
+  <div class="card-mini" onclick="openPage('epargneTotale')">
     <div class="card-header">
       <span class="title">Épargne actuelle</span>
       <span class="arrow">›</span>
@@ -1272,152 +1278,10 @@ opacity="0.25"
 
 </div>
 
-<!-- 🔥 ANCIEN UI (désactivé)
-<div class="budget-card">...</div>
--->
-
 </div> <!-- FIN section-scroll -->
 </div> <!-- 🔥 AJOUT : fermeture section-budget -->
 
-<div class="section" id="section-depenses">
 
-  <div class="section-scroll">
-
-<div class="page-header page-header-depenses">
-
-  <button class="back-btn" onclick="goToSection(0)">←</button>
-
-  <div class="header-center">
-    <h1>Dépenses</h1>
-    <div class="page-date">Vue détaillée</div>
-  </div>
-
-  <button class="fab fab-add header-add" onclick="ouvrirModal()">+</button>
-
-</div>
-    <!-- TOTAL -->
-    <div class="card">
-      <div class="depenses-title">Total des dépenses</div>
-      <div class="value" id="depensesTotalPage">0 €</div>
-    </div>
-
-    <!-- LISTES -->
-    <div class="card depenses-card">
-
-      <div class="depenses-category">
-        <span>Dépenses fixes</span>
-        <span id="totalFixesPage">0 €</span>
-      </div>
-
-      <div id="depensesFixesPage"></div>
-
-      <div class="depenses-category">
-        <span>Dépenses variables</span>
-        <span id="totalVariablesPage">0 €</span>
-      </div>
-
-      <div id="depensesVariablesPage"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- 💰 SECTION REVENUS -->
-<div class="section" id="section-revenus">
-  <div class="section-scroll">
-
-    <div class="page-header page-header-depenses">
-
-      <button class="back-btn" onclick="goToSection(0)">←</button>
-
-      <div class="header-center">
-        <h1>Revenus</h1>
-        <div class="page-date">Ce mois</div>
-      </div>
-
-      <button class="fab fab-add header-add" onclick="ouvrirModalRevenu()">+</button>
-
-    </div>
-
-    <!-- TOTAL -->
-    <div class="card">
-  <div class="depenses-title">Ce mois-ci • <span id="moisActuelLabel"></span></div>
-  <div class="value" id="revenusMois">0 €</div>
-</div>
-
-<div class="card">
-  <div class="depenses-title">Espèces</div>
-
-  <div class="especes-container">
-
-    <button class="especes-btn" onclick="retirerEspeces()">−</button>
-
-    <div class="value" id="especesValue">0 €</div>
-
-    <button class="especes-btn" onclick="ajouterEspeces()">+</button>
-
-  </div>
-</div>
-
-    <div class="card">
-      <div class="depenses-title">Total revenus</div>
-      <div class="value" id="revenusPage">0 €</div>
-    </div>
-
-    <!-- 🔥 LISTE DES REVENUS (ICI) -->
-    <div class="card">
-      <div class="depenses-title">Détail des revenus</div>
-      <div id="revenusList"></div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- 🎯 SECTION ÉPARGNE PRÉVUE -->
-<div class="section" id="section-epargne">
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <button class="back-btn" onclick="goToSection(0)">←</button>
-
-      <div class="header-center">
-        <h1>Épargne prévue</h1>
-        <div class="page-date">Objectif</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="depenses-title">Objectif mensuel</div>
-      <div class="value" id="epargneMoisPage">0 €</div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- 🏦 SECTION ÉPARGNE ACTUELLE -->
-<div class="section" id="section-epargneTotale">
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <button class="back-btn" onclick="goToSection(0)">←</button>
-
-      <div class="header-center">
-        <h1>Épargne actuelle</h1>
-        <div class="page-date">Total</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="depenses-title">Épargne cumulée</div>
-      <div class="value" id="epargneTotalePage">0 €</div>
-    </div>
-
-  </div>
-</div>
 
 
 <!-- 🎯 SECTION OBJECTIFS -->
@@ -1526,6 +1390,146 @@ opacity="0.25"
 </div> <!-- sections-container -->
 </div> <!-- app-container -->
 
+<div class="section hidden" id="section-depenses">
+
+  <div class="section-scroll">
+
+<div class="page-header page-header-depenses">
+
+  <button class="back-btn" onclick="closePage('depenses')">←</button>
+
+  <div class="header-center">
+    <h1>Dépenses</h1>
+    <div class="page-date">Vue détaillée</div>
+  </div>
+
+  <button class="fab fab-add header-add" onclick="ouvrirModal()">+</button>
+
+</div>
+    <!-- TOTAL -->
+    <div class="card">
+      <div class="depenses-title">Total des dépenses</div>
+      <div class="value" id="depensesTotalPage">0 €</div>
+    </div>
+
+    <!-- LISTES -->
+    <div class="card depenses-card">
+
+      <div class="depenses-category">
+        <span>Dépenses fixes</span>
+        <span id="totalFixesPage">0 €</span>
+      </div>
+
+      <div id="depensesFixesPage"></div>
+
+      <div class="depenses-category">
+        <span>Dépenses variables</span>
+        <span id="totalVariablesPage">0 €</span>
+      </div>
+
+      <div id="depensesVariablesPage"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 💰 SECTION REVENUS -->
+<div class="section hidden" id="section-revenus">
+  <div class="section-scroll">
+
+    <div class="page-header page-header-depenses">
+
+      <button class="back-btn" onclick="closePage('revenus')">←</button>
+
+      <div class="header-center">
+        <h1>Revenus</h1>
+        <div class="page-date">Ce mois</div>
+      </div>
+
+      <button class="fab fab-add header-add" onclick="ouvrirModalRevenu()">+</button>
+
+    </div>
+
+    <!-- TOTAL -->
+    <div class="card">
+  <div class="depenses-title">Ce mois-ci • <span id="moisActuelLabel"></span></div>
+  <div class="value" id="revenusMois">0 €</div>
+</div>
+
+<div class="card">
+  <div class="depenses-title">Espèces</div>
+
+  <div class="especes-container">
+
+    <button class="especes-btn" onclick="retirerEspeces()">−</button>
+
+    <div class="value" id="especesValue">0 €</div>
+
+    <button class="especes-btn" onclick="ajouterEspeces()">+</button>
+
+  </div>
+</div>
+
+    <div class="card">
+      <div class="depenses-title">Total revenus</div>
+      <div class="value" id="revenusPage">0 €</div>
+    </div>
+
+    <!-- 🔥 LISTE DES REVENUS (ICI) -->
+    <div class="card">
+      <div class="depenses-title">Détail des revenus</div>
+      <div id="revenusList"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- 🎯 SECTION ÉPARGNE PRÉVUE -->
+<div class="section hidden" id="section-epargne">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <button class="back-btn" onclick="closePage('epargne')">←</button>
+
+      <div class="header-center">
+        <h1>Épargne prévue</h1>
+        <div class="page-date">Objectif</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="depenses-title">Objectif mensuel</div>
+      <div class="value" id="epargneMoisPage">0 €</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- 🏦 SECTION ÉPARGNE ACTUELLE -->
+<div class="section hidden" id="section-epargneTotale">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <button class="back-btn" onclick="closePage('epargneTotale')">←</button>
+
+      <div class="header-center">
+        <h1>Épargne actuelle</h1>
+        <div class="page-date">Total</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="depenses-title">Épargne cumulée</div>
+      <div class="value" id="epargneTotalePage">0 €</div>
+    </div>
+
+  </div>
+</div>
+
 
 <!-- 🧭 TABBAR EN BAS -->
 
@@ -1591,14 +1595,10 @@ maximumFractionDigits:2
 /* swipe sections */
 
 const sections = [
-"budget",
-"depenses",
-"revenus",
-"epargne",
-"epargneTotale",
-"objectifs",
-"historique",
-"sauvegarde"
+  "budget",
+  "objectifs",
+  "historique",
+  "sauvegarde"
 ];
 
 let currentSectionIndex = 0;
@@ -2326,6 +2326,7 @@ function goToSection(index){
 
   const name = sections[index];
   const section = document.getElementById("section-" + name);
+  if(!section) return;
 
   // 🔥 reset scroll
   const scroll = section.querySelector(".section-scroll");
@@ -2349,10 +2350,6 @@ function goToSection(index){
 
     moveIndicator(tabMap[name]);
   }
-
-  // rendu dynamique
-  if(name === "depenses") renderDepensesPage();
-  if(name === "revenus") renderRevenusPage();
 }
       
 function restaurerDepuisIcloud(){
@@ -2601,10 +2598,25 @@ function moveIndicator(index){
   indicator.style.transform = `translateX(${offset}px) translateY(-50%)`;
 }
 
-window.onload = function(){
-    
-const track = document.getElementById("sectionsTrack");
+function openPage(id){
+  const page = document.getElementById("section-" + id);
+  if(!page) return;
 
+  page.classList.remove("hidden");
+  page.classList.add("overlay");
+}
+
+function closePage(id){
+  const page = document.getElementById("section-" + id);
+  if(!page) return;
+
+  page.classList.add("hidden");
+  page.classList.remove("overlay");
+}
+
+window.onload = function(){
+
+const track = document.getElementById("sectionsTrack");
 track.style.width = (sections.length * 100) + "%";
 
 const saved = localStorage.getItem("financeData");
@@ -2733,6 +2745,8 @@ tabbar.addEventListener("touchmove", (e) => {
   const parentRect = tabbar.getBoundingClientRect();
   const x = touchX - parentRect.left;
 
+  indicator.style.transition = "transform 0.1s linear";
+
   indicator.style.transform =
     `translateX(${x - indicator.offsetWidth / 2}px) translateY(-50%)`;
 
@@ -2757,7 +2771,12 @@ tabbar.addEventListener("touchend", () => {
   const indicator = document.querySelector(".tab-indicator");
   if(!indicator) return;
 
-  const tabToSection = [0, 5, 6, 7];
+  const tabToSection = {
+  0: "budget",
+  1: "objectifs",
+  2: "historique",
+  3: "sauvegarde"
+};
 
   if(currentHoverTab !== null){
 
@@ -2772,11 +2791,11 @@ tabbar.addEventListener("touchend", () => {
 
     // 🔥 convert section → tab
     const sectionToTab = {
-      0: 0,
-      5: 1,
-      6: 2,
-      7: 3
-    };
+  0: 0,
+  1: 1,
+  2: 2,
+  3: 3
+};
 
     moveIndicator(sectionToTab[currentSectionIndex] ?? 0);
   }

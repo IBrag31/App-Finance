@@ -2322,8 +2322,7 @@ function goToSection(index){
   const track = document.getElementById("sectionsTrack");
 
   // 🔥 SLIDE
-  const width = track.parentElement.offsetWidth;
-track.style.transform = `translateX(-${index * width}px)`;
+  track.style.transform = `translateX(-${index * 100}%)`;
 
   const name = sections[index];
   const section = document.getElementById("section-" + name);

@@ -381,6 +381,7 @@ filter:invert(1);
   /* 🔥 FIX */
   height:100dvh;
   overflow:hidden;
+  position:relative;
 }
 
 .sections-container{
@@ -392,8 +393,9 @@ filter:invert(1);
 /* 🔥 NOUVEAU */
 .sections-track{
   display:flex;
-  width:100%;
+  width:calc(100% * 8);
   height:100dvh; /* 🔥 important */
+  transition: transform 0.3s ease;
 }
 
 /* ===== APPLE BUDGET UI ===== */
@@ -833,8 +835,8 @@ overflow-y:auto;
 
 flex:1;
 
-height:100%;
-min-height:0;
+flex:1;
+height:auto;
 
 padding-bottom:calc(var(--tabbar-height) + env(safe-area-inset-bottom));
 

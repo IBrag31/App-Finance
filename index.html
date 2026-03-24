@@ -376,26 +376,28 @@ text-rendering:optimizeLegibility;
 
 .section{
   min-width:100%;
-  width:100%; /* 🔥 AJOUT CRUCIAL */
-  
+  width:100%;
   flex:0 0 100%;
-  flex-shrink:0;
-  height:100dvh;
+
+  height:100%;
+  display:flex; /* 🔥 IMPORTANT */
+  flex-direction:column;
+
   overflow:hidden;
   position:relative;
 }
 
 .sections-container{
   position:relative;
-  height:100dvh; /* 🔥 important */
+  height:100vh; /* 🔥 pas d dvh ici */
   overflow:hidden;
 }
 
-/* 🔥 NOUVEAU */
 .sections-track{
   display:flex;
-  height:100dvh;
+  height:100%;
   width:auto;
+
   transition: transform 0.3s ease;
 
   will-change: transform;
@@ -822,21 +824,18 @@ color:#64d2ff;
 /* SCROLL */
 
 .section-scroll{
+  flex:1;
+  min-height:0; /* 🔥 évite les bugs de scroll */
+
   display:flex;
   flex-direction:column;
   gap:16px;
 
-  padding-left:8px;
-  padding-right:8px;
-
   overflow-y:auto;
-
-  flex:1;
-  min-height:0; /* 🔥 IMPORTANT */
-
-  padding-bottom:calc(var(--tabbar-height) + env(safe-area-inset-bottom));
-
   -webkit-overflow-scrolling:touch;
+
+  /* 🔥 padding propre et cohérent */
+  padding:6px 8px  calc(var(--tabbar-height) + env(safe-area-inset-bottom)) 8px;
 }
 
 #section-sauvegarde .section-scroll{

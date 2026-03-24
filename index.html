@@ -393,7 +393,7 @@ filter:invert(1);
 .sections-track{
   display:flex;
   height:100dvh;
-  width:max-content; /* 🔥 IMPORTANT */
+  width:100%;
   transition: transform 0.3s ease;
 
   will-change: transform;
@@ -2318,7 +2318,8 @@ function goToSection(index){
   const track = document.getElementById("sectionsTrack");
 
   // 🔥 SLIDE
-  track.style.transform = `translateX(-${index * window.innerWidth}px)`;
+  const width = track.parentElement.offsetWidth;
+track.style.transform = `translateX(-${index * width}px)`;
 
   const name = sections[index];
   const section = document.getElementById("section-" + name);

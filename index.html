@@ -832,9 +832,7 @@ color:#64d2ff;
   overflow-y:auto;
 
   flex:1;
-
-  height:100%;
-  min-height:0;
+  min-height:0; /* 🔥 IMPORTANT */
 
   padding-bottom:calc(var(--tabbar-height) + env(safe-area-inset-bottom));
 
@@ -1107,6 +1105,10 @@ box-shadow:0 4px 12px rgba(0,0,0,0.4);
   background:#000;
   z-index:2000;
   overflow-y:auto;
+}
+
+.section-scroll > * {
+  flex-shrink: 0;
 }
 
 </style>

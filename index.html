@@ -1036,16 +1036,20 @@ transform:translateY(-50%) scale(0.92);
 }
 
 .page-header-dashboard{
-display:flex !important;
-flex-direction:column !important;
-align-items:flex-start !important;
-justify-content:flex-start !important;
-
-min-height:auto !important;
-gap:2px;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+text-align:left;
 
 margin-bottom:14px;
 padding-top:8px;
+}
+
+.page-header-dashboard h1,
+.page-header-dashboard .page-date{
+text-align:left;
+width:100%;
 }
 
 .page-header-dashboard h1{
@@ -1493,34 +1497,32 @@ opacity="0.25"
 
     <div class="card">
 
-<h3>💾 Sauvegarde</h3>
+      <h3>💾 Sauvegarde</h3>
 
-<button onclick="sauvegardeAuto()">
-💾 Sauvegarder sur iCloud
-</button>
+      <button onclick="sauvegardeAuto()">
+        💾 Sauvegarder sur iCloud
+      </button>
 
-<button class="restore-btn" onclick="restaurerDepuisIcloud()">
-📥 Restaurer depuis iCloud
-</button>
+      <button class="restore-btn" onclick="restaurerDepuisIcloud()">
+        📥 Restaurer depuis iCloud
+      </button>
 
-<input
-type="file"
-id="fileInput"
-accept=".json"
-onchange="handleImport(event)"
-hidden>
+      <input
+        type="file"
+        id="fileInput"
+        accept=".json"
+        onchange="handleImport(event)"
+        hidden>
 
-</div>
+    </div> <!-- card -->
 
-</div> <!-- card -->
-</div> <!-- section-scroll -->
+  </div> <!-- section-scroll -->
+
 </div> <!-- section-sauvegarde -->
 
- </div>
-
-</div> <!-- FIN sections-container -->
-
-</div> <!-- FIN CONTAINER PRINCIPAL -->
+</div> <!-- sections-track -->
+</div> <!-- sections-container -->
+</div> <!-- app-container -->
 
 
 <!-- 🧭 TABBAR EN BAS -->

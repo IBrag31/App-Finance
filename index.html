@@ -2734,19 +2734,23 @@ tabbar.addEventListener("touchmove", (e) => {
 
   indicator.style.width = "70px";
 
-  tabs.forEach((tab, index) => {
+  const tabToSection = [0, 5, 6, 7]; // 🔥 mapping réel
 
-    const rect = tab.getBoundingClientRect();
+tabs.forEach((tab, index) => {
 
-    if(touchX >= rect.left && touchX <= rect.right){
+  const rect = tab.getBoundingClientRect();
 
-      if(index !== currentSectionIndex){
-        goToSection(index);
-      }
+  if(touchX >= rect.left && touchX <= rect.right){
 
+    const sectionIndex = tabToSection[index];
+
+    if(sectionIndex !== currentSectionIndex){
+      goToSection(sectionIndex);
     }
 
-  });
+  }
+
+});
 
 }, { passive: false });
 

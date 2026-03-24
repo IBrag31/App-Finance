@@ -2711,10 +2711,14 @@ window.addEventListener("resize", () => {
 
 const tabbar = document.querySelector(".tabbar");
 let isDraggingTab = false;
+let currentHoverTab = null;
 
 tabbar.addEventListener("touchstart", () => {
   isDraggingTab = true;
+  currentHoverTab = null; // reset propre
 });
+
+let currentHoverTab = null;
 
 tabbar.addEventListener("touchmove", (e) => {
 
@@ -2724,12 +2728,11 @@ tabbar.addEventListener("touchmove", (e) => {
 
   const touchX = e.touches[0].clientX;
   const tabs = document.querySelectorAll(".tab");
-  
   const indicator = document.querySelector(".tab-indicator");
-  if(!indicator) return;
-  
-  const parentRect = tabbar.getBoundingClientRect();
 
+  if(!indicator) return;
+
+  const parentRect = tabbar.getBoundingClientRect();
   const x = touchX - parentRect.left;
 
   indicator.style.transform =
@@ -2737,23 +2740,15 @@ tabbar.addEventListener("touchmove", (e) => {
 
   indicator.style.width = "70px";
 
-  const tabToSection = [0, 5, 6, 7]; // 🔥 mapping réel
+  tabs.forEach((tab, index) => {
 
-tabs.forEach((tab, index) => {
+    const rect = tab.getBoundingClientRect();
 
-  const rect = tab.getBoundingClientRect();
-
-  if(touchX >= rect.left && touchX <= rect.right){
-
-    const sectionIndex = tabToSection[index];
-
-    if(sectionIndex !== currentSectionIndex){
-      goToSection(sectionIndex);
+    if(touchX >= rect.left && touchX <= rect.right){
+      currentHoverTab = index;
     }
 
-  }
-
-});
+  });
 
 }, { passive: false });
 
@@ -2764,8 +2759,17 @@ tabbar.addEventListener("touchend", () => {
   const indicator = document.querySelector(".tab-indicator");
   if(!indicator) return;
 
+  const tabToSection = [0, 5, 6, 7];
+
+  if(currentHoverTab !== null){
+    const sectionIndex = tabToSection[currentHoverTab];
+    goToSection(sectionIndex);
+  }
+
   indicator.style.width = "";
-  moveIndicator(currentSectionIndex);
+  moveIndicator(currentHoverTab ?? currentSectionIndex);
+
+  currentHoverTab = null;
 
 });
 

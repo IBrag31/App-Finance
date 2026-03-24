@@ -2757,19 +2757,31 @@ tabbar.addEventListener("touchend", () => {
   const indicator = document.querySelector(".tab-indicator");
   if(!indicator) return;
 
- const tabToSection = [0, 5, 6, 7];
+  const tabToSection = [0, 5, 6, 7];
 
-if(currentHoverTab !== null){
-  const sectionIndex = tabToSection[currentHoverTab];
-  goToSection(sectionIndex);
-  moveIndicator(currentHoverTab); // 🔥 utilise l’index du tab
-} else {
-  moveIndicator(currentSectionIndex);
-}
+  if(currentHoverTab !== null){
+
+    const sectionIndex = tabToSection[currentHoverTab];
+
+    goToSection(sectionIndex);
+
+    // 🔥 IMPORTANT
+    moveIndicator(currentHoverTab);
+
+  } else {
+
+    // 🔥 convert section → tab
+    const sectionToTab = {
+      0: 0,
+      5: 1,
+      6: 2,
+      7: 3
+    };
+
+    moveIndicator(sectionToTab[currentSectionIndex] ?? 0);
+  }
 
   indicator.style.width = "";
-  moveIndicator(currentHoverTab ?? currentSectionIndex);
-
   currentHoverTab = null;
 
 });

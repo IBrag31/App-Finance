@@ -377,6 +377,8 @@ filter:invert(1);
 .section{
   min-width:100%;
   width:100%; /* 🔥 AJOUT CRUCIAL */
+  
+  flex:0 0 100%;
   flex-shrink:0;
   height:100dvh;
   overflow:hidden;
@@ -393,7 +395,7 @@ filter:invert(1);
 .sections-track{
   display:flex;
   height:100dvh;
-  width:100%;
+  width:auto;
   transition: transform 0.3s ease;
 
   will-change: transform;
@@ -2603,6 +2605,8 @@ function moveIndicator(index){
 window.onload = function(){
     
 const track = document.getElementById("sectionsTrack");
+
+track.style.width = (sections.length * 100) + "%";
 
 const saved = localStorage.getItem("financeData");
 

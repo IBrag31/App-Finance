@@ -376,9 +376,8 @@ filter:invert(1);
 
 .section{
   min-width:100%;
+  width:100%; /* 🔥 AJOUT CRUCIAL */
   flex-shrink:0;
-
-  /* 🔥 FIX */
   height:100dvh;
   overflow:hidden;
   position:relative;
@@ -394,8 +393,11 @@ filter:invert(1);
 .sections-track{
   display:flex;
   height:100dvh;
-  width:100%;
+  width:max-content; /* 🔥 IMPORTANT */
   transition: transform 0.3s ease;
+
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* ===== APPLE BUDGET UI ===== */
@@ -844,7 +846,8 @@ color:#64d2ff;
 }
 
 #section-sauvegarde .section-scroll{
-  justify-content:center;
+  justify-content:flex-start;
+  gap:20px;
 
 
 -webkit-overflow-scrolling:touch;
@@ -2315,7 +2318,7 @@ function goToSection(index){
   const track = document.getElementById("sectionsTrack");
 
   // 🔥 SLIDE
-  track.style.transform = `translateX(-${index * 100}%)`;
+  track.style.transform = `translateX(-${index * window.innerWidth}px)`;
 
   const name = sections[index];
   const section = document.getElementById("section-" + name);
@@ -2692,6 +2695,10 @@ document.addEventListener("visibilitychange", () => {
 if(document.visibilityState === "hidden"){
 autoSaveDebounced();
 }
+});
+
+window.addEventListener("resize", () => {
+  goToSection(currentSectionIndex);
 });
 
 /* SWIPE SECTIONS SUR TABBAR */

@@ -209,7 +209,7 @@ transition:width 0.5s ease;
   z-index:1000;
 
   /* 🔥 mieux que none */
-  touch-action: pan-y;
+  touch-action: manipulation;
 }
 
 .tab{
@@ -379,7 +379,7 @@ text-rendering:optimizeLegibility;
   width:100%;
   flex:0 0 100%;
 
-  height:100%;
+  height:100dvh;
   min-height:0;
   display:flex; /* 🔥 IMPORTANT */
   flex-direction:column;
@@ -831,6 +831,7 @@ color:#64d2ff;
   display:flex;
   flex-direction:column;
   gap:16px;
+  padding-top: 8px;
 
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
@@ -841,6 +842,7 @@ color:#64d2ff;
 
 #section-sauvegarde .section-scroll{
   justify-content:flex-start;
+  align-items:stretch;
   gap:20px;
 
 
@@ -947,7 +949,8 @@ gap:4px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:12px;
-margin-top:16px;
+margin-top: 12px;
+margin-bottom: 10px;
 }
 
 .card-mini{
@@ -2737,8 +2740,6 @@ tabbar.addEventListener("touchstart", () => {
 
 tabbar.addEventListener("touchmove", (e) => {
 
-  e.preventDefault();
-
   if(!isDraggingTab) return;
 
   const touchX = e.touches[0].clientX;
@@ -2776,31 +2777,16 @@ tabbar.addEventListener("touchend", () => {
   const indicator = document.querySelector(".tab-indicator");
   if(!indicator) return;
 
-  const tabToSection = {
-  0: "budget",
-  1: "objectifs",
-  2: "historique",
-  3: "sauvegarde"
-};
-
   if(currentHoverTab !== null){
 
-    goToSection(currentHoverTab);
+    currentSectionIndex = currentHoverTab;
 
-    // 🔥 IMPORTANT
+    goToSection(currentHoverTab);
     moveIndicator(currentHoverTab);
 
   } else {
 
-    // 🔥 convert section → tab
-    const sectionToTab = {
-  0: 0,
-  1: 1,
-  2: 2,
-  3: 3
-};
-
-    moveIndicator(sectionToTab[currentSectionIndex] ?? 0);
+    moveIndicator(currentSectionIndex);
   }
 
   indicator.style.width = "";

@@ -1508,7 +1508,7 @@ return Math.round(total * 100) / 100;
 function updateRing(){
 
 const mois = getMoisActuel();
-const revenus = getRevenusDuMois(mois);
+const revenus = getRevenusDuMois(mois) + especes;
 const epargne = +document.getElementById("epargneMois").value || 0;
 
 const depenses = calculTotalDepenses();
@@ -2460,6 +2460,7 @@ function retirerEspeces(){
 function saveEspeces(){
   localStorage.setItem("especes", especes);
   renderEspeces();
+  updateRing();
 }
 
 window.onload = function(){

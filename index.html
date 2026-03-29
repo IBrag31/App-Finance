@@ -1807,10 +1807,10 @@ function renderDepensesPage(){
     row.ontouchstart = (e) => startSwipe(e, i);
     row.ontouchend = (e) => endSwipe(e, i);
 
-    row.innerHTML = 
-      <span>${d.nom}</span>
-      <span>${euro(montant)}</span>
-    ;
+    row.innerHTML = `
+  <span>${d.nom}</span>
+  <span>${euro(montant)}</span>
+`;
 
     if(d.type === "fixe"){
       fixes.appendChild(row);
@@ -2058,18 +2058,18 @@ function afficherHistorique(){
     tbody.innerHTML="";
     
     historique.forEach((m,i)=>{
-        tbody.innerHTML += 
-        <tr>
-        <td>${m.mois}</td>
-        <td>${euro(m.depenses)}</td>
-        <td>${euro(m.epargne)}</td>
-        <td>
-        <button onclick="supprimer(${i})"
-        style="background:#ef4444; cursor:pointer; padding:6px 10px; border-radius:8px;">
-        X
-        </button>
-        </td>
-        </tr>;
+        tbody.innerHTML += `
+<tr>
+<td>${m.mois}</td>
+<td>${euro(m.depenses)}</td>
+<td>${euro(m.epargne)}</td>
+<td>
+<button onclick="supprimer(${i})"
+style="background:#ef4444; cursor:pointer; padding:6px 10px; border-radius:8px;">
+X
+</button>
+</td>
+</tr>`;
     });
 }
 
@@ -2396,10 +2396,10 @@ function renderRevenusPage(){
     div.ontouchstart = (e) => startSwipeRevenu(e, r);
     div.ontouchend = (e) => endSwipeRevenu(e, r);
 
-    div.innerHTML = 
-      <span>${r.nom}</span>
-      <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
-    ;
+    div.innerHTML = `
+  <span>${r.nom}</span>
+  <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+`;
 
     list.appendChild(div);
   });

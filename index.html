@@ -1511,8 +1511,8 @@ const revenus = getRevenusDuMois(mois) + especes;
 const epargneInput = document.getElementById("epargneMois");
 const epargneTotaleInput = document.getElementById("epargneTotale");
 
-const epargne = Number(epargneInput.value) || 0;
-const epargneTotaleVal = Number(epargneTotaleInput.value) || 0;
+const epargne = Number(epargneInput?.value) || 0;
+const epargneTotaleVal = Number(epargneTotaleInput?.value) || 0;
 
 const depenses = calculTotalDepenses();
 
@@ -1522,8 +1522,13 @@ let fixes = 0;
 let variables = 0;
 
 depensesDetail.forEach(d=>{
-const montant = Number(d.montant) || 0;
-d.type === "fixe" ? fixes += montant : variables += montant;
+  const montant = Number(d.montant) || 0;
+
+  if(d.type === "fixe"){
+    fixes += montant;
+  } else {
+    variables += montant;
+  }
 });
 
 // clamp
@@ -1534,9 +1539,18 @@ const variablesPercent = budgetMax > 0 ? clamp(variables / budgetMax) : 0;
 const totalPercent = budgetMax > 0 ? clamp(depenses / budgetMax) : 0;
 
 // rings
-document.querySelector(".ring-fixes")?.style.strokeDashoffset = 326 - fixesPercent * 326;
-document.querySelector(".ring-variables")?.style.strokeDashoffset = 264 - variablesPercent * 264;
-document.querySelector(".ring-total")?.style.strokeDashoffset = 188 - totalPercent * 188;
+const fixesRing = document.querySelector(".ring-fixes");
+const variablesRing = document.querySelector(".ring-variables");
+const totalRing = document.querySelector(".ring-total");
+
+if(fixesRing)
+  fixesRing.style.strokeDashoffset = 326 - fixesPercent * 326;
+
+if(variablesRing)
+  variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
+
+if(totalRing)
+  totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
 
 // UI
 document.getElementById("revenusPage")?.innerText = euro(revenus);

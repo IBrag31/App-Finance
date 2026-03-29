@@ -307,6 +307,7 @@ filter:invert(1);
 display:none;
 width:100%;
 height:100%;
+overflow:hidden; /* 🔥 important */
 }
 
 .section.active{
@@ -314,10 +315,8 @@ display:block;
 }
 
 .sections-container{
-position:relative;
-height:calc(100dvh - 90px - env(safe-area-inset-bottom));
-
-overflow:hidden; /* suffit à lui seul */
+overflow:hidden;
+touch-action:pan-y;
 }
 /* ===== APPLE BUDGET UI ===== */
 
@@ -753,6 +752,9 @@ padding-right:8px;
 
 overflow-x:hidden;
 overflow-y:auto;
+
+/* 🔥 AJOUT IMPORTANT */
+justify-content:flex-start;
 
 flex:1;
 min-height:0;
@@ -1483,10 +1485,6 @@ maximumFractionDigits:2
 
 const sections = [
 "budget",
-"depenses",
-"revenus",
-"epargne",
-"epargneTotale",
 "objectifs",
 "historique",
 "sauvegarde"
@@ -1509,7 +1507,12 @@ function updateRing(){
 
 const mois = getMoisActuel();
 const revenus = getRevenusDuMois(mois) + especes;
-const epargne = +document.getElementById("epargneMois").value || 0;
+
+const epargneInput = document.getElementById("epargneMois");
+const epargneTotaleInput = document.getElementById("epargneTotale");
+
+const epargne = Number(epargneInput.value) || 0;
+const epargneTotaleVal = Number(epargneTotaleInput.value) || 0;
 
 const depenses = calculTotalDepenses();
 
@@ -1519,80 +1522,39 @@ let fixes = 0;
 let variables = 0;
 
 depensesDetail.forEach(d=>{
-
 const montant = Number(d.montant) || 0;
-
-if(d.type === "fixe"){
-fixes += montant;
-}else{
-variables += montant;
-}
-
+d.type === "fixe" ? fixes += montant : variables += montant;
 });
 
-const revenusVal = revenus;
-const epargneMoisVal = document.getElementById("epargneMois").value;
-const epargneTotaleVal = document.getElementById("epargneTotale").value;
+// clamp
+const clamp = v => Math.min(Math.max(v,0),1);
 
-const rPage = document.getElementById("revenusPage");
-const ePage = document.getElementById("epargneMoisPage");
-const etPage = document.getElementById("epargneTotalePage");
+const fixesPercent = budgetMax > 0 ? clamp(fixes / budgetMax) : 0;
+const variablesPercent = budgetMax > 0 ? clamp(variables / budgetMax) : 0;
+const totalPercent = budgetMax > 0 ? clamp(depenses / budgetMax) : 0;
 
-if(rPage) rPage.innerText = euro(revenusVal);
-if(ePage) ePage.innerText = euro(epargneMoisVal);
-if(etPage) etPage.innerText = euro(epargneTotaleVal);
+// rings
+document.querySelector(".ring-fixes")?.style.strokeDashoffset = 326 - fixesPercent * 326;
+document.querySelector(".ring-variables")?.style.strokeDashoffset = 264 - variablesPercent * 264;
+document.querySelector(".ring-total")?.style.strokeDashoffset = 188 - totalPercent * 188;
 
-let percent = budgetMax > 0 ? depenses / budgetMax : 0;
-if(percent > 1) percent = 1;
-
-const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
-const variablesPercent = budgetMax > 0 ? variables / budgetMax : 0;
-const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
-
-const fixesRing = document.querySelector(".ring-fixes");
-const variablesRing = document.querySelector(".ring-variables");
-const totalRing = document.querySelector(".ring-total");
-
-if(fixesRing)
-fixesRing.style.strokeDashoffset = 326 - fixesPercent * 326;
-
-if(variablesRing)
-variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
-
-if(totalRing)
-totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
-
-const rDep = document.getElementById("resumeDepenses");
-const rRest = document.getElementById("resumeRestant");
-const rEpar = document.getElementById("resumeEpargne");
+// UI
+document.getElementById("revenusPage")?.innerText = euro(revenus);
+document.getElementById("epargneMoisPage")?.innerText = euro(epargne);
+document.getElementById("epargneTotalePage")?.innerText = euro(epargneTotaleVal);
 
 const restant = Math.max(budgetMax - depenses,0);
 
-const epargneActuelle =
-Number(document.getElementById("epargneTotale").value) || 0;
+document.getElementById("resumeDepenses")?.innerText = euro(depenses);
+document.getElementById("resumeRestant")?.innerText = euro(restant);
+document.getElementById("resumeEpargne")?.innerText =
+  euro(epargneTotaleVal) + " / " + euro(OBJECTIF_EPARGNE);
 
-if(rDep) rDep.innerText = euro(depenses);
-
-if(rRest) rRest.innerText = euro(restant);
-
-if(rEpar){
-rEpar.innerText =
-euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
-}
-
-// 🔥 NOUVEAU DASHBOARD (cartes Apple)
-
-const depensesVal = calculTotalDepenses();
-
-const r1 = document.getElementById("revenusDisplay");
-const r2 = document.getElementById("depensesDisplay");
-const r3 = document.getElementById("epargneMoisDisplay");
-const r4 = document.getElementById("epargneTotaleDisplay");
-
-if(r1) r1.innerText = euro(revenusVal);
-if(r2) r2.innerText = euro(depensesVal);
-if(r3) r3.innerText = euro(epargneMoisVal);
-if(r4) r4.innerText = euro(epargneTotaleVal);
+// dashboard
+document.getElementById("revenusDisplay")?.innerText = euro(revenus);
+document.getElementById("depensesDisplay")?.innerText = euro(depenses);
+document.getElementById("epargneMoisDisplay")?.innerText = euro(epargne);
+document.getElementById("epargneTotaleDisplay")?.innerText = euro(epargneTotaleVal);
 
 }
 

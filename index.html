@@ -1552,24 +1552,39 @@ if(variablesRing)
 if(totalRing)
   totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
 
-// UI
-document.getElementById("revenusPage")?.innerText = euro(revenus);
-document.getElementById("epargneMoisPage")?.innerText = euro(epargne);
-document.getElementById("epargneTotalePage")?.innerText = euro(epargneTotaleVal);
+const revenusPage = document.getElementById("revenusPage");
+if(revenusPage) revenusPage.innerText = euro(revenus);
+
+const epargnePage = document.getElementById("epargneMoisPage");
+if(epargnePage) epargnePage.innerText = euro(epargne);
+
+const epargneTotalePage = document.getElementById("epargneTotalePage");
+if(epargneTotalePage) epargneTotalePage.innerText = euro(epargneTotaleVal);
 
 const restant = Math.max(budgetMax - depenses,0);
 
-document.getElementById("resumeDepenses")?.innerText = euro(depenses);
-document.getElementById("resumeRestant")?.innerText = euro(restant);
-document.getElementById("resumeEpargne")?.innerText =
-  euro(epargneTotaleVal) + " / " + euro(OBJECTIF_EPARGNE);
+const rDep = document.getElementById("resumeDepenses");
+if(rDep) rDep.innerText = euro(depenses);
 
-// dashboard
-document.getElementById("revenusDisplay")?.innerText = euro(revenus);
-document.getElementById("depensesDisplay")?.innerText = euro(depenses);
-document.getElementById("epargneMoisDisplay")?.innerText = euro(epargne);
-document.getElementById("epargneTotaleDisplay")?.innerText = euro(epargneTotaleVal);
+const rRest = document.getElementById("resumeRestant");
+if(rRest) rRest.innerText = euro(restant);
 
+const rEpar = document.getElementById("resumeEpargne");
+if(rEpar){
+  rEpar.innerText = euro(epargneTotaleVal) + " / " + euro(OBJECTIF_EPARGNE);
+}
+
+const r1 = document.getElementById("revenusDisplay");
+if(r1) r1.innerText = euro(revenus);
+
+const r2 = document.getElementById("depensesDisplay");
+if(r2) r2.innerText = euro(depenses);
+
+const r3 = document.getElementById("epargneMoisDisplay");
+if(r3) r3.innerText = euro(epargne);
+
+const r4 = document.getElementById("epargneTotaleDisplay");
+if(r4) r4.innerText = euro(epargneTotaleVal);
 }
 
 function update(){

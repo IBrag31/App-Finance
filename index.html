@@ -1737,83 +1737,83 @@ let openedRow = null;
 
 function renderDepenses(){
 
-const fixes = document.getElementById("depensesFixes");
-const variables = document.getElementById("depensesVariables");
+  const fixes = document.getElementById("depensesFixes");
+  const variables = document.getElementById("depensesVariables");
 
-if(!fixes || !variables) return;
+  if(!fixes || !variables) return;
 
-let totalFixes = 0;
-let totalVariables = 0;
+  fixes.innerHTML = "";
+  variables.innerHTML = "";
 
-fixes.innerHTML = "";
-variables.innerHTML = "";
+  depensesDetail.forEach((d,i)=>{
 
-depensesDetail.forEach((d,i)=>{
+    const montant = Number(d.montant) || 0;
 
-  const montant = Number(d.montant) || 0;
+    const wrapper = document.createElement("div");
+    wrapper.className = "depense-wrapper";
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "depense-wrapper";
+    const actions = document.createElement("div");
+    actions.className = "depense-actions";
 
-  const actions = document.createElement("div");
-  actions.className = "depense-actions";
+    actions.innerHTML = `
+      <button class="edit-btn">✏️</button>
+      <button class="delete-btn">🗑</button>
+    `;
 
-  actions.innerHTML = `
-    <button class="edit-btn">✏️</button>
-    <button class="delete-btn">🗑</button>
-  `;
+    const row = document.createElement("div");
+    row.className = "depense-row";
 
-  const row = document.createElement("div");
-  row.className = "depense-row";
+    row.innerHTML = `
+      <span>${d.nom}</span>
+      <span>${euro(montant)}</span>
+    `;
 
-  row.innerHTML = `
-    <span>${d.nom}</span>
-    <span>${euro(montant)}</span>
-  `;
+    wrapper.appendChild(actions);
+    wrapper.appendChild(row);
 
-  wrapper.appendChild(actions);
-  wrapper.appendChild(row);
+    actions.querySelector(".edit-btn").onclick = () => modifierDepense(i);
 
-  actions.querySelector(".edit-btn").onclick = () => modifierDepense(i);
+    actions.querySelector(".delete-btn").onclick = () => {
+      supprimerDepense(i);
+      showToast("🗑️ Dépense supprimée");
+    };
 
-  actions.querySelector(".delete-btn").onclick = () => {
-    supprimerDepense(i);
-    showToast("🗑️ Dépense supprimée");
-  };
+    let startX = 0;
 
-  let startX = 0;
+    row.addEventListener("touchstart", e => {
 
-  row.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-  });
+      if(openedRow && openedRow !== row){
+        openedRow.style.transform = "translateX(0)";
+        openedRow = null;
+      }
 
-  row.addEventListener("touchmove", e => {
-    const diff = e.touches[0].clientX - startX;
+      startX = e.touches[0].clientX;
 
-    if(diff < 0){
-      row.style.transform = `translateX(${Math.max(diff, -120)}px)`;
-    }
-  });
+    });
 
-  row.addEventListener("touchend", e => {
-    const diff = e.changedTouches[0].clientX - startX;
+    row.addEventListener("touchend", e => {
 
-    if(diff < -60){
-      row.style.transform = "translateX(-120px)";
+      const diff = e.changedTouches[0].clientX - startX;
+
+      if(diff < -60){
+        row.style.transform = "translateX(-120px)";
+        openedRow = row;
+      } else {
+        row.style.transform = "translateX(0)";
+        if(openedRow === row){
+          openedRow = null;
+        }
+      }
+
+    });
+
+    if(d.type === "fixe"){
+      fixes.appendChild(wrapper);
     } else {
-      row.style.transform = "translateX(0)";
+      variables.appendChild(wrapper);
     }
-  });
 
-  if(d.type === "fixe"){
-    fixes.appendChild(wrapper);
-    totalFixes += montant;
-  } else {
-    variables.appendChild(wrapper);
-    totalVariables += montant;
-  }
-
-});
+  }); // ✅ fermeture propre
 
 }
 
@@ -1943,46 +1943,30 @@ function endSwipeRevenu(e){
 
   const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
 
-  if(diff < -20 && currentRevenuRow){
-    currentRevenuRow.style.transform = "translateX(-40px)";
-    currentRevenuRow.classList.add("swiping");
+  if(!currentRevenuRow) return;
+
+  // swipe léger → juste visuel
+  if(diff < -40){
+    currentRevenuRow.style.transform = "translateX(-60px)";
   }
 
+  // swipe fort → suppression directe
   if(diff < -100){
 
-    if(armedRow === currentRevenuRow){
+    navigator.vibrate?.(10);
 
-      navigator.vibrate?.(10);
+    currentRevenuRow.style.transform = "translateX(-100%)";
 
-      currentRevenuRow.style.transform = "translateX(-100%)";
+    setTimeout(()=>{
+      supprimerRevenu(currentRevenu);
+      showToast("🗑️ Revenu supprimé");
+    },200);
 
-      setTimeout(()=>{
-        supprimerRevenu(currentRevenu);
-        showToast("🗑️ Revenu supprimé");
-      },200);
-
-      armedRow = null;
-      return;
-    }
-
-    if(armedRow){
-      armedRow.style.transform = "translateX(0)";
-      armedRow.classList.remove("swiping");
-    }
-
-    armedRow = currentRevenuRow;
-
-    currentRevenuRow.style.transform = "translateX(-80px)";
-    currentRevenuRow.classList.add("swiping");
-
-    showToast("👉 Glisse encore pour supprimer");
+    return;
   }
 
-  else if(currentRevenuRow){
-    currentRevenuRow.style.transform = "translateX(0)";
-    currentRevenuRow.classList.remove("swiping");
-    armedRow = null;
-  }
+  // retour position normale
+  currentRevenuRow.style.transform = "translateX(0)";
 }
 
 function supprimerRevenu(revenu){
@@ -2126,7 +2110,7 @@ showToast("✔ Sauvegardé");
 const data = {
 historique: historique,
 depensesDetail: depensesDetail,
-revenus: document.getElementById("revenus").value,
+revenus: revenusDetail,
 epargneMois: document.getElementById("epargneMois").value
 };
 
@@ -2145,57 +2129,51 @@ document.body.removeChild(a);
 
 function handleImport(e){
 
-const file = e.target.files[0];
+  const file = e.target.files[0];
+  if(!file){
+    alert("Aucun fichier détecté");
+    return;
+  }
 
-if(!file){
-alert("Aucun fichier détecté");
-return;
-}
+  const reader = new FileReader();
 
-const reader = new FileReader();
+  reader.onload = function(event){
 
-reader.onload = function(event){
+    let data;
 
-let data;
+    try{
+      data = JSON.parse(event.target.result);
+    } catch(error){
+      alert("Fichier invalide ❌");
+      return;
+    }
 
-try{
-data = JSON.parse(event.target.result);
-} catch(error){
-alert("Fichier invalide ❌");
-return;
-}
+    historique = data.historique || [];
+    depensesDetail = data.depensesDetail || [];
 
-historique = data.historique || [];
-depensesDetail = data.depensesDetail || [];
+    // ✅ FIX IMPORTANT
+    revenusDetail = data.revenus || [];
+    localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
 
-if(data.revenus){
-document.getElementById("revenus").value = data.revenus;
-localStorage.setItem("revenus", data.revenus);
-}
+    if(data.epargneMois){
+      document.getElementById("epargneMois").value = data.epargneMois;
+      localStorage.setItem("epargneMois", data.epargneMois);
+    }
 
-if(data.epargneMois){
-document.getElementById("epargneMois").value = data.epargneMois;
-localStorage.setItem("epargneMois", data.epargneMois);
-}
+    saveDepenses();
+    renderDepenses();
+    renderRevenusPage();
+    updateRing();
 
-saveDepenses();
-renderDepenses();
-updateRing();
+    autoSaveDebounced();
+    afficherHistorique();
+    majGraph();
+    updateObjectifs();
 
-autoSaveDebounced();
+    showToast("📥 Données restaurées");
+  };
 
-afficherHistorique();
-majGraph();
-updateObjectifs();
-
-setTimeout(() => {
-showToast("📥 Données restaurées");
-}, 50);
-
-};
-
-reader.readAsText(file, "UTF-8");
-
+  reader.readAsText(file, "UTF-8");
 }
 
 function updateObjectifs(){
@@ -2299,7 +2277,7 @@ autoSaveTimeout = setTimeout(() => {
 const data = {
 historique,
 depensesDetail,
-revenus: document.getElementById("revenus").value,
+revenus: revenusDetail,
 epargneMois: document.getElementById("epargneMois").value,
 epargneTotale: document.getElementById("epargneTotale").value
 };
@@ -2426,37 +2404,43 @@ function renderRevenusPage(){
 
     const div = document.createElement("div");
     div.className = "depense-row";
-    
-    div.onclick = () => modifierRevenu(r);
-    div.ontouchstart = (e) => startSwipeRevenu(e, r);
-    div.ontouchend = (e) => endSwipeRevenu(e, r);
+
+    let moved = false;
+
+    div.ontouchstart = (e) => {
+      moved = false;
+      startSwipeRevenu(e, r);
+    };
+
+    div.ontouchmove = () => {
+      moved = true;
+    };
+
+    div.ontouchend = (e) => {
+      endSwipeRevenu(e);
+
+      if(!moved){
+        modifierRevenu(r);
+      }
+    };
 
     div.innerHTML = `
-  <span>${r.nom}</span>
-  <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
-`;
+      <span>${r.nom}</span>
+      <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+    `;
 
     list.appendChild(div);
   });
 
-  // total global
-  const el = document.getElementById("revenusPage");
-  if(el) el.innerText = euro(total);
+  document.getElementById("revenusPage").innerText = euro(total);
 
-  // 🔥 PARTIE SÉPARÉE (plus propre)
   const label = document.getElementById("moisActuelLabel");
   if(label){
     label.innerText = formatMois(getMoisActuel());
   }
 
-  const moisActuel = getMoisActuel();
-  const totalMois = getRevenusDuMois(moisActuel);
-
-  const elMois = document.getElementById("revenusMois");
-  if(elMois){
-    elMois.innerText = euro(totalMois);
-  }
-
+  const totalMois = getRevenusDuMois(getMoisActuel());
+  document.getElementById("revenusMois").innerText = euro(totalMois);
 }
 
 let especes = Number(localStorage.getItem("especes")) || 0;
@@ -2509,8 +2493,10 @@ const data = JSON.parse(saved);
 historique = data.historique || [];
 depensesDetail = data.depensesDetail || [];
 
-if(data.revenus)
-document.getElementById("revenus").value = data.revenus;
+if(data.revenus){
+  revenusDetail = data.revenus;
+  localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
+}
 
 if(data.epargneMois)
 document.getElementById("epargneMois").value = data.epargneMois;

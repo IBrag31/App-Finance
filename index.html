@@ -1879,7 +1879,7 @@ function renderDepensesPage(){
 
 });
 
-    row.addEventListener("touchend", e => {
+   row.addEventListener("touchend", e => {
 
   const diff = e.changedTouches[0].clientX - startX;
 
@@ -1895,14 +1895,6 @@ function renderDepensesPage(){
   }
 
 });
-
-        if(openedRow === row){
-          openedRow = null;
-        }
-      }
-
-    });
-
     // 🔥 ASSEMBLAGE
     wrapper.appendChild(actions);
     wrapper.appendChild(row);

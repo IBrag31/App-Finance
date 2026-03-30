@@ -310,10 +310,6 @@ overflow:hidden; /* 🔥 important */
 display:block;
 }
 
-.sections-container{
-overflow:hidden;
-touch-action:pan-y;
-}
 /* ===== APPLE BUDGET UI ===== */
 
 .budget-card{
@@ -417,10 +413,6 @@ border-radius:14px;
 
 transition:transform .18s ease, background .18s ease;
 will-change:transform;
-}
-
-.depense-row.swiping{
-background:#ef4444;
 }
 
 .depense-row span{
@@ -960,10 +952,6 @@ margin-bottom:0 !important;
 .page-header-dashboard .page-date{
 margin-top:0;
 }
-
-.depense-row.swiping{
-  background: linear-gradient(145deg,#ef4444,#dc2626);
-}
       
 .especes-container{
 display:flex;
@@ -1000,6 +988,44 @@ transition:all 0.15s ease;
 .especes-btn:active{
 transform:scale(0.88);
 box-shadow:0 4px 12px rgba(0,0,0,0.4);
+}
+
+.depense-wrapper{
+  position:relative;
+  overflow:hidden;
+  border-radius:14px;
+  margin-bottom:10px;
+}
+
+.depense-actions{
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+  display:flex;
+}
+
+.depense-actions button{
+  width:60px;
+  border:none;
+  color:white;
+  font-size:18px;
+}
+
+.edit-btn{
+  background:#3b82f6;
+}
+
+.delete-btn{
+  background:#ef4444;
+}
+
+.depense-row{
+  position:relative;
+  z-index:2;
+  background:rgba(255,255,255,0.04);
+
+  transition:transform .25s cubic-bezier(.22,.61,.36,1);
 }
 
 </style>
@@ -1441,18 +1467,6 @@ hidden>
 
 <script>
 
-let swipeStartX = 0;
-
-let armedRow = null;
-
-document.addEventListener("touchstart", (e) => {
-  if(armedRow && !e.target.closest(".depense-row")){
-    armedRow.style.transform = "translateX(0)";
-    armedRow.classList.remove("swiping");
-    armedRow = null;
-  }
-});
-
 let historique =
 JSON.parse(localStorage.getItem("historique")) || [];
 
@@ -1527,7 +1541,7 @@ depensesDetail.forEach(d=>{
 });
 
 // clamp
-const clamp = v => Math.min(Math.max(v,0),1);
+const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
 
 const fixesPercent = budgetMax > 0 ? clamp(fixes / budgetMax) : 0;
 const variablesPercent = budgetMax > 0 ? clamp(variables / budgetMax) : 0;
@@ -1681,8 +1695,6 @@ renderDepenses();
 renderDepensesPage();
 updateRing();
 
-armedRow = null;
-
 }
 
 function modifierDepense(index){
@@ -1721,6 +1733,8 @@ showToast("✏️ Dépense modifiée");
 
 }
 
+let openedRow = null;
+
 function renderDepenses(){
 
 const fixes = document.getElementById("depensesFixes");
@@ -1736,33 +1750,69 @@ variables.innerHTML = "";
 
 depensesDetail.forEach((d,i)=>{
 
-const montant = Number(d.montant) || 0;
+  const montant = Number(d.montant) || 0;
 
-const row = document.createElement("div");
-row.className = "depense-row";
+  const wrapper = document.createElement("div");
+  wrapper.className = "depense-wrapper";
 
-row.onclick = () => modifierDepense(i);
-row.ontouchstart = (e) => startSwipe(e, i);
-row.ontouchend = (e) => endSwipe(e, i);
+  const actions = document.createElement("div");
+  actions.className = "depense-actions";
 
-// nom de la dépense
-const spanNom = document.createElement("span");
-spanNom.textContent = d.nom;
+  actions.innerHTML = `
+    <button class="edit-btn">✏️</button>
+    <button class="delete-btn">🗑</button>
+  `;
 
-// montant
-const spanMontant = document.createElement("span");
-spanMontant.textContent = euro(montant);
+  const row = document.createElement("div");
+  row.className = "depense-row";
 
-row.appendChild(spanNom);
-row.appendChild(spanMontant);
+  row.innerHTML = `
+    <span>${d.nom}</span>
+    <span>${euro(montant)}</span>
+  `;
 
-if(d.type === "fixe"){
-fixes.appendChild(row);
-totalFixes += montant;
-}else{
-variables.appendChild(row);
-totalVariables += montant;
-}
+  wrapper.appendChild(actions);
+  wrapper.appendChild(row);
+
+  actions.querySelector(".edit-btn").onclick = () => modifierDepense(i);
+
+  actions.querySelector(".delete-btn").onclick = () => {
+    supprimerDepense(i);
+    showToast("🗑️ Dépense supprimée");
+  };
+
+  let startX = 0;
+
+  row.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+
+  row.addEventListener("touchmove", e => {
+    const diff = e.touches[0].clientX - startX;
+
+    if(diff < 0){
+      row.style.transform = `translateX(${Math.max(diff, -120)}px)`;
+    }
+  });
+
+  row.addEventListener("touchend", e => {
+    const diff = e.changedTouches[0].clientX - startX;
+
+    if(diff < -60){
+      row.style.transform = "translateX(-120px)";
+    } else {
+      row.style.transform = "translateX(0)";
+    }
+  });
+
+  if(d.type === "fixe"){
+    fixes.appendChild(wrapper);
+    totalFixes += montant;
+  } else {
+    variables.appendChild(wrapper);
+    totalVariables += montant;
+  }
+
 });
 
 }
@@ -1784,96 +1834,99 @@ function renderDepensesPage(){
 
     const montant = Number(d.montant) || 0;
 
+    // 🔥 WRAPPER (important)
+    const wrapper = document.createElement("div");
+    wrapper.className = "depense-wrapper";
+
+    // 🔥 ACTIONS (boutons)
+    const actions = document.createElement("div");
+    actions.className = "depense-actions";
+
+    actions.innerHTML = `
+      <button class="edit-btn">✏️</button>
+      <button class="delete-btn">🗑</button>
+    `;
+
+    // 🔥 LIGNE
     const row = document.createElement("div");
     row.className = "depense-row";
 
-    // 🔥 AJOUT IMPORTANT
-    row.onclick = () => modifierDepense(i);
-    row.ontouchstart = (e) => startSwipe(e, i);
-    row.ontouchend = (e) => endSwipe(e, i);
-
     row.innerHTML = `
-  <span>${d.nom}</span>
-  <span>${euro(montant)}</span>
-`;
+      <span>${d.nom}</span>
+      <span>${euro(montant)}</span>
+    `;
 
+    // 👉 ACTIONS
+    actions.querySelector(".edit-btn").onclick = () => modifierDepense(i);
+
+    actions.querySelector(".delete-btn").onclick = () => {
+      supprimerDepense(i);
+      showToast("🗑️ Dépense supprimée");
+    };
+
+    // 👉 SWIPE
+    let startX = 0;
+
+   row.addEventListener("touchstart", e => {
+
+  // 🔥 ferme une autre ligne si déjà ouverte
+  if(openedRow && openedRow !== row){
+    openedRow.style.transform = "translateX(0)";
+    openedRow = null;
+  }
+
+  startX = e.touches[0].clientX;
+
+});
+
+    row.addEventListener("touchend", e => {
+
+  const diff = e.changedTouches[0].clientX - startX;
+
+  if(diff < -60){
+    row.style.transform = "translateX(-120px)";
+    openedRow = row;
+  } else {
+    row.style.transform = "translateX(0)";
+
+    if(openedRow === row){
+      openedRow = null;
+    }
+  }
+
+});
+
+        row.style.transform = "translateX(0)";
+
+        if(openedRow === row){
+          openedRow = null;
+        }
+      }
+
+    });
+
+    // 🔥 ASSEMBLAGE
+    wrapper.appendChild(actions);
+    wrapper.appendChild(row);
+
+    // 🔥 AJOUT + TOTALS
     if(d.type === "fixe"){
-      fixes.appendChild(row);
+      fixes.appendChild(wrapper);
       totalFixes += montant;
     } else {
-      variables.appendChild(row);
+      variables.appendChild(wrapper);
       totalVariables += montant;
     }
 
   });
 
+  // 🔥 MAJ AFFICHAGE
   document.getElementById("totalFixesPage").innerText = euro(totalFixes);
   document.getElementById("totalVariablesPage").innerText = euro(totalVariables);
 
   const total = totalFixes + totalVariables;
   document.getElementById("depensesTotalPage").innerText = euro(total);
-}
-
-let currentRow = null;
-
-function startSwipe(e,index){
-
-swipeStartX = e.touches[0].clientX;
-currentRow = e.currentTarget;
-
-}
-
-function endSwipe(e,index){
-
-  const diff = e.changedTouches[0].clientX - swipeStartX;
-
-  // 👉 petit swipe = feedback visuel
-  if(diff < -20 && currentRow){
-    currentRow.style.transform = "translateX(-40px)";
-    currentRow.classList.add("swiping");
-  }
-
-  // 👉 swipe fort
-  if(diff < -100){
-
-    // 🔥 1️⃣ SI déjà armé → SUPPRESSION
-    if(armedRow === currentRow){
-
-      navigator.vibrate?.(10);
-
-      currentRow.style.transform = "translateX(-100%)";
-
-      setTimeout(()=>{
-        supprimerDepense(index);
-        showToast("🗑️ Dépense supprimée");
-      },200);
-
-      armedRow = null;
-      return;
-    }
-
-    // 🔥 2️⃣ SINON → on arme la ligne
-    if(armedRow){
-      // reset ancienne ligne
-      armedRow.style.transform = "translateX(0)";
-      armedRow.classList.remove("swiping");
-    }
-
-    armedRow = currentRow;
-
-    currentRow.style.transform = "translateX(-72px)";
-    currentRow.classList.add("swiping");
-
-    showToast("👉 Glisse encore pour supprimer");
-  }
-
-  // 👉 swipe annulé
-  else if(currentRow){
-    currentRow.style.transform = "translateX(0)";
-    currentRow.classList.remove("swiping");
-    armedRow = null;
-  }
-}
+}	
 
 /* ===== SWIPE REVENUS ===== */
 
@@ -2194,8 +2247,6 @@ function showSection(name, element){
   if(element) element.classList.add("active");
 
   currentSectionIndex = sections.indexOf(name);
-}
-
 }
       
 function restaurerDepuisIcloud(){
@@ -2543,35 +2594,6 @@ if(document.visibilityState === "hidden"){
 autoSaveDebounced();
 }
 });
-
-/* SWIPE SECTIONS SUR TABBAR */
-
-const tabbar = document.querySelector(".tabbar");
-let tabStartX = 0;
-
-if(tabbar){
-
-tabbar.addEventListener("touchstart",(e)=>{
-tabStartX = e.touches[0].clientX;
-});
-
-tabbar.addEventListener("touchend",(e)=>{
-
-const diff = e.changedTouches[0].clientX - tabStartX;
-
-if(Math.abs(diff) < 50) return;
-
-if(diff < 0){
-goToSection(currentSectionIndex + 1);
-}
-
-if(diff > 0){
-goToSection(currentSectionIndex - 1);
-}
-
-});
-
-}
 
 // Animation splash
 setTimeout(() => {

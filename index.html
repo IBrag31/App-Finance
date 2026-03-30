@@ -2389,7 +2389,14 @@ function renderRevenusPage(){
   let total = 0;
 
   [...revenusDetail]
-  .sort((a, b) => b.mois.localeCompare(a.mois))
+
+  // ✅ tri sécurisé
+  .sort((a, b) => {
+    const moisA = a.mois || "";
+    const moisB = b.mois || "";
+    return moisB.localeCompare(moisA);
+  })
+
   .forEach((r) => {
 
     total += r.montant;
@@ -2418,7 +2425,7 @@ function renderRevenusPage(){
 
     div.innerHTML = `
       <span>${r.nom}</span>
-      <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+      <span>${formatMois(r.mois || getMoisActuel())} • ${euro(r.montant)}</span>
     `;
 
     list.appendChild(div);

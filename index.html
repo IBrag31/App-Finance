@@ -39,6 +39,13 @@ input{
 background
  
 </head>
+
+ <script src="storage.js"></script>
+<script src="depenses.js"></script>
+<script src="revenus.js"></script>
+<script src="historique.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
  
 <body>
 
@@ -496,8 +503,6 @@ document.addEventListener("touchstart", (e) => {
   }
 });
 
-let historique =
-JSON.parse(localStorage.getItem("historique")) || [];
 
 let historyChart;
 let autoSaveTimeout;

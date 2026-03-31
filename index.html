@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 <head>
 
@@ -41,12 +41,9 @@ margin:0;
 padding:0;
 }
 
-:root{
-  --tabbar-height: 70px;
-}
-
 html, body{
 background:#000;
+overflow-x:hidden;
 height:100%;
 position:relative;
 max-width:100%;
@@ -58,7 +55,6 @@ color:white;
 
 margin:0;
 padding:0;
-padding-bottom: 90px;
 
 /* 🔥 important */
 overflow-x:hidden;
@@ -180,113 +176,52 @@ transition:width 0.5s ease;
 /* TABBAR */
 
 .tabbar{
-  position:fixed;
-  overflow:hidden;
-  left:50%;
-  transform:translateX(-50%);
+position:fixed;
+left:12px;
+right:12px;
+bottom:calc(8px + env(safe-area-inset-bottom));
 
-  bottom:calc(12px + env(safe-area-inset-bottom));
+height:64px;
 
-  width:92%;
-  max-width:420px;
-  height:70px;
+display:flex;
+justify-content:space-around;
+align-items:center;
 
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
+background:#1c1c1e;
+backdrop-filter:blur(30px);
+-webkit-backdrop-filter:blur(30px);
 
-  padding:6px;
+border:1px solid rgba(255,255,255,0.08);
+border-radius:20px;
 
-  background:rgba(28,28,30,0.75);
-  backdrop-filter:blur(30px);
+box-shadow:0 8px 25px rgba(0,0,0,0.25);
 
-  border-radius:28px;
-  border:1px solid rgba(255,255,255,0.06);
-
-  box-shadow:
-    0 20px 40px rgba(0,0,0,0.6),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-
-  z-index:1000;
-
-  /* 🔥 mieux que none */
-  touch-action: manipulation;
+z-index:1000;
+touch-action:manipulation;
 }
 
 .tab{
-  flex:1;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-
-  font-size:20px;
-
-  opacity:0.4;
-
-  transition:all 0.25s ease;
-
-  position:relative;
-  z-index:1;
-  transform: translateY(2px); /* descend légèrement le contenu */
+flex:1;
+text-align:center;
+font-size:18px;
+opacity:0.5;
+transition:0.2s ease;
+padding-top:6px;
+cursor:pointer;
+user-select:none;
 }
 
 .tab span{
-  font-size:11px;
-  margin-top:2px;
-  opacity:0.6;
+display:block;
+font-size:11px;
+margin-top:4px;
 }
 
 .tab.active{
-  opacity:1;
-  transform: translateY(-2px); /* léger lift */
-  animation:bounceTab 0.3s ease;
+opacity:1;
+transform:translateY(-2px);
 }
 
-.tab.active::after{
-  content:"";
-  position:absolute;
-
-  bottom:-6px;
-
-  width:20px;
-  height:4px;
-
-  border-radius:4px;
-
-  background:#0a84ff;
-}
-
-.tab-indicator{
-  position:absolute;
-  top:50%; /* ✅ centrage vertical */
-  left:0;
-
-  height:50px;
-  width:60px;
-
-  background:rgba(255,255,255,0.08);
-  border-radius:20px;
-
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-
-  will-change: transform, width;
-
-  transition:
-    transform 0.25s cubic-bezier(.22,.61,.36,1),
-    width 0.2s ease;
-
-  z-index:0;
-
-  box-shadow:
-    0 6px 20px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.15);
-
-  /* ✅ base GPU */
-  transform: translateZ(0);
-}
 /* TOAST */
 
 #toast{
@@ -364,48 +299,26 @@ filter:invert(1);
 
 *{
 -webkit-font-smoothing:antialiased;
-text-rendering:optimizeLegibility;
-}
-
-@keyframes bounceTab{
-  0%{ transform:translateY(-2px) scale(1); }
-  40%{ transform:translateY(-2px) scale(1.2); }
-  100%{ transform:translateY(-2px) scale(1); }
 }
 
 /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-  min-width:100%;
-  width:100%;
-  flex:0 0 100%;
+display:none;
+width:100%;
+height:100%;
+}
 
-  height:100dvh;
-  min-height:0;
-  display:flex; /* 🔥 IMPORTANT */
-  flex-direction:column;
-
-  overflow:hidden;
-  position:relative;
+.section.active{
+display:block;
 }
 
 .sections-container{
-  position:relative;
-  height:100%; /* ✅ FIX iOS moderne */
-  overflow:hidden;
+position:relative;
+height:calc(100dvh - 90px - env(safe-area-inset-bottom));
+
+overflow:hidden; /* suffit à lui seul */
 }
-
-.sections-track{
-  display:flex;
-  height:100%;
-  width:auto;
-
-  transition: transform 0.3s ease;
-
-  will-change: transform;
-  transform: translateZ(0);
-}
-
 /* ===== APPLE BUDGET UI ===== */
 
 .budget-card{
@@ -697,9 +610,14 @@ padding-left:0px;
 padding-right:0px;
 
 padding-top:env(safe-area-inset-top);
-padding-bottom:0;
+padding-bottom:calc(90px + env(safe-area-inset-bottom));
 }
 /* RENDERING */
+
+*{
+-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility;
+}
 
 .ring-fixes{
 fill:none;
@@ -826,27 +744,20 @@ color:#64d2ff;
 /* SCROLL */
 
 .section-scroll{
-  flex:1;
-  min-height:0; /* 🔥 évite les bugs de scroll */
+display:flex;
+flex-direction:column;
+gap:16px;
 
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  padding-top: 8px;
+padding-left:8px;
+padding-right:8px;
 
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
+overflow-x:hidden;
+overflow-y:auto;
 
-  /* 🔥 padding propre et cohérent */
-  padding:6px 8px  calc(var(--tabbar-height) + env(safe-area-inset-bottom)) 8px;
-}
+flex:1;
+min-height:0;
 
-#section-sauvegarde .section-scroll{
-  justify-content:flex-start;
-  align-items:stretch;
-  padding-bottom: 20px;
-  gap:20px;
-
+padding-bottom:120px;
 
 -webkit-overflow-scrolling:touch;
 }
@@ -855,7 +766,7 @@ color:#64d2ff;
 .section,
 .section-scroll,
 .app-container{
-	overflow-x:hidden;
+overflow-x:hidden;
 }
 
 .activity-main{
@@ -898,14 +809,13 @@ line-height:1.2;
 
 .page-header{
 position:relative;
-padding-left:40px;
-padding-top: calc(8px + env(safe-area-inset-top));
 
 display:flex;
 align-items:center;
 justify-content:center;
 
 margin-bottom:14px;
+padding-top:8px;
 
 min-height:50px;
 }
@@ -951,8 +861,7 @@ gap:4px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:12px;
-margin-top: 12px;
-margin-bottom: 10px;
+margin-top:16px;
 }
 
 .card-mini{
@@ -1013,7 +922,7 @@ opacity:0.3;
 
 .back-btn{
 position:absolute;
-left:8px;
+left:0;
 top:50%;
 transform:translateY(-50%);
 
@@ -1035,20 +944,16 @@ transform:translateY(-50%) scale(0.92);
 }
 
 .page-header-dashboard{
-display:flex;
-flex-direction:column;
-align-items:flex-start;
-justify-content:flex-start;
-text-align:left;
+display:flex !important;
+flex-direction:column !important;
+align-items:flex-start !important;
+justify-content:flex-start !important;
+
+min-height:auto !important;
+gap:2px;
 
 margin-bottom:14px;
 padding-top:8px;
-}
-
-.page-header-dashboard h1,
-.page-header-dashboard .page-date{
-text-align:left;
-width:100%;
 }
 
 .page-header-dashboard h1{
@@ -1100,25 +1005,6 @@ transform:scale(0.88);
 box-shadow:0 4px 12px rgba(0,0,0,0.4);
 }
 
-.hidden{
-  display:none;
-}
-
-.section.overlay{
-  backdrop-filter: blur(20px);
-  position:fixed;
-  inset:0;
-  background:#000;
-  z-index:2000;
-  overflow-y:hidden;
-
-  padding-top: 0;
-}
-
-.section-scroll > * {
-  flex-shrink: 0;
-}
-
 </style>
 
 </head>
@@ -1131,8 +1017,6 @@ box-shadow:0 4px 12px rgba(0,0,0,0.4);
 <div class="app-container">
 
 <div class="sections-container">
-    
-    <div class="sections-track" id="sectionsTrack">
 
 <!-- 💰 SECTION BUDGET -->
 <div class="section active" id="section-budget">
@@ -1247,7 +1131,7 @@ opacity="0.25"
 <div class="cards-grid">
 
   <!-- Revenus -->
-  <div class="card-mini" onclick="openPage('revenus')">
+  <div class="card-mini" onclick="showSection('revenus')">
     <div class="card-header">
       <span class="title">Revenus</span>
       <span class="arrow">›</span>
@@ -1257,7 +1141,7 @@ opacity="0.25"
   </div>
 
   <!-- Dépenses -->
-<div class="card-mini" onclick="openPage('depenses')">
+<div class="card-mini" onclick="showSection('depenses')">
     <div class="card-header">
       <span class="title">Dépenses</span>
       <span class="arrow">›</span>
@@ -1267,7 +1151,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne prévue -->
-  <div class="card-mini" onclick="openPage('epargne')">
+  <div class="card-mini" onclick="showSection('epargne')">
     <div class="card-header">
       <span class="title">Épargne prévue</span>
       <span class="arrow">›</span>
@@ -1277,7 +1161,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne actuelle -->
-  <div class="card-mini" onclick="openPage('epargneTotale')">
+  <div class="card-mini" onclick="showSection('epargneTotale')">
     <div class="card-header">
       <span class="title">Épargne actuelle</span>
       <span class="arrow">›</span>
@@ -1288,125 +1172,20 @@ opacity="0.25"
 
 </div>
 
+<!-- 🔥 ANCIEN UI (désactivé)
+<div class="budget-card">...</div>
+-->
+
 </div> <!-- FIN section-scroll -->
 </div> <!-- 🔥 AJOUT : fermeture section-budget -->
 
-
-
-
-<!-- 🎯 SECTION OBJECTIFS -->
-<div class="section" id="section-objectifs">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-      <h3>🎯 Objectifs</h3>
-
-      <div class="objectif">
-        <p>Fonds de sécurité (6000€)</p>
-        <div class="progress">
-          <div id="bar1" class="progress-bar"></div>
-        </div>
-      </div>
-
-      <div class="objectif">
-        <p>Vacances (1500€)</p>
-        <div class="progress">
-          <div id="bar2" class="progress-bar"></div>
-        </div>
-      </div>
-
-      <div class="objectif">
-        <p>Projet perso (3000€)</p>
-        <div class="progress">
-          <div id="bar3" class="progress-bar"></div>
-        </div>
-      </div>
-
-    </div> <!-- card -->
-
-  </div> <!-- section-scroll -->
-
-</div> <!-- section-objectifs -->
-
-
-<!-- 📅 SECTION HISTORIQUE -->
-<div class="section" id="section-historique">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>📅 Historique</h3>
-
-<label>Choisir un mois</label>
-<input type="month" id="moisSelect">
-
-<button onclick="ajouterMois()">Ajouter ce mois</button>
-
-<table id="historiqueTable">
-<thead>
-<tr>
-<th>Mois</th>
-<th>Dépenses</th>
-<th>Épargne</th>
-<th>❌</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-
-<canvas id="historyChart" height="180"></canvas>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-historique -->
-
-
-<!-- ⚙️ SECTION SAUVEGARDE -->
-<div class="section" id="section-sauvegarde">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-      <h3>💾 Sauvegarde</h3>
-
-      <button onclick="sauvegardeAuto()">
-        💾 Sauvegarder sur iCloud
-      </button>
-
-      <button class="restore-btn" onclick="restaurerDepuisIcloud()">
-        📥 Restaurer depuis iCloud
-      </button>
-
-      <input
-        type="file"
-        id="fileInput"
-        accept=".json"
-        onchange="handleImport(event)"
-        hidden>
-
-    </div> <!-- card -->
-
-  </div> <!-- section-scroll -->
-
-</div> <!-- section-sauvegarde -->
-
-</div> <!-- sections-track -->
-</div> <!-- sections-container -->
-</div> <!-- app-container -->
-
-<div class="section hidden" id="section-depenses">
+<div class="section" id="section-depenses">
 
   <div class="section-scroll">
 
 <div class="page-header page-header-depenses">
 
-  <button class="back-btn" onclick="closePage('depenses')">←</button>
+  <button class="back-btn" onclick="goToSection(0)">←</button>
 
   <div class="header-center">
     <h1>Dépenses</h1>
@@ -1446,12 +1225,12 @@ opacity="0.25"
 </div>
 
 <!-- 💰 SECTION REVENUS -->
-<div class="section hidden" id="section-revenus">
+<div class="section" id="section-revenus">
   <div class="section-scroll">
 
     <div class="page-header page-header-depenses">
 
-      <button class="back-btn" onclick="closePage('revenus')">←</button>
+      <button class="back-btn" onclick="goToSection(0)">←</button>
 
       <div class="header-center">
         <h1>Revenus</h1>
@@ -1498,11 +1277,11 @@ opacity="0.25"
 
 
 <!-- 🎯 SECTION ÉPARGNE PRÉVUE -->
-<div class="section hidden" id="section-epargne">
+<div class="section" id="section-epargne">
   <div class="section-scroll">
 
     <div class="page-header">
-      <button class="back-btn" onclick="closePage('epargne')">←</button>
+      <button class="back-btn" onclick="goToSection(0)">←</button>
 
       <div class="header-center">
         <h1>Épargne prévue</h1>
@@ -1520,11 +1299,11 @@ opacity="0.25"
 
 
 <!-- 🏦 SECTION ÉPARGNE ACTUELLE -->
-<div class="section hidden" id="section-epargneTotale">
+<div class="section" id="section-epargneTotale">
   <div class="section-scroll">
 
     <div class="page-header">
-      <button class="back-btn" onclick="closePage('epargneTotale')">←</button>
+      <button class="back-btn" onclick="goToSection(0)">←</button>
 
       <div class="header-center">
         <h1>Épargne actuelle</h1>
@@ -1541,11 +1320,117 @@ opacity="0.25"
 </div>
 
 
+<!-- 🎯 SECTION OBJECTIFS -->
+<div class="section" id="section-objectifs">
+
+  <div class="section-scroll">
+
+    <div class="card">
+
+<h3>🎯 Objectifs</h3>
+
+<div class="objectif">
+<p>Fonds de sécurité (6000€)</p>
+<div class="progress">
+<div id="bar1" class="progress-bar"></div>
+</div>
+</div>
+
+<div class="objectif">
+<p>Vacances (1500€)</p>
+<div class="progress">
+<div id="bar2" class="progress-bar"></div>
+</div>
+</div>
+
+<div class="objectif">
+<p>Projet perso (3000€)</p>
+<div class="progress">
+<div id="bar3" class="progress-bar"></div>
+</div>
+</div>
+
+</div>
+
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-objectifs -->
+
+
+<!-- 📅 SECTION HISTORIQUE -->
+<div class="section" id="section-historique">
+
+  <div class="section-scroll">
+
+    <div class="card">
+
+<h3>📅 Historique</h3>
+
+<label>Choisir un mois</label>
+<input type="month" id="moisSelect">
+
+<button onclick="ajouterMois()">Ajouter ce mois</button>
+
+<table id="historiqueTable">
+<thead>
+<tr>
+<th>Mois</th>
+<th>Dépenses</th>
+<th>Épargne</th>
+<th>❌</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<canvas id="historyChart" height="180"></canvas>
+
+</div>
+
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-historique -->
+
+
+<!-- ⚙️ SECTION SAUVEGARDE -->
+<div class="section" id="section-sauvegarde">
+
+  <div class="section-scroll">
+
+    <div class="card">
+
+<h3>💾 Sauvegarde</h3>
+
+<button onclick="sauvegardeAuto()">
+💾 Sauvegarder sur iCloud
+</button>
+
+<button class="restore-btn" onclick="restaurerDepuisIcloud()">
+📥 Restaurer depuis iCloud
+</button>
+
+<input
+type="file"
+id="fileInput"
+accept=".json"
+onchange="handleImport(event)"
+hidden>
+
+</div>
+
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-sauvegarde -->
+
+
+</div> <!-- FIN sections-container -->
+
+</div> <!-- FIN CONTAINER PRINCIPAL -->
+
+
 <!-- 🧭 TABBAR EN BAS -->
 
 <div class="tabbar">
-    
-    <div class="tab-indicator"></div>
 
 <div class="tab active" onclick="showSection('budget', this)">
 📊<span>Résumé</span>
@@ -1605,10 +1490,14 @@ maximumFractionDigits:2
 /* swipe sections */
 
 const sections = [
-  "budget",
-  "objectifs",
-  "historique",
-  "sauvegarde"
+"budget",
+"depenses",
+"revenus",
+"epargne",
+"epargneTotale",
+"objectifs",
+"historique",
+"sauvegarde"
 ];
 
 let currentSectionIndex = 0;
@@ -2312,54 +2201,27 @@ function updateObjectifs(){
 
 function showSection(name, element){
 
-  const index = sections.indexOf(name);
+    document.querySelectorAll(".section")
+        .forEach(sec => sec.classList.remove("active"));
 
-  if(index === -1){
-    console.warn("Section inconnue :", name);
-    return;
-  }
+    document.querySelectorAll(".tab")
+        .forEach(tab => tab.classList.remove("active"));
 
-  goToSection(index);
+    const section = document.getElementById("section-" + name);
+    if(section) section.classList.add("active");
 
-}
+    if(element) element.classList.add("active");
 
-function goToSection(index){
+    currentSectionIndex = sections.indexOf(name);
 
-  if(index < 0 || index >= sections.length) return;
+    if(name === "depenses"){
+        renderDepensesPage();
+    }
 
-  currentSectionIndex = index;
+    if(name === "revenus"){
+        renderRevenusPage();
+    }
 
-  const track = document.getElementById("sectionsTrack");
-
-  // 🔥 SLIDE
-  track.style.transform = `translateX(-${index * 100}%)`;
-
-  const name = sections[index];
-  const section = document.getElementById("section-" + name);
-  if(!section) return;
-
-  // 🔥 reset scroll
-  const scroll = section.querySelector(".section-scroll");
-  if(scroll) scroll.scrollTop = 0;
-
-  // reset tabs
-  document.querySelectorAll(".tab")
-    .forEach(tab => tab.classList.remove("active"));
-
-  const tabMap = {
-    budget: 0,
-    objectifs: 1,
-    historique: 2,
-    sauvegarde: 3
-  };
-
-  if(tabMap[name] !== undefined){
-    const tabs = document.querySelectorAll(".tab");
-    const tab = tabs[tabMap[name]];
-    if(tab) tab.classList.add("active");
-
-    moveIndicator(tabMap[name]);
-  }
 }
       
 function restaurerDepuisIcloud(){
@@ -2428,6 +2290,27 @@ localStorage.setItem("financeBackup", JSON.stringify(data));
 console.log("💾 autosave");
 
 }, 300);
+}
+
+function goToSection(index){
+
+if(index < 0 || index >= sections.length) return;
+
+document.querySelectorAll(".section")
+.forEach(sec => sec.classList.remove("active"));
+
+document.querySelectorAll(".tab")
+.forEach(tab => tab.classList.remove("active"));
+
+document
+.getElementById("section-" + sections[index])
+.classList.add("active");
+
+document.querySelectorAll(".tab")[index]
+.classList.add("active");
+
+currentSectionIndex = index;
+
 }
 
 function ouvrirModalRevenu(){
@@ -2586,48 +2469,10 @@ function retirerEspeces(){
 function saveEspeces(){
   localStorage.setItem("especes", especes);
   renderEspeces();
-  updateRing();
-}
-
-function moveIndicator(index){
-
-  const indicator = document.querySelector(".tab-indicator");
-  const tabs = document.querySelectorAll(".tab");
-
-  if(!indicator || !tabs.length) return;
-  if(index < 0 || index >= tabs.length) return;
-
-  const tab = tabs[index];
-  const rect = tab.getBoundingClientRect();
-  const parentRect = tab.parentElement.getBoundingClientRect();
-
-  const width = rect.width * 0.8;
-  const offset = rect.left - parentRect.left + (rect.width - width) / 2;
-
-  indicator.style.width = width + "px";
-  indicator.style.transform = `translateX(${offset}px) translateY(-50%)`;
-}
-
-function openPage(id){
-  const page = document.getElementById("section-" + id);
-  if(!page) return;
-
-  page.classList.remove("hidden");
-  page.classList.add("overlay");
-}
-
-function closePage(id){
-  const page = document.getElementById("section-" + id);
-  if(!page) return;
-
-  page.classList.add("hidden");
-  page.classList.remove("overlay");
+  updateRing(); // 🔥 important
 }
 
 window.onload = function(){
-
-const track = document.getElementById("sectionsTrack");
-track.style.width = (sections.length * 100) + "%";
 
 const saved = localStorage.getItem("financeData");
 
@@ -2677,12 +2522,7 @@ majGraph();
 updateObjectifs();
 
 initUI();
-
 renderEspeces();
-
-requestAnimationFrame(()=>{
-  moveIndicator(0);
-});
 
 const dateElement = document.getElementById("todayDate");
 
@@ -2725,81 +2565,34 @@ autoSaveDebounced();
 }
 });
 
-window.addEventListener("resize", () => {
-  goToSection(currentSectionIndex);
-});
-
 /* SWIPE SECTIONS SUR TABBAR */
 
 const tabbar = document.querySelector(".tabbar");
-let isDraggingTab = false;
-let currentHoverTab = null;
+let tabStartX = 0;
 
-tabbar.addEventListener("touchstart", () => {
-  isDraggingTab = true;
-  currentHoverTab = null; // reset propre
+if(tabbar){
+
+tabbar.addEventListener("touchstart",(e)=>{
+tabStartX = e.touches[0].clientX;
 });
 
-tabbar.addEventListener("touchmove", (e) => {
+tabbar.addEventListener("touchend",(e)=>{
 
-  if(!isDraggingTab) return;
+const diff = e.changedTouches[0].clientX - tabStartX;
 
-  const touchX = e.touches[0].clientX;
-  const tabs = document.querySelectorAll(".tab");
-  const indicator = document.querySelector(".tab-indicator");
+if(Math.abs(diff) < 50) return;
 
-  if(!indicator) return;
+if(diff < 0){
+goToSection(currentSectionIndex + 1);
+}
 
-  const parentRect = tabbar.getBoundingClientRect();
-  const x = touchX - parentRect.left;
-
-  indicator.style.transition = "transform 0.1s linear";
-
-  indicator.style.transform =
-    `translateX(${x - indicator.offsetWidth / 2}px) translateY(-50%)`;
-
-  indicator.style.width = "70px";
-
-  tabs.forEach((tab, index) => {
-
-    const rect = tab.getBoundingClientRect();
-
-    if(touchX >= rect.left && touchX <= rect.right){
-      currentHoverTab = index;
-    }
-
-  });
-
-}, { passive: false });
-
-tabbar.addEventListener("touchend", () => {
-
-  isDraggingTab = false;
-
-  const indicator = document.querySelector(".tab-indicator");
-  if(!indicator) return;
-
-  if(currentHoverTab !== null){
-
-    currentSectionIndex = currentHoverTab;
-
-    goToSection(currentHoverTab);
-    moveIndicator(currentHoverTab);
-
-  } else {
-
-    moveIndicator(currentSectionIndex);
-  }
-
-  indicator.style.width = "";
-  currentHoverTab = null;
+if(diff > 0){
+goToSection(currentSectionIndex - 1);
+}
 
 });
 
-// ✅ DOIT ÊTRE À PART
-tabbar.addEventListener("touchcancel", () => {
-  isDraggingTab = false;
-});
+}
 
 // Animation splash
 setTimeout(() => {

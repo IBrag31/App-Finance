@@ -1124,7 +1124,6 @@ opacity="0.25"
 </div>
 
 <!-- 🔥 INPUTS CACHÉS (IMPORTANT) -->
-<input type="hidden" id="revenus" value="2000">
 <input type="hidden" id="epargneMois" value="300">
 <input type="hidden" id="epargneTotale" value="0">
 
@@ -1457,6 +1456,7 @@ hidden>
 let swipeStartX = 0;
 
 let armedRow = null;
+let armedRevenuRow = null;
 
 document.addEventListener("touchstart", (e) => {
   if(armedRow && !e.target.closest(".depense-row")){
@@ -1516,8 +1516,8 @@ function updateRing(){
 
 const mois = getMoisActuel();
 const revenus = getRevenusDuMois(mois) + especes;
-const epargne = +document.getElementById("epargneMois").value || 0;
 
+const epargne = +document.getElementById("epargneMois").value || 0;
 const depenses = calculTotalDepenses();
 
 const budgetMax = Math.max(revenus - epargne,0);
@@ -1526,97 +1526,61 @@ let fixes = 0;
 let variables = 0;
 
 depensesDetail.forEach(d=>{
-
 const montant = Number(d.montant) || 0;
-
-if(d.type === "fixe"){
-fixes += montant;
-}else{
-variables += montant;
-}
-
+if(d.type === "fixe") fixes += montant;
+else variables += montant;
 });
 
-const revenusVal = revenus;
-const epargneMoisVal = document.getElementById("epargneMois").value;
-const epargneTotaleVal = document.getElementById("epargneTotale").value;
+// UI
+document.getElementById("revenusPage")?.innerText = euro(revenus);
+document.getElementById("epargneMoisPage")?.innerText = euro(epargne);
+document.getElementById("epargneTotalePage")?.innerText =
+euro(getEpargneTotale());
 
-const rPage = document.getElementById("revenusPage");
-const ePage = document.getElementById("epargneMoisPage");
-const etPage = document.getElementById("epargneTotalePage");
-
-if(rPage) rPage.innerText = euro(revenusVal);
-if(ePage) ePage.innerText = euro(epargneMoisVal);
-if(etPage) etPage.innerText = euro(epargneTotaleVal);
-
-let percent = budgetMax > 0 ? depenses / budgetMax : 0;
-if(percent > 1) percent = 1;
-
+// RINGS
 const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
 const variablesPercent = budgetMax > 0 ? variables / budgetMax : 0;
 const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
 
-const fixesRing = document.querySelector(".ring-fixes");
-const variablesRing = document.querySelector(".ring-variables");
-const totalRing = document.querySelector(".ring-total");
+document.querySelector(".ring-fixes")?.style
+.setProperty("stroke-dashoffset", 326 - fixesPercent * 326);
 
-if(fixesRing)
-fixesRing.style.strokeDashoffset = 326 - fixesPercent * 326;
+document.querySelector(".ring-variables")?.style
+.setProperty("stroke-dashoffset", 264 - variablesPercent * 264);
 
-if(variablesRing)
-variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
+document.querySelector(".ring-total")?.style
+.setProperty("stroke-dashoffset", 188 - totalPercent * 188);
 
-if(totalRing)
-totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
-
-const rDep = document.getElementById("resumeDepenses");
-const rRest = document.getElementById("resumeRestant");
-const rEpar = document.getElementById("resumeEpargne");
+// résumé
+document.getElementById("resumeDepenses")?.innerText = euro(depenses);
 
 const restant = Math.max(budgetMax - depenses,0);
+document.getElementById("resumeRestant")?.innerText = euro(restant);
 
-const epargneActuelle =
-Number(document.getElementById("epargneTotale").value) || 0;
+document.getElementById("resumeEpargne")?.innerText =
+euro(getEpargneTotale()) + " / " + euro(OBJECTIF_EPARGNE);
 
-if(rDep) rDep.innerText = euro(depenses);
-
-if(rRest) rRest.innerText = euro(restant);
-
-if(rEpar){
-rEpar.innerText =
-euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
-}
-
-// 🔥 NOUVEAU DASHBOARD (cartes Apple)
-
-const depensesVal = calculTotalDepenses();
-
-const r1 = document.getElementById("revenusDisplay");
-const r2 = document.getElementById("depensesDisplay");
-const r3 = document.getElementById("epargneMoisDisplay");
-const r4 = document.getElementById("epargneTotaleDisplay");
-
-if(r1) r1.innerText = euro(revenusVal);
-if(r2) r2.innerText = euro(depensesVal);
-if(r3) r3.innerText = euro(epargneMoisVal);
-if(r4) r4.innerText = euro(epargneTotaleVal);
+// dashboard
+document.getElementById("revenusDisplay")?.innerText = euro(revenus);
+document.getElementById("depensesDisplay")?.innerText = euro(depenses);
+document.getElementById("epargneMoisDisplay")?.innerText = euro(epargne);
+document.getElementById("epargneTotaleDisplay")?.innerText =
+euro(getEpargneTotale());
 
 }
 
 function update(){
 
-const revenus = Number(document.getElementById("revenus").value) || 0;
 const epargne = Number(document.getElementById("epargneMois").value) || 0;
 const epargneTotale = Number(document.getElementById("epargneTotale").value) || 0;
 
-localStorage.setItem("revenus", revenus);
 localStorage.setItem("epargneMois", epargne);
 localStorage.setItem("epargneTotale", epargneTotale);
 
 updateRing();
 
 }
-
+ 
 function ouvrirModal(){
 
 const modal = document.getElementById("depenseModal");
@@ -1625,10 +1589,9 @@ if(modal) modal.classList.add("show");
 }
 
 function fermerModal(){
-
 const modal = document.getElementById("depenseModal");
-if(modal) modal.classList.remove("show");
-
+if(!modal || !modal.classList.contains("show")) return;
+modal.classList.remove("show");
 }
 
 function validerDepense(){
@@ -1912,50 +1875,48 @@ let currentRevenu = null;
 
 function endSwipeRevenu(e){
 
-  const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
+const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
 
-  if(diff < -20 && currentRevenuRow){
-    currentRevenuRow.style.transform = "translateX(-40px)";
-    currentRevenuRow.classList.add("swiping");
-  }
-
-  if(diff < -100){
-
-    if(armedRow === currentRevenuRow){
-
-      navigator.vibrate?.(10);
-
-      currentRevenuRow.style.transform = "translateX(-100%)";
-
-      setTimeout(()=>{
-        supprimerRevenu(currentRevenu);
-        showToast("🗑️ Revenu supprimé");
-      },200);
-
-      armedRow = null;
-      return;
-    }
-
-    if(armedRow){
-      armedRow.style.transform = "translateX(0)";
-      armedRow.classList.remove("swiping");
-    }
-
-    armedRow = currentRevenuRow;
-
-    currentRevenuRow.style.transform = "translateX(-80px)";
-    currentRevenuRow.classList.add("swiping");
-
-    showToast("👉 Glisse encore pour supprimer");
-  }
-
-  else if(currentRevenuRow){
-    currentRevenuRow.style.transform = "translateX(0)";
-    currentRevenuRow.classList.remove("swiping");
-    armedRow = null;
-  }
+if(diff < -20 && currentRevenuRow){
+currentRevenuRow.style.transform = "translateX(-40px)";
+currentRevenuRow.classList.add("swiping");
 }
 
+if(diff < -100){
+
+if(armedRevenuRow === currentRevenuRow){
+
+navigator.vibrate?.(10);
+
+currentRevenuRow.style.transform = "translateX(-100%)";
+
+setTimeout(()=>{
+supprimerRevenu(currentRevenu);
+showToast("🗑️ Revenu supprimé");
+},200);
+
+armedRevenuRow = null;
+return;
+}
+
+if(armedRevenuRow){
+armedRevenuRow.style.transform = "translateX(0)";
+armedRevenuRow.classList.remove("swiping");
+}
+
+armedRevenuRow = currentRevenuRow;
+
+currentRevenuRow.style.transform = "translateX(-80px)";
+currentRevenuRow.classList.add("swiping");
+
+showToast("👉 Glisse encore pour supprimer");
+}
+else if(currentRevenuRow){
+currentRevenuRow.style.transform = "translateX(0)";
+currentRevenuRow.classList.remove("swiping");
+armedRevenuRow = null;
+}
+ 
 function supprimerRevenu(revenu){
 
   const index = revenusDetail.indexOf(revenu);
@@ -1992,11 +1953,9 @@ function modifierRevenu(revenu){
 
 function initChart(){
 
-// Vérifie si Chart.js est chargé
-if(typeof Chart === "undefined"){
-console.warn("Chart.js non chargé");
-return;
-}
+if(typeof Chart === "undefined") return;
+
+if(historyChart) historyChart.destroy();
 
 const ctx = document.getElementById("historyChart").getContext("2d");
 
@@ -2010,8 +1969,8 @@ datasets:[
 ]
 }
 });
-
 }
+ 
 function majGraph(){
 
 if(!historyChart) return;
@@ -2520,7 +2479,6 @@ majGraph();
 updateObjectifs();
 
 initUI();
-renderEspeces();
 
 const dateElement = document.getElementById("todayDate");
 

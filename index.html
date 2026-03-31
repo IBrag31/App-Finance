@@ -307,6 +307,7 @@ filter:invert(1);
 display:none;
 width:100%;
 height:100%;
+overflow:hidden; /* 🔥 important */
 }
 
 .section.active{
@@ -314,10 +315,8 @@ display:block;
 }
 
 .sections-container{
-position:relative;
-height:calc(100dvh - 90px - env(safe-area-inset-bottom));
-
-overflow:hidden; /* suffit à lui seul */
+overflow:hidden;
+touch-action:pan-y;
 }
 /* ===== APPLE BUDGET UI ===== */
 
@@ -753,6 +752,9 @@ padding-right:8px;
 
 overflow-x:hidden;
 overflow-y:auto;
+
+/* 🔥 AJOUT IMPORTANT */
+justify-content:flex-start;
 
 flex:1;
 min-height:0;
@@ -1491,10 +1493,6 @@ maximumFractionDigits:2
 
 const sections = [
 "budget",
-"depenses",
-"revenus",
-"epargne",
-"epargneTotale",
 "objectifs",
 "historique",
 "sauvegarde"

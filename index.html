@@ -41,9 +41,12 @@ margin:0;
 padding:0;
 }
 
+:root{
+  --tabbar-height: 70px;
+}
+
 html, body{
 background:#000;
-overflow-x:hidden;
 height:100%;
 position:relative;
 max-width:100%;
@@ -55,6 +58,7 @@ color:white;
 
 margin:0;
 padding:0;
+padding-bottom: 90px;
 
 /* 🔥 important */
 overflow-x:hidden;
@@ -176,52 +180,113 @@ transition:width 0.5s ease;
 /* TABBAR */
 
 .tabbar{
-position:fixed;
-left:12px;
-right:12px;
-bottom:calc(8px + env(safe-area-inset-bottom));
+  position:fixed;
+  overflow:hidden;
+  left:50%;
+  transform:translateX(-50%);
 
-height:64px;
+  bottom:calc(12px + env(safe-area-inset-bottom));
 
-display:flex;
-justify-content:space-around;
-align-items:center;
+  width:92%;
+  max-width:420px;
+  height:70px;
 
-background:#1c1c1e;
-backdrop-filter:blur(30px);
--webkit-backdrop-filter:blur(30px);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
 
-border:1px solid rgba(255,255,255,0.08);
-border-radius:20px;
+  padding:6px;
 
-box-shadow:0 8px 25px rgba(0,0,0,0.25);
+  background:rgba(28,28,30,0.75);
+  backdrop-filter:blur(30px);
 
-z-index:1000;
-touch-action:manipulation;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,0.06);
+
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+
+  z-index:1000;
+
+  /* 🔥 mieux que none */
+  touch-action: manipulation;
 }
 
 .tab{
-flex:1;
-text-align:center;
-font-size:18px;
-opacity:0.5;
-transition:0.2s ease;
-padding-top:6px;
-cursor:pointer;
-user-select:none;
+  flex:1;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  font-size:20px;
+
+  opacity:0.4;
+
+  transition:all 0.25s ease;
+
+  position:relative;
+  z-index:1;
+  transform: translateY(2px); /* descend légèrement le contenu */
 }
 
 .tab span{
-display:block;
-font-size:11px;
-margin-top:4px;
+  font-size:11px;
+  margin-top:2px;
+  opacity:0.6;
 }
 
 .tab.active{
-opacity:1;
-transform:translateY(-2px);
+  opacity:1;
+  transform: translateY(-2px); /* léger lift */
+  animation:bounceTab 0.3s ease;
 }
 
+.tab.active::after{
+  content:"";
+  position:absolute;
+
+  bottom:-6px;
+
+  width:20px;
+  height:4px;
+
+  border-radius:4px;
+
+  background:#0a84ff;
+}
+
+.tab-indicator{
+  position:absolute;
+  top:50%; /* ✅ centrage vertical */
+  left:0;
+
+  height:50px;
+  width:60px;
+
+  background:rgba(255,255,255,0.08);
+  border-radius:20px;
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
+  will-change: transform, width;
+
+  transition:
+    transform 0.25s cubic-bezier(.22,.61,.36,1),
+    width 0.2s ease;
+
+  z-index:0;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+
+  /* ✅ base GPU */
+  transform: translateZ(0);
+}
 /* TOAST */
 
 #toast{
@@ -297,17 +362,48 @@ input[type="month"]::-webkit-calendar-picker-indicator{
 filter:invert(1);
 }
 
+*{
+-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility;
+}
+
+@keyframes bounceTab{
+  0%{ transform:translateY(-2px) scale(1); }
+  40%{ transform:translateY(-2px) scale(1.2); }
+  100%{ transform:translateY(-2px) scale(1); }
+}
+
 /* ===== APPLE SLIDE TRANSITION ===== */
 
 .section{
-display:none;
-width:100%;
-height:100%;
-overflow:hidden; /* 🔥 important */
+  min-width:100%;
+  width:100%;
+  flex:0 0 100%;
+
+  height:100dvh;
+  min-height:0;
+  display:flex; /* 🔥 IMPORTANT */
+  flex-direction:column;
+
+  overflow:hidden;
+  position:relative;
 }
 
-.section.active{
-display:block;
+.sections-container{
+  position:relative;
+  height:100%; /* ✅ FIX iOS moderne */
+  overflow:hidden;
+}
+
+.sections-track{
+  display:flex;
+  height:100%;
+  width:auto;
+
+  transition: transform 0.3s ease;
+
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* ===== APPLE BUDGET UI ===== */
@@ -413,6 +509,10 @@ border-radius:14px;
 
 transition:transform .18s ease, background .18s ease;
 will-change:transform;
+}
+
+.depense-row.swiping{
+background:#ef4444;
 }
 
 .depense-row span{
@@ -597,14 +697,9 @@ padding-left:0px;
 padding-right:0px;
 
 padding-top:env(safe-area-inset-top);
-padding-bottom:calc(90px + env(safe-area-inset-bottom));
+padding-bottom:0;
 }
 /* RENDERING */
-
-*{
--webkit-font-smoothing:antialiased;
-text-rendering:optimizeLegibility;
-}
 
 .ring-fixes{
 fill:none;
@@ -731,23 +826,27 @@ color:#64d2ff;
 /* SCROLL */
 
 .section-scroll{
-display:flex;
-flex-direction:column;
-gap:16px;
+  flex:1;
+  min-height:0; /* 🔥 évite les bugs de scroll */
 
-padding-left:8px;
-padding-right:8px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding-top: 8px;
 
-overflow-x:hidden;
-overflow-y:auto;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 
-/* 🔥 AJOUT IMPORTANT */
-justify-content:flex-start;
+  /* 🔥 padding propre et cohérent */
+  padding:6px 8px  calc(var(--tabbar-height) + env(safe-area-inset-bottom)) 8px;
+}
 
-flex:1;
-min-height:0;
+#section-sauvegarde .section-scroll{
+  justify-content:flex-start;
+  align-items:stretch;
+  padding-bottom: 20px;
+  gap:20px;
 
-padding-bottom:120px;
 
 -webkit-overflow-scrolling:touch;
 }
@@ -756,7 +855,7 @@ padding-bottom:120px;
 .section,
 .section-scroll,
 .app-container{
-overflow-x:hidden;
+	overflow-x:hidden;
 }
 
 .activity-main{
@@ -799,13 +898,14 @@ line-height:1.2;
 
 .page-header{
 position:relative;
+padding-left:40px;
+padding-top: calc(8px + env(safe-area-inset-top));
 
 display:flex;
 align-items:center;
 justify-content:center;
 
 margin-bottom:14px;
-padding-top:8px;
 
 min-height:50px;
 }
@@ -840,6 +940,7 @@ top:50%;
 transform:translateY(-50%);
 }
 
+
 .activity-item{
 display:flex;
 flex-direction:column;
@@ -850,7 +951,8 @@ gap:4px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:12px;
-margin-top:16px;
+margin-top: 12px;
+margin-bottom: 10px;
 }
 
 .card-mini{
@@ -911,7 +1013,7 @@ opacity:0.3;
 
 .back-btn{
 position:absolute;
-left:0;
+left:8px;
 top:50%;
 transform:translateY(-50%);
 
@@ -933,16 +1035,20 @@ transform:translateY(-50%) scale(0.92);
 }
 
 .page-header-dashboard{
-display:flex !important;
-flex-direction:column !important;
-align-items:flex-start !important;
-justify-content:flex-start !important;
-
-min-height:auto !important;
-gap:2px;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+text-align:left;
 
 margin-bottom:14px;
 padding-top:8px;
+}
+
+.page-header-dashboard h1,
+.page-header-dashboard .page-date{
+text-align:left;
+width:100%;
 }
 
 .page-header-dashboard h1{
@@ -951,6 +1057,10 @@ margin-bottom:0 !important;
 
 .page-header-dashboard .page-date{
 margin-top:0;
+}
+
+.depense-row.swiping{
+  background: linear-gradient(145deg,#ef4444,#dc2626);
 }
       
 .especes-container{
@@ -990,42 +1100,23 @@ transform:scale(0.88);
 box-shadow:0 4px 12px rgba(0,0,0,0.4);
 }
 
-.depense-wrapper{
-  position:relative;
-  overflow:hidden;
-  border-radius:14px;
-  margin-bottom:10px;
+.hidden{
+  display:none;
 }
 
-.depense-actions{
-  position:absolute;
-  right:0;
-  top:0;
-  bottom:0;
-  display:flex;
+.section.overlay{
+  backdrop-filter: blur(20px);
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:2000;
+  overflow-y:hidden;
+
+  padding-top: 0;
 }
 
-.depense-actions button{
-  width:60px;
-  border:none;
-  color:white;
-  font-size:18px;
-}
-
-.edit-btn{
-  background:#3b82f6;
-}
-
-.delete-btn{
-  background:#ef4444;
-}
-
-.depense-row{
-  position:relative;
-  z-index:2;
-  background:rgba(255,255,255,0.04);
-
-  transition:transform .25s cubic-bezier(.22,.61,.36,1);
+.section-scroll > * {
+  flex-shrink: 0;
 }
 
 </style>
@@ -1040,6 +1131,8 @@ box-shadow:0 4px 12px rgba(0,0,0,0.4);
 <div class="app-container">
 
 <div class="sections-container">
+    
+    <div class="sections-track" id="sectionsTrack">
 
 <!-- 💰 SECTION BUDGET -->
 <div class="section active" id="section-budget">
@@ -1145,6 +1238,7 @@ opacity="0.25"
 </div>
 
 <!-- 🔥 INPUTS CACHÉS (IMPORTANT) -->
+<input type="hidden" id="revenus" value="2000">
 <input type="hidden" id="epargneMois" value="300">
 <input type="hidden" id="epargneTotale" value="0">
 
@@ -1153,7 +1247,7 @@ opacity="0.25"
 <div class="cards-grid">
 
   <!-- Revenus -->
-  <div class="card-mini" onclick="showSection('revenus')">
+  <div class="card-mini" onclick="openPage('revenus')">
     <div class="card-header">
       <span class="title">Revenus</span>
       <span class="arrow">›</span>
@@ -1163,7 +1257,7 @@ opacity="0.25"
   </div>
 
   <!-- Dépenses -->
-<div class="card-mini" onclick="showSection('depenses')">
+<div class="card-mini" onclick="openPage('depenses')">
     <div class="card-header">
       <span class="title">Dépenses</span>
       <span class="arrow">›</span>
@@ -1173,7 +1267,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne prévue -->
-  <div class="card-mini" onclick="showSection('epargne')">
+  <div class="card-mini" onclick="openPage('epargne')">
     <div class="card-header">
       <span class="title">Épargne prévue</span>
       <span class="arrow">›</span>
@@ -1183,7 +1277,7 @@ opacity="0.25"
   </div>
 
   <!-- Épargne actuelle -->
-  <div class="card-mini" onclick="showSection('epargneTotale')">
+  <div class="card-mini" onclick="openPage('epargneTotale')">
     <div class="card-header">
       <span class="title">Épargne actuelle</span>
       <span class="arrow">›</span>
@@ -1194,20 +1288,125 @@ opacity="0.25"
 
 </div>
 
-<!-- 🔥 ANCIEN UI (désactivé)
-<div class="budget-card">...</div>
--->
-
 </div> <!-- FIN section-scroll -->
 </div> <!-- 🔥 AJOUT : fermeture section-budget -->
 
-<div class="section" id="section-depenses">
+
+
+
+<!-- 🎯 SECTION OBJECTIFS -->
+<div class="section" id="section-objectifs">
+
+  <div class="section-scroll">
+
+    <div class="card">
+
+      <h3>🎯 Objectifs</h3>
+
+      <div class="objectif">
+        <p>Fonds de sécurité (6000€)</p>
+        <div class="progress">
+          <div id="bar1" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="objectif">
+        <p>Vacances (1500€)</p>
+        <div class="progress">
+          <div id="bar2" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="objectif">
+        <p>Projet perso (3000€)</p>
+        <div class="progress">
+          <div id="bar3" class="progress-bar"></div>
+        </div>
+      </div>
+
+    </div> <!-- card -->
+
+  </div> <!-- section-scroll -->
+
+</div> <!-- section-objectifs -->
+
+
+<!-- 📅 SECTION HISTORIQUE -->
+<div class="section" id="section-historique">
+
+  <div class="section-scroll">
+
+    <div class="card">
+
+<h3>📅 Historique</h3>
+
+<label>Choisir un mois</label>
+<input type="month" id="moisSelect">
+
+<button onclick="ajouterMois()">Ajouter ce mois</button>
+
+<table id="historiqueTable">
+<thead>
+<tr>
+<th>Mois</th>
+<th>Dépenses</th>
+<th>Épargne</th>
+<th>❌</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<canvas id="historyChart" height="180"></canvas>
+
+</div>
+
+</div> <!-- card -->
+</div> <!-- section-scroll -->
+</div> <!-- section-historique -->
+
+
+<!-- ⚙️ SECTION SAUVEGARDE -->
+<div class="section" id="section-sauvegarde">
+
+  <div class="section-scroll">
+
+    <div class="card">
+
+      <h3>💾 Sauvegarde</h3>
+
+      <button onclick="sauvegardeAuto()">
+        💾 Sauvegarder sur iCloud
+      </button>
+
+      <button class="restore-btn" onclick="restaurerDepuisIcloud()">
+        📥 Restaurer depuis iCloud
+      </button>
+
+      <input
+        type="file"
+        id="fileInput"
+        accept=".json"
+        onchange="handleImport(event)"
+        hidden>
+
+    </div> <!-- card -->
+
+  </div> <!-- section-scroll -->
+
+</div> <!-- section-sauvegarde -->
+
+</div> <!-- sections-track -->
+</div> <!-- sections-container -->
+</div> <!-- app-container -->
+
+<div class="section hidden" id="section-depenses">
 
   <div class="section-scroll">
 
 <div class="page-header page-header-depenses">
 
-  <button class="back-btn" onclick="goToSection(0)">←</button>
+  <button class="back-btn" onclick="closePage('depenses')">←</button>
 
   <div class="header-center">
     <h1>Dépenses</h1>
@@ -1247,12 +1446,12 @@ opacity="0.25"
 </div>
 
 <!-- 💰 SECTION REVENUS -->
-<div class="section" id="section-revenus">
+<div class="section hidden" id="section-revenus">
   <div class="section-scroll">
 
     <div class="page-header page-header-depenses">
 
-      <button class="back-btn" onclick="goToSection(0)">←</button>
+      <button class="back-btn" onclick="closePage('revenus')">←</button>
 
       <div class="header-center">
         <h1>Revenus</h1>
@@ -1297,12 +1496,13 @@ opacity="0.25"
   </div>
 </div>
 
+
 <!-- 🎯 SECTION ÉPARGNE PRÉVUE -->
-<div class="section" id="section-epargne">
+<div class="section hidden" id="section-epargne">
   <div class="section-scroll">
 
     <div class="page-header">
-      <button class="back-btn" onclick="goToSection(0)">←</button>
+      <button class="back-btn" onclick="closePage('epargne')">←</button>
 
       <div class="header-center">
         <h1>Épargne prévue</h1>
@@ -1318,12 +1518,13 @@ opacity="0.25"
   </div>
 </div>
 
+
 <!-- 🏦 SECTION ÉPARGNE ACTUELLE -->
-<div class="section" id="section-epargneTotale">
+<div class="section hidden" id="section-epargneTotale">
   <div class="section-scroll">
 
     <div class="page-header">
-      <button class="back-btn" onclick="goToSection(0)">←</button>
+      <button class="back-btn" onclick="closePage('epargneTotale')">←</button>
 
       <div class="header-center">
         <h1>Épargne actuelle</h1>
@@ -1339,113 +1540,12 @@ opacity="0.25"
   </div>
 </div>
 
-<!-- 🎯 SECTION OBJECTIFS -->
-<div class="section" id="section-objectifs">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>🎯 Objectifs</h3>
-
-<div class="objectif">
-<p>Fonds de sécurité (6000€)</p>
-<div class="progress">
-<div id="bar1" class="progress-bar"></div>
-</div>
-</div>
-
-<div class="objectif">
-<p>Vacances (1500€)</p>
-<div class="progress">
-<div id="bar2" class="progress-bar"></div>
-</div>
-</div>
-
-<div class="objectif">
-<p>Projet perso (3000€)</p>
-<div class="progress">
-<div id="bar3" class="progress-bar"></div>
-</div>
-</div>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-objectifs -->
-
-<!-- 📅 SECTION HISTORIQUE -->
-<div class="section" id="section-historique">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>📅 Historique</h3>
-
-<label>Choisir un mois</label>
-<input type="month" id="moisSelect">
-
-<button onclick="ajouterMois()">Ajouter ce mois</button>
-
-<table id="historiqueTable">
-<thead>
-<tr>
-<th>Mois</th>
-<th>Dépenses</th>
-<th>Épargne</th>
-<th>❌</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-
-<canvas id="historyChart" height="180"></canvas>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-historique -->
-
-<!-- ⚙️ SECTION SAUVEGARDE -->
-<div class="section" id="section-sauvegarde">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>💾 Sauvegarde</h3>
-
-<button onclick="sauvegardeAuto()">
-💾 Sauvegarder sur iCloud
-</button>
-
-<button class="restore-btn" onclick="restaurerDepuisIcloud()">
-📥 Restaurer depuis iCloud
-</button>
-
-<input
-type="file"
-id="fileInput"
-accept=".json"
-onchange="handleImport(event)"
-hidden>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-sauvegarde -->
-
-</div> <!-- FIN sections-container -->
-
-</div> <!-- FIN CONTAINER PRINCIPAL -->
 
 <!-- 🧭 TABBAR EN BAS -->
 
 <div class="tabbar">
+    
+    <div class="tab-indicator"></div>
 
 <div class="tab active" onclick="showSection('budget', this)">
 📊<span>Résumé</span>
@@ -1467,6 +1567,18 @@ hidden>
 
 <script>
 
+let swipeStartX = 0;
+
+let armedRow = null;
+
+document.addEventListener("touchstart", (e) => {
+  if(armedRow && !e.target.closest(".depense-row")){
+    armedRow.style.transform = "translateX(0)";
+    armedRow.classList.remove("swiping");
+    armedRow = null;
+  }
+});
+
 let historique =
 JSON.parse(localStorage.getItem("historique")) || [];
 
@@ -1478,11 +1590,6 @@ JSON.parse(localStorage.getItem("depensesDetail")) || [];
 
 let revenusDetail =
 JSON.parse(localStorage.getItem("revenusDetail")) || [];
-
-if(!Array.isArray(revenusDetail)){
-  console.warn("revenusDetail corrompu → reset");
-  revenusDetail = [];
-}
 
 const OBJECTIF_EPARGNE = 5000;
 
@@ -1498,10 +1605,10 @@ maximumFractionDigits:2
 /* swipe sections */
 
 const sections = [
-"budget",
-"objectifs",
-"historique",
-"sauvegarde"
+  "budget",
+  "objectifs",
+  "historique",
+  "sauvegarde"
 ];
 
 let currentSectionIndex = 0;
@@ -1517,16 +1624,12 @@ return Math.round(total * 100) / 100;
 
 }
 
+
 function updateRing(){
 
 const mois = getMoisActuel();
 const revenus = getRevenusDuMois(mois) + especes;
-
-const epargneInput = document.getElementById("epargneMois");
-const epargneTotaleInput = document.getElementById("epargneTotale");
-
-const epargne = Number(epargneInput?.value) || 0;
-const epargneTotaleVal = Number(epargneTotaleInput?.value) || 0;
+const epargne = +document.getElementById("epargneMois").value || 0;
 
 const depenses = calculTotalDepenses();
 
@@ -1536,80 +1639,95 @@ let fixes = 0;
 let variables = 0;
 
 depensesDetail.forEach(d=>{
-  const montant = Number(d.montant) || 0;
 
-  if(d.type === "fixe"){
-    fixes += montant;
-  } else {
-    variables += montant;
-  }
+const montant = Number(d.montant) || 0;
+
+if(d.type === "fixe"){
+fixes += montant;
+}else{
+variables += montant;
+}
+
 });
 
-// clamp
-const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+const revenusVal = revenus;
+const epargneMoisVal = document.getElementById("epargneMois").value;
+const epargneTotaleVal = document.getElementById("epargneTotale").value;
 
-const fixesPercent = budgetMax > 0 ? clamp(fixes / budgetMax) : 0;
-const variablesPercent = budgetMax > 0 ? clamp(variables / budgetMax) : 0;
-const totalPercent = budgetMax > 0 ? clamp(depenses / budgetMax) : 0;
+const rPage = document.getElementById("revenusPage");
+const ePage = document.getElementById("epargneMoisPage");
+const etPage = document.getElementById("epargneTotalePage");
 
-// rings
+if(rPage) rPage.innerText = euro(revenusVal);
+if(ePage) ePage.innerText = euro(epargneMoisVal);
+if(etPage) etPage.innerText = euro(epargneTotaleVal);
+
+let percent = budgetMax > 0 ? depenses / budgetMax : 0;
+if(percent > 1) percent = 1;
+
+const fixesPercent = budgetMax > 0 ? fixes / budgetMax : 0;
+const variablesPercent = budgetMax > 0 ? variables / budgetMax : 0;
+const totalPercent = budgetMax > 0 ? depenses / budgetMax : 0;
+
 const fixesRing = document.querySelector(".ring-fixes");
 const variablesRing = document.querySelector(".ring-variables");
 const totalRing = document.querySelector(".ring-total");
 
 if(fixesRing)
-  fixesRing.style.strokeDashoffset = 326 - fixesPercent * 326;
+fixesRing.style.strokeDashoffset = 326 - fixesPercent * 326;
 
 if(variablesRing)
-  variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
+variablesRing.style.strokeDashoffset = 264 - variablesPercent * 264;
 
 if(totalRing)
-  totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
+totalRing.style.strokeDashoffset = 188 - totalPercent * 188;
 
-const revenusPage = document.getElementById("revenusPage");
-if(revenusPage) revenusPage.innerText = euro(revenus);
-
-const epargnePage = document.getElementById("epargneMoisPage");
-if(epargnePage) epargnePage.innerText = euro(epargne);
-
-const epargneTotalePage = document.getElementById("epargneTotalePage");
-if(epargneTotalePage) epargneTotalePage.innerText = euro(epargneTotaleVal);
+const rDep = document.getElementById("resumeDepenses");
+const rRest = document.getElementById("resumeRestant");
+const rEpar = document.getElementById("resumeEpargne");
 
 const restant = Math.max(budgetMax - depenses,0);
 
-const rDep = document.getElementById("resumeDepenses");
+const epargneActuelle =
+Number(document.getElementById("epargneTotale").value) || 0;
+
 if(rDep) rDep.innerText = euro(depenses);
 
-const rRest = document.getElementById("resumeRestant");
 if(rRest) rRest.innerText = euro(restant);
 
-const rEpar = document.getElementById("resumeEpargne");
 if(rEpar){
-  rEpar.innerText = euro(epargneTotaleVal) + " / " + euro(OBJECTIF_EPARGNE);
+rEpar.innerText =
+euro(epargneActuelle) + " / " + euro(OBJECTIF_EPARGNE);
 }
 
+// 🔥 NOUVEAU DASHBOARD (cartes Apple)
+
+const depensesVal = calculTotalDepenses();
+
 const r1 = document.getElementById("revenusDisplay");
-if(r1) r1.innerText = euro(revenus);
-
 const r2 = document.getElementById("depensesDisplay");
-if(r2) r2.innerText = euro(depenses);
-
 const r3 = document.getElementById("epargneMoisDisplay");
-if(r3) r3.innerText = euro(epargne);
-
 const r4 = document.getElementById("epargneTotaleDisplay");
+
+if(r1) r1.innerText = euro(revenusVal);
+if(r2) r2.innerText = euro(depensesVal);
+if(r3) r3.innerText = euro(epargneMoisVal);
 if(r4) r4.innerText = euro(epargneTotaleVal);
+
 }
 
 function update(){
 
-  const epargne = Number(document.getElementById("epargneMois").value) || 0;
-  const epargneTotale = Number(document.getElementById("epargneTotale").value) || 0;
+const revenus = Number(document.getElementById("revenus").value) || 0;
+const epargne = Number(document.getElementById("epargneMois").value) || 0;
+const epargneTotale = Number(document.getElementById("epargneTotale").value) || 0;
 
-  localStorage.setItem("epargneMois", epargne);
-  localStorage.setItem("epargneTotale", epargneTotale);
+localStorage.setItem("revenus", revenus);
+localStorage.setItem("epargneMois", epargne);
+localStorage.setItem("epargneTotale", epargneTotale);
 
-  updateRing();
+updateRing();
+
 }
 
 function ouvrirModal(){
@@ -1738,87 +1856,49 @@ showToast("✏️ Dépense modifiée");
 
 }
 
-let openedRow = null;
-
 function renderDepenses(){
 
-  const fixes = document.getElementById("depensesFixes");
-  const variables = document.getElementById("depensesVariables");
+const fixes = document.getElementById("depensesFixes");
+const variables = document.getElementById("depensesVariables");
 
-  if(!fixes || !variables) return;
+if(!fixes || !variables) return;
 
-  fixes.innerHTML = "";
-  variables.innerHTML = "";
+let totalFixes = 0;
+let totalVariables = 0;
 
-  depensesDetail.forEach((d,i)=>{
+fixes.innerHTML = "";
+variables.innerHTML = "";
 
-    const montant = Number(d.montant) || 0;
+depensesDetail.forEach((d,i)=>{
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "depense-wrapper";
+const montant = Number(d.montant) || 0;
 
-    const actions = document.createElement("div");
-    actions.className = "depense-actions";
+const row = document.createElement("div");
+row.className = "depense-row";
 
-    actions.innerHTML = `
-      <button class="edit-btn">✏️</button>
-      <button class="delete-btn">🗑</button>
-    `;
+row.onclick = () => modifierDepense(i);
+row.ontouchstart = (e) => startSwipe(e, i);
+row.ontouchend = (e) => endSwipe(e, i);
 
-    const row = document.createElement("div");
-    row.className = "depense-row";
+// nom de la dépense
+const spanNom = document.createElement("span");
+spanNom.textContent = d.nom;
 
-    row.innerHTML = `
-      <span>${d.nom}</span>
-      <span>${euro(montant)}</span>
-    `;
+// montant
+const spanMontant = document.createElement("span");
+spanMontant.textContent = euro(montant);
 
-    wrapper.appendChild(actions);
-    wrapper.appendChild(row);
+row.appendChild(spanNom);
+row.appendChild(spanMontant);
 
-    actions.querySelector(".edit-btn").onclick = () => modifierDepense(i);
-
-    actions.querySelector(".delete-btn").onclick = () => {
-      supprimerDepense(i);
-      showToast("🗑️ Dépense supprimée");
-    };
-
-    let startX = 0;
-
-    row.addEventListener("touchstart", e => {
-
-      if(openedRow && openedRow !== row){
-        openedRow.style.transform = "translateX(0)";
-        openedRow = null;
-      }
-
-      startX = e.touches[0].clientX;
-
-    });
-
-    row.addEventListener("touchend", e => {
-
-      const diff = e.changedTouches[0].clientX - startX;
-
-      if(diff < -60){
-        row.style.transform = "translateX(-120px)";
-        openedRow = row;
-      } else {
-        row.style.transform = "translateX(0)";
-        if(openedRow === row){
-          openedRow = null;
-        }
-      }
-
-    });
-
-    if(d.type === "fixe"){
-      fixes.appendChild(wrapper);
-    } else {
-      variables.appendChild(wrapper);
-    }
-
-  }); // ✅ fermeture propre
+if(d.type === "fixe"){
+fixes.appendChild(row);
+totalFixes += montant;
+}else{
+variables.appendChild(row);
+totalVariables += montant;
+}
+});
 
 }
 
@@ -1839,89 +1919,96 @@ function renderDepensesPage(){
 
     const montant = Number(d.montant) || 0;
 
-    // 🔥 WRAPPER (important)
-    const wrapper = document.createElement("div");
-    wrapper.className = "depense-wrapper";
-
-    // 🔥 ACTIONS (boutons)
-    const actions = document.createElement("div");
-    actions.className = "depense-actions";
-
-    actions.innerHTML = `
-      <button class="edit-btn">✏️</button>
-      <button class="delete-btn">🗑</button>
-    `;
-
-    // 🔥 LIGNE
     const row = document.createElement("div");
     row.className = "depense-row";
+
+    // 🔥 AJOUT IMPORTANT
+    row.onclick = () => modifierDepense(i);
+    row.ontouchstart = (e) => startSwipe(e, i);
+    row.ontouchend = (e) => endSwipe(e, i);
 
     row.innerHTML = `
       <span>${d.nom}</span>
       <span>${euro(montant)}</span>
     `;
 
-    // 👉 ACTIONS
-    actions.querySelector(".edit-btn").onclick = () => modifierDepense(i);
-
-    actions.querySelector(".delete-btn").onclick = () => {
-      supprimerDepense(i);
-      showToast("🗑️ Dépense supprimée");
-    };
-
-    // 👉 SWIPE
-    let startX = 0;
-
-   row.addEventListener("touchstart", e => {
-
-  // 🔥 ferme une autre ligne si déjà ouverte
-  if(openedRow && openedRow !== row){
-    openedRow.style.transform = "translateX(0)";
-    openedRow = null;
-  }
-
-  startX = e.touches[0].clientX;
-
-});
-
-   row.addEventListener("touchend", e => {
-
-  const diff = e.changedTouches[0].clientX - startX;
-
-  if(diff < -60){
-    row.style.transform = "translateX(-120px)";
-    openedRow = row;
-  } else {
-    row.style.transform = "translateX(0)";
-
-    if(openedRow === row){
-      openedRow = null;
-    }
-  }
-
-});
-    // 🔥 ASSEMBLAGE
-    wrapper.appendChild(actions);
-    wrapper.appendChild(row);
-
-    // 🔥 AJOUT + TOTALS
     if(d.type === "fixe"){
-      fixes.appendChild(wrapper);
+      fixes.appendChild(row);
       totalFixes += montant;
     } else {
-      variables.appendChild(wrapper);
+      variables.appendChild(row);
       totalVariables += montant;
     }
 
   });
 
-  // 🔥 MAJ AFFICHAGE
   document.getElementById("totalFixesPage").innerText = euro(totalFixes);
   document.getElementById("totalVariablesPage").innerText = euro(totalVariables);
 
   const total = totalFixes + totalVariables;
   document.getElementById("depensesTotalPage").innerText = euro(total);
-}	
+}
+
+let currentRow = null;
+
+function startSwipe(e,index){
+
+swipeStartX = e.touches[0].clientX;
+currentRow = e.currentTarget;
+
+}
+
+function endSwipe(e,index){
+
+  const diff = e.changedTouches[0].clientX - swipeStartX;
+
+  // 👉 petit swipe = feedback visuel
+  if(diff < -20 && currentRow){
+    currentRow.style.transform = "translateX(-40px)";
+    currentRow.classList.add("swiping");
+  }
+
+  // 👉 swipe fort
+  if(diff < -100){
+
+    // 🔥 1️⃣ SI déjà armé → SUPPRESSION
+    if(armedRow === currentRow){
+
+      navigator.vibrate?.(10);
+
+      currentRow.style.transform = "translateX(-100%)";
+
+      setTimeout(()=>{
+        supprimerDepense(index);
+        showToast("🗑️ Dépense supprimée");
+      },200);
+
+      armedRow = null;
+      return;
+    }
+
+    // 🔥 2️⃣ SINON → on arme la ligne
+    if(armedRow){
+      // reset ancienne ligne
+      armedRow.style.transform = "translateX(0)";
+      armedRow.classList.remove("swiping");
+    }
+
+    armedRow = currentRow;
+
+    currentRow.style.transform = "translateX(-72px)";
+    currentRow.classList.add("swiping");
+
+    showToast("👉 Glisse encore pour supprimer");
+  }
+
+  // 👉 swipe annulé
+  else if(currentRow){
+    currentRow.style.transform = "translateX(0)";
+    currentRow.classList.remove("swiping");
+    armedRow = null;
+  }
+}
 
 /* ===== SWIPE REVENUS ===== */
 
@@ -1940,30 +2027,46 @@ function endSwipeRevenu(e){
 
   const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
 
-  if(!currentRevenuRow) return;
-
-  // swipe léger → juste visuel
-  if(diff < -40){
-    currentRevenuRow.style.transform = "translateX(-60px)";
+  if(diff < -20 && currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(-40px)";
+    currentRevenuRow.classList.add("swiping");
   }
 
-  // swipe fort → suppression directe
   if(diff < -100){
 
-    navigator.vibrate?.(10);
+    if(armedRow === currentRevenuRow){
 
-    currentRevenuRow.style.transform = "translateX(-100%)";
+      navigator.vibrate?.(10);
 
-    setTimeout(()=>{
-      supprimerRevenu(currentRevenu);
-      showToast("🗑️ Revenu supprimé");
-    },200);
+      currentRevenuRow.style.transform = "translateX(-100%)";
 
-    return;
+      setTimeout(()=>{
+        supprimerRevenu(currentRevenu);
+        showToast("🗑️ Revenu supprimé");
+      },200);
+
+      armedRow = null;
+      return;
+    }
+
+    if(armedRow){
+      armedRow.style.transform = "translateX(0)";
+      armedRow.classList.remove("swiping");
+    }
+
+    armedRow = currentRevenuRow;
+
+    currentRevenuRow.style.transform = "translateX(-80px)";
+    currentRevenuRow.classList.add("swiping");
+
+    showToast("👉 Glisse encore pour supprimer");
   }
 
-  // retour position normale
-  currentRevenuRow.style.transform = "translateX(0)";
+  else if(currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(0)";
+    currentRevenuRow.classList.remove("swiping");
+    armedRow = null;
+  }
 }
 
 function supprimerRevenu(revenu){
@@ -2076,17 +2179,17 @@ function afficherHistorique(){
     
     historique.forEach((m,i)=>{
         tbody.innerHTML += `
-<tr>
-<td>${m.mois}</td>
-<td>${euro(m.depenses)}</td>
-<td>${euro(m.epargne)}</td>
-<td>
-<button onclick="supprimer(${i})"
-style="background:#ef4444; cursor:pointer; padding:6px 10px; border-radius:8px;">
-X
-</button>
-</td>
-</tr>`;
+        <tr>
+        <td>${m.mois}</td>
+        <td>${euro(m.depenses)}</td>
+        <td>${euro(m.epargne)}</td>
+        <td>
+        <button onclick="supprimer(${i})"
+        style="background:#ef4444; cursor:pointer; padding:6px 10px; border-radius:8px;">
+        X
+        </button>
+        </td>
+        </tr>`;
     });
 }
 
@@ -2107,7 +2210,7 @@ showToast("✔ Sauvegardé");
 const data = {
 historique: historique,
 depensesDetail: depensesDetail,
-revenus: revenusDetail,
+revenus: document.getElementById("revenus").value,
 epargneMois: document.getElementById("epargneMois").value
 };
 
@@ -2126,51 +2229,57 @@ document.body.removeChild(a);
 
 function handleImport(e){
 
-  const file = e.target.files[0];
-  if(!file){
-    alert("Aucun fichier détecté");
-    return;
-  }
+const file = e.target.files[0];
 
-  const reader = new FileReader();
+if(!file){
+alert("Aucun fichier détecté");
+return;
+}
 
-  reader.onload = function(event){
+const reader = new FileReader();
 
-    let data;
+reader.onload = function(event){
 
-    try{
-      data = JSON.parse(event.target.result);
-    } catch(error){
-      alert("Fichier invalide ❌");
-      return;
-    }
+let data;
 
-    historique = data.historique || [];
-    depensesDetail = data.depensesDetail || [];
+try{
+data = JSON.parse(event.target.result);
+} catch(error){
+alert("Fichier invalide ❌");
+return;
+}
 
-    // ✅ FIX IMPORTANT
-  revenusDetail = Array.isArray(data.revenus) ? data.revenus : [];
-    localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
+historique = data.historique || [];
+depensesDetail = data.depensesDetail || [];
 
-    if(data.epargneMois){
-      document.getElementById("epargneMois").value = data.epargneMois;
-      localStorage.setItem("epargneMois", data.epargneMois);
-    }
+if(data.revenus){
+document.getElementById("revenus").value = data.revenus;
+localStorage.setItem("revenus", data.revenus);
+}
 
-    saveDepenses();
-    renderDepenses();
-    renderRevenusPage();
-    updateRing();
+if(data.epargneMois){
+document.getElementById("epargneMois").value = data.epargneMois;
+localStorage.setItem("epargneMois", data.epargneMois);
+}
 
-    autoSaveDebounced();
-    afficherHistorique();
-    majGraph();
-    updateObjectifs();
+saveDepenses();
+renderDepenses();
+updateRing();
 
-    showToast("📥 Données restaurées");
-  };
+autoSaveDebounced();
 
-  reader.readAsText(file, "UTF-8");
+afficherHistorique();
+majGraph();
+updateObjectifs();
+
+setTimeout(() => {
+showToast("📥 Données restaurées");
+}, 50);
+
+};
+
+reader.readAsText(file, "UTF-8");
+
 }
 
 function updateObjectifs(){
@@ -2203,23 +2312,54 @@ function updateObjectifs(){
 
 function showSection(name, element){
 
-  // 🔥 sécurité : seulement les sections de la tabbar
-  if(!sections.includes(name)){
+  const index = sections.indexOf(name);
+
+  if(index === -1){
+    console.warn("Section inconnue :", name);
     return;
   }
 
-  document.querySelectorAll(".section")
-    .forEach(sec => sec.classList.remove("active"));
+  goToSection(index);
 
+}
+
+function goToSection(index){
+
+  if(index < 0 || index >= sections.length) return;
+
+  currentSectionIndex = index;
+
+  const track = document.getElementById("sectionsTrack");
+
+  // 🔥 SLIDE
+  track.style.transform = `translateX(-${index * 100}%)`;
+
+  const name = sections[index];
+  const section = document.getElementById("section-" + name);
+  if(!section) return;
+
+  // 🔥 reset scroll
+  const scroll = section.querySelector(".section-scroll");
+  if(scroll) scroll.scrollTop = 0;
+
+  // reset tabs
   document.querySelectorAll(".tab")
     .forEach(tab => tab.classList.remove("active"));
 
-  const section = document.getElementById("section-" + name);
-  if(section) section.classList.add("active");
+  const tabMap = {
+    budget: 0,
+    objectifs: 1,
+    historique: 2,
+    sauvegarde: 3
+  };
 
-  if(element) element.classList.add("active");
+  if(tabMap[name] !== undefined){
+    const tabs = document.querySelectorAll(".tab");
+    const tab = tabs[tabMap[name]];
+    if(tab) tab.classList.add("active");
 
-  currentSectionIndex = sections.indexOf(name);
+    moveIndicator(tabMap[name]);
+  }
 }
       
 function restaurerDepuisIcloud(){
@@ -2274,7 +2414,7 @@ autoSaveTimeout = setTimeout(() => {
 const data = {
 historique,
 depensesDetail,
-revenus: revenusDetail,
+revenus: document.getElementById("revenus").value,
 epargneMois: document.getElementById("epargneMois").value,
 epargneTotale: document.getElementById("epargneTotale").value
 };
@@ -2288,30 +2428,6 @@ localStorage.setItem("financeBackup", JSON.stringify(data));
 console.log("💾 autosave");
 
 }, 300);
-}
-
-function goToSection(index){
-
-  if(index < 0 || index >= sections.length) return;
-
-  const name = sections[index];
-
-  // reset sections
-  document.querySelectorAll(".section")
-    .forEach(sec => sec.classList.remove("active"));
-
-  const section = document.getElementById("section-" + name);
-  if(section) section.classList.add("active");
-
-  // reset tabs
-  const tabs = document.querySelectorAll(".tab");
-  tabs.forEach(tab => tab.classList.remove("active"));
-
-  if(index < tabs.length){
-    tabs[index].classList.add("active");
-  }
-
-  currentSectionIndex = index;
 }
 
 function ouvrirModalRevenu(){
@@ -2361,7 +2477,7 @@ function validerRevenu(){
 function getRevenusDuMois(mois){
 
   return revenusDetail
-    .filter(r => r.mois && r.mois === mois)
+    .filter(r => r.mois === mois)
     .reduce((sum, r) => sum + r.montant, 0);
 }
 
@@ -2394,57 +2510,44 @@ function renderRevenusPage(){
   let total = 0;
 
   [...revenusDetail]
-
-  // ✅ tri sécurisé
-  .sort((a, b) => {
-    const moisA = a.mois || "";
-    const moisB = b.mois || "";
-    return moisB.localeCompare(moisA);
-  })
-
+  .sort((a, b) => b.mois.localeCompare(a.mois))
   .forEach((r) => {
 
-    total += Number(r.montant) || 0;
+    total += r.montant;
 
     const div = document.createElement("div");
     div.className = "depense-row";
-
-    let moved = false;
-
-    div.ontouchstart = (e) => {
-      moved = false;
-      startSwipeRevenu(e, r);
-    };
-
-    div.ontouchmove = () => {
-      moved = true;
-    };
-
-    div.ontouchend = (e) => {
-      endSwipeRevenu(e);
-
-      if(!moved){
-        modifierRevenu(r);
-      }
-    };
+    
+    div.onclick = () => modifierRevenu(r);
+    div.ontouchstart = (e) => startSwipeRevenu(e, r);
+    div.ontouchend = (e) => endSwipeRevenu(e, r);
 
     div.innerHTML = `
       <span>${r.nom}</span>
-      <span>${formatMois(r.mois || getMoisActuel())} • ${euro(r.montant)}</span>
+      <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
     `;
 
     list.appendChild(div);
   });
 
-  document.getElementById("revenusPage").innerText = euro(total);
+  // total global
+  const el = document.getElementById("revenusPage");
+  if(el) el.innerText = euro(total);
 
+  // 🔥 PARTIE SÉPARÉE (plus propre)
   const label = document.getElementById("moisActuelLabel");
   if(label){
     label.innerText = formatMois(getMoisActuel());
   }
 
-  const totalMois = getRevenusDuMois(getMoisActuel());
-  document.getElementById("revenusMois").innerText = euro(totalMois);
+  const moisActuel = getMoisActuel();
+  const totalMois = getRevenusDuMois(moisActuel);
+
+  const elMois = document.getElementById("revenusMois");
+  if(elMois){
+    elMois.innerText = euro(totalMois);
+  }
+
 }
 
 let especes = Number(localStorage.getItem("especes")) || 0;
@@ -2486,7 +2589,45 @@ function saveEspeces(){
   updateRing();
 }
 
+function moveIndicator(index){
+
+  const indicator = document.querySelector(".tab-indicator");
+  const tabs = document.querySelectorAll(".tab");
+
+  if(!indicator || !tabs.length) return;
+  if(index < 0 || index >= tabs.length) return;
+
+  const tab = tabs[index];
+  const rect = tab.getBoundingClientRect();
+  const parentRect = tab.parentElement.getBoundingClientRect();
+
+  const width = rect.width * 0.8;
+  const offset = rect.left - parentRect.left + (rect.width - width) / 2;
+
+  indicator.style.width = width + "px";
+  indicator.style.transform = `translateX(${offset}px) translateY(-50%)`;
+}
+
+function openPage(id){
+  const page = document.getElementById("section-" + id);
+  if(!page) return;
+
+  page.classList.remove("hidden");
+  page.classList.add("overlay");
+}
+
+function closePage(id){
+  const page = document.getElementById("section-" + id);
+  if(!page) return;
+
+  page.classList.add("hidden");
+  page.classList.remove("overlay");
+}
+
 window.onload = function(){
+
+const track = document.getElementById("sectionsTrack");
+track.style.width = (sections.length * 100) + "%";
 
 const saved = localStorage.getItem("financeData");
 
@@ -2497,10 +2638,8 @@ const data = JSON.parse(saved);
 historique = data.historique || [];
 depensesDetail = data.depensesDetail || [];
 
-if(Array.isArray(data.revenus)){
-  revenusDetail = data.revenus;
-  localStorage.setItem("revenusDetail", JSON.stringify(revenusDetail));
-}
+if(data.revenus)
+document.getElementById("revenus").value = data.revenus;
 
 if(data.epargneMois)
 document.getElementById("epargneMois").value = data.epargneMois;
@@ -2539,6 +2678,12 @@ updateObjectifs();
 
 initUI();
 
+renderEspeces();
+
+requestAnimationFrame(()=>{
+  moveIndicator(0);
+});
+
 const dateElement = document.getElementById("todayDate");
 
 if(dateElement){
@@ -2560,11 +2705,8 @@ setTimeout(()=>{
 updateRing();
 },200);
 
-["revenus","epargneMois","epargneTotale"].forEach(id=>{
-  const el = document.getElementById(id);
-  if(el){
-    el.addEventListener("input", update);
-  }
+document.querySelectorAll("input").forEach(input=>{
+input.addEventListener("input", update);
 });
 
 }
@@ -2581,6 +2723,82 @@ document.addEventListener("visibilitychange", () => {
 if(document.visibilityState === "hidden"){
 autoSaveDebounced();
 }
+});
+
+window.addEventListener("resize", () => {
+  goToSection(currentSectionIndex);
+});
+
+/* SWIPE SECTIONS SUR TABBAR */
+
+const tabbar = document.querySelector(".tabbar");
+let isDraggingTab = false;
+let currentHoverTab = null;
+
+tabbar.addEventListener("touchstart", () => {
+  isDraggingTab = true;
+  currentHoverTab = null; // reset propre
+});
+
+tabbar.addEventListener("touchmove", (e) => {
+
+  if(!isDraggingTab) return;
+
+  const touchX = e.touches[0].clientX;
+  const tabs = document.querySelectorAll(".tab");
+  const indicator = document.querySelector(".tab-indicator");
+
+  if(!indicator) return;
+
+  const parentRect = tabbar.getBoundingClientRect();
+  const x = touchX - parentRect.left;
+
+  indicator.style.transition = "transform 0.1s linear";
+
+  indicator.style.transform =
+    `translateX(${x - indicator.offsetWidth / 2}px) translateY(-50%)`;
+
+  indicator.style.width = "70px";
+
+  tabs.forEach((tab, index) => {
+
+    const rect = tab.getBoundingClientRect();
+
+    if(touchX >= rect.left && touchX <= rect.right){
+      currentHoverTab = index;
+    }
+
+  });
+
+}, { passive: false });
+
+tabbar.addEventListener("touchend", () => {
+
+  isDraggingTab = false;
+
+  const indicator = document.querySelector(".tab-indicator");
+  if(!indicator) return;
+
+  if(currentHoverTab !== null){
+
+    currentSectionIndex = currentHoverTab;
+
+    goToSection(currentHoverTab);
+    moveIndicator(currentHoverTab);
+
+  } else {
+
+    moveIndicator(currentSectionIndex);
+  }
+
+  indicator.style.width = "";
+  currentHoverTab = null;
+
+});
+
+// ✅ DOIT ÊTRE À PART
+tabbar.addEventListener("touchcancel", () => {
+  isDraggingTab = false;
 });
 
 // Animation splash

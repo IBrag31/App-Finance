@@ -507,12 +507,6 @@ document.addEventListener("touchstart", (e) => {
 let historyChart;
 let autoSaveTimeout;
 
-let depensesDetail =
-JSON.parse(localStorage.getItem("depensesDetail")) || [];
-
-let revenusDetail =
-JSON.parse(localStorage.getItem("revenusDetail")) || [];
-
 const OBJECTIF_EPARGNE = 5000;
 
 function euro(n){
@@ -1393,8 +1387,6 @@ function renderRevenusPage(){
   }
 
 }
-
-let especes = Number(localStorage.getItem("especes")) || 0;
 
 function renderEspeces(){
   const el = document.getElementById("especesValue");

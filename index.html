@@ -1914,10 +1914,13 @@ currentRevenuRow.classList.add("swiping");
 showToast("👉 Glisse encore pour supprimer");
 }
 else if(currentRevenuRow){
-currentRevenuRow.style.transform = "translateX(0)";
-currentRevenuRow.classList.remove("swiping");
-armedRevenuRow = null;
+  currentRevenuRow.style.transform = "translateX(0)";
+  currentRevenuRow.classList.remove("swiping");
+  armedRevenuRow = null;
 }
+} // ✅ ferme la fonction endSwipeRevenu
+
+function supprimerRevenu(revenu){
  
 function supprimerRevenu(revenu){
 

@@ -1810,58 +1810,53 @@ currentRow = e.currentTarget;
 
 }
 
-function endSwipe(e,index){
+function endSwipeRevenu(e){
 
-  const diff = e.changedTouches[0].clientX - swipeStartX;
+  const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
 
-  // 👉 petit swipe = feedback visuel
-  if(diff < -20 && currentRow){
-    currentRow.style.transform = "translateX(-40px)";
-    currentRow.classList.add("swiping");
+  if(diff < -20 && currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(-40px)";
+    currentRevenuRow.classList.add("swiping");
   }
 
-  // 👉 swipe fort
   if(diff < -100){
 
-    // 🔥 1️⃣ SI déjà armé → SUPPRESSION
-    if(armedRow === currentRow){
+    if(armedRevenuRow === currentRevenuRow){
 
       navigator.vibrate?.(10);
 
-      currentRow.style.transform = "translateX(-100%)";
+      currentRevenuRow.style.transform = "translateX(-100%)";
 
       setTimeout(()=>{
-        supprimerDepense(index);
-        showToast("🗑️ Dépense supprimée");
+        supprimerRevenu(currentRevenu);
+        showToast("🗑️ Revenu supprimé");
       },200);
 
-      armedRow = null;
+      armedRevenuRow = null;
       return;
     }
 
-    // 🔥 2️⃣ SINON → on arme la ligne
-    if(armedRow){
-      // reset ancienne ligne
-      armedRow.style.transform = "translateX(0)";
-      armedRow.classList.remove("swiping");
+    if(armedRevenuRow){
+      armedRevenuRow.style.transform = "translateX(0)";
+      armedRevenuRow.classList.remove("swiping");
     }
 
-    armedRow = currentRow;
+    armedRevenuRow = currentRevenuRow;
 
-    currentRow.style.transform = "translateX(-72px)";
-    currentRow.classList.add("swiping");
+    currentRevenuRow.style.transform = "translateX(-80px)";
+    currentRevenuRow.classList.add("swiping");
 
     showToast("👉 Glisse encore pour supprimer");
   }
 
-  // 👉 swipe annulé
-  else if(currentRow){
-    currentRow.style.transform = "translateX(0)";
-    currentRow.classList.remove("swiping");
-    armedRow = null;
+  else if(currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(0)";
+    currentRevenuRow.classList.remove("swiping");
+    armedRevenuRow = null;
   }
-}
 
+} // ✅ FERMETURE CLAIRE ET PROPRE
+ 
 /* ===== SWIPE REVENUS ===== */
 
 let revenuSwipeStartX = 0;

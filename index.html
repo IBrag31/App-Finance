@@ -28,7 +28,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <script>
 window.onerror = function(message, source, lineno){
-alert("Erreur JS: " + message + " ligne: " + lineno);
+  alert("Erreur JS: " + message + " ligne: " + lineno);
 };
 </script>
 
@@ -36,21 +36,137 @@ alert("Erreur JS: " + message + " ligne: " + lineno);
 
 <body>
 
-<!-- 🔥 APP -->
-
+<!-- SPLASH -->
 <div id="splash">
-<img src="financeplus.PNG" class="splash-logo">
+  <img src="financeplus.PNG" class="splash-logo">
 </div>
 
+<!-- APP -->
 <div class="app-container">
 <div class="sections-container">
 
-<!-- TES SECTIONS ICI (tu gardes tout ton HTML actuel) -->
+<!-- ========================= -->
+<!-- 💰 BUDGET -->
+<!-- ========================= -->
+
+<div class="section active" id="section-budget">
+  <div class="section-scroll">
+
+    <div class="page-header page-header-dashboard">
+      <h1>Résumé</h1>
+      <div id="todayDate"></div>
+    </div>
+
+    <div class="card">
+      <div id="revenusDisplay">0 €</div>
+      <div id="depensesDisplay">0 €</div>
+      <div id="epargneMoisDisplay">0 €</div>
+      <div id="epargneTotaleDisplay">0 €</div>
+    </div>
+
+    <!-- INPUTS cachés nécessaires -->
+    <input type="hidden" id="epargneMois" value="0">
+    <input type="hidden" id="epargneTotale" value="0">
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 💸 DEPENSES -->
+<!-- ========================= -->
+
+<div class="section" id="section-depenses">
+  <div class="section-scroll">
+
+    <div class="card">
+      <div id="depensesTotalPage">0 €</div>
+    </div>
+
+    <div class="card">
+      <div id="depensesFixesPage"></div>
+      <div id="depensesVariablesPage"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 💰 REVENUS -->
+<!-- ========================= -->
+
+<div class="section" id="section-revenus">
+  <div class="section-scroll">
+
+    <div class="card">
+      <div id="revenusPage">0 €</div>
+      <div id="revenusMois">0 €</div>
+      <div id="moisActuelLabel"></div>
+    </div>
+
+    <div class="card">
+      <div id="revenusList"></div>
+    </div>
+
+    <div class="card">
+      <div id="especesValue">0 €</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 🎯 OBJECTIFS -->
+<!-- ========================= -->
+
+<div class="section" id="section-objectifs">
+  <div class="section-scroll">
+    <div class="card">
+      <div id="bar1"></div>
+      <div id="bar2"></div>
+      <div id="bar3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 📅 HISTORIQUE -->
+<!-- ========================= -->
+
+<div class="section" id="section-historique">
+  <div class="section-scroll">
+
+    <input type="month" id="moisSelect">
+
+    <table id="historiqueTable">
+      <tbody></tbody>
+    </table>
+
+    <canvas id="historyChart"></canvas>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- ⚙️ SAUVEGARDE -->
+<!-- ========================= -->
+
+<div class="section" id="section-sauvegarde">
+  <div class="section-scroll">
+
+    <button onclick="sauvegardeAuto()">Sauvegarder</button>
+    <button onclick="restaurerDepuisIcloud()">Restaurer</button>
+
+    <input type="file" id="fileInput" hidden>
+
+  </div>
+</div>
 
 </div>
 </div>
 
-<!-- 🧭 TABBAR -->
+<!-- ========================= -->
+<!-- TABBAR -->
+<!-- ========================= -->
 
 <div class="tabbar">
 
@@ -75,54 +191,21 @@ alert("Erreur JS: " + message + " ligne: " + lineno);
 <!-- TOAST -->
 <div id="toast">✔ Sauvegardé</div>
 
-<!-- MODAL DEPENSE -->
-<div id="depenseModal" class="modal" onclick="fermerModal()">
-<div class="modal-content" onclick="event.stopPropagation()">
+<!-- MODALS -->
 
-<h3>Nouvelle dépense</h3>
+<div id="depenseModal" class="modal"></div>
+<div id="revenuModal" class="modal"></div>
 
-<input type="text" id="depenseNom" placeholder="Nom">
-<input type="number" id="depenseMontant" placeholder="Montant">
-
-<select id="typeDepense">
-<option value="fixe">Dépense fixe</option>
-<option value="variable">Dépense variable</option>
-</select>
-
-<div class="modal-actions">
-<button onclick="fermerModal()">Annuler</button>
-<button onclick="validerDepense()">Ajouter</button>
-</div>
-
-</div>
-</div>
-
-<!-- MODAL REVENU -->
-<div id="revenuModal" class="modal" onclick="fermerModalRevenu()">
-<div class="modal-content" onclick="event.stopPropagation()">
-
-<h3>Nouveau revenu</h3>
-
-<input type="text" id="revenuNom" placeholder="Ex: Salaire">
-<input type="number" id="revenuMontant">
-<input type="month" id="revenuMois">
-
-<div class="modal-actions">
-<button onclick="fermerModalRevenu()">Annuler</button>
-<button onclick="validerRevenu()">Ajouter</button>
-</div>
-
-</div>
-</div>
-
-<!-- 🔌 SCRIPTS -->
+<!-- ========================= -->
+<!-- SCRIPTS -->
+<!-- ========================= -->
 
 <script src="storage.js"></script>
-<script src="app.js?v=3"></script>
-<script src="depenses.js?v=3"></script>
-<script src="revenus.js?v=3"></script>
-<script src="historique.js"></script>
-<script src="ui.js"></script>
+<script src="app.js?v=4"></script>
+<script src="depenses.js?v=4"></script>
+<script src="revenus.js?v=4"></script>
+<script src="historique.js?v=4"></script>
+<script src="ui.js?v=4"></script>
 
 </body>
 </html>

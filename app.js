@@ -88,30 +88,20 @@ function initUI(){
 
 window.onload = function(){
 
-  // graph + historique
-  initChart();
-  afficherHistorique();
-  majGraph();
-  updateObjectifs();
+  console.log("START");
 
-  // UI
-  initUI();
-
-  // update principal
-  setTimeout(updateRing, 200);
-
-  // date affichée
-  const dateElement = document.getElementById("todayDate");
-  if(dateElement){
-    const d = new Date();
-    let dateStr = d.toLocaleDateString("fr-FR",{
-      weekday:"long",
-      day:"numeric",
-      month:"long"
-    });
-    dateElement.textContent =
-      dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+  try{
+    initUI();
+    console.log("initUI OK");
+  }catch(e){
+    console.error("initUI crash", e);
   }
 
-  console.log("APP READY 🚀");
+  try{
+    updateRing();
+    console.log("updateRing OK");
+  }catch(e){
+    console.error("updateRing crash", e);
+  }
+
 };

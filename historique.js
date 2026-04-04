@@ -1,3 +1,136 @@
 let historique =
 JSON.parse(localStorage.getItem("historique")) || [];
 
+let historique =
+JSON.parse(localStorage.getItem("historique")) || [];
+
+let historyChart;
+
+function initChart(){
+
+if(typeof Chart === "undefined") return;
+
+if(historyChart) historyChart.destroy();
+
+const ctx = document.getElementById("historyChart").getContext("2d");
+
+historyChart = new Chart(ctx,{
+type:"line",
+data:{
+labels:[],
+datasets:[
+{label:"Dépenses",data:[],borderColor:"#ef4444"},
+{label:"Épargne",data:[],borderColor:"#22c55e"}
+]
+}
+});
+}
+
+function majGraph(){
+
+if(!historyChart) return;
+
+historyChart.data.labels = historique.map(m => m.mois);
+historyChart.data.datasets[0].data = historique.map(m => m.depenses);
+historyChart.data.datasets[1].data = historique.map(m => m.epargne);
+
+historyChart.update();
+
+}
+
+function ajouterMois(){
+
+const moisInput = document.getElementById("moisSelect").value;
+
+if(!moisInput){
+alert("Choisis un mois");
+return;
+}
+
+const [annee, mois] = moisInput.split("-");
+const moisFinal = mois + "/" + annee;
+
+const existe = historique.some(m => m.mois === moisFinal);
+
+if(existe){
+showToast("⚠️ Déjà ajouté");
+return;
+}
+
+const depenses = calculTotalDepenses();
+const epargne = +document.getElementById("epargneMois").value;
+
+historique.push({mois: moisFinal, depenses, epargne});
+
+localStorage.setItem("historique", JSON.stringify(historique));
+
+afficherHistorique();
+majGraph();
+updateObjectifs();
+updateRing();
+
+}
+
+function afficherHistorique(){
+
+const tbody = document.querySelector("#historiqueTable tbody");
+if(!tbody) return;
+
+tbody.innerHTML = "";
+
+historique.forEach((m,i)=>{
+
+tbody.innerHTML += `
+<tr>
+<td>${m.mois}</td>
+<td>${euro(m.depenses)}</td>
+<td>${euro(m.epargne)}</td>
+<td>
+<button onclick="supprimer(${i})">X</button>
+</td>
+</tr>
+`;
+
+});
+
+}
+
+function supprimer(i){
+
+historique.splice(i,1);
+
+localStorage.setItem("historique", JSON.stringify(historique));
+
+afficherHistorique();
+majGraph();
+updateObjectifs();
+
+showToast("🗑️ supprimé");
+
+}
+
+function getEpargneTotale(){
+return historique.reduce((t,m)=> t + m.epargne, 0);
+}
+
+function updateObjectifs(){
+
+let total = getEpargneTotale();
+
+const obj1 = 6000;
+const obj2 = 1500;
+const obj3 = 3000;
+
+const s1 = Math.min(total, obj1);
+document.getElementById("bar1").style.width = (s1/obj1)*100+"%";
+
+total -= s1;
+
+const s2 = Math.min(total, obj2);
+document.getElementById("bar2").style.width = (s2/obj2)*100+"%";
+
+total -= s2;
+
+const s3 = Math.min(total, obj3);
+document.getElementById("bar3").style.width = (s3/obj3)*100+"%";
+}

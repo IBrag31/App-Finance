@@ -4,6 +4,8 @@ console.log("app.js loaded");
 // UTILS
 // =========================
 
+let especes = Number(localStorage.getItem("especes")) || 0;
+
 function euro(n){
   return Number(n || 0).toLocaleString("fr-FR",{
     minimumFractionDigits:2,

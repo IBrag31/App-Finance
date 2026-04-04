@@ -1,62 +1,27 @@
+// =========================
+// DATA
+// =========================
+
 let depensesDetail =
 JSON.parse(localStorage.getItem("depensesDetail")) || [];
 
+// =========================
+// CALCULS
+// =========================
+
 function calculTotalDepenses(){
 
-const total = depensesDetail.reduce(
-(sum,d)=> sum + (Number(d.montant) || 0),
-0
-);
+  const total = depensesDetail.reduce(
+    (sum,d)=> sum + (Number(d.montant) || 0),
+    0
+  );
 
-return Math.round(total * 100) / 100;
-
+  return Math.round(total * 100) / 100;
 }
 
-function renderDepenses(){
-
-const fixes = document.getElementById("depensesFixes");
-const variables = document.getElementById("depensesVariables");
-
-if(!fixes || !variables) return;
-
-let totalFixes = 0;
-let totalVariables = 0;
-
-fixes.innerHTML = "";
-variables.innerHTML = "";
-
-depensesDetail.forEach((d,i)=>{
-
-const montant = Number(d.montant) || 0;
-
-const row = document.createElement("div");
-row.className = "depense-row";
-
-row.onclick = () => modifierDepense(i);
-row.ontouchstart = (e) => startSwipe(e, i);
-row.ontouchend = (e) => endSwipe(e, i);
-
-// nom de la dépense
-const spanNom = document.createElement("span");
-spanNom.textContent = d.nom;
-
-// montant
-const spanMontant = document.createElement("span");
-spanMontant.textContent = euro(montant);
-
-row.appendChild(spanNom);
-row.appendChild(spanMontant);
-
-if(d.type === "fixe"){
-fixes.appendChild(row);
-totalFixes += montant;
-}else{
-variables.appendChild(row);
-totalVariables += montant;
-}
-});
-
-}
+// =========================
+// RENDER PAGE
+// =========================
 
 function renderDepensesPage(){
 
@@ -78,7 +43,6 @@ function renderDepensesPage(){
     const row = document.createElement("div");
     row.className = "depense-row";
 
-    // 🔥 AJOUT IMPORTANT
     row.onclick = () => modifierDepense(i);
     row.ontouchstart = (e) => startSwipe(e, i);
     row.ontouchend = (e) => endSwipe(e, i);
@@ -105,80 +69,146 @@ function renderDepensesPage(){
   document.getElementById("depensesTotalPage").innerText = euro(total);
 }
 
-function ajouterDepense(){
+// =========================
+// CRUD
+// =========================
 
-const nom = prompt("Nom de la dépense ?");
-if(!nom) return;
+function validerDepense(){
 
-const montant = parseFloat(prompt("Montant ?"));
-if(isNaN(montant)) return;
+  const nom = document.getElementById("depenseNom").value.trim();
+  const montant = parseFloat(
+    document.getElementById("depenseMontant").value
+  );
+  const type = document.getElementById("typeDepense").value;
 
-let type = prompt("Type : fixe ou variable ?");
-if(!type) return;
+  if(!nom || isNaN(montant)) return;
 
-type = type.toLowerCase().trim();
+  depensesDetail.push({
+    nom,
+    montant: Math.round(montant * 100) / 100,
+    type
+  });
 
-if(type !== "fixe" && type !== "variable"){
-showToast("Type invalide");
-return;
-}
+  saveDepenses();
+  renderDepensesPage();
+  updateRing();
 
-depensesDetail.push({
-nom,
-montant,
-type
-});
+  document.getElementById("depenseNom").value = "";
+  document.getElementById("depenseMontant").value = "";
 
-saveDepenses();
-renderDepenses();
-updateRing();
-
+  fermerModal();
 }
 
 function supprimerDepense(index){
 
-depensesDetail.splice(index,1);
+  depensesDetail.splice(index,1);
 
-saveDepenses();
-renderDepenses();
-renderDepensesPage();
-updateRing();
-
+  saveDepenses();
+  renderDepensesPage();
+  updateRing();
 }
 
 function modifierDepense(index){
 
-const depense = depensesDetail[index];
+  const depense = depensesDetail[index];
 
-const nouveauNom = prompt("Nom de la dépense :", depense.nom);
-if(nouveauNom === null) return;
+  const nouveauNom = prompt("Nom :", depense.nom);
+  if(nouveauNom === null) return;
 
-const nouveauMontant = parseFloat(
-prompt("Montant :", depense.montant)
-);
+  const nouveauMontant = parseFloat(
+    prompt("Montant :", depense.montant)
+  );
 
-if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
+  if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
 
-let nouveauType = prompt(
-"Type : fixe ou variable",
-depense.type
-);
+  let nouveauType = prompt(
+    "Type : fixe ou variable",
+    depense.type
+  );
 
-if(!nouveauType) return;
+  if(!nouveauType) return;
 
-nouveauType = nouveauType.toLowerCase().trim();
+  nouveauType = nouveauType.toLowerCase().trim();
 
-depensesDetail[index] = {
-nom: nouveauNom,
-montant: nouveauMontant,
-type: nouveauType
-};
+  depensesDetail[index] = {
+    nom: nouveauNom,
+    montant: nouveauMontant,
+    type: nouveauType
+  };
 
-saveDepenses();
-renderDepenses();
-updateRing();
+  saveDepenses();
+  renderDepensesPage();
+  updateRing();
 
-showToast("✏️ Dépense modifiée");
-
+  showToast("✏️ Dépense modifiée");
 }
 
+// =========================
+// STORAGE
+// =========================
+
+function saveDepenses(){
+  localStorage.setItem(
+    "depensesDetail",
+    JSON.stringify(depensesDetail)
+  );
+}
+
+// =========================
+// SWIPE
+// =========================
+
+let swipeStartX = 0;
+let currentRow = null;
+let armedRow = null;
+
+function startSwipe(e, index){
+  swipeStartX = e.touches[0].clientX;
+  currentRow = e.currentTarget;
+}
+
+function endSwipe(e, index){
+
+  const diff = e.changedTouches[0].clientX - swipeStartX;
+
+  if(diff < -20 && currentRow){
+    currentRow.style.transform = "translateX(-40px)";
+    currentRow.classList.add("swiping");
+  }
+
+  if(diff < -100){
+
+    if(armedRow === currentRow){
+
+      navigator.vibrate?.(10);
+
+      currentRow.style.transform = "translateX(-100%)";
+
+      setTimeout(()=>{
+        supprimerDepense(index);
+        showToast("🗑️ Dépense supprimée");
+      },200);
+
+      armedRow = null;
+      return;
+    }
+
+    if(armedRow){
+      armedRow.style.transform = "translateX(0)";
+      armedRow.classList.remove("swiping");
+    }
+
+    armedRow = currentRow;
+
+    currentRow.style.transform = "translateX(-72px)";
+    currentRow.classList.add("swiping");
+
+    showToast("👉 Glisse encore pour supprimer");
+  }
+
+  else if(currentRow){
+    currentRow.style.transform = "translateX(0)";
+    currentRow.classList.remove("swiping");
+    armedRow = null;
+  }
+}

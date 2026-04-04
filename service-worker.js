@@ -1,4 +1,14 @@
-const CACHE_NAME = "financeplus-v1.11";
+// 🔥 FORCE UPDATE DU SERVICE WORKER
+
+self.addEventListener("install", () => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+const CACHE_NAME = "financeplus-v1.12";
 
 const urlsToCache = [
 "./",

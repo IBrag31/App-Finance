@@ -70,7 +70,7 @@ function ajouterMois(){
 
   historique.push({mois: moisFinal, depenses, epargne});
 
-  localStorage.setItem("historique", JSON.stringify(historique));
+ saveHistorique();
 
   afficherHistorique();
   majGraph();
@@ -105,7 +105,7 @@ function supprimer(i){
 
   historique.splice(i,1);
 
-  localStorage.setItem("historique", JSON.stringify(historique));
+  saveHistorique();
 
   afficherHistorique();
   majGraph();

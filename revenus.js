@@ -181,7 +181,7 @@ function retirerEspeces(){
 }
 
 function saveEspeces(){
-  localStorage.setItem("especes", especes);
+  saveEspeces();
   renderEspeces();
   updateRing();
 }

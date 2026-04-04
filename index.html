@@ -27,9 +27,17 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-window.onerror = function(message, source, lineno){
-  alert("Erreur JS: " + message + " ligne: " + lineno);
+  
+window.onerror = function(message, source, lineno, colno){
+  alert(
+    "Erreur JS:\n" +
+    message +
+    "\nFichier: " + source +
+    "\nLigne: " + lineno +
+    "\nColonne: " + colno
+  );
 };
+  
 </script>
 
 </head>
@@ -200,7 +208,12 @@ window.onerror = function(message, source, lineno){
 <!-- SCRIPTS -->
 <!-- ========================= -->
 
+<script src="storage.js"></script>
 <script src="app.js?v=4"></script>
+<script src="depenses.js?v=4"></script>
+<script src="revenus.js?v=4"></script>
+<script src="historique.js?v=4"></script>
+<script src="ui.js?v=4"></script>
 
 </body>
 </html>

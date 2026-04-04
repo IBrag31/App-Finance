@@ -169,7 +169,7 @@ function startSwipe(e, index){
   currentRow = e.currentTarget;
 }
 
-function endSwipe(e, index){
+function endSwipe(e,index){
 
   const diff = e.changedTouches[0].clientX - swipeStartX;
 
@@ -213,4 +213,5 @@ function endSwipe(e, index){
     currentRow.classList.remove("swiping");
     armedRow = null;
   }
+
 }

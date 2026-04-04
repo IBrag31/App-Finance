@@ -8,7 +8,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-const CACHE_NAME = "financeplus-v1.22";
+const CACHE_NAME = "financeplus-v1.00";
 
 const urlsToCache = [
 "./",

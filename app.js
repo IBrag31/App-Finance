@@ -4,8 +4,6 @@ console.log("app.js loaded");
 // UTILS
 // =========================
 
-let especes = Number(localStorage.getItem("especes")) || 0;
-
 function euro(n){
   return Number(n || 0).toLocaleString("fr-FR",{
     minimumFractionDigits:2,
@@ -20,6 +18,10 @@ function euro(n){
 function updateRing(){
 
   const mois = getMoisActuel();
+
+  // 🔥 récupération SAFE (plus de variable globale)
+  const especes = Number(localStorage.getItem("especes")) || 0;
+
   const revenus = getRevenusDuMois(mois) + especes;
 
   const epargne = +document.getElementById("epargneMois")?.value || 0;
@@ -36,18 +38,27 @@ function updateRing(){
     else variables += m;
   });
 
-  // UI chiffres
+  // =========================
+  // UI CHIFFRES
+  // =========================
+
   document.getElementById("revenusPage")?.innerText = euro(revenus);
   document.getElementById("epargneMoisPage")?.innerText = euro(epargne);
   document.getElementById("epargneTotalePage")?.innerText =
     euro(getEpargneTotale());
 
-  // calcul pourcentages
+  // =========================
+  // CALCUL POURCENTAGES
+  // =========================
+
   const fixesP = budgetMax ? fixes / budgetMax : 0;
   const varP = budgetMax ? variables / budgetMax : 0;
   const totalP = budgetMax ? depenses / budgetMax : 0;
 
-  // rings
+  // =========================
+  // RINGS
+  // =========================
+
   document.querySelector(".ring-fixes")?.style
     .setProperty("stroke-dashoffset", 326 - fixesP * 326);
 
@@ -57,7 +68,10 @@ function updateRing(){
   document.querySelector(".ring-total")?.style
     .setProperty("stroke-dashoffset", 188 - totalP * 188);
 
-  // résumé
+  // =========================
+  // RÉSUMÉ
+  // =========================
+
   document.getElementById("resumeDepenses")?.innerText = euro(depenses);
 
   const restant = Math.max(budgetMax - depenses, 0);
@@ -66,7 +80,10 @@ function updateRing(){
   document.getElementById("resumeEpargne")?.innerText =
     euro(getEpargneTotale()) + " / " + euro(5000);
 
-  // dashboard
+  // =========================
+  // DASHBOARD
+  // =========================
+
   document.getElementById("revenusDisplay")?.innerText = euro(revenus);
   document.getElementById("depensesDisplay")?.innerText = euro(depenses);
   document.getElementById("epargneMoisDisplay")?.innerText = euro(epargne);
@@ -91,10 +108,10 @@ function initUI(){
 window.onload = function(){
 
   // graph + historique
-  initChart();
-  afficherHistorique();
-  majGraph();
-  updateObjectifs();
+  if(typeof initChart === "function") initChart();
+  if(typeof afficherHistorique === "function") afficherHistorique();
+  if(typeof majGraph === "function") majGraph();
+  if(typeof updateObjectifs === "function") updateObjectifs();
 
   // UI
   initUI();

@@ -1,19 +1,16 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-
- <link rel="stylesheet" href="styles.css">
 
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0f172a">
 
 <link rel="manifest" href="manifest.json">
-
 <link rel="apple-touch-icon" href="icon-180.png">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,448 +22,35 @@
 
 <title>Finance+</title>
 
+<link rel="stylesheet" href="styles.css">
+
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-window.onerror = function(message, source, lineno, colno){
-    alert("Erreur JS: " + message + " ligne: " + lineno);
+window.onerror = function(message, source, lineno){
+alert("Erreur JS: " + message + " ligne: " + lineno);
 };
 </script>
 
-<style>
-
-input{
-background
- 
 </head>
 
- <script src="storage.js"></script>
-<script src="depenses.js"></script>
-<script src="revenus.js"></script>
-<script src="historique.js"></script>
-<script src="ui.js"></script>
-<script src="app.js"></script>
- 
 <body>
+
+<!-- 🔥 APP -->
 
 <div id="splash">
 <img src="financeplus.PNG" class="splash-logo">
 </div>
 
 <div class="app-container">
-
 <div class="sections-container">
 
-<!-- 💰 SECTION BUDGET -->
-<div class="section active" id="section-budget">
+<!-- TES SECTIONS ICI (tu gardes tout ton HTML actuel) -->
 
-<!-- PAGE 1 : DASHBOARD -->
-
-<div class="section-scroll">
-
-<div class="page-header page-header-dashboard">
-  <h1>Résumé</h1>
-  <div class="page-date" id="todayDate"></div>
-
-  <button class="fab fab-add header-add" onclick="ouvrirModal()">+</button>
-</div>
-
-<div class="card card-activity">
-
-<div class="activity-header">
-Anneaux Budget
-</div>
-
-<div class="activity-row activity-main">
-
-<div class="activity-rings">
-
-<svg class="progress-ring" width="125" height="125">
-
-<defs>
-
-<linearGradient id="gradientFixes" x1="0%" y1="0%" x2="100%" y2="0%">
-<stop offset="0%" stop-color="#ff375f"/>
-<stop offset="100%" stop-color="#ff2d55"/>
-</linearGradient>
-
-<linearGradient id="gradientVariables" x1="0%" y1="0%" x2="100%" y2="0%">
-<stop offset="0%" stop-color="#30d158"/>
-<stop offset="100%" stop-color="#32d74b"/>
-</linearGradient>
-
-<linearGradient id="gradientTotal" x1="0%" y1="0%" x2="100%" y2="0%">
-<stop offset="0%" stop-color="#0a84ff"/>
-<stop offset="100%" stop-color="#64d2ff"/>
-</linearGradient>
-
-<linearGradient id="ringGloss" x1="0%" y1="0%" x2="0%" y2="100%">
-<stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>
-<stop offset="35%" stop-color="rgba(255,255,255,0.15)"/>
-<stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-</linearGradient>
-
-</defs>
-
-<!-- FIXES -->
-<circle class="ring-bg-fixes" cx="62.5" cy="62.5" r="52"/>
-<circle class="ring-fixes" cx="62.5" cy="62.5" r="52"/>
-
-<!-- VARIABLES -->
-<circle class="ring-bg-variables" cx="62.5" cy="62.5" r="42"/>
-<circle class="ring-variables" cx="62.5" cy="62.5" r="42"/>
-
-<!-- TOTAL -->
-<circle class="ring-bg-total" cx="62.5" cy="62.5" r="30"/>
-<circle class="ring-total" cx="62.5" cy="62.5" r="30"/>
-
-<!-- GLOSS -->
-<circle
-cx="62.5"
-cy="62.5"
-r="26"
-stroke="url(#ringGloss)"
-stroke-width="18"
-fill="none"
-opacity="0.25"
-/>
-
-</svg>
-
-</div>
-
-<div class="activity-stats">
-
-<div class="activity-item red">
-<span>Épargne</span>
-<strong id="resumeEpargne">0 €</strong>
-</div>
-
-<div class="activity-item green">
-<span>Dépenses</span>
-<strong id="resumeDepenses">0 €</strong>
-</div>
-
-<div class="activity-item blue">
-<span>Budget restant</span>
-<strong id="resumeRestant">0 €</strong>
-</div>
-
-</div>
-
-</div> <!-- activity-row -->
-
-<div class="activity-footer">
-<span class="arrow">›</span>
-</div>
-
-<!-- 🔥 INPUTS CACHÉS (IMPORTANT) -->
-<input type="hidden" id="epargneMois" value="300">
-<input type="hidden" id="epargneTotale" value="0">
-
-</div> <!-- 🔥 tu fermes ici -->
-
-<div class="cards-grid">
-
-  <!-- Revenus -->
-  <div class="card-mini" onclick="showSection('revenus')">
-    <div class="card-header">
-      <span class="title">Revenus</span>
-      <span class="arrow">›</span>
-    </div>
-    <div class="subtitle">Ce mois</div>
-    <div class="value" id="revenusDisplay">2000 €</div>
-  </div>
-
-  <!-- Dépenses -->
-<div class="card-mini" onclick="showSection('depenses')">
-    <div class="card-header">
-      <span class="title">Dépenses</span>
-      <span class="arrow">›</span>
-    </div>
-    <div class="subtitle">Total</div>
-    <div class="value" id="depensesDisplay">0 €</div>
-  </div>
-
-  <!-- Épargne prévue -->
-  <div class="card-mini" onclick="showSection('epargne')">
-    <div class="card-header">
-      <span class="title">Épargne prévue</span>
-      <span class="arrow">›</span>
-    </div>
-    <div class="subtitle">Objectif</div>
-    <div class="value" id="epargneMoisDisplay">300 €</div>
-  </div>
-
-  <!-- Épargne actuelle -->
-  <div class="card-mini" onclick="showSection('epargneTotale')">
-    <div class="card-header">
-      <span class="title">Épargne actuelle</span>
-      <span class="arrow">›</span>
-    </div>
-    <div class="subtitle">Total</div>
-    <div class="value" id="epargneTotaleDisplay">0 €</div>
-  </div>
-
-</div>
-
-<!-- 🔥 ANCIEN UI (désactivé)
-<div class="budget-card">...</div>
--->
-
-</div> <!-- FIN section-scroll -->
-</div> <!-- 🔥 AJOUT : fermeture section-budget -->
-
-<div class="section" id="section-depenses">
-
-  <div class="section-scroll">
-
-<div class="page-header page-header-depenses">
-
-  <button class="back-btn" onclick="goToSection(0)">←</button>
-
-  <div class="header-center">
-    <h1>Dépenses</h1>
-    <div class="page-date">Vue détaillée</div>
-  </div>
-
-  <button class="fab fab-add header-add" onclick="ouvrirModal()">+</button>
-
-</div>
-    <!-- TOTAL -->
-    <div class="card">
-      <div class="depenses-title">Total des dépenses</div>
-      <div class="value" id="depensesTotalPage">0 €</div>
-    </div>
-
-    <!-- LISTES -->
-    <div class="card depenses-card">
-
-      <div class="depenses-category">
-        <span>Dépenses fixes</span>
-        <span id="totalFixesPage">0 €</span>
-      </div>
-
-      <div id="depensesFixesPage"></div>
-
-      <div class="depenses-category">
-        <span>Dépenses variables</span>
-        <span id="totalVariablesPage">0 €</span>
-      </div>
-
-      <div id="depensesVariablesPage"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- 💰 SECTION REVENUS -->
-<div class="section" id="section-revenus">
-  <div class="section-scroll">
-
-    <div class="page-header page-header-depenses">
-
-      <button class="back-btn" onclick="goToSection(0)">←</button>
-
-      <div class="header-center">
-        <h1>Revenus</h1>
-        <div class="page-date">Ce mois</div>
-      </div>
-
-      <button class="fab fab-add header-add" onclick="ouvrirModalRevenu()">+</button>
-
-    </div>
-
-    <!-- TOTAL -->
-    <div class="card">
-  <div class="depenses-title">Ce mois-ci • <span id="moisActuelLabel"></span></div>
-  <div class="value" id="revenusMois">0 €</div>
-</div>
-
-<div class="card">
-  <div class="depenses-title">Espèces</div>
-
-  <div class="especes-container">
-
-    <button class="especes-btn" onclick="retirerEspeces()">−</button>
-
-    <div class="value" id="especesValue">0 €</div>
-
-    <button class="especes-btn" onclick="ajouterEspeces()">+</button>
-
-  </div>
-</div>
-
-    <div class="card">
-      <div class="depenses-title">Total revenus</div>
-      <div class="value" id="revenusPage">0 €</div>
-    </div>
-
-    <!-- 🔥 LISTE DES REVENUS (ICI) -->
-    <div class="card">
-      <div class="depenses-title">Détail des revenus</div>
-      <div id="revenusList"></div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- 🎯 SECTION ÉPARGNE PRÉVUE -->
-<div class="section" id="section-epargne">
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <button class="back-btn" onclick="goToSection(0)">←</button>
-
-      <div class="header-center">
-        <h1>Épargne prévue</h1>
-        <div class="page-date">Objectif</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="depenses-title">Objectif mensuel</div>
-      <div class="value" id="epargneMoisPage">0 €</div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- 🏦 SECTION ÉPARGNE ACTUELLE -->
-<div class="section" id="section-epargneTotale">
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <button class="back-btn" onclick="goToSection(0)">←</button>
-
-      <div class="header-center">
-        <h1>Épargne actuelle</h1>
-        <div class="page-date">Total</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="depenses-title">Épargne cumulée</div>
-      <div class="value" id="epargneTotalePage">0 €</div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- 🎯 SECTION OBJECTIFS -->
-<div class="section" id="section-objectifs">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>🎯 Objectifs</h3>
-
-<div class="objectif">
-<p>Fonds de sécurité (6000€)</p>
-<div class="progress">
-<div id="bar1" class="progress-bar"></div>
 </div>
 </div>
 
-<div class="objectif">
-<p>Vacances (1500€)</p>
-<div class="progress">
-<div id="bar2" class="progress-bar"></div>
-</div>
-</div>
-
-<div class="objectif">
-<p>Projet perso (3000€)</p>
-<div class="progress">
-<div id="bar3" class="progress-bar"></div>
-</div>
-</div>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-objectifs -->
-
-
-<!-- 📅 SECTION HISTORIQUE -->
-<div class="section" id="section-historique">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>📅 Historique</h3>
-
-<label>Choisir un mois</label>
-<input type="month" id="moisSelect">
-
-<button onclick="ajouterMois()">Ajouter ce mois</button>
-
-<table id="historiqueTable">
-<thead>
-<tr>
-<th>Mois</th>
-<th>Dépenses</th>
-<th>Épargne</th>
-<th>❌</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-
-<canvas id="historyChart" height="180"></canvas>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-historique -->
-
-
-<!-- ⚙️ SECTION SAUVEGARDE -->
-<div class="section" id="section-sauvegarde">
-
-  <div class="section-scroll">
-
-    <div class="card">
-
-<h3>💾 Sauvegarde</h3>
-
-<button onclick="sauvegardeAuto()">
-💾 Sauvegarder sur iCloud
-</button>
-
-<button class="restore-btn" onclick="restaurerDepuisIcloud()">
-📥 Restaurer depuis iCloud
-</button>
-
-<input
-type="file"
-id="fileInput"
-accept=".json"
-onchange="handleImport(event)"
-hidden>
-
-</div>
-
-</div> <!-- card -->
-</div> <!-- section-scroll -->
-</div> <!-- section-sauvegarde -->
-
-
-</div> <!-- FIN sections-container -->
-
-</div> <!-- FIN CONTAINER PRINCIPAL -->
-
-
-<!-- 🧭 TABBAR EN BAS -->
+<!-- 🧭 TABBAR -->
 
 <div class="tabbar">
 
@@ -488,49 +72,57 @@ hidden>
 
 </div>
 
-</script>
-
-<!-- TOAST EN DEHORS DU SCRIPT -->
+<!-- TOAST -->
 <div id="toast">✔ Sauvegardé</div>
 
+<!-- MODAL DEPENSE -->
 <div id="depenseModal" class="modal" onclick="fermerModal()">
-  <div class="modal-content" onclick="event.stopPropagation()">
+<div class="modal-content" onclick="event.stopPropagation()">
 
-    <h3>Nouvelle dépense</h3>
+<h3>Nouvelle dépense</h3>
 
-    <input type="text" id="depenseNom" placeholder="Nom">
-    <input type="number" id="depenseMontant" placeholder="Montant">
+<input type="text" id="depenseNom" placeholder="Nom">
+<input type="number" id="depenseMontant" placeholder="Montant">
 
-    <select id="typeDepense">
-      <option value="fixe">Dépense fixe</option>
-      <option value="variable">Dépense variable</option>
-    </select>
-     
-    <div class="modal-actions">
-      <button onclick="fermerModal()" class="modal-cancel">Annuler</button>
-      <button onclick="validerDepense()" class="modal-add">Ajouter</button>
-    </div>
+<select id="typeDepense">
+<option value="fixe">Dépense fixe</option>
+<option value="variable">Dépense variable</option>
+</select>
 
-  </div>
+<div class="modal-actions">
+<button onclick="fermerModal()">Annuler</button>
+<button onclick="validerDepense()">Ajouter</button>
 </div>
 
-<!-- ✅ MODAL REVENU SÉPARÉ -->
+</div>
+</div>
+
+<!-- MODAL REVENU -->
 <div id="revenuModal" class="modal" onclick="fermerModalRevenu()">
-  <div class="modal-content" onclick="event.stopPropagation()">
+<div class="modal-content" onclick="event.stopPropagation()">
 
-    <h3>Nouveau revenu</h3>
+<h3>Nouveau revenu</h3>
 
-    <input type="text" id="revenuNom" placeholder="Ex: Salaire">
-    <input type="number" id="revenuMontant" placeholder="Montant">
-    <input type="month" id="revenuMois">
+<input type="text" id="revenuNom" placeholder="Ex: Salaire">
+<input type="number" id="revenuMontant">
+<input type="month" id="revenuMois">
 
-    <div class="modal-actions">
-      <button onclick="fermerModalRevenu()" class="modal-cancel">Annuler</button>
-      <button onclick="validerRevenu()" class="modal-add">Ajouter</button>
-    </div>
-
-  </div>
+<div class="modal-actions">
+<button onclick="fermerModalRevenu()">Annuler</button>
+<button onclick="validerRevenu()">Ajouter</button>
 </div>
+
+</div>
+</div>
+
+<!-- 🔌 SCRIPTS -->
+
+<script src="storage.js"></script>
+<script src="depenses.js"></script>
+<script src="revenus.js"></script>
+<script src="historique.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>

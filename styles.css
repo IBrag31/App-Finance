@@ -14,9 +14,8 @@ RESET
 
 html, body{
   background:#000;
-  height:100%;
-  overflow:auto;
-  max-width:100%;
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
 body{
@@ -159,7 +158,7 @@ SECTIONS
 .section{
   display:none;
   width:100%;
-  min-height:100%;
+  min-height:100vh;
 }
 
 .section.active{
@@ -167,17 +166,20 @@ SECTIONS
 }
 
 .sections-container{
-  height:100%;
-  overflow:visible;
+  width:100%;
+  min-height:100vh;
 }
 
 .section-scroll{
-  height:100%;
+  width:100%;
+  min-height:100vh;
+
   display:flex;
   flex-direction:column;
   gap:16px;
 
   padding:0 8px 120px 8px;
+  padding-bottom:calc(120px + env(safe-area-inset-bottom));
 
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
@@ -241,5 +243,6 @@ APP CONTAINER
 
 .app-container{
   width:100%;
-  padding-bottom:calc(90px + env(safe-area-inset-bottom));
+  max-width:100vw;
+  overflow-x:hidden;
 }

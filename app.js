@@ -134,37 +134,6 @@ function initUI(){
 }
 
 // =========================
-// FAB MENU
-// =========================
-
-function openQuickAdd(){
-
-  const menu = document.getElementById("fabMenu");
-  if(!menu) return;
-
-  const isOpen = menu.classList.contains("show");
-
-  menu.classList.toggle("show");
-
-  // petit feedback visuel
-  document.querySelector(".fab")?.classList.toggle("active", !isOpen);
-}
-
-// fermeture automatique si clic ailleurs
-document.addEventListener("click", (e)=>{
-
-  const menu = document.getElementById("fabMenu");
-  const fab = document.querySelector(".fab");
-
-  if(!menu || !fab) return;
-
-  if(!menu.contains(e.target) && !fab.contains(e.target)){
-    menu.classList.remove("show");
-    fab.classList.remove("active");
-  }
-});
-
-// =========================
 // INIT APP
 // =========================
 

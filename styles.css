@@ -1,4 +1,4 @@
-/* =========================
+	/* =========================
 RESET
 ========================= */
 
@@ -306,4 +306,14 @@ APP CONTAINER
 .budget-card{
   .budget-card{
   margin:0 4px 12px 4px;
+}
+
+.back-btn{
+  font-size:20px;
+  cursor:pointer;
+  opacity:0.7;
+}
+
+.back-btn:active{
+  transform:scale(0.9);
 }

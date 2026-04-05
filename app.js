@@ -96,7 +96,7 @@ function updateRing(){
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargne));
-  setText("epargneTotaleDisplay", euro(getEpargneTotale());
+  setText("epargneTotaleDisplay", euro(getEpargneTotale()));
 }
 
 // =========================

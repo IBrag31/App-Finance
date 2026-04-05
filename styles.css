@@ -30,10 +30,34 @@ TITRES
 ========================= */
 
 h1{
-  text-align:center;
+  text-align:left;
   font-weight:700;
-  font-size:24px;
-  margin-bottom:25px;
+  font-size:28px;
+
+  padding-left:calc(16px + env(safe-area-inset-left));
+  margin-bottom:10px;
+}
+
+.page-header{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+
+  padding-left:calc(16px + env(safe-area-inset-left));
+  padding-right:16px;
+
+  margin-bottom:10px;
+}
+
+.page-header h1{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+#todayDate{
+  font-size:16px;
+  opacity:0.7;
 }
 
 /* =========================

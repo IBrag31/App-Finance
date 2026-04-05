@@ -32,11 +32,16 @@ function calculTotalDepenses(){
 // =========================
 
 function renderDepensesPage(){
+  
+  alert("renderDepensesPage lancé");
 
   const fixes = document.getElementById("depensesFixesPage");
   const variables = document.getElementById("depensesVariablesPage");
 
-  if(!fixes || !variables) return;
+  if(!fixes || !variables){
+  setTimeout(renderDepensesPage, 100);
+  return;
+}
 
   fixes.innerHTML = "";
   variables.innerHTML = "";

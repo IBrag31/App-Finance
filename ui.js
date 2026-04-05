@@ -32,22 +32,26 @@ let currentSectionIndex = 0;
 
 function showSection(name, element){
 
-  // RESET
   document.querySelectorAll(".section")
     .forEach(sec => sec.classList.remove("active"));
 
   document.querySelectorAll(".tab")
     .forEach(tab => tab.classList.remove("active"));
 
-  // ACTIVATE
   const section = document.getElementById("section-" + name);
   if(section) section.classList.add("active");
 
   if(element) element.classList.add("active");
 
-  currentSectionIndex = sections.indexOf(name);
+  // 🔥 RENDER AUTO
+  if(name === "revenus"){
+    renderRevenusPage?.();
+  }
 
-  // SCROLL RESET
+  if(name === "depenses"){
+    renderDepensesPage?.();
+  }
+
   const scroll = section?.querySelector(".section-scroll");
   if(scroll){
     scroll.scrollTop = 0;

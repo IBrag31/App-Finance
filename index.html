@@ -3,7 +3,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
@@ -12,17 +11,15 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>Finance+</title>
 
-<!-- 🔥 CSS -->
 <link rel="stylesheet" href="styles.css">
 
 </head>
 
 <body>
 
-<!-- APP -->
 <div class="app-container">
 
- <!-- ========================= -->
+<!-- ========================= -->
 <!-- 🏠 RÉSUMÉ -->
 <!-- ========================= -->
 
@@ -34,13 +31,11 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
       <div id="todayDate"></div>
     </div>
 
+    <!-- ✅ FIX STRUCTURE -->
     <div class="card budget-card">
       <h2>Budget</h2>
-      
-      <div class="rings-container">
-  <!-- SVG rings ici -->
-</div>
-      </div>
+
+      <div class="rings-container"></div>
 
       <div class="resume-info">
         <div id="resumeDepenses"></div>
@@ -63,13 +58,14 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
         <div id="depensesDisplay">0 €</div>
       </div>
 
-      <div class="card small-card">
+      <!-- 💥 CLICKABLE -->
+      <div class="card small-card clickable" onclick="showSection('epargne-prevue')">
         <h3>Épargne prévue</h3>
         <span>Objectif</span>
         <div id="epargneMoisDisplay"></div>
       </div>
 
-      <div class="card small-card">
+      <div class="card small-card clickable" onclick="showSection('epargne-totale')">
         <h3>Épargne actuelle</h3>
         <span>Total</span>
         <div id="epargneTotaleDisplay"></div>
@@ -79,6 +75,10 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   </div>
 </div>
+
+<!-- ========================= -->
+<!-- 💰 REVENUS -->
+<!-- ========================= -->
 
 <div class="section" id="section-revenus">
   <div class="section-scroll">
@@ -92,6 +92,10 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   </div>
 </div>
+
+<!-- ========================= -->
+<!-- 💸 DÉPENSES -->
+<!-- ========================= -->
 
 <div class="section" id="section-depenses">
   <div class="section-scroll">
@@ -111,24 +115,74 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   </div>
 </div>
 
-  <!-- ========================= -->
-  <!-- ⚙️ RÉGLAGES -->
-  <!-- ========================= -->
+<!-- ========================= -->
+<!-- 🟣 ÉPARGNE PRÉVUE -->
+<!-- ========================= -->
 
-  <div class="section" id="section-settings">
-    <div class="section-scroll">
+<div class="section" id="section-epargne-prevue">
+  <div class="section-scroll">
 
-      <div class="card">
-        <button onclick="sauvegardeAuto()">💾 Sauvegarder</button>
-        <button onclick="restaurerDepuisIcloud()">📥 Restaurer</button>
-      </div>
-
-      <div class="card">
-        <button onclick="resetApp()">🗑️ Reset données</button>
-      </div>
-
+    <div class="page-header">
+      <h1>Épargne prévue</h1>
+      <div class="back-btn" onclick="showSection('resume')">←</div>
     </div>
+
+    <div class="card">
+      <h3>Objectif mensuel</h3>
+      <div id="epargneMoisPage"></div>
+    </div>
+
+    <div class="card">
+      <h3>Historique</h3>
+      <div id="historiqueEpargneMois"></div>
+    </div>
+
   </div>
+</div>
+
+<!-- ========================= -->
+<!-- 🟢 ÉPARGNE ACTUELLE -->
+<!-- ========================= -->
+
+<div class="section" id="section-epargne-totale">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <h1>Épargne actuelle</h1>
+      <div class="back-btn" onclick="showSection('resume')">←</div>
+    </div>
+
+    <div class="card">
+      <h3>Total épargne</h3>
+      <div id="epargneTotalePage"></div>
+    </div>
+
+    <div class="card">
+      <h3>Historique</h3>
+      <div id="historiqueEpargneTotale"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- ⚙️ RÉGLAGES -->
+<!-- ========================= -->
+
+<div class="section" id="section-settings">
+  <div class="section-scroll">
+
+    <div class="card">
+      <button onclick="sauvegardeAuto()">💾 Sauvegarder</button>
+      <button onclick="restaurerDepuisIcloud()">📥 Restaurer</button>
+    </div>
+
+    <div class="card">
+      <button onclick="resetApp()">🗑️ Reset données</button>
+    </div>
+
+  </div>
+</div>
 
 </div>
 
@@ -143,7 +197,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   </div>
 </div>
 
-<!-- 🔥 SCRIPTS -->
 <script src="storage.js"></script>
 <script src="depenses.js"></script>
 <script src="revenus.js"></script>

@@ -24,7 +24,8 @@ function updateRing(){
 
   const revenus = getRevenusDuMois(mois) + especes;
 
-  const epargne = +document.getElementById("epargneMois")?.value || 0;
+  const epargneInput = document.getElementById("epargneMois");
+  const epargne = Number(epargneInput?.value || 0);
   const depenses = calculTotalDepenses();
 
   const budgetMax = Math.max(revenus - epargne, 0);

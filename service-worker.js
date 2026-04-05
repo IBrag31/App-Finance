@@ -1,65 +1,69 @@
-// 🔥 FORCE UPDATE DU SERVICE WORKER
+// =========================
+// VERSION
+// =========================
+const CACHE_NAME = "financeplus-v1.02";
 
-self.addEventListener("install", () => {
-  self.skipWaiting();
-});
-
-self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
-});
-
-const CACHE_NAME = "financeplus-v1.01";
-
+// =========================
+// FILES TO CACHE
+// =========================
 const urlsToCache = [
-"./",
-"./index.html"
+  "./",
+  "./index.html",
+  "./app.js",
+  "./revenus.js"
 ];
 
+// =========================
 // INSTALL
-self.addEventListener("install", event => {
+// =========================
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
 
-self.skipWaiting();
-
-event.waitUntil(
-caches.open(CACHE_NAME)
-.then(cache => {
-return cache.addAll(urlsToCache);
-})
-);
-
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(urlsToCache);
+    })
+  );
 });
 
+// =========================
 // ACTIVATE
-self.addEventListener("activate", event => {
+// =========================
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      );
+    })
+  );
 
-event.waitUntil(
-caches.keys().then(keys => {
-
-return Promise.all(
-keys.map(key => {
-
-if(key !== CACHE_NAME){
-return caches.delete(key);
-}
-
-})
-);
-
-})
-);
-
-self.clients.claim();
-
+  self.clients.claim();
 });
 
-// FETCH
-self.addEventListener("fetch", event => {
+// =========================
+// FETCH (CACHE FIRST + UPDATE)
+// =========================
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
 
-event.respondWith(
-caches.match(event.request)
-.then(response => {
-return response || fetch(event.request);
-})
-);
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
 
+          // On met à jour le cache avec la nouvelle version
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, networkResponse.clone());
+          });
+
+          return networkResponse;
+        })
+        .catch(() => cachedResponse); // fallback offline
+
+      // Si on a du cache → on renvoie direct (rapide ⚡)
+      return cachedResponse || fetchPromise;
+    })
+  );
 });

@@ -115,8 +115,6 @@ function initUI(){
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  if(typeof updateObjectifs === "function") updateObjectifs();
-
   initUI();
 
   setTimeout(updateRing, 200);

@@ -254,12 +254,6 @@ APP CONTAINER
   overflow-x:hidden;
 }
 
-.ring-fixes,
-.ring-variables,
-.ring-total{
-  transition:none; /* 🔥 important */
-}
-
 .cards-grid{
   display:grid;
   grid-template-columns:1fr 1fr;

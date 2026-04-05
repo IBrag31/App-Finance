@@ -33,16 +33,33 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <!-- ✅ FIX STRUCTURE -->
     <div class="card budget-card">
-      <h2>Budget</h2>
+  <h2>Budget</h2>
 
-      <div class="rings-container"></div>
-
-      <div class="resume-info">
-        <div id="resumeDepenses"></div>
-        <div id="resumeRestant"></div>
-        <div id="resumeEpargne"></div>
-      </div>
+  <!-- 💸 DEPENSES -->
+  <div class="budget-item">
+    <div class="budget-label">
+      Dépenses
+      <span id="budgetDepensesText">0 €</span>
     </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill depenses" id="budgetDepensesBar"></div>
+    </div>
+  </div>
+
+  <!-- 💰 EPARGNE -->
+  <div class="budget-item">
+    <div class="budget-label">
+      Épargne
+      <span id="budgetEpargneText">0 €</span>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill epargne" id="budgetEpargneBar"></div>
+    </div>
+  </div>
+
+</div>
 
     <div class="cards-grid">
 

@@ -271,3 +271,27 @@ APP CONTAINER
 .ring-total{
   transition:none; /* 🔥 important */
 }
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.small-card{
+  padding:16px;
+  min-height:120px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.small-card span{
+  font-size:13px;
+  opacity:0.6;
+}
+
+.small-card div{
+  font-size:22px;
+  font-weight:700;
+}

@@ -24,28 +24,22 @@ function showToast(message){
 }
 
 // =========================
-// NAVIGATION
+// NAVIGATION (SIMPLIFIÉE)
 // =========================
 
-const sections = ["budget","objectifs","historique","sauvegarde"];
+const sections = ["resume","settings"];
 let currentSectionIndex = 0;
 
 function showSection(name, element){
 
-  // =========================
-  // RESET UI
-  // =========================
-
+  // RESET
   document.querySelectorAll(".section")
     .forEach(sec => sec.classList.remove("active"));
 
   document.querySelectorAll(".tab")
     .forEach(tab => tab.classList.remove("active"));
 
-  // =========================
-  // ACTIVATE SECTION
-  // =========================
-
+  // ACTIVATE
   const section = document.getElementById("section-" + name);
   if(section) section.classList.add("active");
 
@@ -53,43 +47,16 @@ function showSection(name, element){
 
   currentSectionIndex = sections.indexOf(name);
 
-  // =========================
-  // RENDER DYNAMIQUE (SAFE)
-  // =========================
-
-  if(name === "depenses"){
-    if(typeof renderDepensesPage === "function"){
-      renderDepensesPage();
-    }
-  }
-
-  if(name === "revenus"){
-    if(typeof renderRevenusPage === "function"){
-      renderRevenusPage();
-    }
-  }
-
-  if(name === "historique"){
-    if(typeof initChart === "function") initChart();
-    if(typeof afficherHistorique === "function") afficherHistorique();
-    if(typeof majGraph === "function") majGraph();
-  }
-
-  if(name === "objectifs"){
-    if(typeof updateObjectifs === "function"){
-      updateObjectifs();
-    }
-  }
-
-  // =========================
-  // BONUS UX (scroll reset)
-  // =========================
-
+  // SCROLL RESET
   const scroll = section?.querySelector(".section-scroll");
   if(scroll){
     scroll.scrollTop = 0;
   }
 }
+
+// =========================
+// NAVIGATION SWIPE (optionnel)
+// =========================
 
 function goToSection(index){
 
@@ -124,8 +91,10 @@ function fermerModal(){
 
 function ouvrirModalRevenu(){
 
-  // 🔥 auto mois actuel
-  document.getElementById("revenuMois").value = getMoisActuel();
+  const moisInput = document.getElementById("revenuMois");
+  if(moisInput){
+    moisInput.value = getMoisActuel();
+  }
 
   document.getElementById("revenuModal")?.classList.add("show");
 }

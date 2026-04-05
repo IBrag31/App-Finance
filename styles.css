@@ -252,13 +252,3 @@ APP CONTAINER
 .ring-total{
   transition:none; /* 🔥 important */
 }
-
-#splash{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}

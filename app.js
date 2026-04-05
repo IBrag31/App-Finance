@@ -130,8 +130,6 @@ animateRing(".ring-total", 188 - totalP * 188);
 // =========================
 
 function initUI(){
-  renderDepensesPage();
-  renderRevenusPage();
   renderEspeces();
 }
 

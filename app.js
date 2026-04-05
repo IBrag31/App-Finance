@@ -115,9 +115,6 @@ function initUI(){
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  if(typeof initChart === "function") initChart();
-  if(typeof afficherHistorique === "function") afficherHistorique();
-  if(typeof majGraph === "function") majGraph();
   if(typeof updateObjectifs === "function") updateObjectifs();
 
   initUI();

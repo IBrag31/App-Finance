@@ -24,38 +24,7 @@ function setText(id, value){
 // CORE APP
 // =========================
 
-function animateRing(selector, targetOffset){
-
-  const el = document.querySelector(selector);
-  if(!el) return;
-
-  const current = parseFloat(
-    el.style.strokeDashoffset || targetOffset
-  );
-
-  const duration = 600;
-  const start = performance.now();
-
-  function animate(time){
-
-    const progress = Math.min((time - start) / duration, 1);
-
-    // easeOut (fluide)
-    const eased = 1 - Math.pow(1 - progress, 3);
-
-    const value = current + (targetOffset - current) * eased;
-
-    el.style.strokeDashoffset = value;
-
-    if(progress < 1){
-      requestAnimationFrame(animate);
-    }
-  }
-
-  requestAnimationFrame(animate);
-}
-
-function updateRing(){
+function updateBudget(){
 
   const mois = getMoisActuel();
 
@@ -68,61 +37,42 @@ function updateRing(){
   const depenses = calculTotalDepenses();
   const budgetMax = Math.max(revenus - epargne, 0);
 
-  let fixes = 0;
-  let variables = 0;
-
-  depensesDetail.forEach(d=>{
-    const m = Number(d.montant) || 0;
-    if(d.type === "fixe") fixes += m;
-    else variables += m;
-  });
-
-  // =========================
-  // UI CHIFFRES
-  // =========================
-
-  setText("revenusPage", euro(revenus));
-  setText("epargneMoisPage", euro(epargne));
-  setText("epargneTotalePage", euro(getEpargneTotale()));
-
   // =========================
   // CALCUL POURCENTAGES
   // =========================
 
-  const fixesP = budgetMax ? fixes / budgetMax : 0;
-  const varP = budgetMax ? variables / budgetMax : 0;
-  const totalP = budgetMax ? depenses / budgetMax : 0;
+  const depensesP = budgetMax ? (depenses / budgetMax) * 100 : 0;
+  const epargneP = revenus ? (getEpargneTotale() / revenus) * 100 : 0;
 
   // =========================
-  // RINGS (ANIMÉS)
+  // BARRES BUDGET
   // =========================
 
-animateRing(".ring-fixes", 326 - fixesP * 326);
-animateRing(".ring-variables", 264 - varP * 264);
-animateRing(".ring-total", 188 - totalP * 188);
+  setText("budgetDepensesText", euro(depenses));
+  setText("budgetEpargneText", euro(getEpargneTotale()));
+
+  const depBar = document.getElementById("budgetDepensesBar");
+  const epBar = document.getElementById("budgetEpargneBar");
+
+  if(depBar) depBar.style.width = Math.min(depensesP,100) + "%";
+  if(epBar) epBar.style.width = Math.min(epargneP,100) + "%";
 
   // =========================
-  // RÉSUMÉ
-  // =========================
-
-  setText("resumeDepenses", euro(depenses));
-
-  const restant = Math.max(budgetMax - depenses, 0);
-  setText("resumeRestant", euro(restant));
-
-  setText(
-    "resumeEpargne",
-    euro(getEpargneTotale()) + " / " + euro(5000)
-  );
-
-  // =========================
-  // DASHBOARD
+  // DASHBOARD (CARTES)
   // =========================
 
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargne));
   setText("epargneTotaleDisplay", euro(getEpargneTotale()));
+
+  // =========================
+  // PAGES DÉTAILLÉES
+  // =========================
+
+  setText("revenusPage", euro(revenus));
+  setText("epargneMoisPage", euro(epargne));
+  setText("epargneTotalePage", euro(getEpargneTotale()));
 }
 
 // =========================
@@ -130,7 +80,7 @@ animateRing(".ring-total", 188 - totalP * 188);
 // =========================
 
 function initUI(){
-  renderEspeces();
+  renderEspeces?.();
 }
 
 // =========================
@@ -141,7 +91,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   initUI();
 
-  setTimeout(updateRing, 200);
+  // 🔥 mise à jour budget après chargement
+  setTimeout(()=>{
+    updateBudget();
+  }, 200);
+
+  // =========================
+  // DATE
+  // =========================
 
   const dateElement = document.getElementById("todayDate");
   if(dateElement){

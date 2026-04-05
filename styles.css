@@ -49,7 +49,7 @@ CARDS
 
 .card{
   background:#1c1c1e;
-  border-radius:26px;
+  border-radius:22px;
   border:1px solid rgba(255,255,255,0.05);
   box-shadow:0 2px 12px rgba(0,0,0,0.35);
   padding:20px;
@@ -268,10 +268,17 @@ APP CONTAINER
 
 .small-card{
   padding:16px;
-  min-height:120px;
+
+  height:110px; /* 🔥 au lieu de min-height */
+
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+}
+
+.small-card h3{
+  font-size:16px;
+  font-weight:600;
 }
 
 .small-card span{
@@ -280,7 +287,7 @@ APP CONTAINER
 }
 
 .small-card div{
-  font-size:22px;
+  font-size:20px; /* 🔥 un peu réduit */
   font-weight:700;
 }
 

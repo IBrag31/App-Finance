@@ -30,12 +30,8 @@ TITRES
 ========================= */
 
 h1{
-  text-align:left;
   font-weight:700;
   font-size:28px;
-
-  padding-left:calc(16px + env(safe-area-inset-left));
-  margin-bottom:10px;
 }
 
 .page-header{

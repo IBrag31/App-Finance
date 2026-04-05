@@ -155,5 +155,20 @@ window.addEventListener("DOMContentLoaded", () => {
       dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
   }
 
+  // 🔥 SPLASH
+  const splash = document.getElementById("splash");
+
+  if(splash){
+    splash.style.transition = "opacity 0.4s ease";
+
+    setTimeout(()=>{
+      splash.style.opacity = "0";
+    }, 200);
+
+    setTimeout(()=>{
+      splash.remove();
+    }, 600);
+  }
+
   console.log("APP READY 🚀");
 });

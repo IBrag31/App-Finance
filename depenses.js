@@ -33,7 +33,7 @@ function calculTotalDepenses(){
 
 function renderDepensesPage(){
   
-  alert("renderDepensesPage lancé");
+  console.log("depensesDetail:", depensesDetail);
 
   const fixes = document.getElementById("depensesFixesPage");
   const variables = document.getElementById("depensesVariablesPage");

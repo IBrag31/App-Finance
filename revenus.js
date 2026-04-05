@@ -4,12 +4,9 @@ console.log("revenus.js loaded");
 // DATA
 // =========================
 
-let revenusDetail =
-JSON.parse(localStorage.getItem("revenusDetail")) || [];
+let revenusDetail = JSON.parse(localStorage.getItem("revenusDetail") || "[]");
 
-let especes =
-Number(localStorage.getItem("especes")) || 0;
-
+let especes = Number(localStorage.getItem("especes") || 0);
 // =========================
 // RENDER
 // =========================

@@ -15,7 +15,7 @@ RESET
 html, body{
   background:#000;
   height:100%;
-  overflow:hidden;
+  overflow:auto;
   max-width:100%;
 }
 
@@ -168,7 +168,7 @@ SECTIONS
 
 .sections-container{
   height:100%;
-  overflow:hidden;
+  overflow:visible;
 }
 
 .section-scroll{

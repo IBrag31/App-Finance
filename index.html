@@ -48,21 +48,33 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
         </div>
       </div>
 
-      <div class="card clickable" onclick="openRevenus()">
-        <h3>Revenus</h3>
-        <div id="revenusDisplay">0 €</div>
-      </div>
+      <div class="cards-grid">
 
-      <div class="card clickable" onclick="openDepenses()">
-        <h3>Dépenses</h3>
-        <div id="depensesDisplay">0 €</div>
-      </div>
+  <div class="card small-card clickable" onclick="openRevenus()">
+    <h3>Revenus</h3>
+    <span>Ce mois</span>
+    <div id="revenusDisplay">0 €</div>
+  </div>
 
-      <div class="card">
-        <h3>Épargne</h3>
-        <div id="epargneMoisDisplay"></div>
-        <div id="epargneTotaleDisplay"></div>
-      </div>
+  <div class="card small-card clickable" onclick="openDepenses()">
+    <h3>Dépenses</h3>
+    <span>Total</span>
+    <div id="depensesDisplay">0 €</div>
+  </div>
+
+  <div class="card small-card">
+    <h3>Épargne prévue</h3>
+    <span>Objectif</span>
+    <div id="epargneMoisDisplay"></div>
+  </div>
+
+  <div class="card small-card">
+    <h3>Épargne actuelle</h3>
+    <span>Total</span>
+    <div id="epargneTotaleDisplay"></div>
+  </div>
+
+</div>
 
     </div>
   </div>

@@ -287,102 +287,16 @@ APP CONTAINER
 /* HEADER FLEX UPDATE */
 .page-header{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
+  flex-direction:column;
+  align-items:flex-start;
 
   padding-left:calc(16px + env(safe-area-inset-left));
   padding-right:16px;
 
   margin-bottom:6px;
-  position:relative;
 }
 
 .budget-card{
   .budget-card{
   margin:0 4px 12px 4px;
-}
-
-.header-left{
-  display:flex;
-  flex-direction:column;
-}
-
-/* BOUTON + */
-.fab{
-  width:44px;
-  height:44px;
-
-  border-radius:50%;
-  border:none;
-
-  background:#22c55e;
-  color:white;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  box-shadow:0 6px 18px rgba(34,197,94,0.35);
-
-  cursor:pointer;
-  transition:all 0.15s ease;
-}
-
-/* INTERACTION */
-.fab:active{
-  transform:scale(0.92) rotate(45deg);
-  box-shadow:0 3px 10px rgba(34,197,94,0.25);
-}
-
-.fab.active{
-  transform:rotate(45deg);
-}
-
-
-/* MENU + */
-.fab-menu{
-  position:fixed;
-  top:calc(80px + env(safe-area-inset-top));
-  right:20px;
-
-
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-
-  opacity:0;
-  pointer-events:none;
-  transform:translateY(10px);
-
-  transition:all 0.2s ease;
-}
-
-/* ACTIVE */
-.fab-menu.show{
-  opacity:1;
-  pointer-events:auto;
-  transform:translateY(0);
-}
-
-/* ITEMS */
-.fab-item{
-  background:#1c1c1e;
-  color:white;
-
-  border:none;
-  border-radius:14px;
-
-  padding:12px 16px;
-
-  font-size:15px;
-  font-weight:500;
-
-  box-shadow:0 8px 20px rgba(0,0,0,0.4);
-
-  white-space:nowrap;
-}
-
-/* CLICK */
-.fab-item:active{
-  transform:scale(0.96);
 }

@@ -127,6 +127,13 @@ function getEpargneTotale(){
 
 function updateObjectifs(){
 
+  const bar1 = document.getElementById("bar1");
+  const bar2 = document.getElementById("bar2");
+  const bar3 = document.getElementById("bar3");
+
+  // 🔥 sécurité DOM
+  if(!bar1 || !bar2 || !bar3) return;
+
   let total = getEpargneTotale();
 
   const obj1 = 6000;
@@ -134,15 +141,15 @@ function updateObjectifs(){
   const obj3 = 3000;
 
   const s1 = Math.min(total, obj1);
-  document.getElementById("bar1").style.width = (s1/obj1)*100+"%";
+  bar1.style.width = (s1/obj1)*100 + "%";
 
   total -= s1;
 
   const s2 = Math.min(total, obj2);
-  document.getElementById("bar2").style.width = (s2/obj2)*100+"%";
+  bar2.style.width = (s2/obj2)*100 + "%";
 
   total -= s2;
 
   const s3 = Math.min(total, obj3);
-  document.getElementById("bar3").style.width = (s3/obj3)*100+"%";
+  bar3.style.width = (s3/obj3)*100 + "%";
 }

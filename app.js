@@ -137,4 +137,4 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   console.log("APP READY 🚀");
-};
+});

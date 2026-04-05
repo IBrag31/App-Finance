@@ -32,32 +32,62 @@ let currentSectionIndex = 0;
 
 function showSection(name, element){
 
+  // =========================
+  // RESET UI
+  // =========================
+
   document.querySelectorAll(".section")
     .forEach(sec => sec.classList.remove("active"));
 
   document.querySelectorAll(".tab")
     .forEach(tab => tab.classList.remove("active"));
 
-  const section = document.getElementById("section-"+name);
+  // =========================
+  // ACTIVATE SECTION
+  // =========================
+
+  const section = document.getElementById("section-" + name);
   if(section) section.classList.add("active");
 
   if(element) element.classList.add("active");
 
   currentSectionIndex = sections.indexOf(name);
 
-  // 🔥 RENDER DYNAMIQUE
+  // =========================
+  // RENDER DYNAMIQUE (SAFE)
+  // =========================
+
   if(name === "depenses"){
-    renderDepensesPage();
+    if(typeof renderDepensesPage === "function"){
+      renderDepensesPage();
+    }
   }
 
   if(name === "revenus"){
-    renderRevenusPage();
+    if(typeof renderRevenusPage === "function"){
+      renderRevenusPage();
+    }
   }
 
   if(name === "historique"){
-    initChart();
-    afficherHistorique();
-    majGraph();
+    if(typeof initChart === "function") initChart();
+    if(typeof afficherHistorique === "function") afficherHistorique();
+    if(typeof majGraph === "function") majGraph();
+  }
+
+  if(name === "objectifs"){
+    if(typeof updateObjectifs === "function"){
+      updateObjectifs();
+    }
+  }
+
+  // =========================
+  // BONUS UX (scroll reset)
+  // =========================
+
+  const scroll = section?.querySelector(".section-scroll");
+  if(scroll){
+    scroll.scrollTop = 0;
   }
 }
 

@@ -32,18 +32,23 @@ let currentSectionIndex = 0;
 
 function showSection(name, element){
 
+  // RESET
   document.querySelectorAll(".section")
     .forEach(sec => sec.classList.remove("active"));
 
   document.querySelectorAll(".tab")
     .forEach(tab => tab.classList.remove("active"));
 
+  // ACTIVATE
   const section = document.getElementById("section-" + name);
   if(section) section.classList.add("active");
 
   if(element) element.classList.add("active");
 
-  // 🔥 RENDER AUTO
+  // =========================
+  // 🔥 RENDER DYNAMIQUE
+  // =========================
+
   if(name === "revenus"){
     renderRevenusPage?.();
   }
@@ -52,6 +57,21 @@ function showSection(name, element){
     renderDepensesPage?.();
   }
 
+  // 💥 ÉPARGNE PRÉVUE
+  if(name === "epargne-prevue"){
+    const value = document.getElementById("epargneMoisDisplay")?.innerText;
+    const target = document.getElementById("epargneMoisPage");
+    if(target) target.innerText = value || "0 €";
+  }
+
+  // 💥 ÉPARGNE TOTALE
+  if(name === "epargne-totale"){
+    const value = document.getElementById("epargneTotaleDisplay")?.innerText;
+    const target = document.getElementById("epargneTotalePage");
+    if(target) target.innerText = value || "0 €";
+  }
+
+  // SCROLL RESET
   const scroll = section?.querySelector(".section-scroll");
   if(scroll){
     scroll.scrollTop = 0;

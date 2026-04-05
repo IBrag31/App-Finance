@@ -298,7 +298,8 @@ APP CONTAINER
 }
 
 .budget-card{
-  margin:0 4px 4px 4px;
+  .budget-card{
+  margin:0 4px 12px 4px;
 }
 
 .header-left{

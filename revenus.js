@@ -8,6 +8,33 @@ let revenusDetail = JSON.parse(localStorage.getItem("revenusDetail") || "[]");
 let especes = Number(localStorage.getItem("especes") || 0);
 
 // =========================
+// UTILS (autonomes)
+// =========================
+
+function euro(n){
+  return Number(n || 0).toLocaleString("fr-FR",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  }) + " €";
+}
+
+function getMoisActuel(){
+  return new Date().toISOString().slice(0,7);
+}
+
+function formatMois(moisStr){
+  const [annee, mois] = moisStr.split("-");
+  const date = new Date(annee, mois - 1);
+
+  let str = date.toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric"
+  });
+
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// =========================
 // SAFE SET TEXT
 // =========================
 
@@ -30,25 +57,26 @@ function renderRevenusPage(){
   let total = 0;
 
   [...revenusDetail]
-  .sort((a, b) => b.mois.localeCompare(a.mois))
-  .forEach((r) => {
+    .sort((a, b) => b.mois.localeCompare(a.mois))
+    .forEach((r) => {
 
-    total += r.montant;
+      const montant = Number(r.montant) || 0;
+      total += montant;
 
-    const div = document.createElement("div");
-    div.className = "depense-row";
-    
-    div.onclick = () => modifierRevenu(r);
-    div.ontouchstart = (e) => startSwipeRevenu(e, r);
-    div.ontouchend = (e) => endSwipeRevenu(e, r);
+      const div = document.createElement("div");
+      div.className = "depense-row";
+      
+      div.onclick = () => modifierRevenu(r);
+      div.ontouchstart = (e) => startSwipeRevenu(e, r);
+      div.ontouchend = (e) => endSwipeRevenu(e, r);
 
-    div.innerHTML = `
-      <span>${r.nom}</span>
-      <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
-    `;
+      div.innerHTML = `
+        <span>${r.nom}</span>
+        <span>${formatMois(r.mois)} • ${euro(montant)}</span>
+      `;
 
-    list.appendChild(div);
-  });
+      list.appendChild(div);
+    });
 
   setText("revenusPage", euro(total));
 
@@ -59,4 +87,153 @@ function renderRevenusPage(){
 
   const totalMois = getRevenusDuMois(getMoisActuel());
   setText("revenusMois", euro(totalMois));
+}
+
+// =========================
+// LOGIQUE
+// =========================
+
+function getRevenusDuMois(mois){
+  return revenusDetail
+    .filter(r => r.mois === mois)
+    .reduce((sum, r) => sum + (Number(r.montant) || 0), 0);
+}
+
+// =========================
+// CRUD
+// =========================
+
+function validerRevenu(){
+
+  const nomInput = document.getElementById("revenuNom");
+  const montantInput = document.getElementById("revenuMontant");
+  const moisInput = document.getElementById("revenuMois");
+
+  const nom = nomInput?.value.trim();
+  const montant = parseFloat(montantInput?.value);
+  const mois = moisInput?.value;
+
+  if(!nom || isNaN(montant) || montant <= 0 || !mois){
+    showToast?.("⚠️ Montant invalide");
+    return;
+  }
+
+  revenusDetail.push({ nom, montant, mois });
+
+  saveRevenus();
+
+  if(nomInput) nomInput.value = "";
+  if(montantInput) montantInput.value = "";
+  if(moisInput) moisInput.value = "";
+
+  showToast?.("💰 Revenu ajouté");
+
+  fermerModalRevenu?.();
+  renderRevenusPage();
+  updateRing?.();
+}
+
+function modifierRevenu(revenu){
+
+  const nouveauNom = prompt("Nom :", revenu.nom);
+  if(!nouveauNom) return;
+
+  const nouveauMontant = parseFloat(prompt("Montant :", revenu.montant));
+  if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
+
+  revenu.nom = nouveauNom;
+  revenu.montant = nouveauMontant;
+
+  saveRevenus();
+
+  renderRevenusPage();
+  updateRing?.();
+
+  showToast?.("✏️ Revenu modifié");
+}
+
+function supprimerRevenu(revenu){
+
+  const index = revenusDetail.indexOf(revenu);
+
+  if(index !== -1){
+    revenusDetail.splice(index,1);
+  }
+
+  saveRevenus();
+
+  renderRevenusPage();
+  updateRing?.();
+}
+
+// =========================
+// STORAGE
+// =========================
+
+function saveRevenus(){
+  localStorage.setItem(
+    "revenusDetail",
+    JSON.stringify(revenusDetail)
+  );
+}
+
+// =========================
+// SWIPE
+// =========================
+
+let revenuSwipeStartX = 0;
+let currentRevenuRow = null;
+let armedRevenuRow = null;
+let currentRevenu = null;
+
+function startSwipeRevenu(e, revenu){
+  revenuSwipeStartX = e.touches[0].clientX;
+  currentRevenuRow = e.currentTarget;
+  currentRevenu = revenu;
+}
+
+function endSwipeRevenu(e){
+
+  const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
+
+  if(diff < -20 && currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(-40px)";
+    currentRevenuRow.classList.add("swiping");
+  }
+
+  if(diff < -100){
+
+    if(armedRevenuRow === currentRevenuRow){
+
+      navigator.vibrate?.(10);
+
+      currentRevenuRow.style.transform = "translateX(-100%)";
+
+      setTimeout(()=>{
+        supprimerRevenu(currentRevenu);
+        showToast?.("🗑️ Revenu supprimé");
+      },200);
+
+      armedRevenuRow = null;
+      return;
+    }
+
+    if(armedRevenuRow){
+      armedRevenuRow.style.transform = "translateX(0)";
+      armedRevenuRow.classList.remove("swiping");
+    }
+
+    armedRevenuRow = currentRevenuRow;
+
+    currentRevenuRow.style.transform = "translateX(-80px)";
+    currentRevenuRow.classList.add("swiping");
+
+    showToast?.("👉 Glisse encore pour supprimer");
+  }
+
+  else if(currentRevenuRow){
+    currentRevenuRow.style.transform = "translateX(0)";
+    currentRevenuRow.classList.remove("swiping");
+    armedRevenuRow = null;
+  }
 }

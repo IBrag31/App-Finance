@@ -297,6 +297,10 @@ APP CONTAINER
   position:relative;
 }
 
+.budget-card{
+  margin:0 4px 4px 4px;
+}
+
 .header-left{
   display:flex;
   flex-direction:column;

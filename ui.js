@@ -45,13 +45,19 @@ function showSection(name, element){
 
   currentSectionIndex = sections.indexOf(name);
 
-  // 🔥 refresh dynamique
+  // 🔥 RENDER DYNAMIQUE
   if(name === "depenses"){
     renderDepensesPage();
   }
 
   if(name === "revenus"){
     renderRevenusPage();
+  }
+
+  if(name === "historique"){
+    initChart();
+    afficherHistorique();
+    majGraph();
   }
 }
 

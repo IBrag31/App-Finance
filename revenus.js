@@ -35,6 +35,37 @@ function formatMois(moisStr){
 }
 
 // =========================
+// ESPECES
+// =========================
+
+function renderEspeces(){
+  const el = document.getElementById("especesValue");
+  if(!el) return;
+
+  el.innerText = euro(especes);
+
+  el.style.transform = "scale(1.1)";
+  setTimeout(()=> el.style.transform = "scale(1)", 120);
+}
+
+function ajouterEspeces(){
+  especes += 5;
+  saveEspeces();
+}
+
+function retirerEspeces(){
+  especes -= 5;
+  if(especes < 0) especes = 0;
+  saveEspeces();
+}
+
+function saveEspeces(){
+  localStorage.setItem("especes", especes);
+  renderEspeces();
+  updateRing?.();
+}
+
+// =========================
 // SAFE SET TEXT
 // =========================
 

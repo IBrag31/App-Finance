@@ -22,57 +22,94 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <!-- APP -->
 <div class="app-container">
 
-  <div class="page-header">
+ <!-- ========================= -->
+<!-- 🏠 RÉSUMÉ -->
+<!-- ========================= -->
 
-  <div class="header-left">
-    <h1>Résumé</h1>
-    <div id="todayDate"></div>
-  </div>
+<div class="section active" id="section-resume">
+  <div class="section-scroll">
 
-      <div class="card budget-card">
-        <h2>Budget</h2>
+    <div class="page-header">
+      <h1>Résumé</h1>
+      <div id="todayDate"></div>
+    </div>
 
-        <div class="rings-container">
-          <svg><!-- tes rings existants --></svg>
-        </div>
-
-        <div class="resume-info">
-          <div id="resumeDepenses"></div>
-          <div id="resumeRestant"></div>
-          <div id="resumeEpargne"></div>
-        </div>
+    <div class="card budget-card">
+      <h2>Budget</h2>
+      
+      <div class="rings-container">
+  <!-- SVG rings ici -->
+</div>
       </div>
 
-      <div class="cards-grid">
+      <div class="resume-info">
+        <div id="resumeDepenses"></div>
+        <div id="resumeRestant"></div>
+        <div id="resumeEpargne"></div>
+      </div>
+    </div>
 
-  <div class="card small-card clickable" onclick="openRevenus()">
-    <h3>Revenus</h3>
-    <span>Ce mois</span>
-    <div id="revenusDisplay">0 €</div>
-  </div>
+    <div class="cards-grid">
 
-  <div class="card small-card clickable" onclick="openDepenses()">
-    <h3>Dépenses</h3>
-    <span>Total</span>
-    <div id="depensesDisplay">0 €</div>
-  </div>
+      <div class="card small-card clickable" onclick="showSection('revenus')">
+        <h3>Revenus</h3>
+        <span>Ce mois</span>
+        <div id="revenusDisplay">0 €</div>
+      </div>
 
-  <div class="card small-card">
-    <h3>Épargne prévue</h3>
-    <span>Objectif</span>
-    <div id="epargneMoisDisplay"></div>
-  </div>
+      <div class="card small-card clickable" onclick="showSection('depenses')">
+        <h3>Dépenses</h3>
+        <span>Total</span>
+        <div id="depensesDisplay">0 €</div>
+      </div>
 
-  <div class="card small-card">
-    <h3>Épargne actuelle</h3>
-    <span>Total</span>
-    <div id="epargneTotaleDisplay"></div>
-  </div>
+      <div class="card small-card">
+        <h3>Épargne prévue</h3>
+        <span>Objectif</span>
+        <div id="epargneMoisDisplay"></div>
+      </div>
 
-</div>
+      <div class="card small-card">
+        <h3>Épargne actuelle</h3>
+        <span>Total</span>
+        <div id="epargneTotaleDisplay"></div>
+      </div>
 
     </div>
+
   </div>
+</div>
+
+<div class="section" id="section-revenus">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <h1>Revenus</h1>
+      <div class="back-btn" onclick="showSection('resume')">←</div>
+    </div>
+
+    <div id="revenusList"></div>
+
+  </div>
+</div>
+
+<div class="section" id="section-depenses">
+  <div class="section-scroll">
+
+    <div class="page-header">
+      <h1>Dépenses</h1>
+      <div class="back-btn" onclick="showSection('resume')">←</div>
+    </div>
+
+    <div id="depensesFixesPage"></div>
+    <div id="depensesVariablesPage"></div>
+
+    <div id="totalFixesPage"></div>
+    <div id="totalVariablesPage"></div>
+    <div id="depensesTotalPage"></div>
+
+  </div>
+</div>
 
   <!-- ========================= -->
   <!-- ⚙️ RÉGLAGES -->

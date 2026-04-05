@@ -1,41 +1,50 @@
 // =========================
-// VERSION
+// CONFIG
 // =========================
-const CACHE_NAME = "financeplus-v14";
 
-// =========================
-// FILES TO CACHE
-// =========================
+const DEV_MODE = true; // 🔥 true = dev / false = production
+const CACHE_NAME = "financeplus-v2";
+
+// fichiers à cacher (prod uniquement)
 const urlsToCache = [
   "./",
   "./index.html",
+  "./styles.css",
   "./app.js",
+  "./depenses.js",
   "./revenus.js"
 ];
 
 // =========================
 // INSTALL
 // =========================
-self.addEventListener("install", (event) => {
+
+self.addEventListener("install", event => {
+
   self.skipWaiting();
 
+  if(DEV_MODE) return;
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
   );
 });
 
 // =========================
 // ACTIVATE
 // =========================
-self.addEventListener("activate", (event) => {
+
+self.addEventListener("activate", event => {
+
   event.waitUntil(
-    caches.keys().then((keys) => {
+    caches.keys().then(keys => {
       return Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+        keys.map(key => {
+          if(key !== CACHE_NAME){
+            return caches.delete(key);
+          }
+        })
       );
     })
   );
@@ -44,26 +53,22 @@ self.addEventListener("activate", (event) => {
 });
 
 // =========================
-// FETCH (CACHE FIRST + UPDATE)
+// FETCH
 // =========================
-self.addEventListener("fetch", (event) => {
+
+self.addEventListener("fetch", event => {
+
+  // 🔥 MODE DEV → PAS DE CACHE
+  if(DEV_MODE){
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // 🚀 MODE PROD → CACHE
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-
-      const fetchPromise = fetch(event.request)
-        .then((networkResponse) => {
-
-          // On met à jour le cache avec la nouvelle version
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-          });
-
-          return networkResponse;
-        })
-        .catch(() => cachedResponse); // fallback offline
-
-      // Si on a du cache → on renvoie direct (rapide ⚡)
-      return cachedResponse || fetchPromise;
-    })
+    caches.match(event.request)
+      .then(response => {
+        return response || fetch(event.request);
+      })
   );
 });

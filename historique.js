@@ -13,11 +13,14 @@ let historyChart;
 
 function initChart(){
 
+  const canvas = document.getElementById("historyChart");
+  if(!canvas) return; // 🔥 protection
+
   if(typeof Chart === "undefined") return;
 
   if(historyChart) historyChart.destroy();
 
-  const ctx = document.getElementById("historyChart").getContext("2d");
+  const ctx = canvas.getContext("2d");
 
   historyChart = new Chart(ctx,{
     type:"line",

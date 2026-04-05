@@ -42,20 +42,19 @@ h1{
   padding-left:calc(16px + env(safe-area-inset-left));
   padding-right:16px;
 
-  margin-bottom:10px;
+  margin-bottom:6px; /* 🔥 réduit */
 }
 
 .page-header h1{
-  font-size:28px;
+  font-size:24px; /* 🔥 au lieu de 28 */
   font-weight:700;
-  margin-bottom:6px;
+  margin-bottom:2px; /* 🔥 réduit */
 }
 
 #todayDate{
-  font-size:16px;
-  opacity:0.7;
+  font-size:14px; /* 🔥 au lieu de 16 */
+  opacity:0.65;
 }
-
 /* =========================
 CARDS
 ========================= */
@@ -198,7 +197,7 @@ SECTIONS
   flex-direction:column;
   justify-content:flex-start;
 
-  gap:16px;
+  gap:12px;
 
   padding:16px 12px 120px 12px;
 

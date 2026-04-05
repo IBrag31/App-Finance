@@ -1,45 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0f172a">
-
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-180.png">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Finance+">
-
-<title>Finance+</title>
-
-<link rel="stylesheet" href="styles.css">
-
-<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-window.onerror = function(message, source, lineno, colno){
-  alert(
-    "Erreur JS:\n" +
-    message +
-    "\nFichier: " + source +
-    "\nLigne: " + lineno +
-    "\nColonne: " + colno
-  );
-};
-</script>
-
-</head>
-
 <body>
 
 <!-- SPLASH -->
@@ -49,76 +7,87 @@ window.onerror = function(message, source, lineno, colno){
 
 <!-- APP -->
 <div class="app-container">
-<div class="sections-container">
 
-<!-- ========================= -->
-<!-- 💰 BUDGET -->
-<!-- ========================= -->
+  <!-- ========================= -->
+  <!-- 🏠 RÉSUMÉ -->
+  <!-- ========================= -->
 
-<div class="section active" id="section-budget">
-  <div class="section-scroll">
+  <div class="section active" id="section-resume">
+    <div class="section-scroll">
 
-    <div class="page-header page-header-dashboard">
-      <h1>Résumé</h1>
-      <div id="todayDate"></div>
+      <!-- HEADER -->
+      <div class="page-header">
+        <h1>Résumé</h1>
+        <div id="todayDate"></div>
+      </div>
+
+      <!-- 🔵 ANNEAUX -->
+      <div class="card">
+        <h2>Budget</h2>
+
+        <div class="rings-container">
+          <svg><!-- tes rings existants --></svg>
+        </div>
+
+        <div class="resume-info">
+          <div id="resumeDepenses"></div>
+          <div id="resumeRestant"></div>
+          <div id="resumeEpargne"></div>
+        </div>
+      </div>
+
+      <!-- 🟢 REVENUS -->
+      <div class="card clickable" onclick="openRevenus()">
+        <h3>Revenus</h3>
+        <div id="revenusDisplay">0 €</div>
+      </div>
+
+      <!-- 🔴 DEPENSES -->
+      <div class="card clickable" onclick="openDepenses()">
+        <h3>Dépenses</h3>
+        <div id="depensesDisplay">0 €</div>
+      </div>
+
+      <!-- 🟡 ÉPARGNE -->
+      <div class="card">
+        <h3>Épargne</h3>
+        <div id="epargneMoisDisplay"></div>
+        <div id="epargneTotaleDisplay"></div>
+      </div>
+
     </div>
-
-    <div class="card">
-      <div id="revenusDisplay">0 €</div>
-      <div id="depensesDisplay">0 €</div>
-      <div id="epargneMoisDisplay">0 €</div>
-      <div id="epargneTotaleDisplay">0 €</div>
-    </div>
-
-    <input type="hidden" id="epargneMois" value="0">
-    <input type="hidden" id="epargneTotale" value="0">
-
   </div>
-</div>
 
-<!-- AUTRES SECTIONS (inchangées) -->
+  <!-- ========================= -->
+  <!-- ⚙️ RÉGLAGES -->
+  <!-- ========================= -->
 
-</div>
+  <div class="section" id="section-settings">
+    <div class="section-scroll">
+
+      <div class="card">
+        <button onclick="sauvegardeAuto()">💾 Sauvegarder</button>
+        <button onclick="restaurerDepuisIcloud()">📥 Restaurer</button>
+      </div>
+
+      <div class="card">
+        <button onclick="resetApp()">🗑️ Reset données</button>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <!-- TABBAR -->
 <div class="tabbar">
-<div class="tab active" onclick="showSection('budget', this)">📊<span>Résumé</span></div>
-<div class="tab" onclick="showSection('objectifs', this)">🎯<span>Objectifs</span></div>
-<div class="tab" onclick="showSection('historique', this)">📅<span>Historique</span></div>
-<div class="tab" onclick="showSection('sauvegarde', this)">⚙️<span>Sauvegarde</span></div>
+
+  <div class="tab active" onclick="showSection('resume', this)">
+    🏠<span>Résumé</span>
+  </div>
+
+  <div class="tab" onclick="showSection('settings', this)">
+    ⚙️<span>Réglages</span>
+  </div>
+
 </div>
-
-<!-- TOAST -->
-<div id="toast">✔ Sauvegardé</div>
-
-<!-- MODALS -->
-<div id="depenseModal" class="modal"></div>
-<div id="revenuModal" class="modal"></div>
-
-<!-- SCRIPTS -->
-<script src="storage.js"></script>
-<script src="depenses.js?v=14"></script>
-<script src="revenus.js?v=14"></script>
-<script src="historique.js?v=14"></script>
-<script src="ui.js?v=14"></script>
-<script src="app.js?v=14"></script>
-
-<!-- 🔥 FIX SPLASH -->
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-  const splash = document.getElementById("splash");
-
-  if(splash){
-    splash.style.transition = "opacity 0.4s ease";
-    splash.style.opacity = "0";
-
-    setTimeout(()=>{
-      splash.remove();
-    },400);
-  }
-});
-</script>
-
-</body>
-</html>

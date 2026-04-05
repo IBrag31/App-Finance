@@ -4,20 +4,26 @@ console.log("depenses.js loaded");
 // DATA
 // =========================
 
-let depensesDetail =
-JSON.parse(localStorage.getItem("depensesDetail")) || [];
+let depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+
+// =========================
+// UTILS
+// =========================
+
+function setText(id, value){
+  const el = document.getElementById(id);
+  if(el) el.innerText = value;
+}
 
 // =========================
 // CALCULS
 // =========================
 
 function calculTotalDepenses(){
-
   const total = depensesDetail.reduce(
-    (sum,d)=> sum + (Number(d.montant) || 0),
+    (sum, d) => sum + (Number(d.montant) || 0),
     0
   );
-
   return Math.round(total * 100) / 100;
 }
 
@@ -38,7 +44,7 @@ function renderDepensesPage(){
   let totalFixes = 0;
   let totalVariables = 0;
 
-  depensesDetail.forEach((d,i)=>{
+  depensesDetail.forEach((d, i) => {
 
     const montant = Number(d.montant) || 0;
 
@@ -64,11 +70,11 @@ function renderDepensesPage(){
 
   });
 
-  document.getElementById("totalFixesPage").innerText = euro(totalFixes);
-  document.getElementById("totalVariablesPage").innerText = euro(totalVariables);
+  setText("totalFixesPage", euro(totalFixes));
+  setText("totalVariablesPage", euro(totalVariables));
 
   const total = totalFixes + totalVariables;
-  document.getElementById("depensesTotalPage").innerText = euro(total);
+  setText("depensesTotalPage", euro(total));
 }
 
 // =========================
@@ -77,11 +83,11 @@ function renderDepensesPage(){
 
 function validerDepense(){
 
-  const nom = document.getElementById("depenseNom").value.trim();
+  const nom = document.getElementById("depenseNom")?.value.trim();
   const montant = parseFloat(
-    document.getElementById("depenseMontant").value
+    document.getElementById("depenseMontant")?.value
   );
-  const type = document.getElementById("typeDepense").value;
+  const type = document.getElementById("typeDepense")?.value;
 
   if(!nom || isNaN(montant)) return;
 
@@ -95,8 +101,11 @@ function validerDepense(){
   renderDepensesPage();
   updateRing();
 
-  document.getElementById("depenseNom").value = "";
-  document.getElementById("depenseMontant").value = "";
+  const nomInput = document.getElementById("depenseNom");
+  const montantInput = document.getElementById("depenseMontant");
+
+  if(nomInput) nomInput.value = "";
+  if(montantInput) montantInput.value = "";
 
   fermerModal();
 }
@@ -213,5 +222,4 @@ function endSwipe(e,index){
     currentRow.classList.remove("swiping");
     armedRow = null;
   }
-
 }

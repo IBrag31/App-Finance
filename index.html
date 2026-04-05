@@ -1,3 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0f172a">
+
+<title>Finance+</title>
+
+<!-- 🔥 CSS -->
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
 <body>
 
 <!-- SPLASH -->
@@ -15,13 +34,11 @@
   <div class="section active" id="section-resume">
     <div class="section-scroll">
 
-      <!-- HEADER -->
       <div class="page-header">
         <h1>Résumé</h1>
         <div id="todayDate"></div>
       </div>
 
-      <!-- 🔵 ANNEAUX -->
       <div class="card">
         <h2>Budget</h2>
 
@@ -36,19 +53,16 @@
         </div>
       </div>
 
-      <!-- 🟢 REVENUS -->
       <div class="card clickable" onclick="openRevenus()">
         <h3>Revenus</h3>
         <div id="revenusDisplay">0 €</div>
       </div>
 
-      <!-- 🔴 DEPENSES -->
       <div class="card clickable" onclick="openDepenses()">
         <h3>Dépenses</h3>
         <div id="depensesDisplay">0 €</div>
       </div>
 
-      <!-- 🟡 ÉPARGNE -->
       <div class="card">
         <h3>Épargne</h3>
         <div id="epargneMoisDisplay"></div>
@@ -81,7 +95,6 @@
 
 <!-- TABBAR -->
 <div class="tabbar">
-
   <div class="tab active" onclick="showSection('resume', this)">
     🏠<span>Résumé</span>
   </div>
@@ -89,5 +102,14 @@
   <div class="tab" onclick="showSection('settings', this)">
     ⚙️<span>Réglages</span>
   </div>
-
 </div>
+
+<!-- 🔥 SCRIPTS -->
+<script src="storage.js"></script>
+<script src="depenses.js"></script>
+<script src="revenus.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

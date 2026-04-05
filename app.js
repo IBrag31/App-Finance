@@ -24,6 +24,37 @@ function setText(id, value){
 // CORE APP
 // =========================
 
+function animateRing(selector, targetOffset){
+
+  const el = document.querySelector(selector);
+  if(!el) return;
+
+  const current = parseFloat(
+    el.style.strokeDashoffset || targetOffset
+  );
+
+  const duration = 600;
+  const start = performance.now();
+
+  function animate(time){
+
+    const progress = Math.min((time - start) / duration, 1);
+
+    // easeOut (fluide)
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    const value = current + (targetOffset - current) * eased;
+
+    el.style.strokeDashoffset = value;
+
+    if(progress < 1){
+      requestAnimationFrame(animate);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
 function updateRing(){
 
   const mois = getMoisActuel();
@@ -63,17 +94,12 @@ function updateRing(){
   const totalP = budgetMax ? depenses / budgetMax : 0;
 
   // =========================
-  // RINGS
+  // RINGS (ANIMÉS)
   // =========================
 
-  document.querySelector(".ring-fixes")?.style
-    .setProperty("stroke-dashoffset", 326 - fixesP * 326);
-
-  document.querySelector(".ring-variables")?.style
-    .setProperty("stroke-dashoffset", 264 - varP * 264);
-
-  document.querySelector(".ring-total")?.style
-    .setProperty("stroke-dashoffset", 188 - totalP * 188);
+animateRing(".ring-fixes", 326 - fixesP * 326);
+animateRing(".ring-variables", 264 - varP * 264);
+animateRing(".ring-total", 188 - totalP * 188);
 
   // =========================
   // RÉSUMÉ

@@ -1,7 +1,7 @@
 // =========================
 // VERSION
 // =========================
-const CACHE_NAME = "financeplus-v4";
+const CACHE_NAME = "financeplus-v5";
 
 // =========================
 // FILES TO CACHE

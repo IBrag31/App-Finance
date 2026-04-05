@@ -172,11 +172,11 @@ SECTIONS
 
 .section-scroll{
   width:100%;
-  min-height:100vh;
+  min-height:100%; /* 🔥 au lieu de 100vh */
 
   display:flex;
   flex-direction:column;
-  justify-content:flex-start; /* 🔥 IMPORTANT */
+  justify-content:flex-start;
 
   gap:16px;
 
@@ -185,7 +185,6 @@ SECTIONS
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
 }
-
 /* =========================
 DEPENSES
 ========================= */

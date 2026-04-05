@@ -113,7 +113,7 @@ function initUI(){
 // INIT APP
 // =========================
 
-window.onload = function(){
+window.addEventListener("DOMContentLoaded", () => {
 
   if(typeof initChart === "function") initChart();
   if(typeof afficherHistorique === "function") afficherHistorique();

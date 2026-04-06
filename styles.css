@@ -394,3 +394,43 @@ APP CONTAINER
   align-items: center;
   justify-content: center;
 } 
+
+.revenus-card {
+  margin: 12px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #1a1a1a, #111);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.revenus-card-header {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.revenus-card-value {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* ESPECES */
+.revenus-especes-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.circle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #2a2a2a;
+  color: white;
+  font-size: 20px;
+}
+
+.circle-btn:active {
+  transform: scale(0.9);
+}

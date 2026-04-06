@@ -120,6 +120,47 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
       <button onclick="openAddRevenu()" class="add-btn">+</button>
     </div>
+    
+    <!-- 🪪 CARTE MOIS -->
+<div class="card revenus-card">
+  <div class="revenus-card-header">
+<div class="revenus-card-header">
+  Ce mois-ci • <span id="moisActuelLabel">Mars 2026</span>
+</div>
+  </div>
+
+  <div class="revenus-card-value" id="revenusMois">
+    0 €
+  </div>
+</div>
+
+<!-- 💵 CARTE ESPECES -->
+<div class="card revenus-card">
+  <div class="revenus-card-header">
+    Espèces
+  </div>
+
+  <div class="revenus-especes-row">
+    <button onclick="retirerEspeces()" class="circle-btn">−</button>
+
+    <div class="revenus-card-value" id="especesValue">
+      0 €
+    </div>
+
+    <button onclick="ajouterEspeces()" class="circle-btn">+</button>
+  </div>
+</div>
+
+<!-- 💰 TOTAL -->
+<div class="card revenus-card">
+  <div class="revenus-card-header">
+    Total revenus
+  </div>
+
+  <div class="revenus-card-value" id="revenusPage">
+    0 €
+  </div>
+</div>
 
     <!-- LISTE DES REVENUS -->
     <div id="revenusList"></div>

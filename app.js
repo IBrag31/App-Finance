@@ -11,6 +11,10 @@ function euro(n){
   }) + " €";
 }
 
+function getEpargneTotale(){
+  return Number(localStorage.getItem("epargneTotale")) || 0;
+}
+
 // =========================
 // SAFE SET TEXT
 // =========================

@@ -11,13 +11,6 @@ let especes = Number(localStorage.getItem("especes") || 0);
 // UTILS (autonomes)
 // =========================
 
-function euro(n){
-  return Number(n || 0).toLocaleString("fr-FR",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  }) + " €";
-}
-
 function getMoisActuel(){
   return new Date().toISOString().slice(0,7);
 }
@@ -63,15 +56,6 @@ function saveEspeces(){
   localStorage.setItem("especes", especes);
   renderEspeces();
   updateBudget();
-}
-
-// =========================
-// SAFE SET TEXT
-// =========================
-
-function setText(id, value){
-  const el = document.getElementById(id);
-  if(el) el.innerText = value;
 }
 
 // =========================

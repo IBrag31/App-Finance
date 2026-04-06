@@ -31,50 +31,41 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
       <div id="todayDate"></div>
     </div>
 
-    <!-- ✅ FIX STRUCTURE -->
-   <div class="card budget-card">
-  <h2>Budget</h2>
+    <div class="card budget-card">
+      <h2>Budget</h2>
 
-  <!-- 💵 REVENUS OBJECTIF -->
-  <div class="budget-item">
-    <div class="budget-label">
-      Revenus
-      <span id="budgetRevenusText">0 € / 2300 €</span>
+      <div class="budget-item">
+        <div class="budget-label">
+          Revenus
+          <span id="budgetRevenusText">0 € / 2300 €</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill revenus" id="budgetRevenusBar"></div>
+        </div>
+      </div>
+
+      <div class="budget-item">
+        <div class="budget-label">
+          Dépenses
+          <span id="budgetDepensesText">0 €</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill depenses" id="budgetDepensesBar"></div>
+        </div>
+      </div>
+
+      <div class="budget-item">
+        <div class="budget-label">
+          Épargne
+          <span id="budgetEpargneText">0 €</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill epargne" id="budgetEpargneBar"></div>
+        </div>
+      </div>
     </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill revenus" id="budgetRevenusBar"></div>
-    </div>
-  </div>
-
-  <!-- 💸 DEPENSES -->
-  <div class="budget-item">
-    <div class="budget-label">
-      Dépenses
-      <span id="budgetDepensesText">0 €</span>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill depenses" id="budgetDepensesBar"></div>
-    </div>
-  </div>
-
-  <!-- 💰 EPARGNE -->
-  <div class="budget-item">
-    <div class="budget-label">
-      Épargne
-      <span id="budgetEpargneText">0 €</span>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill epargne" id="budgetEpargneBar"></div>
-    </div>
-  </div>
-
-</div>
 
     <div class="cards-grid">
-
       <div class="card small-card clickable" onclick="showSection('revenus')">
         <h3>Revenus</h3>
         <span>Ce mois</span>
@@ -87,7 +78,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
         <div id="depensesDisplay">0 €</div>
       </div>
 
-      <!-- 💥 CLICKABLE -->
       <div class="card small-card clickable" onclick="showSection('epargne-prevue')">
         <h3>Épargne prévue</h3>
         <span>Objectif</span>
@@ -99,7 +89,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
         <span>Total</span>
         <div id="epargneTotaleDisplay"></div>
       </div>
-
     </div>
 
   </div>
@@ -112,57 +101,33 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <div class="section" id="section-revenus">
   <div class="section-scroll">
 
-    <!-- HEADER -->
     <div class="page-header revenus-header">
       <div class="back-btn" onclick="showSection('resume')">←</div>
-
       <h1>Revenus</h1>
-
       <button onclick="openAddRevenu()" class="add-btn">+</button>
     </div>
-    
-    <!-- 🪪 CARTE MOIS -->
-<div class="card revenus-card">
-  <div class="revenus-card-header">
-<div class="revenus-card-header">
-  Ce mois-ci • <span id="moisActuelLabel">Mars 2026</span>
-</div>
-  </div>
 
-  <div class="revenus-card-value" id="revenusMois">
-    0 €
-  </div>
-</div>
-
-<!-- 💵 CARTE ESPECES -->
-<div class="card revenus-card">
-  <div class="revenus-card-header">
-    Espèces
-  </div>
-
-  <div class="revenus-especes-row">
-    <button onclick="retirerEspeces()" class="circle-btn">−</button>
-
-    <div class="revenus-card-value" id="especesValue">
-      0 €
+    <div class="card revenus-card">
+      <div class="revenus-card-header">
+        Ce mois-ci • <span id="moisActuelLabel">Mars 2026</span>
+      </div>
+      <div class="revenus-card-value" id="revenusMois">0 €</div>
     </div>
 
-    <button onclick="ajouterEspeces()" class="circle-btn">+</button>
-  </div>
-</div>
+    <div class="card revenus-card">
+      <div class="revenus-card-header">Espèces</div>
+      <div class="revenus-especes-row">
+        <button onclick="retirerEspeces()" class="circle-btn">−</button>
+        <div class="revenus-card-value" id="especesValue">0 €</div>
+        <button onclick="ajouterEspeces()" class="circle-btn">+</button>
+      </div>
+    </div>
 
-<!-- 💰 TOTAL -->
-<div class="card revenus-card">
-  <div class="revenus-card-header">
-    Total revenus
-  </div>
+    <div class="card revenus-card">
+      <div class="revenus-card-header">Total revenus</div>
+      <div class="revenus-card-value" id="revenusPage">0 €</div>
+    </div>
 
-  <div class="revenus-card-value" id="revenusPage">
-    0 €
-  </div>
-</div>
-
-    <!-- LISTE DES REVENUS -->
     <div id="revenusList"></div>
 
   </div>
@@ -175,9 +140,10 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <div class="section" id="section-depenses">
   <div class="section-scroll">
 
-    <div class="page-header">
-      <h1>Dépenses</h1>
+    <div class="page-header revenus-header">
       <div class="back-btn" onclick="showSection('resume')">←</div>
+      <h1>Dépenses</h1>
+      <button onclick="openAddDepense()" class="add-btn">+</button>
     </div>
 
     <div id="depensesFixesPage"></div>

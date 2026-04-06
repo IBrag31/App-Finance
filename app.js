@@ -119,6 +119,9 @@ function updateBudget(){
     revBar.style.width = Math.min(revenusP, 100) + "%";
     revBar.style.background = "#22c55e"; // 🔥 vert
   }
+  
+  renderRevenusPage?.();
+  renderDepensesPage?.();
 }
 
 // =========================

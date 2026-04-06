@@ -25,6 +25,8 @@ function setText(id, value){
 // =========================
 
 function updateBudget(){
+  
+  console.log("UPDATE BUDGET RUN 🔥");
 
   const mois = getMoisActuel();
 

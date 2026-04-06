@@ -7,15 +7,6 @@ console.log("depenses.js loaded");
 let depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
 
 // =========================
-// UTILS
-// =========================
-
-function setText(id, value){
-  const el = document.getElementById(id);
-  if(el) el.innerText = value;
-}
-
-// =========================
 // CALCULS
 // =========================
 

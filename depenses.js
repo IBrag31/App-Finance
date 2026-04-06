@@ -117,6 +117,30 @@ function validerDepense(){
   fermerModal();
 }
 
+function openAddDepense(){
+
+  const nom = prompt("Nom de la dépense ?");
+  const montant = parseFloat(prompt("Montant ?"));
+  const type = prompt("Type (fixe ou variable) ?", "variable");
+
+  if(!nom || isNaN(montant)){
+    showToast?.("⚠️ Valeur invalide");
+    return;
+  }
+
+  depensesDetail.push({
+    nom,
+    montant: Math.round(montant * 100) / 100,
+    type: (type || "variable").toLowerCase()
+  });
+
+  saveDepenses();
+  renderDepensesPage();
+  updateBudget(); // 🔥 important
+
+  showToast?.("💸 Dépense ajoutée");
+}
+
 function supprimerDepense(index){
 
   depensesDetail.splice(index,1);

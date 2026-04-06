@@ -120,8 +120,13 @@ function updateBudget(){
     revBar.style.background = "#22c55e"; // 🔥 vert
   }
   
-  renderRevenusPage?.();
-  renderDepensesPage?.();
+  if(typeof renderRevenusPage === "function"){
+  renderRevenusPage();
+  }
+
+if(typeof renderDepensesPage === "function"){
+  renderDepensesPage();
+  }
 }
 
 // =========================

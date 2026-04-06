@@ -164,6 +164,28 @@ function validerRevenu(){
   updateRing?.();
 }
 
+function openAddRevenu(){
+  const nom = prompt("Nom du revenu ?");
+  const montant = parseFloat(prompt("Montant ?"));
+
+  if(!nom || isNaN(montant) || montant <= 0){
+    showToast?.("⚠️ Valeur invalide");
+    return;
+  }
+
+  const mois = getMoisActuel();
+
+  revenusDetail.push({ nom, montant, mois });
+
+  saveRevenus();
+
+  renderRevenusPage();
+  updateBudget(); // 🔥 met à jour la jauge
+  updateRing?.();
+
+  showToast?.("💰 Revenu ajouté");
+}
+
 function modifierRevenu(revenu){
 
   const nouveauNom = prompt("Nom :", revenu.nom);

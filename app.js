@@ -54,8 +54,32 @@ function updateBudget(){
   const depBar = document.getElementById("budgetDepensesBar");
   const epBar = document.getElementById("budgetEpargneBar");
 
-  if(depBar) depBar.style.width = Math.min(depensesP,100) + "%";
-  if(epBar) epBar.style.width = Math.min(epargneP,100) + "%";
+  // 🔥 DEPENSES DYNAMIQUES
+  if(depBar){
+
+    const percent = Math.min(depensesP, 100);
+    depBar.style.width = percent + "%";
+
+    if(percent < 50){
+      depBar.style.background = "#eab308"; // jaune
+    }
+    else if(percent < 80){
+      depBar.style.background = "#f97316"; // orange
+    }
+    else{
+      depBar.style.background = "#ef4444"; // rouge
+    }
+
+    // dépassement
+    if(depenses > budgetMax){
+      depBar.style.background = "#dc2626";
+    }
+  }
+
+  // épargne inchangée
+  if(epBar){
+    epBar.style.width = Math.min(epargneP,100) + "%";
+  }
 
   // =========================
   // DASHBOARD (CARTES)
@@ -78,21 +102,22 @@ function updateBudget(){
   // BARRE REVENUS OBJECTIF
   // =========================
 
-const objectifRevenus = 2300;
+  const objectifRevenus = 2300;
 
-const revenusP = objectifRevenus > 0
-  ? (revenus / objectifRevenus) * 100
-  : 0;
+  const revenusP = objectifRevenus > 0
+    ? (revenus / objectifRevenus) * 100
+    : 0;
 
-setText(
-  "budgetRevenusText",
-  `${euro(revenus)} / ${euro(objectifRevenus)}`
-);
+  setText(
+    "budgetRevenusText",
+    `${euro(revenus)} / ${euro(objectifRevenus)}`
+  );
 
-const revBar = document.getElementById("budgetRevenusBar");
+  const revBar = document.getElementById("budgetRevenusBar");
 
-if(revBar){
-  revBar.style.width = Math.min(revenusP, 100) + "%";
+  if(revBar){
+    revBar.style.width = Math.min(revenusP, 100) + "%";
+    revBar.style.background = "#22c55e"; // 🔥 vert
   }
 }
 
@@ -112,14 +137,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   initUI();
 
-  // 🔥 mise à jour budget après chargement
   setTimeout(()=>{
     updateBudget();
   }, 200);
-
-  // =========================
-  // DATE
-  // =========================
 
   const dateElement = document.getElementById("todayDate");
   if(dateElement){

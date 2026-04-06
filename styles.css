@@ -362,12 +362,35 @@ APP CONTAINER
   background: #3b82f6;
 }
 
+.revenus-header {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+}
+
+.revenus-header h1 {
+  text-align: center;
+  margin: 0;
+}
+
+.revenus-header .back-btn {
+  justify-self: start;
+}
+
+.revenus-header .add-btn {
+  justify-self: end;
+}
+
+/* bouton + stylé */
 .add-btn {
   background: #3b82f6;
   border: none;
   color: white;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
-}
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} 

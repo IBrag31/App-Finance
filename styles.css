@@ -340,11 +340,6 @@ APP CONTAINER
   transition:width 0.4s ease;
 }
 
-/* couleurs */
-.progress-fill.depenses{
-  background:#ef4444;
-}
-
 .progress-fill.epargne{
   background:#22c55e;
 }

@@ -102,6 +102,18 @@ if(totalDepensesEl){
   else{
     totalDepensesEl.style.color = "#ef4444"; // 🔴
   }
+  
+  // 🔥 RESET + ANIMATION PROPRE
+  totalDepensesEl.style.transform = "scale(1)";
+  
+  setTimeout(()=>{
+    totalDepensesEl.style.transform = "scale(1.05)";
+    
+    setTimeout(()=>{
+      totalDepensesEl.style.transform = "scale(1)";
+    },150);
+
+  },10);
 
 }
 

@@ -439,3 +439,7 @@ APP CONTAINER
   opacity: 0.7;
   margin-bottom: 10px;
 }
+
+#depensesTotalPage {
+  transition: color 0.3s ease, transform 0.2s ease;
+}

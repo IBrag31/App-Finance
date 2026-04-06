@@ -62,7 +62,7 @@ function retirerEspeces(){
 function saveEspeces(){
   localStorage.setItem("especes", especes);
   renderEspeces();
-  updateRing?.();
+  updateBudget();
 }
 
 // =========================
@@ -161,7 +161,7 @@ function validerRevenu(){
 
   fermerModalRevenu?.();
   renderRevenusPage();
-  updateRing?.();
+  updateBudget();
 }
 
 function openAddRevenu(){
@@ -181,7 +181,6 @@ function openAddRevenu(){
 
   renderRevenusPage();
   updateBudget(); // 🔥 met à jour la jauge
-  updateRing?.();
 
   showToast?.("💰 Revenu ajouté");
 }
@@ -200,7 +199,7 @@ function modifierRevenu(revenu){
   saveRevenus();
 
   renderRevenusPage();
-  updateRing?.();
+  updateBudget();
 
   showToast?.("✏️ Revenu modifié");
 }
@@ -216,7 +215,7 @@ function supprimerRevenu(revenu){
   saveRevenus();
 
   renderRevenusPage();
-  updateRing?.();
+  updateBudget();
 }
 
 // =========================

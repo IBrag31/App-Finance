@@ -60,32 +60,55 @@ function updateBudget(){
   const depBar = document.getElementById("budgetDepensesBar");
   const epBar = document.getElementById("budgetEpargneBar");
 
-  // 🔥 DEPENSES DYNAMIQUES
-  if(depBar){
+ // 🔥 DEPENSES DYNAMIQUES
+if(depBar){
 
-    const percent = Math.min(depensesP, 100);
-    depBar.style.width = percent + "%";
+  const percent = Math.min(depensesP, 100);
+  depBar.style.width = percent + "%";
 
-    if(percent < 50){
-      depBar.style.background = "#eab308"; // jaune
-    }
-    else if(percent < 80){
-      depBar.style.background = "#f97316"; // orange
-    }
-    else{
-      depBar.style.background = "#ef4444"; // rouge
-    }
-
-    // dépassement
-    if(depenses > budgetMax){
-      depBar.style.background = "#dc2626";
-    }
+  if(percent < 50){
+    depBar.style.background = "#eab308"; // jaune
+  }
+  else if(percent < 80){
+    depBar.style.background = "#f97316"; // orange
+  }
+  else{
+    depBar.style.background = "#ef4444"; // rouge
   }
 
-  // épargne inchangée
-  if(epBar){
-    epBar.style.width = Math.min(epargneP,100) + "%";
+  // dépassement
+  if(depenses > budgetMax){
+    depBar.style.background = "#dc2626";
   }
+}
+
+// =========================
+// 🎨 COULEUR TOTAL DEPENSES
+// =========================
+
+const totalDepensesEl = document.getElementById("depensesTotalPage");
+
+if(totalDepensesEl){
+
+  if(depenses > budgetMax){
+    totalDepensesEl.style.color = "#dc2626"; // 🔴 dépassement
+  }
+  else if(depensesP < 50){
+    totalDepensesEl.style.color = "#eab308"; // 🟡
+  }
+  else if(depensesP < 80){
+    totalDepensesEl.style.color = "#f97316"; // 🟠
+  }
+  else{
+    totalDepensesEl.style.color = "#ef4444"; // 🔴
+  }
+
+}
+
+// épargne inchangée
+if(epBar){
+  epBar.style.width = Math.min(epargneP,100) + "%";
+}
 
   // =========================
   // DASHBOARD (CARTES)

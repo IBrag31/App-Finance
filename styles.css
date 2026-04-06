@@ -412,6 +412,8 @@ APP CONTAINER
 .revenus-card-value {
   font-size: 28px;
   font-weight: bold;
+  flex: 1;
+  text-align: center;
 }
 
 /* ESPECES */
@@ -419,16 +421,18 @@ APP CONTAINER
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .circle-btn {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   background: #2a2a2a;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
 .circle-btn:active {

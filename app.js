@@ -73,6 +73,27 @@ function updateBudget(){
   setText("revenusPage", euro(revenus));
   setText("epargneMoisPage", euro(epargne));
   setText("epargneTotalePage", euro(getEpargneTotale()));
+  
+  // =========================
+  // BARRE REVENUS OBJECTIF
+  // =========================
+
+const objectifRevenus = 2300;
+
+const revenusP = objectifRevenus > 0
+  ? (revenus / objectifRevenus) * 100
+  : 0;
+
+setText(
+  "budgetRevenusText",
+  `${euro(revenus)} / ${euro(objectifRevenus)}`
+);
+
+const revBar = document.getElementById("budgetRevenusBar");
+
+if(revBar){
+  revBar.style.width = Math.min(revenusP, 100) + "%";
+  }
 }
 
 // =========================

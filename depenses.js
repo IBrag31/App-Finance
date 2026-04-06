@@ -104,8 +104,6 @@ function validerDepense(){
 
   saveDepenses();
   renderDepensesPage();
-  updateRing();
-
   updateBudget(); // 🔥 AJOUT
 
   const nomInput = document.getElementById("depenseNom");
@@ -147,8 +145,6 @@ function supprimerDepense(index){
 
   saveDepenses();
   renderDepensesPage();
-  updateRing();
-
   updateBudget(); // 🔥 AJOUT
 }
 
@@ -182,8 +178,6 @@ function modifierDepense(index){
 
   saveDepenses();
   renderDepensesPage();
-  updateRing();
-
   updateBudget(); // 🔥 AJOUT
 
   showToast("✏️ Dépense modifiée");

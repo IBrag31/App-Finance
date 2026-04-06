@@ -357,3 +357,7 @@ APP CONTAINER
 .clickable:active{
   transform:scale(0.96);
 }
+
+.progress-fill.revenus {
+  background: #3b82f6;
+}

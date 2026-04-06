@@ -148,6 +148,10 @@ window.addEventListener("DOMContentLoaded", () => {
   initUI();
 
   setTimeout(()=>{
+    
+    renderRevenusPage?.();
+    renderDepensesPage?.();
+  
     updateBudget();
   }, 200);
 

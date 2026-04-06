@@ -361,3 +361,13 @@ APP CONTAINER
 .progress-fill.revenus {
   background: #3b82f6;
 }
+
+.add-btn {
+  background: #3b82f6;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+}

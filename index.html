@@ -109,7 +109,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <div class="card revenus-card">
       <div class="revenus-card-header">
-        Ce mois-ci • <span id="moisActuelLabel">Mars 2026</span>
+        Ce mois-ci • <span id="moisActuelLabel"></span>
       </div>
       <div class="revenus-card-value" id="revenusMois">0 €</div>
     </div>
@@ -157,56 +157,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 </div>
 
 <!-- ========================= -->
-<!-- 🟣 ÉPARGNE PRÉVUE -->
-<!-- ========================= -->
-
-<div class="section" id="section-epargne-prevue">
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <h1>Épargne prévue</h1>
-      <div class="back-btn" onclick="showSection('resume')">←</div>
-    </div>
-
-    <div class="card">
-      <h3>Objectif mensuel</h3>
-      <div id="epargneMoisPage"></div>
-    </div>
-
-    <div class="card">
-      <h3>Historique</h3>
-      <div id="historiqueEpargneMois"></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ========================= -->
-<!-- 🟢 ÉPARGNE ACTUELLE -->
-<!-- ========================= -->
-
-<div class="section" id="section-epargne-totale">
-  <div class="section-scroll">
-
-    <div class="page-header">
-      <h1>Épargne actuelle</h1>
-      <div class="back-btn" onclick="showSection('resume')">←</div>
-    </div>
-
-    <div class="card">
-      <h3>Total épargne</h3>
-      <div id="epargneTotalePage"></div>
-    </div>
-
-    <div class="card">
-      <h3>Historique</h3>
-      <div id="historiqueEpargneTotale"></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ========================= -->
 <!-- ⚙️ RÉGLAGES -->
 <!-- ========================= -->
 
@@ -227,7 +177,16 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 </div>
 
+<!-- ========================= -->
+<!-- 🔔 TOAST (IMPORTANT) -->
+<!-- ========================= -->
+
+<div id="toast"></div>
+
+<!-- ========================= -->
 <!-- TABBAR -->
+<!-- ========================= -->
+
 <div class="tabbar">
   <div class="tab active" onclick="showSection('resume', this)">
     🏠<span>Résumé</span>
@@ -237,6 +196,10 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     ⚙️<span>Réglages</span>
   </div>
 </div>
+
+<!-- ========================= -->
+<!-- SCRIPTS -->
+<!-- ========================= -->
 
 <script src="storage.js"></script>
 <script src="depenses.js"></script>

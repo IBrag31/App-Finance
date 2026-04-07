@@ -309,3 +309,115 @@ CARDS GRID
   font-size:20px;
   font-weight:700;
 }
+
+/* =========================
+HEADER REVENUS / DEPENSES
+========================= */
+
+.revenus-header {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.revenus-header h1 {
+  text-align: center;
+  margin: 0;
+}
+
+.revenus-header .back-btn {
+  justify-self: start;
+}
+
+.revenus-header .add-btn {
+  justify-self: end;
+}
+
+/* =========================
+BOUTONS
+========================= */
+
+.back-btn{
+  font-size:20px;
+  cursor:pointer;
+  opacity:0.7;
+}
+
+.back-btn:active{
+  transform:scale(0.9);
+}
+
+.add-btn {
+  background: #3b82f6;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+REVENUS CARDS
+========================= */
+
+.revenus-card {
+  margin: 12px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #1a1a1a, #111);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.revenus-card-header {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.revenus-card-value {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* =========================
+ESPECES
+========================= */
+
+.revenus-especes-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.circle-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #2a2a2a;
+  color: white;
+  font-size: 16px;
+}
+
+.circle-btn:active {
+  transform: scale(0.9);
+}
+
+/* =========================
+DEPENSES LISTE PROPRE
+========================= */
+
+.depense-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}

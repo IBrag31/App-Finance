@@ -229,6 +229,40 @@ function initUI(){
 }
 
 // =========================
+// RESET APP
+// =========================
+
+function resetApp(){
+
+  const confirmReset = confirm("⚠️ Supprimer toutes les données ?");
+  if(!confirmReset) return;
+
+  // 🔥 suppression localStorage
+  localStorage.removeItem("revenusDetail");
+  localStorage.removeItem("depensesDetail");
+  localStorage.removeItem("especes");
+  localStorage.removeItem("epargneTotale");
+
+  // 🔥 reset variables mémoire (important)
+  if(typeof revenusDetail !== "undefined") revenusDetail = [];
+  if(typeof depensesDetail !== "undefined") depensesDetail = [];
+
+  // 🔥 reset champs UI (si présents)
+  const epargneInput = document.getElementById("epargneMois");
+  if(epargneInput) epargneInput.value = "";
+
+  // 🔥 refresh complet UI
+  renderRevenusPage?.();
+  renderDepensesPage?.();
+  renderEspeces?.();
+  updateBudget();
+
+  showToast?.("🧹 Données réinitialisées");
+
+  console.log("RESET OK 🔥");
+}
+
+// =========================
 // INIT APP
 // =========================
 

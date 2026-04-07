@@ -191,7 +191,9 @@ function openAddRevenu(){
   modal.querySelector("#revenuMois").value = moisActuel;
 
   // focus
+  setTimeout(()=>{
   modal.querySelector("#revenuNom")?.focus();
+}, 300);
 
   // 🔥 fermeture clic extérieur
   modal.addEventListener("click", (e)=>{

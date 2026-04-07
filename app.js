@@ -130,7 +130,7 @@ setText(
 
   const epText = document.getElementById("budgetEpargneText");
   if(epText){
-    epText.style.color = "#22c55e";
+    epText.style.color = "var(--color-epargne)";
   }
 
   // =========================

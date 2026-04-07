@@ -113,6 +113,28 @@ setText(
   if(depText && depBar){
     depText.style.color = depBar.style.background;
   }
+  
+  // =========================
+// 🎨 COULEUR MINI CARTE DEPENSES
+// =========================
+
+const depensesMini = document.getElementById("depensesDisplay");
+
+if(depensesMini){
+
+  if(depenses > budgetMax){
+    depensesMini.style.color = "#dc2626";
+  }
+  else if(depensesP < 50){
+    depensesMini.style.color = "#eab308";
+  }
+  else if(depensesP < 80){
+    depensesMini.style.color = "#f97316";
+  }
+  else{
+    depensesMini.style.color = "#ef4444";
+  }
+}
 
   // =========================
   // 💰 EPARGNE
@@ -128,11 +150,6 @@ setText(
     epBar.style.background = "var(--color-epargne)";
   }
 
-  const epText = document.getElementById("budgetEpargneText");
-  if(epText){
-    epText.style.color = "var(--color-epargne)";
-  }
-
   // =========================
   // 💵 REVENUS
   // =========================
@@ -144,12 +161,12 @@ setText(
       : 0;
 
     revBar.style.width = Math.min(revenusP, 100) + "%";
-    revBar.style.background = "#22c55e";
+    revBar.style.background = "var(--color-revenus)";
   }
 
   const revText = document.getElementById("budgetRevenusText");
   if(revText){
-    revText.style.color = "#22c55e";
+    revText.style.color = "var(--color-revenus)";
   }
 
   // =========================

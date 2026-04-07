@@ -287,9 +287,10 @@ REVENUS
 }
 
 .revenus-card-header{
-  font-size:14px;
+  font-size:16px;        /* 🔥 même taille que mini cards */
   font-weight:600;
-  opacity:0.9;
+  color:var(--text-primary);
+  opacity:1;             /* 🔥 plus visible comme les autres */
 }
 
 .revenus-card-value{

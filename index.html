@@ -32,49 +32,42 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     </div>
 
     <div class="card budget-card-new">
-  <h2>Budget</h2>
+      <h2>Budget</h2>
 
-  <div class="budget-flex">
+      <div class="budget-rows">
 
-    <!-- GAUCHE : BARRES -->
-    <div class="budget-left">
+        <div class="budget-row">
+          <div class="progress-bar">
+            <div class="progress-fill revenus" id="budgetRevenusBar"></div>
+          </div>
+          <div class="budget-info">
+            <span class="budget-title">Revenus</span>
+            <span id="budgetRevenusText" class="budget-value"></span>
+          </div>
+        </div>
 
-      <div class="progress-bar">
-        <div class="progress-fill revenus" id="budgetRevenusBar"></div>
+        <div class="budget-row">
+          <div class="progress-bar">
+            <div class="progress-fill depenses" id="budgetDepensesBar"></div>
+          </div>
+          <div class="budget-info">
+            <span class="budget-title">Dépenses</span>
+            <span id="budgetDepensesText" class="budget-value"></span>
+          </div>
+        </div>
+
+        <div class="budget-row">
+          <div class="progress-bar">
+            <div class="progress-fill epargne" id="budgetEpargneBar"></div>
+          </div>
+          <div class="budget-info">
+            <span class="budget-title">Épargne</span>
+            <span id="budgetEpargneText" class="budget-value"></span>
+          </div>
+        </div>
+
       </div>
-
-      <div class="progress-bar">
-        <div class="progress-fill depenses" id="budgetDepensesBar"></div>
-      </div>
-
-      <div class="progress-bar">
-        <div class="progress-fill epargne" id="budgetEpargneBar"></div>
-      </div>
-
     </div>
-
-    <!-- DROITE : INFOS -->
-    <div class="budget-right">
-
-      <div class="budget-line">
-        <span class="budget-title">Revenus</span>
-        <span id="budgetRevenusText" class="budget-value">0 / 2300 €</span>
-      </div>
-
-      <div class="budget-line">
-        <span class="budget-title">Dépenses</span>
-        <span id="budgetDepensesText" class="budget-value">0 / 1300 €</span>
-      </div>
-
-      <div class="budget-line">
-        <span class="budget-title">Épargne</span>
-        <span id="budgetEpargneText" class="budget-value">0 / 5000 €</span>
-      </div>
-
-    </div>
-
-  </div>
-</div>
 
     <div class="cards-grid">
       <div class="card small-card clickable" onclick="showSection('revenus')">

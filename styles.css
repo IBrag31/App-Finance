@@ -421,3 +421,16 @@ DEPENSES LISTE PROPRE
   padding:12px 10px;
   border-bottom:1px solid rgba(255,255,255,0.05);
 }
+
+/* =========================
+COULEURS MINI CARTES
+========================= */
+
+#revenusDisplay {
+  color: var(--color-revenus);
+}
+
+#epargneTotaleDisplay,
+#epargneMoisDisplay {
+  color: var(--color-epargne);
+}

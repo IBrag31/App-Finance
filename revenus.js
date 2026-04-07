@@ -150,7 +150,6 @@ function validerRevenu(){
 
 function openAddRevenu(){
 
-  // 🔥 empêche doublons
   if(document.getElementById("modalRevenu")) return;
 
   const moisActuel = getMoisActuel().slice(5,7);
@@ -164,7 +163,6 @@ function openAddRevenu(){
       <h3>Ajouter un revenu</h3>
 
       <input id="revenuNom" placeholder="Nom du revenu" required>
-
       <input id="revenuMontant" type="number" inputmode="decimal" placeholder="Montant" required>
 
       <select id="revenuMois">
@@ -182,28 +180,36 @@ function openAddRevenu(){
         <option value="12">Décembre</option>
       </select>
 
-      <button onclick="validerRevenu()">Ajouter</button>
-      <button onclick="fermerModalRevenu()">Annuler</button>
+      <button id="btnAddRevenu">Ajouter</button>
+      <button id="btnCancelRevenu">Annuler</button>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  // 🔥 auto mois actuel
-  const select = modal.querySelector("#revenuMois");
-  if(select){
-    select.value = moisActuel;
-  }
+  // auto mois
+  modal.querySelector("#revenuMois").value = moisActuel;
 
-  // 🔥 focus automatique
+  // focus
   modal.querySelector("#revenuNom")?.focus();
 
-  // 🔥 fermeture en cliquant dehors
-  modal.onclick = (e) => {
+  // 🔥 fermeture clic extérieur
+  modal.addEventListener("click", (e)=>{
     if(e.target === modal){
       fermerModalRevenu();
     }
-  };
+  });
+
+  // 🔥 bouton annuler
+  modal.querySelector("#btnCancelRevenu")
+    .addEventListener("click", fermerModalRevenu);
+
+  // 🔥 bouton ajouter
+  modal.querySelector("#btnAddRevenu")
+    .addEventListener("click", ()=>{
+      validerRevenu();
+      fermerModalRevenu(); // 🔥 fermeture FORCÉE
+    });
 }
 
 function fermerModalRevenu(){

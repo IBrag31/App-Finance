@@ -236,13 +236,16 @@ BUDGET UI FINAL
   width:170px;
   display:flex;
   flex-direction:column;
-  align-items:flex-end;
+  align-items:flex-start; /* 🔥 clé */
   justify-content:flex-end;
 }
 
 .budget-title {
   font-size:12px;
   opacity:0.5;
+  width:100%;
+  text-align:left; /* 🔥 aligné avec valeur */
+  margin-bottom:2px;
 }
 
 .budget-value {
@@ -251,6 +254,8 @@ BUDGET UI FINAL
   letter-spacing:0.5px;
   white-space:nowrap;
   transform:translateY(2px);
+  width:100%;
+  text-align:left; /* 🔥 même axe que titre */
 }
 
 /* =========================

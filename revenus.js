@@ -142,15 +142,6 @@ function validerRevenu(){
   });
 
   saveRevenus();
-  renderRevenusPage();
-  updateBudget();
-
-  showToast?.("💰 Revenu ajouté");
-}
-
-  revenusDetail.push({ nom, montant, mois });
-
-  saveRevenus();
 
   if(nomInput) nomInput.value = "";
   if(montantInput) montantInput.value = "";
@@ -158,7 +149,6 @@ function validerRevenu(){
 
   showToast?.("💰 Revenu ajouté");
 
-  fermerModalRevenu();
   renderRevenusPage();
   updateBudget();
 }

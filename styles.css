@@ -241,11 +241,13 @@ BUDGET UI FINAL
 }
 
 .budget-title {
-  font-size:12px;
-  opacity:0.5;
+  font-size:14px; /* 🔥 plus grand */
+  color:#ffffff;  /* 🔥 blanc */
+  opacity:0.9;    /* 🔥 légèrement adouci */
   width:100%;
-  text-align:left; /* 🔥 aligné avec valeur */
-  margin-bottom:2px;
+  text-align:left;
+  margin-bottom:3px;
+  font-weight:500; /* 🔥 un peu plus de présence */
 }
 
 .budget-value {

@@ -21,7 +21,6 @@ html, body{
 body{
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
   color:white;
-  min-height:100vh;
   overscroll-behavior:none;
 }
 
@@ -144,18 +143,29 @@ SECTIONS
 BUDGET
 ========================= */
 
+.budget-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
 .progress-bar{
   height:18px;
   background:rgba(255,255,255,0.08);
   border-radius:12px;
   overflow:hidden;
+  min-width:120px;
+}
+
+.budget-row .progress-bar{
+  flex:0 0 55%;
 }
 
 .progress-fill{
   height:100%;
   width:0%;
   border-radius:12px;
-  transition:0.4s;
+  transition:width 0.4s ease, background 0.3s ease;
 }
 
 .progress-fill.revenus{background:var(--color-revenus);}
@@ -217,7 +227,7 @@ REVENUS
   padding:18px;
   border-radius:18px;
   background:linear-gradient(145deg,#1a1a1a,#111);
-  transition:0.15s;
+  transition:transform 0.15s ease;
 }
 
 .revenus-card:active{
@@ -230,17 +240,14 @@ REVENUS
   opacity:0.9;
 }
 
-.revenus-card-value,
-.revenus-small div{
+.revenus-card-value{
   color:var(--color-revenus);
-  font-size:28px;
+  font-size:26px;
   font-weight:bold;
   text-align:center;
   letter-spacing:0.5px;
+  line-height:1.2;
 }
-
-/* layout */
-.total-card{margin-bottom:10px;}
 
 .revenus-small{
   height:100px;
@@ -252,6 +259,18 @@ REVENUS
 .revenus-small span{
   font-size:12px;
   opacity:0.6;
+}
+
+.revenus-small div{
+  color:var(--color-revenus);
+  font-size:18px;
+  font-weight:600;
+  text-align:center;
+}
+
+/* layout */
+.total-card{
+  margin-bottom:10px;
 }
 
 /* espèces */
@@ -289,6 +308,11 @@ DEPENSES
 COULEURS MINI CARTES
 ========================= */
 
-#revenusDisplay{color:var(--color-revenus);}
+#revenusDisplay{
+  color:var(--color-revenus);
+}
+
 #epargneTotaleDisplay,
-#epargneMoisDisplay{color:var(--color-epargne);}
+#epargneMoisDisplay{
+  color:var(--color-epargne);
+}

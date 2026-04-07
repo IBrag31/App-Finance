@@ -461,16 +461,16 @@ BUDGET NEW UI
 
 /* GAUCHE */
 .budget-left {
-  flex: 1;
-  max-width: 140px;
+  flex: 1.2; /* 🔥 plus de place */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 🔥 IMPORTANT */
+  justify-content: space-between;
 }
 
 /* DROITE */
 .budget-right {
-  flex: 1.6;
+  flex: 1;
+  padding-left: 10px; /* 🔥 décale à droite */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 🔥 IMPORTANT */
@@ -493,6 +493,7 @@ BUDGET NEW UI
 }
 
 .budget-value {
-  font-size: 20px; /* 🔥 plus impact */
+  font-size: 22px; /* 🔥 encore plus visible */
   font-weight: 700;
+  letter-spacing: 0.5px;
 }

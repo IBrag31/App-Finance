@@ -26,6 +26,19 @@ body{
 }
 
 /* =========================
+VARIABLES (🔥 CENTRALISÉ)
+========================= */
+
+:root {
+  --color-revenus: #22c55e;
+  --color-depenses: #f97316;
+  --color-epargne: #3b82f6;
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255,255,255,0.65);
+}
+
+/* =========================
 TITRES
 ========================= */
 
@@ -200,7 +213,7 @@ BUDGET UI FINAL
 
 .budget-row {
   display: flex;
-  align-items: flex-end; /* 🔥 alignement parfait */
+  align-items: flex-end;
   gap: 14px;
 }
 
@@ -221,33 +234,38 @@ BUDGET UI FINAL
 }
 
 .progress-fill.revenus {
-  background:#22c55e;
+  background: var(--color-revenus);
 }
 
 .progress-fill.depenses {
-  background:#f97316;
+  background: var(--color-depenses);
 }
 
 .progress-fill.epargne {
-  background:#22c55e;
+  background: var(--color-epargne);
+}
+
+/* Texte épargne en bleu */
+#budgetEpargneText {
+  color: var(--color-epargne);
 }
 
 .budget-info {
   width:170px;
   display:flex;
   flex-direction:column;
-  align-items:flex-start; /* 🔥 clé */
+  align-items:flex-start;
   justify-content:flex-end;
 }
 
 .budget-title {
-  font-size:14px; /* 🔥 plus grand */
-  color:#ffffff;  /* 🔥 blanc */
-  opacity:0.9;    /* 🔥 légèrement adouci */
+  font-size:14px;
+  color: var(--text-primary);
+  opacity:0.9;
   width:100%;
   text-align:left;
   margin-bottom:3px;
-  font-weight:500; /* 🔥 un peu plus de présence */
+  font-weight:500;
 }
 
 .budget-value {
@@ -257,7 +275,7 @@ BUDGET UI FINAL
   white-space:nowrap;
   transform:translateY(2px);
   width:100%;
-  text-align:left; /* 🔥 même axe que titre */
+  text-align:left;
 }
 
 /* =========================

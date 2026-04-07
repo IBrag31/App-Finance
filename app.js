@@ -229,29 +229,26 @@ function initUI(){
 }
 
 // =========================
-// RESET APP
+// RESET APP (FINAL)
 // =========================
 
 function resetApp(){
 
-  const confirmReset = confirm("⚠️ Supprimer toutes les données ?");
-  if(!confirmReset) return;
+  console.log("RESET CLICK 🔥");
 
-  // 🔥 suppression localStorage
+  if(!confirm("⚠️ Supprimer toutes les données ?")) return;
+
+  // 🔥 suppression
   localStorage.removeItem("revenusDetail");
   localStorage.removeItem("depensesDetail");
   localStorage.removeItem("especes");
   localStorage.removeItem("epargneTotale");
 
-  // 🔥 reset variables mémoire (important)
+  // 🔥 reset mémoire
   if(typeof revenusDetail !== "undefined") revenusDetail = [];
   if(typeof depensesDetail !== "undefined") depensesDetail = [];
 
-  // 🔥 reset champs UI (si présents)
-  const epargneInput = document.getElementById("epargneMois");
-  if(epargneInput) epargneInput.value = "";
-
-  // 🔥 refresh complet UI
+  // 🔥 refresh UI
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEspeces?.();
@@ -259,7 +256,7 @@ function resetApp(){
 
   showToast?.("🧹 Données réinitialisées");
 
-  console.log("RESET OK 🔥");
+  console.log("RESET DONE ✅");
 }
 
 // =========================

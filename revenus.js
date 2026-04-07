@@ -35,7 +35,7 @@ function renderEspeces(){
   const el = document.getElementById("especesValue");
   if(!el) return;
 
-  el.innerText = euro(especes);
+  el.innerText = euroShort(especes); // ✅ CORRIGÉ
 
   el.style.transform = "scale(1.1)";
   setTimeout(()=> el.style.transform = "scale(1)", 120);

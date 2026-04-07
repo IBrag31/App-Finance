@@ -469,8 +469,8 @@ BUDGET NEW UI
 
 /* DROITE */
 .budget-right {
-  flex: 1.6;
-  padding-left: 4px; /* 🔥 décale à droite */
+  flex: 1.8;
+  padding-left: 6px; /* 🔥 décale à droite */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 🔥 IMPORTANT */
@@ -490,6 +490,7 @@ BUDGET NEW UI
 .budget-title {
   font-size: 12px;
   opacity: 0.5;
+  text-align: right;
 }
 
 .budget-value {
@@ -497,4 +498,5 @@ BUDGET NEW UI
   font-weight: 700;
   letter-spacing: 0.5px;
   white-space: nowrap; /* 🔥 clé */
+  text-align: right; /* 🔥 clé */
 }

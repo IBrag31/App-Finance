@@ -48,79 +48,137 @@ function updateBudget(){
   // =========================
 
   const depensesP = budgetMax ? (depenses / budgetMax) * 100 : 0;
-  const epargneP = revenus ? (getEpargneTotale() / revenus) * 100 : 0;
 
   // =========================
   // BARRES BUDGET
   // =========================
 
-  setText("budgetDepensesText", euro(depenses));
-  setText("budgetEpargneText", euro(getEpargneTotale()));
+  const objectifDepenses = 1300;
+  const objectifEpargne = 5000;
+  const objectifRevenus = 2300;
 
+  const epargneValue = getEpargneTotale();
+
+  // TEXTES
+  setText(
+    "budgetDepensesText",
+    `${euro(depenses)} / ${euro(objectifDepenses)}`
+  );
+
+  setText(
+    "budgetEpargneText",
+    `${euro(epargneValue)} / ${euro(objectifEpargne)}`
+  );
+
+  setText(
+    "budgetRevenusText",
+    `${euro(revenus)} / ${euro(objectifRevenus)}`
+  );
+
+  // ELEMENTS
   const depBar = document.getElementById("budgetDepensesBar");
   const epBar = document.getElementById("budgetEpargneBar");
+  const revBar = document.getElementById("budgetRevenusBar");
 
- // 🔥 DEPENSES DYNAMIQUES
-if(depBar){
+  // =========================
+  // 🔥 DEPENSES
+  // =========================
 
-  const percent = Math.min(depensesP, 100);
-  depBar.style.width = percent + "%";
+  if(depBar){
 
-  if(percent < 50){
-    depBar.style.background = "#eab308"; // jaune
-  }
-  else if(percent < 80){
-    depBar.style.background = "#f97316"; // orange
-  }
-  else{
-    depBar.style.background = "#ef4444"; // rouge
+    const percent = Math.min(depensesP, 100);
+    depBar.style.width = percent + "%";
+
+    if(percent < 50){
+      depBar.style.background = "#eab308";
+    }
+    else if(percent < 80){
+      depBar.style.background = "#f97316";
+    }
+    else{
+      depBar.style.background = "#ef4444";
+    }
+
+    if(depenses > budgetMax){
+      depBar.style.background = "#dc2626";
+    }
   }
 
-  // dépassement
-  if(depenses > budgetMax){
-    depBar.style.background = "#dc2626";
+  const depText = document.getElementById("budgetDepensesText");
+  if(depText && depBar){
+    depText.style.color = depBar.style.background;
   }
-}
 
-// =========================
-// 🎨 COULEUR TOTAL DEPENSES
-// =========================
+  // =========================
+  // 💰 EPARGNE
+  // =========================
 
-const totalDepensesEl = document.getElementById("depensesTotalPage");
+  if(epBar){
 
-if(totalDepensesEl){
+    const percent = objectifEpargne
+      ? (epargneValue / objectifEpargne) * 100
+      : 0;
 
-  if(depenses > budgetMax){
-    totalDepensesEl.style.color = "#dc2626"; // 🔴 dépassement
+    epBar.style.width = Math.min(percent, 100) + "%";
+    epBar.style.background = "#22c55e";
   }
-  else if(depensesP < 50){
-    totalDepensesEl.style.color = "#eab308"; // 🟡
+
+  const epText = document.getElementById("budgetEpargneText");
+  if(epText){
+    epText.style.color = "#22c55e";
   }
-  else if(depensesP < 80){
-    totalDepensesEl.style.color = "#f97316"; // 🟠
+
+  // =========================
+  // 💵 REVENUS
+  // =========================
+
+  if(revBar){
+
+    const revenusP = objectifRevenus
+      ? (revenus / objectifRevenus) * 100
+      : 0;
+
+    revBar.style.width = Math.min(revenusP, 100) + "%";
+    revBar.style.background = "#22c55e";
   }
-  else{
-    totalDepensesEl.style.color = "#ef4444"; // 🔴
+
+  const revText = document.getElementById("budgetRevenusText");
+  if(revText){
+    revText.style.color = "#22c55e";
   }
-  
-  // 🔥 RESET + ANIMATION PROPRE
-  totalDepensesEl.style.transform = "scale(1)";
-  
-  setTimeout(()=>{
-    totalDepensesEl.style.transform = "scale(1.05)";
+
+  // =========================
+  // 🎨 TOTAL DEPENSES (PAGE)
+  // =========================
+
+  const totalDepensesEl = document.getElementById("depensesTotalPage");
+
+  if(totalDepensesEl){
+
+    if(depenses > budgetMax){
+      totalDepensesEl.style.color = "#dc2626";
+    }
+    else if(depensesP < 50){
+      totalDepensesEl.style.color = "#eab308";
+    }
+    else if(depensesP < 80){
+      totalDepensesEl.style.color = "#f97316";
+    }
+    else{
+      totalDepensesEl.style.color = "#ef4444";
+    }
+
+    // animation
+    totalDepensesEl.style.transform = "scale(1)";
     
     setTimeout(()=>{
-      totalDepensesEl.style.transform = "scale(1)";
-    },150);
-
-  },10);
-
-}
-
-// épargne inchangée
-if(epBar){
-  epBar.style.width = Math.min(epargneP,100) + "%";
-}
+      totalDepensesEl.style.transform = "scale(1.05)";
+      
+      setTimeout(()=>{
+        totalDepensesEl.style.transform = "scale(1)";
+      },150);
+    },10);
+  }
 
   // =========================
   // DASHBOARD (CARTES)
@@ -129,7 +187,7 @@ if(epBar){
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargne));
-  setText("epargneTotaleDisplay", euro(getEpargneTotale()));
+  setText("epargneTotaleDisplay", euro(epargneValue));
 
   // =========================
   // PAGES DÉTAILLÉES
@@ -137,30 +195,7 @@ if(epBar){
 
   setText("revenusPage", euro(revenus));
   setText("epargneMoisPage", euro(epargne));
-  setText("epargneTotalePage", euro(getEpargneTotale()));
-  
-  // =========================
-  // BARRE REVENUS OBJECTIF
-  // =========================
-
-  const objectifRevenus = 2300;
-
-  const revenusP = objectifRevenus > 0
-    ? (revenus / objectifRevenus) * 100
-    : 0;
-
-  setText(
-    "budgetRevenusText",
-    `${euro(revenus)} / ${euro(objectifRevenus)}`
-  );
-
-  const revBar = document.getElementById("budgetRevenusBar");
-
-  if(revBar){
-    revBar.style.width = Math.min(revenusP, 100) + "%";
-    revBar.style.background = "#22c55e"; // 🔥 vert
-  }
-  
+  setText("epargneTotalePage", euro(epargneValue));
 }
 
 // =========================
@@ -180,10 +215,8 @@ window.addEventListener("DOMContentLoaded", () => {
   initUI();
 
   setTimeout(()=>{
-    
     renderRevenusPage?.();
     renderDepensesPage?.();
-  
     updateBudget();
   }, 200);
 

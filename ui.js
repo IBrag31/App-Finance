@@ -112,17 +112,3 @@ function ouvrirModal(){
 function fermerModal(){
   document.getElementById("depenseModal")?.classList.remove("show");
 }
-
-function ouvrirModalRevenu(){
-
-  const moisInput = document.getElementById("revenuMois");
-  if(moisInput){
-    moisInput.value = getMoisActuel();
-  }
-
-  document.getElementById("revenuModal")?.classList.add("show");
-}
-
-function fermerModalRevenu(){
-  document.getElementById("revenuModal")?.classList.remove("show");
-}

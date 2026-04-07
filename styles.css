@@ -502,3 +502,42 @@ BUDGET NEW UI
   white-space: nowrap; /* 🔥 clé */
   text-align: right; /* 🔥 clé */
 }
+
+/* =========================
+ALIGNEMENT PARFAIT BARRES
+========================= */
+
+.budget-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.budget-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.budget-row .progress-bar {
+  flex: 1;
+}
+
+.budget-info {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.budget-info .budget-title {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.budget-info .budget-value {
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+}

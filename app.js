@@ -125,7 +125,7 @@ setText(
       : 0;
 
     epBar.style.width = Math.min(percent, 100) + "%";
-    epBar.style.background = "#22c55e";
+    epBar.style.background = "var(--color-epargne)";
   }
 
   const epText = document.getElementById("budgetEpargneText");

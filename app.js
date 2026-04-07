@@ -228,35 +228,17 @@ function initUI(){
   renderEspeces?.();
 }
 
-// =========================
-// RESET APP (FINAL)
-// =========================
-
 function resetApp(){
 
   console.log("RESET CLICK 🔥");
 
   if(!confirm("⚠️ Supprimer toutes les données ?")) return;
 
-  // 🔥 suppression
-  localStorage.removeItem("revenusDetail");
-  localStorage.removeItem("depensesDetail");
-  localStorage.removeItem("especes");
-  localStorage.removeItem("epargneTotale");
+  // 🔥 reset complet
+  localStorage.clear();
 
-  // 🔥 reset mémoire
-  if(typeof revenusDetail !== "undefined") revenusDetail = [];
-  if(typeof depensesDetail !== "undefined") depensesDetail = [];
-
-  // 🔥 refresh UI
-  renderRevenusPage?.();
-  renderDepensesPage?.();
-  renderEspeces?.();
-  updateBudget();
-
-  showToast?.("🧹 Données réinitialisées");
-
-  console.log("RESET DONE ✅");
+  // 🔥 reload app (ultra safe)
+  location.reload();
 }
 
 // =========================

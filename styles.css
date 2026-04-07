@@ -1,4 +1,4 @@
-	/* =========================
+/* =========================
 RESET
 ========================= */
 
@@ -34,15 +34,16 @@ h1{
 }
 
 .page-header h1{
-  font-size:24px; /* 🔥 au lieu de 28 */
+  font-size:24px;
   font-weight:700;
-  margin-bottom:2px; /* 🔥 réduit */
+  margin-bottom:2px;
 }
 
 #todayDate{
-  font-size:14px; /* 🔥 au lieu de 16 */
+  font-size:14px;
   opacity:0.65;
 }
+
 /* =========================
 CARDS
 ========================= */
@@ -172,87 +173,89 @@ SECTIONS
   display:block;
 }
 
-.sections-container{
-  width:100%;
-  min-height:100vh;
-}
-
 .section-scroll{
   width:100%;
-  min-height:100%; /* 🔥 au lieu de 100vh */
-
+  min-height:100%;
   display:flex;
   flex-direction:column;
-  justify-content:flex-start;
-
   gap:12px;
-
   padding:16px 12px 120px 12px;
-
   overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
 }
+
 /* =========================
-DEPENSES
+BUDGET UI FINAL
 ========================= */
 
-.depense-row{
+.budget-card-new {
+  margin: 0 4px 12px 4px;
+}
+
+.budget-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.budget-row {
+  display: flex;
+  align-items: flex-end; /* 🔥 alignement parfait */
+  gap: 14px;
+}
+
+.progress-bar{
+  flex:1;
+  height:18px;
+  background:rgba(255,255,255,0.08);
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:2px;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  border-radius:12px;
+  transition: width 0.4s ease, background 0.3s ease;
+}
+
+.progress-fill.revenus {
+  background:#22c55e;
+}
+
+.progress-fill.depenses {
+  background:#f97316;
+}
+
+.progress-fill.epargne {
+  background:#22c55e;
+}
+
+.budget-info {
+  width:170px;
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 14px;
-  margin-bottom:10px;
-
-  background:rgba(255,255,255,0.04);
-  border-radius:14px;
-
-  transition:transform .18s ease;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:flex-end;
 }
 
-.depense-row.swiping{
-  background:linear-gradient(145deg,#ef4444,#dc2626);
+.budget-title {
+  font-size:12px;
+  opacity:0.5;
 }
 
-/* =========================
-MODAL
-========================= */
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-}
-
-.modal.show{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.modal-content{
-  width:90%;
-  max-width:420px;
-  background:#1f2937;
-  border-radius:24px;
-  padding:22px;
+.budget-value {
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:0.5px;
+  white-space:nowrap;
+  transform:translateY(2px);
 }
 
 /* =========================
-APP CONTAINER
+CARDS GRID
 ========================= */
-
-.app-container{
-  width:100%;
-  max-width:100vw;
-  overflow-x:hidden;
-}
 
 .cards-grid{
   display:grid;
@@ -262,9 +265,7 @@ APP CONTAINER
 
 .small-card{
   padding:18px;
-
-  height:110px; /* 🔥 au lieu de min-height */
-
+  height:110px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -272,7 +273,6 @@ APP CONTAINER
 
 .small-card h3{
   font-size:16px;
-  font-weight:600;
 }
 
 .small-card span{
@@ -281,263 +281,6 @@ APP CONTAINER
 }
 
 .small-card div{
-  font-size:20px; /* 🔥 un peu réduit */
-  font-weight:700;
-}
-
-/* HEADER FLEX UPDATE */
-.page-header{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-
-  margin-bottom:6px;
-}
-
-.budget-card{
-  margin:0 4px 12px 4px;
-}
-
-.back-btn{
   font-size:20px;
-  cursor:pointer;
-  opacity:0.7;
-}
-
-.back-btn:active{
-  transform:scale(0.9);
-}
-
-.budget-item{
-  margin-top:16px;
-}
-
-.budget-label{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  margin-bottom:6px;
-  opacity:0.8;
-}
-
-.budget-label span{
-  font-weight:600;
-  font-size:14px;
-}
-
-.progress-bar{
-  width:100%;
-  height:14px; /* 🔥 plus épais */
-  background:rgba(255,255,255,0.08);
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.progress-fill{
-  height:100%;
-  width:0%;
-  border-radius:8px;
-  transition: width 0.4s ease, background 0.3s ease;
-}
-
-.progress-fill.epargne{
-  background:#22c55e;
-}
-
-.clickable{
-  cursor:pointer;
-  transition:transform 0.15s ease;
-}
-
-.clickable:active{
-  transform:scale(0.96);
-}
-
-.progress-fill.revenus {
-  background: #3b82f6;
-}
-
-.revenus-header {
-  display: grid;
-  grid-template-columns: 40px 1fr 40px;
-  align-items: center;
-}
-
-.revenus-header h1 {
-  text-align: center;
-  margin: 0;
-}
-
-.revenus-header .back-btn {
-  justify-self: start;
-}
-
-.revenus-header .add-btn {
-  justify-self: end;
-}
-
-/* bouton + stylé */
-.add-btn {
-  background: #3b82f6;
-  border: none;
-  color: white;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} 
-
-.revenus-card {
-  margin: 12px 0;
-  padding: 18px;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #1a1a1a, #111);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-.revenus-card-header {
-  font-size: 14px;
-  color: #aaa;
-  margin-bottom: 10px;
-}
-
-.revenus-card-value {
-  font-size: 28px;
-  font-weight: bold;
-  flex: 1;
-  text-align: center;
-}
-
-/* ESPECES */
-.revenus-especes-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.circle-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: none;
-  background: #2a2a2a;
-  color: white;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.circle-btn:active {
-  transform: scale(0.9);
-}
-
-.card h3 {
-  font-size: 14px;
-  opacity: 0.7;
-  margin-bottom: 10px;
-}
-
-#depensesTotalPage {
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-/* =========================
-BUDGET NEW UI
-========================= */
-
-.budget-card-new {
-  margin: 0 4px 12px 4px;
-}
-
-.budget-flex {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-/* GAUCHE */
-.budget-left {
-  flex: 0.75; /* 🔥 plus de place */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* DROITE */
-.budget-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-right: 8px;
-}
-
-.budget-line {
-  height: 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  text-align: right;
-}
-
-.budget-left .progress-bar {
-  margin: 4px 0;
-}
-
-.budget-title {
-  font-size: 12px;
-  opacity: 0.5;
-  text-align: right;
-}
-
-.budget-value {
-  font-size: 20px; /* 🔥 encore plus visible */
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  white-space: nowrap; /* 🔥 clé */
-  text-align: right; /* 🔥 clé */
-}
-
-/* =========================
-ALIGNEMENT PARFAIT BARRES
-========================= */
-
-.budget-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-top: 12px;
-}
-
-.budget-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.budget-row .progress-bar {
-  flex: 1;
-}
-
-.budget-info {
-  width: 160px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.budget-info .budget-title {
-  font-size: 12px;
-  opacity: 0.5;
-}
-
-.budget-info .budget-value {
-  font-size: 20px;
-  font-weight: 700;
-  white-space: nowrap;
+  font-weight:700;
 }

@@ -199,7 +199,7 @@ BUDGET (🔥 FIX ALIGNEMENT)
   font-size:20px;
   font-weight:700;
   white-space:nowrap;
-  text-align:right;
+  text-align:left;
 }
 
 /* =========================
@@ -212,11 +212,37 @@ CARDS GRID
   gap:12px;
 }
 
+/* =========================
+MINI CARDS (🔥 VERSION CLEAN)
+========================= */
+
 .small-card{
-  height:110px;
+  height:120px;
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  justify-content:center;
+  gap:6px;
+  padding:16px;
+}
+
+/* TITRE */
+.small-card h3{
+  font-size:16px;
+  font-weight:600;
+  color:var(--text-primary);
+}
+
+/* SOUS-TITRE */
+.small-card span{
+  font-size:13px;
+  color:var(--text-secondary);
+}
+
+/* VALEUR */
+.small-card div{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:0.5px;
 }
 
 /* =========================

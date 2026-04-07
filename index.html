@@ -111,26 +111,35 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
       <button onclick="openAddRevenu()" class="add-btn">+</button>
     </div>
 
-    <div class="card revenus-card">
-      <div class="revenus-card-header">
-        Ce mois-ci • <span id="moisActuelLabel"></span>
-      </div>
-      <div class="revenus-card-value" id="revenusMois">0 €</div>
+    <!-- TOTAL -->
+<div class="card revenus-card total-card">
+  <div class="revenus-card-header">Total revenus</div>
+  <div class="revenus-card-value" id="revenusPage">0 €</div>
+</div>
+
+<!-- GRID -->
+<div class="cards-grid revenus-grid">
+
+  <!-- CE MOIS -->
+  <div class="card small-card revenus-small">
+    <h3>Ce mois-ci</h3>
+    <span id="moisActuelLabel"></span>
+    <div id="revenusMois">0 €</div>
+  </div>
+
+  <!-- ESPECES -->
+  <div class="card small-card revenus-small">
+    <h3>Espèces</h3>
+
+    <div class="revenus-especes-row">
+      <button onclick="retirerEspeces()" class="circle-btn">−</button>
+      <div id="especesValue">0 €</div>
+      <button onclick="ajouterEspeces()" class="circle-btn">+</button>
     </div>
 
-    <div class="card revenus-card">
-      <div class="revenus-card-header">Espèces</div>
-      <div class="revenus-especes-row">
-        <button onclick="retirerEspeces()" class="circle-btn">−</button>
-        <div class="revenus-card-value" id="especesValue">0 €</div>
-        <button onclick="ajouterEspeces()" class="circle-btn">+</button>
-      </div>
-    </div>
+  </div>
 
-    <div class="card revenus-card">
-      <div class="revenus-card-header">Total revenus</div>
-      <div class="revenus-card-value" id="revenusPage">0 €</div>
-    </div>
+</div>
 
     <div id="revenusList"></div>
 

@@ -187,30 +187,39 @@ function openAddRevenu(){
 
   document.body.appendChild(modal);
 
-  // auto mois
+  // 🔥 auto mois
   modal.querySelector("#revenuMois").value = moisActuel;
 
-  // focus
+  // 🔥 focus (sans zoom)
   setTimeout(()=>{
-  modal.querySelector("#revenuNom")?.focus();
-}, 300);
+    modal.querySelector("#revenuNom")?.focus();
+  }, 300);
 
-  // 🔥 fermeture clic extérieur
+  // =========================
+  // EVENTS
+  // =========================
+
+  // 🔥 fermer clic extérieur
   modal.addEventListener("click", (e)=>{
     if(e.target === modal){
       fermerModalRevenu();
     }
   });
 
-  // 🔥 bouton annuler
+  // 🔥 annuler
   modal.querySelector("#btnCancelRevenu")
-    .addEventListener("click", fermerModalRevenu);
+    .addEventListener("click", (e)=>{
+      e.stopPropagation();
+      fermerModalRevenu();
+    });
 
-  // 🔥 bouton ajouter
+  // 🔥 ajouter
   modal.querySelector("#btnAddRevenu")
-    .addEventListener("click", ()=>{
-      validerRevenu();
-      fermerModalRevenu(); // 🔥 fermeture FORCÉE
+    .addEventListener("click", (e)=>{
+      e.stopPropagation();
+
+      validerRevenu(); // ta logique existante
+      fermerModalRevenu(); // fermeture FORCÉE
     });
 }
 

@@ -140,7 +140,7 @@ SECTIONS
 }
 
 /* =========================
-BUDGET (🔥 FIX ALIGNEMENT)
+BUDGET
 ========================= */
 
 .budget-row{
@@ -156,10 +156,11 @@ BUDGET (🔥 FIX ALIGNEMENT)
   border-radius:12px;
   overflow:hidden;
   min-width:120px;
+  flex-shrink:0; /* 🔥 anti écrasement */
 }
 
 .budget-row .progress-bar{
-  flex:0 0 50%; /* 🔥 largeur contrôlée parfaite */
+  flex:0 0 50%;
 }
 
 .progress-fill{
@@ -177,13 +178,11 @@ BUDGET (🔥 FIX ALIGNEMENT)
   color:var(--color-epargne);
 }
 
-/* 🔥 PARTIE DROITE FIX */
-
 .budget-info{
   flex:1;
   display:flex;
   flex-direction:column;
-  align-items:flex-start; /* 🔥 clé */
+  align-items:flex-start;
   justify-content:center;
 }
 
@@ -191,7 +190,7 @@ BUDGET (🔥 FIX ALIGNEMENT)
   font-size:14px;
   color:white;
   opacity:0.8;
-  text-align:left; /* 🔥 */
+  text-align:left;
   margin-bottom:2px;
 }
 
@@ -200,6 +199,7 @@ BUDGET (🔥 FIX ALIGNEMENT)
   font-weight:700;
   white-space:nowrap;
   text-align:left;
+  margin-top:2px; /* 🔥 micro alignement */
 }
 
 /* =========================
@@ -213,11 +213,11 @@ CARDS GRID
 }
 
 /* =========================
-MINI CARDS (🔥 VERSION CLEAN)
+MINI CARDS
 ========================= */
 
 .small-card{
-  height:120px;
+  min-height:120px; /* 🔥 au lieu de height */
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -225,20 +225,17 @@ MINI CARDS (🔥 VERSION CLEAN)
   padding:16px;
 }
 
-/* TITRE */
 .small-card h3{
   font-size:16px;
   font-weight:600;
   color:var(--text-primary);
 }
 
-/* SOUS-TITRE */
 .small-card span{
   font-size:13px;
   color:var(--text-secondary);
 }
 
-/* VALEUR */
 .small-card div{
   font-size:22px;
   font-weight:700;
@@ -276,10 +273,15 @@ REVENUS
 
 .revenus-card{
   margin:12px 0;
-  padding:18px;
+  padding:22px;
   border-radius:18px;
   background:linear-gradient(145deg,#1a1a1a,#111);
   transition:transform 0.15s ease;
+
+  min-height:130px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .revenus-card:active{
@@ -287,10 +289,10 @@ REVENUS
 }
 
 .revenus-card-header{
-  font-size:16px;        /* 🔥 même taille que mini cards */
+  font-size:16px;
   font-weight:600;
   color:var(--text-primary);
-  opacity:1;             /* 🔥 plus visible comme les autres */
+  opacity:1;
 }
 
 .revenus-card-value{
@@ -303,10 +305,11 @@ REVENUS
 }
 
 .revenus-small{
-  height:100px;
+  min-height:115px;
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  justify-content:center;
+  gap:8px;
 }
 
 .revenus-small span{
@@ -321,12 +324,10 @@ REVENUS
   text-align:center;
 }
 
-/* layout */
 .total-card{
   margin-bottom:10px;
 }
 
-/* espèces */
 .revenus-especes-row{
   display:flex;
   align-items:center;

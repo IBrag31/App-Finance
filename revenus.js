@@ -126,12 +126,27 @@ function validerRevenu(){
 
   const nom = nomInput?.value.trim();
   const montant = parseFloat(montantInput?.value);
-  const mois = moisInput?.value;
+
+  const annee = new Date().getFullYear();
+  const mois = `${annee}-${moisInput.value.padStart(2, "0")}`;
 
   if(!nom || isNaN(montant) || montant <= 0 || !mois){
     showToast?.("⚠️ Montant invalide");
     return;
   }
+
+  revenusDetail.push({
+    nom,
+    montant: Math.round(montant * 100) / 100,
+    mois
+  });
+
+  saveRevenus();
+  renderRevenusPage();
+  updateBudget();
+
+  showToast?.("💰 Revenu ajouté");
+}
 
   revenusDetail.push({ nom, montant, mois });
 

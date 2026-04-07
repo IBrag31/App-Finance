@@ -461,7 +461,7 @@ BUDGET NEW UI
 
 /* GAUCHE */
 .budget-left {
-  flex: 0.9; /* 🔥 plus de place */
+  flex: 0.75; /* 🔥 plus de place */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -469,8 +469,8 @@ BUDGET NEW UI
 
 /* DROITE */
 .budget-right {
-  flex: 1.4;
-  padding-left: 6px; /* 🔥 décale à droite */
+  flex: 1.6;
+  padding-left: 4px; /* 🔥 décale à droite */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 🔥 IMPORTANT */

@@ -11,6 +11,10 @@ function euro(n){
   }) + " €";
 }
 
+function euroShort(n){
+  return Math.round(Number(n || 0)).toLocaleString("fr-FR") + " €";
+}
+
 function getEpargneTotale(){
   return Number(localStorage.getItem("epargneTotale")) || 0;
 }
@@ -59,21 +63,22 @@ function updateBudget(){
 
   const epargneValue = getEpargneTotale();
 
-  // TEXTES
-  setText(
-    "budgetDepensesText",
-    `${euro(depenses)} / ${euro(objectifDepenses)}`
-  );
+ // TEXTES
 
-  setText(
-    "budgetEpargneText",
-    `${euro(epargneValue)} / ${euro(objectifEpargne)}`
-  );
+setText(
+  "budgetDepensesText",
+  `${Math.round(depenses).toLocaleString("fr-FR")} / ${Math.round(objectifDepenses).toLocaleString("fr-FR")} €`
+);
 
-  setText(
-    "budgetRevenusText",
-    `${euro(revenus)} / ${euro(objectifRevenus)}`
-  );
+setText(
+  "budgetEpargneText",
+  `${Math.round(epargneValue).toLocaleString("fr-FR")} / ${Math.round(objectifEpargne).toLocaleString("fr-FR")} €`
+);
+
+setText(
+  "budgetRevenusText",
+  `${Math.round(revenus).toLocaleString("fr-FR")} / ${Math.round(objectifRevenus).toLocaleString("fr-FR")} €`
+);
 
   // ELEMENTS
   const depBar = document.getElementById("budgetDepensesBar");

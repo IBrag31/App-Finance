@@ -149,24 +149,47 @@ function validerRevenu(){
 }
 
 function openAddRevenu(){
-  const nom = prompt("Nom du revenu ?");
-  const montant = parseFloat(prompt("Montant ?"));
 
-  if(!nom || isNaN(montant) || montant <= 0){
-    showToast?.("⚠️ Valeur invalide");
-    return;
+  const moisActuel = getMoisActuel().slice(5,7);
+
+  const modal = document.createElement("div");
+  modal.className = "modal show";
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Ajouter un revenu</h3>
+
+      <input id="revenuNom" placeholder="Nom du revenu">
+
+      <input id="revenuMontant" type="number" placeholder="Montant">
+
+      <select id="revenuMois">
+        <option value="01">Janvier</option>
+        <option value="02">Février</option>
+        <option value="03">Mars</option>
+        <option value="04">Avril</option>
+        <option value="05">Mai</option>
+        <option value="06">Juin</option>
+        <option value="07">Juillet</option>
+        <option value="08">Août</option>
+        <option value="09">Septembre</option>
+        <option value="10">Octobre</option>
+        <option value="11">Novembre</option>
+        <option value="12">Décembre</option>
+      </select>
+
+      <button onclick="validerRevenu()">Ajouter</button>
+      <button onclick="this.closest('.modal').remove()">Annuler</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // 🔥 auto sélection du mois actuel
+  const select = modal.querySelector("#revenuMois");
+  if(select){
+    select.value = moisActuel;
   }
-
-  const mois = getMoisActuel();
-
-  revenusDetail.push({ nom, montant, mois });
-
-  saveRevenus();
-
-  renderRevenusPage();
-  updateBudget(); // 🔥 met à jour la jauge
-
-  showToast?.("💰 Revenu ajouté");
 }
 
 function modifierRevenu(revenu){

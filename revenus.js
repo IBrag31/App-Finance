@@ -143,25 +143,29 @@ function validerRevenu(){
 
   showToast?.("💰 Revenu ajouté");
 
-  fermerModalRevenu?.();
+  fermerModalRevenu();
   renderRevenusPage();
   updateBudget();
 }
 
 function openAddRevenu(){
 
+  // 🔥 empêche doublons
+  if(document.getElementById("modalRevenu")) return;
+
   const moisActuel = getMoisActuel().slice(5,7);
 
   const modal = document.createElement("div");
   modal.className = "modal show";
+  modal.id = "modalRevenu";
 
   modal.innerHTML = `
     <div class="modal-content">
       <h3>Ajouter un revenu</h3>
 
-      <input id="revenuNom" placeholder="Nom du revenu">
+      <input id="revenuNom" placeholder="Nom du revenu" required>
 
-      <input id="revenuMontant" type="number" placeholder="Montant">
+      <input id="revenuMontant" type="number" inputmode="decimal" placeholder="Montant" required>
 
       <select id="revenuMois">
         <option value="01">Janvier</option>
@@ -179,17 +183,32 @@ function openAddRevenu(){
       </select>
 
       <button onclick="validerRevenu()">Ajouter</button>
-      <button onclick="this.closest('.modal').remove()">Annuler</button>
+      <button onclick="fermerModalRevenu()">Annuler</button>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  // 🔥 auto sélection du mois actuel
+  // 🔥 auto mois actuel
   const select = modal.querySelector("#revenuMois");
   if(select){
     select.value = moisActuel;
   }
+
+  // 🔥 focus automatique
+  modal.querySelector("#revenuNom")?.focus();
+
+  // 🔥 fermeture en cliquant dehors
+  modal.onclick = (e) => {
+    if(e.target === modal){
+      fermerModalRevenu();
+    }
+  };
+}
+
+function fermerModalRevenu(){
+  const modal = document.getElementById("modalRevenu");
+  if(modal) modal.remove();
 }
 
 function modifierRevenu(revenu){

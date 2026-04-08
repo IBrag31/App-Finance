@@ -45,7 +45,7 @@ function getTotalEpargne(){
 
 function getEpargneDuMois(mois){
   return epargneHistorique
-    .filter(e => (e.mois || "").slice(0,7) === mois)
+    .filter(e => e.mois === mois)
     .reduce((sum, e) => sum + (Number(e.montant) || 0), 0);
 }
 
@@ -63,15 +63,16 @@ function renderEpargneHistorique(){
   let total = 0;
 
   [...epargneHistorique]
-  .sort((a,b) => b.mois.localeCompare(a.mois))
-  .forEach((e) => {
+    .sort((a,b) => b.mois.localeCompare(a.mois))
+    .forEach((e, i) => {
 
-    const realIndex = epargneHistorique.indexOf(e);
+      const montant = Number(e.montant) || 0;
+      total += montant;
 
-    const row = document.createElement("div");
-    row.className = "depense-row";
+      const row = document.createElement("div");
+      row.className = "depense-row";
 
-    row.onclick = () => modifierEpargne(realIndex);
+      row.onclick = () => modifierEpargne(i);
 
       row.innerHTML = `
         <span>${formatMois(e.mois)}</span>
@@ -92,10 +93,15 @@ function renderEpargneMois(){
   const el = document.getElementById("epargneMoisPage");
   if(!el) return;
 
-  // 💙 force couleur (simple et fiable)
-  el.style.color = "var(--color-epargne)";
+  const value = el.innerText;
 
-  el.style.transform = "scale(1.05)";
+  if(value.includes("+")){
+    el.style.color = "var(--color-epargne)";
+  } else {
+    el.style.color = "var(--color-epargne)";
+  }
+
+  el.style.transform = "scale(1.1)";
   setTimeout(()=> el.style.transform = "scale(1)", 120);
 }
 

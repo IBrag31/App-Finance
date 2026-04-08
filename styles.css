@@ -321,7 +321,7 @@ REVENUS
   opacity:0.6;
 }
 
-.revenus-small div{
+#section-revenus .revenus-small div{
   color:var(--color-revenus);
   font-size:18px;
   font-weight:600;

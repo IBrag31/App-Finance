@@ -67,8 +67,7 @@ function showSection(name, element){
     renderDepensesPage?.();
   }
 
-  if(name === "epargne"){
-  updateBudget?.();
+if(name === "epargne"){
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 }

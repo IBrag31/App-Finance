@@ -425,3 +425,10 @@ MODAL
   flex-direction:column;
   gap:12px;
 }
+
+.cards-grid.three{
+  grid-template-columns:1fr 1fr;
+}
+.cards-grid.three .card:last-child{
+  grid-column:span 2;
+}

@@ -306,10 +306,6 @@ COULEURS DASHBOARD
 FORM
 ========================= */
 
-input, select{
-  font-size:16px;
-}
-
 select{
   background:rgba(255,255,255,0.10);
   border-radius:14px;
@@ -334,9 +330,30 @@ MODAL
 .modal-content{
   width:100%;
   max-width:400px;
+
   background:#1c1c1e;
-  border-radius:20px;
-  padding:20px;
+  border-radius:24px;
+
+  padding:24px 20px;
+
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.modal-content input,
+.modal-content select{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:16px;
+  font-size:16px;
+  color:white;
+}
+
+.modal-content h3{
+  font-size:20px;
+  margin-bottom:4px;
 }
 
 /* 💙 FIX CARTE TOTAL ÉPARGNE */

@@ -200,7 +200,6 @@ function updateBudget(){
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargne));
-  setText("epargneTotaleDisplay", euro(epargneValue));
 
   // =========================
   // PAGES DÉTAILLÉES

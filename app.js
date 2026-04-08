@@ -246,6 +246,8 @@ window.addEventListener("DOMContentLoaded", () => {
   setTimeout(()=>{
     renderRevenusPage?.();
     renderDepensesPage?.();
+    renderEpargneHistorique?.();
+    renderEpargneMois?.();
     updateBudget();
   }, 200);
 

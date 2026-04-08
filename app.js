@@ -196,8 +196,13 @@ function updateBudget(){
 
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
-  const epargneMois = getEpargneDuMois?.(mois) || 0;
-setText("epargneMoisDisplay", euro(epargneMois));
+  const moisList = epargneHistorique?.map(e => e.mois) || [];
+  const dernierMois = moisList.sort().reverse()[0];
+
+  const epargneMois = dernierMois
+  ? getEpargneDuMois(dernierMois)
+  : 0;
+  setText("epargneMoisDisplay", euro(epargneMois));
 
   // =========================
   // PAGES DÉTAILLÉES

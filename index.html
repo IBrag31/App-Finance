@@ -158,23 +158,63 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
       <h1>Dépenses</h1>
       <button onclick="openAddDepense()" class="add-btn">+</button>
     </div>
-    
-    <div class="card">
-  <h3>💰 Total dépenses</h3>
-  <div id="depensesTotalPage"></div>
+
+    <!-- 💰 TOTAL -->
+    <div class="card revenus-card total-card">
+      <div class="revenus-card-header">Total dépenses</div>
+      <div class="revenus-card-value" id="depensesTotalPage">0 €</div>
+    </div>
+
+    <!-- GRID -->
+    <div class="cards-grid revenus-grid">
+
+      <!-- FIXES -->
+      <div class="card small-card revenus-small clickable"
+           onclick="showSection('depenses-fixes')">
+        <h3>Dépenses fixes</h3>
+        <div id="totalFixesPage">0 €</div>
+      </div>
+
+      <!-- VARIABLES -->
+      <div class="card small-card revenus-small clickable"
+           onclick="showSection('depenses-variables')">
+        <h3>Dépenses variables</h3>
+        <div id="totalVariablesPage">0 €</div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
-   <div class="card">
-  <h3>💸 Dépenses fixes</h3>
-  <div id="depensesFixesPage"></div>
-  <div id="totalFixesPage"></div>
+<!-- ========================= -->
+<!-- 📦 DÉPENSES FIXES -->
+<!-- ========================= -->
+<div class="section" id="section-depenses-fixes">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <div class="back-btn" onclick="showSection('depenses')">←</div>
+      <h1>Dépenses fixes</h1>
+    </div>
+
+    <div id="depensesFixesPage"></div>
+
+  </div>
 </div>
 
-<div class="card">
-  <h3>🛒 Dépenses variables</h3>
-  <div id="depensesVariablesPage"></div>
-  <div id="totalVariablesPage"></div>
-</div>
+<!-- ========================= -->
+<!-- 🛒 DÉPENSES VARIABLES -->
+<!-- ========================= -->
+<div class="section" id="section-depenses-variables">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <div class="back-btn" onclick="showSection('depenses')">←</div>
+      <h1>Dépenses variables</h1>
+    </div>
+
+    <div id="depensesVariablesPage"></div>
 
   </div>
 </div>

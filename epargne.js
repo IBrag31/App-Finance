@@ -73,15 +73,12 @@ function renderEpargneHistorique(){
 
     row.onclick = () => modifierEpargne(realIndex);
 
-      const montant = Number(e.montant) || 0;
-total += montant;
-
-row.innerHTML = `
-  <span>${formatMois(e.mois)}</span>
-  <span style="color: var(--color-epargne)">
-    ${euro(montant)}
-  </span>
-`;
+      row.innerHTML = `
+        <span>${formatMois(e.mois)}</span>
+        <span style="color: var(--color-epargne)">
+      ${euro(montant)}
+      </span>
+      `;
 
       list.appendChild(row);
     });

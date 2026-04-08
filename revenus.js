@@ -232,7 +232,17 @@ function validerRevenu(){
   const montant = parseFloat(montantInput?.value);
 
   const annee = new Date().getFullYear();
-  const mois = `${annee}-${moisInput.value.padStart(2,"0")}`;
+  let mois = `${annee}-${moisInput.value.padStart(2,"0")}`;
+
+// 🔥 correction automatique salaire
+const today = new Date();
+const jour = today.getDate();
+
+if(jour <= 10){
+  const date = new Date(mois + "-01");
+  date.setMonth(date.getMonth() - 1);
+  mois = date.toISOString().slice(0,7);
+}
 
   if(!nom || isNaN(montant) || montant <= 0){
     showToast?.("⚠️ Montant invalide");

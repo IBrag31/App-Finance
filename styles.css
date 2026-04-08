@@ -275,11 +275,7 @@ REVENUS
 EPARGNE (💙 PRIORITAIRE)
 ========================= */
 
-#section-epargne .revenus-card-value{
-  color: var(--color-epargne);
-}
-
-#section-epargne .revenus-small > div{
+#section-epargne .revenus-small div{
   color: var(--color-epargne);
 }
 
@@ -341,4 +337,26 @@ MODAL
   background:#1c1c1e;
   border-radius:20px;
   padding:20px;
+}
+
+/* 💙 FIX CARTE TOTAL ÉPARGNE */
+#section-epargne .revenus-card{
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 💙 VALEUR PLUS GROSSE */
+#section-epargne .revenus-card-value{
+  color: var(--color-epargne);
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* 💙 TITRE PLUS ESPACÉ */
+#section-epargne .revenus-card-header{
+  font-size: 18px;
+  margin-bottom: 8px;
 }

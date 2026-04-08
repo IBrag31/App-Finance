@@ -33,8 +33,10 @@ const sections = [
   "depenses",
   "depenses-fixes",
   "depenses-variables",
+  "epargne",
   "settings"
 ];
+
 let currentSectionIndex = 0;
 
 function showSection(name, element){
@@ -64,19 +66,9 @@ function showSection(name, element){
     renderDepensesPage?.();
   }
 
-  // 💥 ÉPARGNE PRÉVUE
-  if(name === "epargne-prevue"){
-    const value = document.getElementById("epargneMoisDisplay")?.innerText;
-    const target = document.getElementById("epargneMoisPage");
-    if(target) target.innerText = value || "0 €";
-  }
-
-  // 💥 ÉPARGNE TOTALE
-  if(name === "epargne-totale"){
-    const value = document.getElementById("epargneTotaleDisplay")?.innerText;
-    const target = document.getElementById("epargneTotalePage");
-    if(target) target.innerText = value || "0 €";
-  }
+  if(name === "epargne"){
+  updateBudget?.();
+}
 
   // SCROLL RESET
   const scroll = section?.querySelector(".section-scroll");

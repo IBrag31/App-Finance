@@ -39,9 +39,9 @@ function updateBudget(){
   const mois = getMoisActuel();
 
   const especes = Number(localStorage.getItem("especes")) || 0;
-  const revenus = getRevenusDuMois(mois) + especes;
+  const revenus = (getRevenusDuMois?.(mois) || 0) + especes;
 
-  const depenses = calculTotalDepenses();
+  const depenses = calculTotalDepenses?.() || 0;
 
   // 🎯 OBJECTIF UNIQUE
   const objectifDepenses = 1250;

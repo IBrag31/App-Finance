@@ -51,7 +51,7 @@ function updateBudget(){
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
 
-  const epargneValue = getEpargneTotale();
+  const epargneValue = getTotalEpargne?.() || 0;
 
   // =========================
   // 📊 POURCENTAGE DEPENSES
@@ -207,7 +207,12 @@ function updateBudget(){
 
   setText("epargneMoisPage", euro(epargne));
   setText("epargneTotalePage", euro(epargneValue));
+  
+  renderEpargneMois?.();
+  
 }
+
+
 
 // =========================
 // INIT UI

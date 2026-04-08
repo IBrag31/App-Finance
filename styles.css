@@ -160,7 +160,7 @@ BUDGET
 }
 
 .budget-row .progress-bar{
-  flex:0 0 50%;
+  flex:0 0 50%; /* 🔥 garde ton design */
 }
 
 .progress-fill{
@@ -208,9 +208,6 @@ CARDS GRID
   gap:12px;
 }
 
-.cards-grid.three{
-  grid-template-columns:1fr 1fr;
-}
 .cards-grid.three .card:last-child{
   grid-column:span 2;
 }
@@ -263,20 +260,100 @@ HEADER
 REVENUS
 ========================= */
 
+.revenus-card{
+  padding:22px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#1a1a1a,#111);
+  transition:transform 0.15s ease;
+  min-height:130px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.revenus-card-header{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.revenus-card-value{
+  font-size:28px;
+  font-weight:700;
+  line-height:1.2;
+}
+
 #section-revenus .revenus-card-value{
-  color: var(--color-revenus);
+  color:var(--color-revenus);
 }
 
 #section-revenus .revenus-small div{
-  color: var(--color-revenus);
+  color:var(--color-revenus);
 }
 
 /* =========================
-EPARGNE (PRIORITAIRE)
+ESPÈCES (🔥 FIX)
+========================= */
+
+.revenus-especes-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:auto;
+}
+
+.circle-btn{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#2a2a2a;
+  color:white;
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#especesValue{
+  font-size:20px;
+  font-weight:700;
+  color:var(--color-revenus);
+  text-align:center;
+  min-width:60px;
+}
+
+.revenus-small{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+/* =========================
+EPARGNE
 ========================= */
 
 #section-epargne .revenus-small div{
-  color: var(--color-epargne);
+  color:var(--color-epargne);
+}
+
+#section-epargne .revenus-card{
+  min-height:140px;
+}
+
+#section-epargne .revenus-card-value{
+  color:var(--color-epargne);
+  font-size:28px;
+  text-align:center;
+}
+
+#section-epargne .revenus-card-header{
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+#section-epargne #epargneMoisPage{
+  color:var(--color-epargne);
 }
 
 /* =========================
@@ -337,42 +414,4 @@ MODAL
   background:#1c1c1e;
   border-radius:20px;
   padding:20px;
-}
-
-/* FIX CARTE TOTAL ÉPARGNE */
-#section-epargne .revenus-card{
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* VALEUR PLUS GROSSE */
-#section-epargne .revenus-card-value{
-  color: var(--color-epargne);
-  font-size: 28px;
-  font-weight: 700;
-  text-align: center;
-}
-
-/* TITRE PLUS ESPACÉ */
-#section-epargne .revenus-card-header{
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-/* 🔥 BASE CARTE REVENUS (manquante !) */
-.revenus-card{
-  padding:22px;
-  border-radius:18px;
-  background:linear-gradient(145deg,#1a1a1a,#111);
-  transition:transform 0.15s ease;
-
-  min-height:130px;
-  display:flex;
-  flex-direction:column;
-}
-
-#section-epargne #epargneMoisPage{
-  color: var(--color-epargne);
 }

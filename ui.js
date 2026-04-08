@@ -71,6 +71,10 @@ function showSection(name, element){
   updateBudget?.();
 }
 
+  if(name === "epargne-historique"){
+  renderEpargneHistorique?.();
+}
+
   // SCROLL RESET
   const scroll = section?.querySelector(".section-scroll");
   if(scroll){

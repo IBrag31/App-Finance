@@ -157,10 +157,7 @@ BUDGET
   overflow:hidden;
   min-width:120px;
   flex-shrink:0;
-}
-
-.budget-row .progress-bar{
-  flex:0 0 50%;
+  flex:1;
 }
 
 .progress-fill{

@@ -78,9 +78,12 @@ function validerDepense(){
   const montant = parseFloat(
     document.getElementById("depenseMontant")?.value
   );
-  const type = document.getElementById("typeDepense")?.value;
+  const type = document.getElementById("typeDepense")?.value || "variable";
 
-  if(!nom || isNaN(montant)) return;
+  if(!nom || isNaN(montant) || montant <= 0){
+  showToast?.("⚠️ Valeur invalide");
+  return;
+}
 
   depensesDetail.push({
     nom,
@@ -98,40 +101,71 @@ function validerDepense(){
   if(nomInput) nomInput.value = "";
   if(montantInput) montantInput.value = "";
 
-  fermerModal();
+  fermerModalDepense();
 }
 
 function openAddDepense(){
 
-  const nom = prompt("Nom de la dépense ?");
-  const montant = parseFloat(prompt("Montant ?"));
-  const type = prompt("Type (fixe ou variable) ?", "variable");
+  if(document.getElementById("modalDepense")) return;
 
-  if(!nom || isNaN(montant)){
-    showToast?.("⚠️ Valeur invalide");
-    return;
-  }
+  const modal = document.createElement("div");
+  modal.className = "modal show";
+  modal.id = "modalDepense";
 
-  depensesDetail.push({
-    nom,
-    montant: Math.round(montant * 100) / 100,
-    type: (type || "variable").toLowerCase()
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Ajouter une dépense</h3>
+
+      <input id="depenseNom" placeholder="Nom de la dépense">
+
+      <input id="depenseMontant" 
+             type="number" 
+             inputmode="decimal" 
+             placeholder="Montant">
+
+     <select id="typeDepense">
+   <option value="fixe">📦 Fixe</option>
+   <option value="variable">🛒 Variable</option>
+     </select>
+
+      <button id="btnAddDepense">Ajouter</button>
+      <button id="btnCancelDepense">Annuler</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // focus
+  setTimeout(()=>{
+    modal.querySelector("#depenseNom")?.focus();
+  }, 200);
+
+  // fermer clic extérieur
+  modal.addEventListener("click", (e)=>{
+    if(e.target === modal){
+      fermerModalDepense();
+    }
   });
 
-  saveDepenses();
-  renderDepensesPage();
-  updateBudget(); // 🔥 important
+  // annuler
+  modal.querySelector("#btnCancelDepense")
+    .addEventListener("click", (e)=>{
+      e.stopPropagation();
+      fermerModalDepense();
+    });
 
-  showToast?.("💸 Dépense ajoutée");
+  // ajouter
+  modal.querySelector("#btnAddDepense")
+    .addEventListener("click", (e)=>{
+      e.stopPropagation();
+      validerDepense();
+      fermerModalDepense();
+    });
 }
 
-function supprimerDepense(index){
-
-  depensesDetail.splice(index,1);
-
-  saveDepenses();
-  renderDepensesPage();
-  updateBudget(); // 🔥 AJOUT
+function fermerModalDepense(){
+  const modal = document.getElementById("modalDepense");
+  if(modal) modal.remove();
 }
 
 function modifierDepense(index){
@@ -167,6 +201,16 @@ function modifierDepense(index){
   updateBudget(); // 🔥 AJOUT
 
   showToast("✏️ Dépense modifiée");
+}
+
+function supprimerDepense(index){
+
+  depensesDetail.splice(index,1);
+
+  saveDepenses();
+  renderDepensesPage();
+  updateBudget();
+
 }
 
 // =========================

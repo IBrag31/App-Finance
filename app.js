@@ -198,7 +198,6 @@ function updateBudget(){
   setText("depensesDisplay", euro(depenses));
   const epargneMois = getEpargneDuMois?.(mois) || 0;
   setText("epargneMoisDisplay", euro(epargneMois));
-  setText("epargneMoisDisplay", euro(epargneMois));
 
   // =========================
   // PAGES DÉTAILLÉES

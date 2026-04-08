@@ -38,6 +38,11 @@ function getTotalEpargneHistorique(){
   }, 0);
 }
 
+// 🔥 total global utilisé par app.js
+function getTotalEpargne(){
+  return getTotalEpargneHistorique();
+}
+
 function getEpargneDuMois(mois){
   return epargneHistorique
     .filter(e => e.mois === mois)
@@ -45,7 +50,7 @@ function getEpargneDuMois(mois){
 }
 
 // =========================
-// RENDER HISTORIQUE
+// RENDER
 // =========================
 
 function renderEpargneHistorique(){
@@ -77,10 +82,10 @@ function renderEpargneHistorique(){
       list.appendChild(row);
     });
 
-  // total dans la mini carte
-  setText("epargneHistoriqueTotal", euro(total));
+  setText("epargneHistoriqueTotal", total ? euro(total) : "—");
 }
 
+// 🔥 rendu du mois avec style
 function renderEpargneMois(){
 
   const mois = getMoisActuel();
@@ -89,20 +94,22 @@ function renderEpargneMois(){
   const el = document.getElementById("epargneMoisPage");
   if(!el) return;
 
-  // format + ou -
   const prefix = total >= 0 ? "+" : "";
   el.innerText = prefix + euro(total);
 
-  // couleur dynamique
   if(total > 0){
-    el.style.color = "#22c55e"; // vert
+    el.style.color = "#22c55e";
   }
   else if(total < 0){
-    el.style.color = "#ef4444"; // rouge
+    el.style.color = "#ef4444";
   }
   else{
     el.style.color = "white";
   }
+
+  // petit effet visuel ✨
+  el.style.transform = "scale(1.1)";
+  setTimeout(()=> el.style.transform = "scale(1)", 120);
 }
 
 // =========================
@@ -152,26 +159,22 @@ function openAddEpargne(){
 
   modal.querySelector("#epargneMois").value = moisActuel;
 
-  // focus
   setTimeout(()=>{
     modal.querySelector("#epargneMontant")?.focus();
   },200);
 
-  // fermer clic extérieur
   modal.addEventListener("click",(e)=>{
     if(e.target === modal){
       fermerModalEpargne();
     }
   });
 
-  // annuler
   modal.querySelector("#btnCancelEpargne")
     .addEventListener("click",(e)=>{
       e.stopPropagation();
       fermerModalEpargne();
     });
 
-  // ajouter
   modal.querySelector("#btnAddEpargne")
     .addEventListener("click",(e)=>{
       e.stopPropagation();
@@ -181,8 +184,7 @@ function openAddEpargne(){
 }
 
 function fermerModalEpargne(){
-  const modal = document.getElementById("modalEpargne");
-  if(modal) modal.remove();
+  document.getElementById("modalEpargne")?.remove();
 }
 
 // =========================
@@ -214,8 +216,6 @@ function validerEpargne(){
   updateBudget();
   renderEpargneMois();
 
-  if(montantInput) montantInput.value = "";
-
   showToast?.("💙 Épargne ajoutée");
 }
 
@@ -223,9 +223,20 @@ function modifierEpargne(index){
 
   const e = epargneHistorique[index];
 
-  const nouveauMontant = parseFloat(
-    prompt("Montant :", e.montant)
+  const choix = prompt(
+    "Modifier montant ou taper 'supprimer'",
+    e.montant
   );
+
+  if(choix === null) return;
+
+  if(choix.toLowerCase() === "supprimer"){
+    supprimerEpargne(index);
+    showToast?.("🗑️ Épargne supprimée");
+    return;
+  }
+
+  const nouveauMontant = parseFloat(choix);
 
   if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
 
@@ -241,6 +252,7 @@ function modifierEpargne(index){
 }
 
 function supprimerEpargne(index){
+
   epargneHistorique.splice(index,1);
 
   saveEpargne();

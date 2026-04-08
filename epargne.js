@@ -100,29 +100,31 @@ function renderEpargneHistorique(){
           ev.preventDefault();
         }
 
-        if(diff < 0){ // swipe gauche uniquement
-          row.style.transform = `translateX(${diff}px)`;
-          row.style.opacity = Math.max(1 + diff / 200, 0.5);
-        }
+       if(diff < 0){
+  row.classList.add("swiping"); // 🔥 AJOUT ICI
+
+  row.style.transform = `translateX(${diff}px)`;
+  row.style.opacity = Math.max(1 + diff / 200, 0.5);
+}
       });
 
-      row.addEventListener("touchend", () => {
-        if(!isSwiping) return;
+     row.addEventListener("touchend", () => {
+  if(!isSwiping) return;
 
-        const diff = currentX - startX;
+  const diff = currentX - startX;
 
-        if(diff < -100){
-          // 🔥 suppression
-          supprimerEpargne(realIndex);
-          showToast?.("🗑️ Épargne supprimée");
-        }else{
-          // retour normal
-          row.style.transform = "translateX(0)";
-          row.style.opacity = "1";
-        }
+  row.classList.remove("swiping"); // 🔥 nettoyage
 
-        isSwiping = false;
-      });
+  if(diff < -100){
+    supprimerEpargne(realIndex);
+    showToast?.("🗑️ Épargne supprimée");
+  }else{
+    row.style.transform = "translateX(0)";
+    row.style.opacity = "1";
+  }
+
+  isSwiping = false;
+});
 
       // =========================
       // CLICK SAFE (évite conflit swipe)

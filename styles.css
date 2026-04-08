@@ -271,13 +271,6 @@ REVENUS
   color: var(--color-revenus);
 }
 
-/* =========================
-EPARGNE (💙 PRIORITAIRE)
-========================= */
-
-#section-epargne .revenus-small div{
-  color: var(--color-epargne);
-}
 
 /* =========================
 DEPENSES
@@ -376,20 +369,4 @@ MODAL
 #section-epargne .revenus-card-header{
   font-size: 18px;
   margin-bottom: 8px;
-}
-
-/* 🔥 BASE CARTE REVENUS (manquante !) */
-.revenus-card{
-  padding:22px;
-  border-radius:18px;
-  background:linear-gradient(145deg,#1a1a1a,#111);
-  transition:transform 0.15s ease;
-
-  min-height:130px;
-  display:flex;
-  flex-direction:column;
-}
-
-#section-epargne #epargneMoisPage{
-  color: var(--color-epargne);
 }

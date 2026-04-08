@@ -372,3 +372,7 @@ MODAL
   display:flex;
   flex-direction:column;
 }
+
+#section-epargne #epargneMoisPage{
+  color: var(--color-epargne);
+}

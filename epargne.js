@@ -38,6 +38,12 @@ function getTotalEpargneHistorique(){
   }, 0);
 }
 
+function getEpargneDuMois(mois){
+  return epargneHistorique
+    .filter(e => e.mois === mois)
+    .reduce((sum, e) => sum + (Number(e.montant) || 0), 0);
+}
+
 // =========================
 // RENDER HISTORIQUE
 // =========================
@@ -73,6 +79,30 @@ function renderEpargneHistorique(){
 
   // total dans la mini carte
   setText("epargneHistoriqueTotal", euro(total));
+}
+
+function renderEpargneMois(){
+
+  const mois = getMoisActuel();
+  const total = getEpargneDuMois(mois);
+
+  const el = document.getElementById("epargneMoisPage");
+  if(!el) return;
+
+  // format + ou -
+  const prefix = total >= 0 ? "+" : "";
+  el.innerText = prefix + euro(total);
+
+  // couleur dynamique
+  if(total > 0){
+    el.style.color = "#22c55e"; // vert
+  }
+  else if(total < 0){
+    el.style.color = "#ef4444"; // rouge
+  }
+  else{
+    el.style.color = "white";
+  }
 }
 
 // =========================
@@ -182,6 +212,7 @@ function validerEpargne(){
 
   renderEpargneHistorique();
   updateBudget();
+  renderEpargneMois();
 
   if(montantInput) montantInput.value = "";
 
@@ -204,6 +235,7 @@ function modifierEpargne(index){
 
   renderEpargneHistorique();
   updateBudget();
+  renderEpargneMois();
 
   showToast?.("✏️ Épargne modifiée");
 }
@@ -214,6 +246,7 @@ function supprimerEpargne(index){
   saveEpargne();
   renderEpargneHistorique();
   updateBudget();
+  renderEpargneMois();
 }
 
 // =========================

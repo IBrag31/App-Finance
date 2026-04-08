@@ -84,8 +84,23 @@ function retirerEspeces(){
 // =========================
 
 function getRevenusDuMois(mois){
+
   return revenusDetail
-    .filter(r => r.mois === mois)
+    .filter(r => {
+
+      const date = new Date(r.mois + "-01");
+      let moisReel = date.toISOString().slice(0,7);
+
+      const jour = new Date().getDate();
+
+      // 🔥 logique salaire décalé
+      if(jour <= 10){
+        date.setMonth(date.getMonth() - 1);
+        moisReel = date.toISOString().slice(0,7);
+      }
+
+      return moisReel === mois;
+    })
     .reduce((sum, r) => sum + (Number(r.montant) || 0), 0);
 }
 

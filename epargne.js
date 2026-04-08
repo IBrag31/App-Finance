@@ -90,26 +90,17 @@ function renderEpargneHistorique(){
 // 🔥 rendu du mois avec style
 function renderEpargneMois(){
 
-  const mois = getMoisActuel();
-  const total = getEpargneDuMois(mois);
-
   const el = document.getElementById("epargneMoisPage");
   if(!el) return;
 
-  const prefix = total >= 0 ? "+" : "";
-  el.innerText = prefix + euro(total);
+  const value = el.innerText;
 
-  if(total > 0){
-  el.style.color = "var(--color-epargne)"; // 💙 bleu
-}
-else if(total < 0){
-  el.style.color = "#ef4444"; // rouge si négatif (optionnel)
-}
-else{
-  el.style.color = "white";
-}
+  if(value.includes("+")){
+    el.style.color = "var(--color-epargne)";
+  } else {
+    el.style.color = "white";
+  }
 
-  // petit effet visuel ✨
   el.style.transform = "scale(1.1)";
   setTimeout(()=> el.style.transform = "scale(1)", 120);
 }
@@ -200,7 +191,7 @@ function validerEpargne(){
 
   const montant = parseFloat(montantInput?.value);
   const annee = new Date().getFullYear();
-  const mois = `${annee}-${moisInput.value.padStart(2,"0")}`;
+  const mois = `${annee}-${moisInput.value}`;
 
   if(isNaN(montant) || montant <= 0){
     showToast?.("⚠️ Montant invalide");

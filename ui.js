@@ -34,6 +34,7 @@ const sections = [
   "depenses-fixes",
   "depenses-variables",
   "epargne",
+  "epargne-historique",
   "settings"
 ];
 

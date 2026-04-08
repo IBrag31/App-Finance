@@ -178,25 +178,24 @@ BUDGET
   color:var(--color-epargne);
 }
 
+/* =========================
+TEXTES BUDGET
+========================= */
+
 .budget-info{
   flex:1;
   display:flex;
   flex-direction:column;
-  align-items:flex-start;
-  justify-content:center;
 }
 
 .budget-title{
   font-size:14px;
   opacity:0.8;
-  margin-bottom:2px;
 }
 
 .budget-value{
   font-size:20px;
   font-weight:700;
-  white-space:nowrap;
-  margin-top:2px;
 }
 
 /* =========================
@@ -209,6 +208,13 @@ CARDS GRID
   gap:12px;
 }
 
+.cards-grid.three{
+  grid-template-columns:1fr 1fr;
+}
+.cards-grid.three .card:last-child{
+  grid-column:span 2;
+}
+
 /* =========================
 MINI CARDS
 ========================= */
@@ -219,17 +225,11 @@ MINI CARDS
   flex-direction:column;
   justify-content:center;
   gap:6px;
-  padding:16px;
 }
 
 .small-card h3{
   font-size:16px;
   font-weight:600;
-  color:var(--text-primary);
-
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
 }
 
 .small-card span{
@@ -240,7 +240,6 @@ MINI CARDS
 .small-card div{
   font-size:22px;
   font-weight:700;
-  letter-spacing:0.5px;
 }
 
 /* =========================
@@ -253,104 +252,33 @@ HEADER
   align-items:center;
 }
 
-.back-btn{
-  font-size:20px;
-  opacity:0.7;
-}
-
 .add-btn{
   background:#3b82f6;
   border-radius:50%;
   width:34px;
   height:34px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
 /* =========================
 REVENUS
 ========================= */
 
-.revenus-card{
-  margin:12px 0;
-  padding:22px;
-  border-radius:18px;
-  background:linear-gradient(145deg,#1a1a1a,#111);
-  transition:transform 0.15s ease;
-
-  min-height:130px;
-  display:flex;
-  flex-direction:column;
-}
-
-.revenus-card:active{
-  transform:scale(0.98);
-}
-
-.revenus-card-header{
-  font-size:16px;
-  font-weight:600;
-  color:var(--text-primary);
-}
-
-.total-card .revenus-card-header{
-  font-size:22px;
-  font-weight:600;
-  margin-bottom:8px;
-}
-
-.revenus-card-value{
-  color:var(--color-revenus);
-  font-size:26px;
-  font-weight:bold;
-  text-align:center;
-  letter-spacing:0.5px;
-  line-height:1.2;
-  margin:auto 0;
-}
-
-.revenus-small{
-  min-height:115px;
-  display:flex;
-  flex-direction:column;
-}
-
-.revenus-small span{
-  font-size:12px;
-  opacity:0.6;
+#section-revenus .revenus-card-value{
+  color: var(--color-revenus);
 }
 
 #section-revenus .revenus-small div{
-  color:var(--color-revenus);
-  font-size:18px;
-  font-weight:600;
-  text-align:center;
-  margin:auto 0;
+  color: var(--color-revenus);
 }
 
-.total-card{
-  margin-bottom:10px;
-  border:1px solid rgba(255,255,255,0.08);
-}
+/* =========================
+EPARGNE (💙 PRIORITAIRE)
+========================= */
 
-.revenus-especes-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.circle-btn{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:#2a2a2a;
-  color:white;
-  border:none;
-}
-
-.circle-btn:active{
-  transform:scale(0.9);
+#section-epargne .revenus-card-value,
+#section-epargne .revenus-small div,
+#section-epargne .small-card div{
+  color: var(--color-epargne);
 }
 
 /* =========================
@@ -360,12 +288,11 @@ DEPENSES
 .depense-row{
   display:flex;
   justify-content:space-between;
-  padding:12px 10px;
-  border-bottom:1px solid rgba(255,255,255,0.05);
+  padding:12px;
 }
 
 /* =========================
-COULEURS MINI CARTES
+COULEURS DASHBOARD
 ========================= */
 
 #revenusDisplay{
@@ -381,19 +308,16 @@ COULEURS MINI CARTES
 FORM
 ========================= */
 
-input,
-select{
+input, select{
   font-size:16px;
 }
 
 select{
   background:rgba(255,255,255,0.10);
-  border:1px solid rgba(255,255,255,0.08);
   border-radius:14px;
   padding:16px;
   width:100%;
   color:white;
-  margin-top:10px;
 }
 
 /* =========================
@@ -404,39 +328,15 @@ MODAL
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.5);
-
   display:flex;
   align-items:center;
   justify-content:center;
-
-  padding:20px;
-  z-index:9999;
 }
 
 .modal-content{
   width:100%;
   max-width:400px;
-
   background:#1c1c1e;
   border-radius:20px;
   padding:20px;
-
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.cards-grid.three{
-  grid-template-columns:1fr 1fr;
-}
-.cards-grid.three .card:last-child{
-  grid-column:span 2;
-}
-
-#section-epargne .revenus-card-value{
-  color: var(--color-epargne);
-}
-
-#section-epargne .revenus-small div{
-  color: var(--color-epargne);
 }

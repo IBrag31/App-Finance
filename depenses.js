@@ -29,13 +29,9 @@ function renderDepensesPage(){
   const fixes = document.getElementById("depensesFixesPage");
   const variables = document.getElementById("depensesVariablesPage");
 
-  if(!fixes || !variables){
-  setTimeout(renderDepensesPage, 100);
-  return;
-}
-
-  fixes.innerHTML = "";
-  variables.innerHTML = "";
+  // 🔥 reset uniquement si présent
+  if(fixes) fixes.innerHTML = "";
+  if(variables) variables.innerHTML = "";
 
   let totalFixes = 0;
   let totalVariables = 0;
@@ -57,20 +53,19 @@ function renderDepensesPage(){
     `;
 
     if(d.type === "fixe"){
-      fixes.appendChild(row);
+      if(fixes) fixes.appendChild(row); // 🔥 sécurité
       totalFixes += montant;
     } else {
-      variables.appendChild(row);
+      if(variables) variables.appendChild(row); // 🔥 sécurité
       totalVariables += montant;
     }
 
   });
 
+  // 🔥 TOUJOURS mettre à jour les cartes
   setText("totalFixesPage", euro(totalFixes));
   setText("totalVariablesPage", euro(totalVariables));
-
-  const total = totalFixes + totalVariables;
-  setText("depensesTotalPage", euro(total));
+  setText("depensesTotalPage", euro(totalFixes + totalVariables));
 }
 
 // =========================

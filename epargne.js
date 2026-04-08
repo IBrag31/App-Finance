@@ -98,7 +98,7 @@ function renderEpargneMois(){
   if(value.includes("+")){
     el.style.color = "var(--color-epargne)";
   } else {
-    el.style.color = "white";
+    el.style.color = "var(--color-epargne)";
   }
 
   el.style.transform = "scale(1.1)";

@@ -130,6 +130,84 @@ function renderRevenusPage(){
 }
 
 // =========================
+// MODAL ADD REVENU
+// =========================
+
+function openAddRevenu(){
+
+  if(document.getElementById("modalRevenu")) return;
+
+  const moisActuel = getMoisActuel().slice(5,7);
+
+  const modal = document.createElement("div");
+  modal.className = "modal show";
+  modal.id = "modalRevenu";
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Ajouter un revenu</h3>
+
+      <input id="revenuNom" placeholder="Nom du revenu" required>
+      <input id="revenuMontant" type="number" inputmode="decimal" placeholder="Montant" required>
+
+      <select id="revenuMois">
+        <option value="01">Janvier</option>
+        <option value="02">Février</option>
+        <option value="03">Mars</option>
+        <option value="04">Avril</option>
+        <option value="05">Mai</option>
+        <option value="06">Juin</option>
+        <option value="07">Juillet</option>
+        <option value="08">Août</option>
+        <option value="09">Septembre</option>
+        <option value="10">Octobre</option>
+        <option value="11">Novembre</option>
+        <option value="12">Décembre</option>
+      </select>
+
+      <button id="btnAddRevenu">Ajouter</button>
+      <button id="btnCancelRevenu">Annuler</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.querySelector("#revenuMois").value = moisActuel;
+
+  setTimeout(()=>{
+    modal.querySelector("#revenuNom")?.focus();
+  }, 300);
+
+  // fermer clic extérieur
+  modal.addEventListener("click", (e)=>{
+    if(e.target === modal){
+      fermerModalRevenu();
+    }
+  });
+
+  // annuler
+  modal.querySelector("#btnCancelRevenu")
+    .addEventListener("click", (e)=>{
+      e.stopPropagation();
+      fermerModalRevenu();
+    });
+
+  // ajouter
+  modal.querySelector("#btnAddRevenu")
+    .addEventListener("click", (e)=>{
+      e.stopPropagation();
+
+      validerRevenu();
+      fermerModalRevenu();
+    });
+}
+
+function fermerModalRevenu(){
+  const modal = document.getElementById("modalRevenu");
+  if(modal) modal.remove();
+}
+
+// =========================
 // CRUD
 // =========================
 

@@ -36,7 +36,7 @@ function updateBudget(){
   
   console.log("UPDATE BUDGET RUN 🔥");
 
-  const mois = getMoisActuel();
+  const mois = getMoisBudget?.() || getMoisActuel();
 
   const especes = Number(localStorage.getItem("especes")) || 0;
   const revenus = (getRevenusDuMois?.(mois) || 0) + especes;

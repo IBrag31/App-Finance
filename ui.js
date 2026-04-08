@@ -27,7 +27,14 @@ function showToast(message){
 // NAVIGATION (SIMPLIFIÉE)
 // =========================
 
-const sections = ["resume","revenus","depenses","settings"];
+const sections = [
+  "resume",
+  "revenus",
+  "depenses",
+  "depenses-fixes",
+  "depenses-variables",
+  "settings"
+];
 let currentSectionIndex = 0;
 
 function showSection(name, element){

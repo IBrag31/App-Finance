@@ -143,14 +143,19 @@ function validerRevenu(){
 
   saveRevenus();
 
+  // 🔥 REFRESH GLOBAL
+  if(typeof refreshAll === "function"){
+    refreshAll();
+  } else {
+    renderRevenusPage();
+    updateBudget();
+  }
+
   if(nomInput) nomInput.value = "";
   if(montantInput) montantInput.value = "";
   if(moisInput) moisInput.value = "";
 
   showToast?.("💰 Revenu ajouté");
-
-  renderRevenusPage();
-  updateBudget();
 }
 
 function openAddRevenu(){
@@ -246,8 +251,7 @@ function modifierRevenu(revenu){
 
   saveRevenus();
 
-  renderRevenusPage();
-  updateBudget();
+  refreshAll();
 
   showToast?.("✏️ Revenu modifié");
 }
@@ -262,8 +266,7 @@ function supprimerRevenu(revenu){
 
   saveRevenus();
 
-  renderRevenusPage();
-  updateBudget();
+  refreshAll();
 }
 
 // =========================

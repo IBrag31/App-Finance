@@ -145,16 +145,22 @@ BUDGET
 
 .budget-row{
   display:flex;
-  align-items:center;
+  align-items:flex-end;
+  justify-content:space-between;
   gap:14px;
 }
 
 .progress-bar{
-  flex:1;
   height:18px;
   background:rgba(255,255,255,0.08);
   border-radius:12px;
   overflow:hidden;
+  min-width:120px;
+  flex-shrink:0;
+}
+
+.budget-row .progress-bar{
+  flex:0 0 50%;
 }
 
 .progress-fill{
@@ -177,8 +183,7 @@ TEXTES BUDGET
 ========================= */
 
 .budget-info{
-  width:130px;
-  flex-shrink:0;
+  flex:1;
   display:flex;
   flex-direction:column;
 }
@@ -266,6 +271,13 @@ REVENUS
   color: var(--color-revenus);
 }
 
+/* =========================
+EPARGNE (PRIORITAIRE)
+========================= */
+
+#section-epargne .revenus-small div{
+  color: var(--color-epargne);
+}
 
 /* =========================
 DEPENSES
@@ -294,6 +306,10 @@ COULEURS DASHBOARD
 FORM
 ========================= */
 
+input, select{
+  font-size:16px;
+}
+
 select{
   background:rgba(255,255,255,0.10);
   border-radius:14px;
@@ -318,33 +334,12 @@ MODAL
 .modal-content{
   width:100%;
   max-width:400px;
-
   background:#1c1c1e;
-  border-radius:24px;
-
-  padding:24px 20px;
-
-  display:flex;
-  flex-direction:column;
-  gap:16px;
+  border-radius:20px;
+  padding:20px;
 }
 
-.modal-content input,
-.modal-content select{
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:14px;
-  padding:16px;
-  font-size:16px;
-  color:white;
-}
-
-.modal-content h3{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
-/* 💙 FIX CARTE TOTAL ÉPARGNE */
+/* FIX CARTE TOTAL ÉPARGNE */
 #section-epargne .revenus-card{
   min-height: 140px;
   display: flex;
@@ -352,7 +347,7 @@ MODAL
   justify-content: center;
 }
 
-/* 💙 VALEUR PLUS GROSSE */
+/* VALEUR PLUS GROSSE */
 #section-epargne .revenus-card-value{
   color: var(--color-epargne);
   font-size: 28px;
@@ -360,7 +355,7 @@ MODAL
   text-align: center;
 }
 
-/* 💙 TITRE PLUS ESPACÉ */
+/* TITRE PLUS ESPACÉ */
 #section-epargne .revenus-card-header{
   font-size: 18px;
   margin-bottom: 8px;

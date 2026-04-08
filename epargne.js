@@ -100,14 +100,14 @@ function renderEpargneMois(){
   el.innerText = prefix + euro(total);
 
   if(total > 0){
-    el.style.color = "#22c55e";
-  }
-  else if(total < 0){
-    el.style.color = "#ef4444";
-  }
-  else{
-    el.style.color = "white";
-  }
+  el.style.color = "var(--color-epargne)"; // 💙 bleu
+}
+else if(total < 0){
+  el.style.color = "#ef4444"; // rouge si négatif (optionnel)
+}
+else{
+  el.style.color = "white";
+}
 
   // petit effet visuel ✨
   el.style.transform = "scale(1.1)";

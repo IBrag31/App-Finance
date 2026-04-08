@@ -69,14 +69,11 @@ function renderRevenusPage(){
 
   list.innerHTML = "";
 
-  let total = 0;
-
   [...revenusDetail]
     .sort((a, b) => b.mois.localeCompare(a.mois))
     .forEach((r) => {
 
       const montant = Number(r.montant) || 0;
-      total += montant;
 
       const div = document.createElement("div");
       div.className = "depense-row";
@@ -93,13 +90,17 @@ function renderRevenusPage(){
       list.appendChild(div);
     });
 
-  setText("revenusPage", euro(total));
+  // 🔥 TOTAL GLOBAL + ESPECES
+  const totalGlobal = getTotalRevenus() + especes;
+  setText("revenusPage", euro(totalGlobal));
 
+  // 📅 LABEL MOIS
   const label = document.getElementById("moisActuelLabel");
   if(label){
     label.innerText = formatMois(getMoisActuel());
   }
 
+  // 📅 TOTAL DU MOIS (inchangé)
   const totalMois = getRevenusDuMois(getMoisActuel());
   setText("revenusMois", euro(totalMois));
 }
@@ -112,6 +113,12 @@ function getRevenusDuMois(mois){
   return revenusDetail
     .filter(r => r.mois === mois)
     .reduce((sum, r) => sum + (Number(r.montant) || 0), 0);
+}
+
+function getTotalRevenus(){
+  return revenusDetail.reduce((sum, r) => {
+    return sum + (Number(r.montant) || 0);
+  }, 0);
 }
 
 // =========================

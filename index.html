@@ -231,13 +231,40 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
       <div class="revenus-card-value" id="epargneTotalePage">0 €</div>
     </div>
 
-    <!-- CE MOIS -->
     <div class="cards-grid revenus-grid">
-      <div class="card small-card revenus-small">
-        <h3>Ce mois-ci</h3>
-        <div id="epargneMoisPage">0 €</div>
-      </div>
+
+  <!-- CE MOIS -->
+  <div class="card small-card revenus-small">
+    <h3>Ce mois-ci</h3>
+    <div id="epargneMoisPage">0 €</div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="card small-card revenus-small clickable"
+       onclick="showSection('epargne-historique')">
+    <h3>🕘 Historique</h3>
+    <div id="epargneHistoriqueTotal">—</div>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 🕘 HISTORIQUE ÉPARGNE -->
+<!-- ========================= -->
+
+<div class="section" id="section-epargne-historique">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <div class="back-btn" onclick="showSection('epargne')">←</div>
+      <h1>Historique épargne</h1>
+      <button onclick="openAddEpargne()" class="add-btn">+</button>
     </div>
+
+    <div id="epargneHistoriqueList"></div>
 
   </div>
 </div>

@@ -14,6 +14,19 @@ function getMoisActuel(){
   return new Date().toISOString().slice(0,7);
 }
 
+// 🔥 NOUVEAU : mois logique (salaire décalé)
+function getMoisBudget(){
+
+  const date = new Date();
+  const jour = date.getDate();
+
+  if(jour <= 10){
+    date.setMonth(date.getMonth() - 1);
+  }
+
+  return date.toISOString().slice(0,7);
+}
+
 function formatMois(moisStr){
   const [annee, mois] = moisStr.split("-");
   const date = new Date(annee, mois - 1);
@@ -118,14 +131,17 @@ function renderRevenusPage(){
   const totalGlobal = getTotalRevenus() + getEspeces();
   setText("revenusPage", euro(totalGlobal));
 
-  // 📅 LABEL MOIS
+  // 🔥 MOIS LOGIQUE (corrigé)
+  const moisBudget = getMoisBudget();
+
+  // 📅 LABEL
   const label = document.getElementById("moisActuelLabel");
   if(label){
-    label.innerText = formatMois(getMoisActuel());
+    label.innerText = formatMois(moisBudget);
   }
 
   // 📅 TOTAL DU MOIS
-  const totalMois = getRevenusDuMois(getMoisActuel());
+  const totalMois = getRevenusDuMois(moisBudget);
   setText("revenusMois", euro(totalMois));
 }
 
@@ -178,33 +194,28 @@ function openAddRevenu(){
     modal.querySelector("#revenuNom")?.focus();
   }, 300);
 
-  // fermer clic extérieur
   modal.addEventListener("click", (e)=>{
     if(e.target === modal){
       fermerModalRevenu();
     }
   });
 
-  // annuler
   modal.querySelector("#btnCancelRevenu")
-    .addEventListener("click", (e)=>{
+    .addEventListener("click",(e)=>{
       e.stopPropagation();
       fermerModalRevenu();
     });
 
-  // ajouter
   modal.querySelector("#btnAddRevenu")
-    .addEventListener("click", (e)=>{
+    .addEventListener("click",(e)=>{
       e.stopPropagation();
-
       validerRevenu();
       fermerModalRevenu();
     });
 }
 
 function fermerModalRevenu(){
-  const modal = document.getElementById("modalRevenu");
-  if(modal) modal.remove();
+  document.getElementById("modalRevenu")?.remove();
 }
 
 // =========================
@@ -221,9 +232,9 @@ function validerRevenu(){
   const montant = parseFloat(montantInput?.value);
 
   const annee = new Date().getFullYear();
-  const mois = `${annee}-${moisInput.value.padStart(2, "0")}`;
+  const mois = `${annee}-${moisInput.value.padStart(2,"0")}`;
 
-  if(!nom || isNaN(montant) || montant <= 0 || !mois){
+  if(!nom || isNaN(montant) || montant <= 0){
     showToast?.("⚠️ Montant invalide");
     return;
   }
@@ -238,10 +249,6 @@ function validerRevenu(){
 
   renderRevenusPage();
   updateBudget();
-
-  if(nomInput) nomInput.value = "";
-  if(montantInput) montantInput.value = "";
-  if(moisInput) moisInput.value = "";
 
   showToast?.("💰 Revenu ajouté");
 }
@@ -258,7 +265,6 @@ function modifierRevenu(revenu){
   revenu.montant = nouveauMontant;
 
   saveRevenus();
-
   renderRevenusPage();
   updateBudget();
 
@@ -274,7 +280,6 @@ function supprimerRevenu(revenu){
   }
 
   saveRevenus();
-
   renderRevenusPage();
   updateBudget();
 
@@ -293,7 +298,7 @@ function saveRevenus(){
 }
 
 // =========================
-// SWIPE
+// SWIPE (inchangé)
 // =========================
 
 let revenuSwipeStartX = 0;

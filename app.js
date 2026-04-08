@@ -215,7 +215,6 @@ if(depensesMini){
   // PAGES DÉTAILLÉES
   // =========================
 
-  setText("revenusPage", euro(revenus));
   setText("epargneMoisPage", euro(epargne));
   setText("epargneTotalePage", euro(epargneValue));
 }

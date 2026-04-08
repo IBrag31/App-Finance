@@ -145,19 +145,16 @@ BUDGET
 
 .budget-row{
   display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
+  align-items:center;
   gap:14px;
 }
 
 .progress-bar{
+  flex:1;
   height:18px;
   background:rgba(255,255,255,0.08);
   border-radius:12px;
   overflow:hidden;
-  min-width:120px;
-  flex-shrink:0;
-  flex:1;
 }
 
 .progress-fill{
@@ -180,7 +177,8 @@ TEXTES BUDGET
 ========================= */
 
 .budget-info{
-  flex:1;
+  width:130px;
+  flex-shrink:0;
   display:flex;
   flex-direction:column;
 }

@@ -432,3 +432,11 @@ MODAL
 .cards-grid.three .card:last-child{
   grid-column:span 2;
 }
+
+#section-epargne .revenus-card-value{
+  color: var(--color-epargne);
+}
+
+#section-epargne .revenus-small div{
+  color: var(--color-epargne);
+}

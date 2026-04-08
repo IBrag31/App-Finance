@@ -93,15 +93,10 @@ function renderEpargneMois(){
   const el = document.getElementById("epargneMoisPage");
   if(!el) return;
 
-  const value = el.innerText;
+  // 💙 force couleur (simple et fiable)
+  el.style.color = "var(--color-epargne)";
 
-  if(value.includes("+")){
-    el.style.color = "var(--color-epargne)";
-  } else {
-    el.style.color = "var(--color-epargne)";
-  }
-
-  el.style.transform = "scale(1.1)";
+  el.style.transform = "scale(1.05)";
   setTimeout(()=> el.style.transform = "scale(1)", 120);
 }
 

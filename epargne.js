@@ -76,7 +76,9 @@ function renderEpargneHistorique(){
 
       row.innerHTML = `
         <span>${formatMois(e.mois)}</span>
-        <span>${euro(montant)}</span>
+        <span style="color: var(--color-epargne)">
+      ${euro(montant)}
+      </span>
       `;
 
       list.appendChild(row);

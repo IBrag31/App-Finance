@@ -27,7 +27,7 @@ function showToast(message){
 // NAVIGATION (SIMPLIFIÉE)
 // =========================
 
-const sections = ["resume","settings"];
+const sections = ["resume","revenus","depenses","settings"];
 let currentSectionIndex = 0;
 
 function showSection(name, element){

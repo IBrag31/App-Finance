@@ -46,25 +46,18 @@ function updateBudget(){
 
   const depenses = calculTotalDepenses();
 
-  const budgetMax = Math.max(revenus - epargne, 0);
-
-  // =========================
-  // 🔥 CALCUL POURCENTAGES (FIX IMPORTANT)
-  // =========================
-
-  const depensesP = depenses > 0
-    ? (depenses / Math.max(budgetMax, 1)) * 100
-    : 0;
-
-  // =========================
-  // OBJECTIFS
-  // =========================
-
-  const objectifDepenses = 1300;
+  // 🎯 OBJECTIF UNIQUE
+  const objectifDepenses = 1250;
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
 
   const epargneValue = getEpargneTotale();
+
+  // =========================
+  // 📊 POURCENTAGE DEPENSES
+  // =========================
+
+  const depensesP = (depenses / objectifDepenses) * 100;
 
   // =========================
   // TEXTES
@@ -94,27 +87,22 @@ function updateBudget(){
   const revBar = document.getElementById("budgetRevenusBar");
 
   // =========================
-  // 🔥 DEPENSES (BARRE + COULEUR)
+  // 💸 DEPENSES (BARRE + COULEUR)
   // =========================
 
   if(depBar){
 
-    const percent = Math.min(Math.max(depensesP, 0), 100);
+    const percent = Math.min(depensesP, 100);
     depBar.style.width = percent + "%";
 
-    // 🎨 couleurs améliorées
-    if(percent < 50){
+    if(depenses < 800){
       depBar.style.background = "#22c55e"; // vert
     }
-    else if(percent < 80){
-      depBar.style.background = "#eab308"; // jaune
+    else if(depenses <= 1250){
+      depBar.style.background = "#f97316"; // orange
     }
     else{
       depBar.style.background = "#ef4444"; // rouge
-    }
-
-    if(depenses > budgetMax){
-      depBar.style.background = "#dc2626";
     }
   }
 
@@ -131,14 +119,11 @@ function updateBudget(){
 
   if(depensesMini){
 
-    if(depenses > budgetMax){
-      depensesMini.style.color = "#dc2626";
-    }
-    else if(depensesP < 50){
+    if(depenses < 800){
       depensesMini.style.color = "#22c55e";
     }
-    else if(depensesP < 80){
-      depensesMini.style.color = "#eab308";
+    else if(depenses <= 1250){
+      depensesMini.style.color = "#f97316";
     }
     else{
       depensesMini.style.color = "#ef4444";
@@ -186,14 +171,11 @@ function updateBudget(){
 
   if(totalDepensesEl){
 
-    if(depenses > budgetMax){
-      totalDepensesEl.style.color = "#dc2626";
-    }
-    else if(depensesP < 50){
+    if(depenses < 800){
       totalDepensesEl.style.color = "#22c55e";
     }
-    else if(depensesP < 80){
-      totalDepensesEl.style.color = "#eab308";
+    else if(depenses <= 1250){
+      totalDepensesEl.style.color = "#f97316";
     }
     else{
       totalDepensesEl.style.color = "#ef4444";

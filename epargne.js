@@ -64,21 +64,85 @@ function renderEpargneHistorique(){
 
   [...epargneHistorique]
     .sort((a,b) => b.mois.localeCompare(a.mois))
-    .forEach((e, i) => {
+    .forEach((e) => {
 
       const montant = Number(e.montant) || 0;
       total += montant;
 
       const row = document.createElement("div");
-      row.className = "depense-row";
+      row.className = "depense-row swipe-item";
 
-      row.onclick = () => modifierEpargne(i);
+      // 👉 index réel (important à cause du sort)
+      const realIndex = epargneHistorique.indexOf(e);
+
+      // =========================
+      // SWIPE
+      // =========================
+
+      let startX = 0;
+      let currentX = 0;
+      let isSwiping = false;
+
+      row.addEventListener("touchstart", (ev) => {
+        startX = ev.touches[0].clientX;
+        currentX = startX;
+        isSwiping = true;
+      });
+
+      row.addEventListener("touchmove", (ev) => {
+        if(!isSwiping) return;
+
+        currentX = ev.touches[0].clientX;
+        const diff = currentX - startX;
+
+        // 👉 évite le scroll si vrai swipe
+        if(Math.abs(diff) > 10){
+          ev.preventDefault();
+        }
+
+        if(diff < 0){ // swipe gauche uniquement
+          row.style.transform = `translateX(${diff}px)`;
+          row.style.opacity = Math.max(1 + diff / 200, 0.5);
+        }
+      });
+
+      row.addEventListener("touchend", () => {
+        if(!isSwiping) return;
+
+        const diff = currentX - startX;
+
+        if(diff < -100){
+          // 🔥 suppression
+          supprimerEpargne(realIndex);
+          showToast?.("🗑️ Épargne supprimée");
+        }else{
+          // retour normal
+          row.style.transform = "translateX(0)";
+          row.style.opacity = "1";
+        }
+
+        isSwiping = false;
+      });
+
+      // =========================
+      // CLICK SAFE (évite conflit swipe)
+      // =========================
+
+      row.addEventListener("click", () => {
+        if(!isSwiping){
+          modifierEpargne(realIndex);
+        }
+      });
+
+      // =========================
+      // CONTENU
+      // =========================
 
       row.innerHTML = `
         <span>${formatMois(e.mois)}</span>
         <span style="color: var(--color-epargne)">
-      ${euro(montant)}
-      </span>
+          ${euro(montant)}
+        </span>
       `;
 
       list.appendChild(row);

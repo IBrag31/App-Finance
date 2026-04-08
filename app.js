@@ -45,16 +45,19 @@ function updateBudget(){
   const epargne = Number(epargneInput?.value || 0);
 
   const depenses = calculTotalDepenses();
+
   const budgetMax = Math.max(revenus - epargne, 0);
 
   // =========================
-  // CALCUL POURCENTAGES
+  // 🔥 CALCUL POURCENTAGES (FIX IMPORTANT)
   // =========================
 
-  const depensesP = budgetMax ? (depenses / budgetMax) * 100 : 0;
+  const depensesP = depenses > 0
+    ? (depenses / Math.max(budgetMax, 1)) * 100
+    : 0;
 
   // =========================
-  // BARRES BUDGET
+  // OBJECTIFS
   // =========================
 
   const objectifDepenses = 1300;
@@ -63,45 +66,51 @@ function updateBudget(){
 
   const epargneValue = getEpargneTotale();
 
- // TEXTES
+  // =========================
+  // TEXTES
+  // =========================
 
-setText(
-  "budgetDepensesText",
-  `${Math.round(depenses).toLocaleString("fr-FR")} / ${Math.round(objectifDepenses).toLocaleString("fr-FR")} €`
-);
+  setText(
+    "budgetDepensesText",
+    `${Math.round(depenses).toLocaleString("fr-FR")} / ${Math.round(objectifDepenses).toLocaleString("fr-FR")} €`
+  );
 
-setText(
-  "budgetEpargneText",
-  `${Math.round(epargneValue).toLocaleString("fr-FR")} / ${Math.round(objectifEpargne).toLocaleString("fr-FR")} €`
-);
+  setText(
+    "budgetEpargneText",
+    `${Math.round(epargneValue).toLocaleString("fr-FR")} / ${Math.round(objectifEpargne).toLocaleString("fr-FR")} €`
+  );
 
-setText(
-  "budgetRevenusText",
-  `${Math.round(revenus).toLocaleString("fr-FR")} / ${Math.round(objectifRevenus).toLocaleString("fr-FR")} €`
-);
+  setText(
+    "budgetRevenusText",
+    `${Math.round(revenus).toLocaleString("fr-FR")} / ${Math.round(objectifRevenus).toLocaleString("fr-FR")} €`
+  );
 
+  // =========================
   // ELEMENTS
+  // =========================
+
   const depBar = document.getElementById("budgetDepensesBar");
   const epBar = document.getElementById("budgetEpargneBar");
   const revBar = document.getElementById("budgetRevenusBar");
 
   // =========================
-  // 🔥 DEPENSES
+  // 🔥 DEPENSES (BARRE + COULEUR)
   // =========================
 
   if(depBar){
 
-    const percent = Math.min(depensesP, 100);
+    const percent = Math.min(Math.max(depensesP, 0), 100);
     depBar.style.width = percent + "%";
 
+    // 🎨 couleurs améliorées
     if(percent < 50){
-      depBar.style.background = "#eab308";
+      depBar.style.background = "#22c55e"; // vert
     }
     else if(percent < 80){
-      depBar.style.background = "#f97316";
+      depBar.style.background = "#eab308"; // jaune
     }
     else{
-      depBar.style.background = "#ef4444";
+      depBar.style.background = "#ef4444"; // rouge
     }
 
     if(depenses > budgetMax){
@@ -113,28 +122,28 @@ setText(
   if(depText && depBar){
     depText.style.color = depBar.style.background;
   }
-  
+
   // =========================
-// 🎨 COULEUR MINI CARTE DEPENSES
-// =========================
+  // 🎨 MINI CARTE DEPENSES
+  // =========================
 
-const depensesMini = document.getElementById("depensesDisplay");
+  const depensesMini = document.getElementById("depensesDisplay");
 
-if(depensesMini){
+  if(depensesMini){
 
-  if(depenses > budgetMax){
-    depensesMini.style.color = "#dc2626";
+    if(depenses > budgetMax){
+      depensesMini.style.color = "#dc2626";
+    }
+    else if(depensesP < 50){
+      depensesMini.style.color = "#22c55e";
+    }
+    else if(depensesP < 80){
+      depensesMini.style.color = "#eab308";
+    }
+    else{
+      depensesMini.style.color = "#ef4444";
+    }
   }
-  else if(depensesP < 50){
-    depensesMini.style.color = "#eab308";
-  }
-  else if(depensesP < 80){
-    depensesMini.style.color = "#f97316";
-  }
-  else{
-    depensesMini.style.color = "#ef4444";
-  }
-}
 
   // =========================
   // 💰 EPARGNE
@@ -181,10 +190,10 @@ if(depensesMini){
       totalDepensesEl.style.color = "#dc2626";
     }
     else if(depensesP < 50){
-      totalDepensesEl.style.color = "#eab308";
+      totalDepensesEl.style.color = "#22c55e";
     }
     else if(depensesP < 80){
-      totalDepensesEl.style.color = "#f97316";
+      totalDepensesEl.style.color = "#eab308";
     }
     else{
       totalDepensesEl.style.color = "#ef4444";
@@ -203,7 +212,7 @@ if(depensesMini){
   }
 
   // =========================
-  // DASHBOARD (CARTES)
+  // DASHBOARD
   // =========================
 
   setText("revenusDisplay", euro(revenus));
@@ -233,10 +242,7 @@ function resetApp(){
 
   if(!confirm("⚠️ Supprimer toutes les données ?")) return;
 
-  // 🔥 reset complet
   localStorage.clear();
-
-  // 🔥 reload app (ultra safe)
   location.reload();
 }
 

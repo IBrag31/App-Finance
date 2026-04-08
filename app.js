@@ -41,9 +41,6 @@ function updateBudget(){
   const especes = Number(localStorage.getItem("especes")) || 0;
   const revenus = getRevenusDuMois(mois) + especes;
 
-  const epargneInput = document.getElementById("epargneMois");
-  const epargne = Number(epargneInput?.value || 0);
-
   const depenses = calculTotalDepenses();
 
   // 🎯 OBJECTIF UNIQUE
@@ -199,13 +196,14 @@ function updateBudget(){
 
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
-  setText("epargneMoisDisplay", euro(epargne));
+  const epargneMois = getEpargneDuMois?.(mois) || 0;
+setText("epargneMoisDisplay", euro(epargneMois));
 
   // =========================
   // PAGES DÉTAILLÉES
   // =========================
 
-  setText("epargneMoisPage", euro(epargne));
+  setText("epargneMoisPage", euro(epargneMois));
   setText("epargneTotalePage", euro(epargneValue));
   
   renderEpargneMois?.();

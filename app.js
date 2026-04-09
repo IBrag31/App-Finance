@@ -281,11 +281,6 @@ window.addEventListener("DOMContentLoaded", () => {
     epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
   }
 
-  // 🔥 FIX REVENUS
-  if(typeof getRevenusDetail === "function"){
-    getRevenusDetail();
-  }
-
   console.log("INIT APP 🚀");
 
   initUI?.();

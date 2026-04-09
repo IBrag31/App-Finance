@@ -56,6 +56,15 @@ function getEpargneColor(){
 // =========================
 
 function updateBudget(){
+  
+  // 🔥 SYNC FORCÉ AVANT CALCUL
+  if(typeof depensesDetail !== "undefined"){
+  depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+}
+
+  if(typeof epargneHistorique !== "undefined"){
+  epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+}
 
   const mois = (typeof getMoisBudget === "function")
     ? getMoisBudget()

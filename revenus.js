@@ -1,4 +1,4 @@
-console.log("revenus.js clean loaded ✅");
+console.log("revenus.js FINAL clean loaded ✅");
 
 // =========================
 // STORAGE (SOURCE UNIQUE)
@@ -20,7 +20,6 @@ function getMoisActuel(){
   return new Date().toISOString().slice(0,7);
 }
 
-// Mois logique (salaire décalé)
 function getMoisBudget(){
   const date = new Date();
   if(date.getDate() <= 10){
@@ -109,7 +108,15 @@ function renderRevenusPage(){
       const div = document.createElement("div");
       div.className = "depense-row";
 
-      div.onclick = () => modifierRevenu(r);
+      // CLICK sécurisé (évite conflit swipe)
+      div.addEventListener("click", () => {
+        if(currentRevenuRow) return;
+        modifierRevenu(r);
+      });
+
+      // SWIPE
+      div.ontouchstart = (e) => startSwipeRevenu(e, r);
+      div.ontouchend = (e) => endSwipeRevenu(e);
 
       div.innerHTML = `
         <span>${r.nom}</span>
@@ -192,11 +199,10 @@ function validerRevenu(){
     id: Date.now(),
     nom,
     montant: Math.round(montant * 100) / 100,
-    mois: getMoisBudget() // 🔥 FIX MAJEUR
+    mois: getMoisBudget()
   });
 
   saveRevenus(data);
-
   refreshAll();
 
   showToast?.("💰 Revenu ajouté");
@@ -205,7 +211,6 @@ function validerRevenu(){
 function modifierRevenu(revenu){
 
   const data = getRevenusDetail();
-
   const index = data.findIndex(r => r.id === revenu.id);
   if(index === -1) return;
 
@@ -235,11 +240,78 @@ function supprimerRevenu(revenu){
 }
 
 // =========================
-// REFRESH GLOBAL (clé 🔑)
+// REFRESH GLOBAL
 // =========================
 
 function refreshAll(){
   renderRevenusPage();
   renderEspeces();
   updateBudget();
+}
+
+// =========================
+// SWIPE REVENUS (PRO)
+// =========================
+
+let revenuSwipeStartX = 0;
+let currentRevenuRow = null;
+let currentRevenu = null;
+let armedRevenuRow = null;
+
+function startSwipeRevenu(e, revenu){
+  revenuSwipeStartX = e.touches[0].clientX;
+  currentRevenuRow = e.currentTarget;
+  currentRevenu = revenu;
+
+  currentRevenuRow.style.transition = "transform 0.2s ease";
+}
+
+function endSwipeRevenu(e){
+
+  if(!currentRevenuRow) return;
+
+  const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
+
+  if(diff < -20){
+    currentRevenuRow.style.transform = "translateX(-40px)";
+    currentRevenuRow.classList.add("swiping");
+  }
+
+  if(diff < -100){
+
+    if(armedRevenuRow === currentRevenuRow){
+
+      navigator.vibrate?.(10);
+
+      currentRevenuRow.style.transform = "translateX(-100%)";
+
+      setTimeout(()=>{
+        supprimerRevenu(currentRevenu);
+      },200);
+
+      armedRevenuRow = null;
+      return;
+    }
+
+    if(armedRevenuRow){
+      armedRevenuRow.style.transform = "translateX(0)";
+      armedRevenuRow.classList.remove("swiping");
+    }
+
+    armedRevenuRow = currentRevenuRow;
+
+    currentRevenuRow.style.transform = "translateX(-80px)";
+    currentRevenuRow.classList.add("swiping");
+
+    showToast?.("👉 Glisse encore pour supprimer");
+  }
+
+  else{
+    currentRevenuRow.style.transform = "translateX(0)";
+    currentRevenuRow.classList.remove("swiping");
+    armedRevenuRow = null;
+  }
+
+  currentRevenuRow = null;
+  currentRevenu = null;
 }

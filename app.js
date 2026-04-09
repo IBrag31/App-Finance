@@ -72,17 +72,14 @@ function updateBudget(){
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
 
-  // TEXTES
   setText("budgetDepensesText", `${Math.round(depenses)} / ${objectifDepenses} €`);
   setText("budgetEpargneText", `${Math.round(epargneTotale)} / ${objectifEpargne} €`);
   setText("budgetRevenusText", `${Math.round(revenus)} / ${objectifRevenus} €`);
 
-  // BARRES
   updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
   updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
   updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
 
-  // COULEURS
   const depColor = getDepenseColor(depenses);
 
   const depText = document.getElementById("budgetDepensesText");
@@ -103,35 +100,10 @@ function updateBudget(){
   const epargneDisplay = document.getElementById("epargneMoisDisplay");
   if(epargneDisplay) epargneDisplay.style.color = getEpargneColor();
 
-  // PAGE DEPENSES
-  const depensesPage = document.getElementById("depensesTotalPage");
-  if(depensesPage) depensesPage.style.color = depColor;
-
-  // FIXES / VARIABLES (FIX HTML)
-  const depensesFixes = document.getElementById("totalFixesPage");
-  const depensesVariables = document.getElementById("totalVariablesPage");
-
-  const totalFixes = safe(() => calculDepensesFixes());
-  const totalVariables = safe(() => calculDepensesVariables());
-
-  if(depensesFixes){
-    depensesFixes.style.color = totalFixes > totalVariables
-      ? "#f97316"
-      : "#22c55e";
-  }
-
-  if(depensesVariables){
-    depensesVariables.style.color = totalVariables > totalFixes
-      ? "#f97316"
-      : "#22c55e";
-  }
-
-  // DASHBOARD
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargneMois));
 
-  // PAGES
   setText("epargneMoisPage", euro(epargneMois));
   setText("epargneTotalePage", euro(epargneTotale));
 
@@ -158,38 +130,6 @@ function updateBar(id, value, objectif, type){
 }
 
 // =========================
-// SAUVEGARDE
-// =========================
-
-function sauvegardeAuto(){
-
-  const data = {
-    revenus: JSON.parse(localStorage.getItem("revenusDetail") || "[]"),
-    depenses: JSON.parse(localStorage.getItem("depensesDetail") || "[]"),
-    epargne: JSON.parse(localStorage.getItem("epargneHistorique") || "[]"), // ✅ FIX
-    especes: Number(localStorage.getItem("especes")) || 0
-  };
-
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
-    type: "application/json"
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "finance-plus-backup.json";
-
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  URL.revokeObjectURL(url);
-
-  showToast?.("💾 Sauvegarde téléchargée");
-}
-
-// =========================
 // RESTAURATION
 // =========================
 
@@ -198,8 +138,6 @@ function restaurerDepuisIcloud(){
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "application/json";
-
-  showToast?.("📂 Import en cours...");
 
   input.onchange = (event) => {
 
@@ -212,41 +150,21 @@ function restaurerDepuisIcloud(){
       try{
         const data = JSON.parse(e.target.result);
 
-        // =========================
-        // 💾 RESTAURATION STORAGE
-        // =========================
-
         if(data.revenus) localStorage.setItem("revenusDetail", JSON.stringify(data.revenus));
         if(data.depenses) localStorage.setItem("depensesDetail", JSON.stringify(data.depenses));
         if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne));
         if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
 
-        // =========================
-        // 🔄 SYNC MÉMOIRE
-        // =========================
-
-        if(typeof depensesDetail !== "undefined"){
-          depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
-        }
-
-        if(typeof epargneHistorique !== "undefined"){
-          epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-        }
-
-        // =========================
-        // 🎨 REFRESH UI
-        // =========================
-
         renderRevenusPage?.();
         renderDepensesPage?.();
         renderEpargneHistorique?.();
         renderEpargneMois?.();
+        renderEspeces?.();
+
         updateBudget();
 
-        showToast?.("✅ Données restaurées");
-
       }catch(err){
-        showToast?.("❌ Fichier invalide");
+        alert("❌ Fichier invalide");
       }
     };
 
@@ -255,6 +173,7 @@ function restaurerDepuisIcloud(){
 
   input.click();
 }
+
 // =========================
 // RESET
 // =========================
@@ -271,46 +190,37 @@ function resetApp(){
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  // 🔄 SYNC DONNÉES AU DÉMARRAGE
-
-  if(typeof depensesDetail !== "undefined"){
-    depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
-  }
-
-  if(typeof epargneHistorique !== "undefined"){
-    epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-  }
-
   console.log("INIT APP 🚀");
 
   initUI?.();
 
+  renderEspeces?.();
+
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
   updateBudget();
-  
-  // 🔥 FIX RENDER GLOBAL (CRITIQUE)
-setTimeout(() => {
-  renderRevenusPage?.();
-  renderDepensesPage?.();
-  renderEpargneHistorique?.();
-  renderEpargneMois?.();
-  updateBudget();
-}, 50);
-
-  const el = document.getElementById("todayDate");
-  if(el){
-    const d = new Date();
-    let str = d.toLocaleDateString("fr-FR",{
-      weekday:"long",
-      day:"numeric",
-      month:"long"
-    });
-    el.textContent = str.charAt(0).toUpperCase() + str.slice(1);
-  }
 
   console.log("APP READY ✅");
+});
+
+// =========================
+// FIX PWA iOS
+// =========================
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+
+    console.log("🔄 Refresh app");
+
+    renderRevenusPage?.();
+    renderDepensesPage?.();
+    renderEpargneHistorique?.();
+    renderEpargneMois?.();
+    renderEspeces?.();
+
+    updateBudget();
+  }
 });

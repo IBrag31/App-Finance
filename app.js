@@ -291,6 +291,15 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneMois?.();
 
   updateBudget();
+  
+  // 🔥 FIX RENDER GLOBAL (CRITIQUE)
+setTimeout(() => {
+  renderRevenusPage?.();
+  renderDepensesPage?.();
+  renderEpargneHistorique?.();
+  renderEpargneMois?.();
+  updateBudget();
+}, 50);
 
   const el = document.getElementById("todayDate");
   if(el){

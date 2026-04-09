@@ -119,6 +119,30 @@ function updateBudget(){
   // Page Dépenses
   const depensesPage = document.getElementById("depensesTotalPage");
   if(depensesPage) depensesPage.style.color = depColor;
+  
+  // =========================
+// 🎨 FIXES / VARIABLES
+// =========================
+
+const depensesFixes = document.getElementById("depensesFixes");
+const depensesVariables = document.getElementById("depensesVariables");
+
+// récup des valeurs (sécurisé)
+const totalFixes = safe(() => calculDepensesFixes());
+const totalVariables = safe(() => calculDepensesVariables());
+
+// couleur basée sur intensité (option simple)
+if(depensesFixes){
+  depensesFixes.style.color = totalFixes > totalVariables
+    ? "#f97316"
+    : "#22c55e";
+}
+
+if(depensesVariables){
+  depensesVariables.style.color = totalVariables > totalFixes
+    ? "#f97316"
+    : "#22c55e";
+}
 
   // =========================
   // DASHBOARD

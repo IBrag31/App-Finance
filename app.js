@@ -271,6 +271,21 @@ function resetApp(){
 
 window.addEventListener("DOMContentLoaded", () => {
 
+  // 🔄 SYNC DONNÉES AU DÉMARRAGE
+
+  if(typeof depensesDetail !== "undefined"){
+    depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+  }
+
+  if(typeof epargneHistorique !== "undefined"){
+    epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+  }
+
+  // 🔥 FIX REVENUS
+  if(typeof getRevenusDetail === "function"){
+    getRevenusDetail();
+  }
+
   console.log("INIT APP 🚀");
 
   initUI?.();

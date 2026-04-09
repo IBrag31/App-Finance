@@ -40,11 +40,19 @@ function getTotalEpargneHistorique(){
 
 // 🔥 total global utilisé par app.js
 function getTotalEpargne(){
-  return getTotalEpargneHistorique();
+
+  const data = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+
+  return data.reduce((sum, e) => {
+    return sum + (Number(e.montant) || 0);
+  }, 0);
 }
 
 function getEpargneDuMois(mois){
-  return epargneHistorique
+
+  const data = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+
+  return data
     .filter(e => e.mois === mois)
     .reduce((sum, e) => sum + (Number(e.montant) || 0), 0);
 }

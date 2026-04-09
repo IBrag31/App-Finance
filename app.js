@@ -211,6 +211,8 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneMois?.();
 
   updateBudget();
+  
+  showSection("resume");
 
   console.log("APP READY ✅");
 });

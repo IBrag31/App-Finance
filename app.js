@@ -166,7 +166,7 @@ function sauvegardeAuto(){
   const data = {
     revenus: JSON.parse(localStorage.getItem("revenusDetail") || "[]"),
     depenses: JSON.parse(localStorage.getItem("depensesDetail") || "[]"),
-    epargne: JSON.parse(localStorage.getItem("epargneDetail") || "[]"),
+    epargne: JSON.parse(localStorage.getItem("epargneHistorique") || "[]"), // ✅ FIX
     especes: Number(localStorage.getItem("especes")) || 0
   };
 
@@ -180,7 +180,7 @@ function sauvegardeAuto(){
   a.href = url;
   a.download = "finance-plus-backup.json";
 
-  document.body.appendChild(a); // 🔥 FIX iOS
+  document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
 
@@ -214,7 +214,7 @@ function restaurerDepuisIcloud(){
 
         if(data.revenus) localStorage.setItem("revenusDetail", JSON.stringify(data.revenus));
         if(data.depenses) localStorage.setItem("depensesDetail", JSON.stringify(data.depenses));
-        if(data.epargne) localStorage.setItem("epargneDetail", JSON.stringify(data.epargne));
+        if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne)); // ✅ FIX
         if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
 
         showToast?.("✅ Données restaurées");

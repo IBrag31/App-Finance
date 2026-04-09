@@ -1,4 +1,4 @@
-console.log("app.js loaded");
+console.log("app.js clean loaded ✅");
 
 // =========================
 // UTILS
@@ -15,17 +15,22 @@ function euroShort(n){
   return Math.round(Number(n || 0)).toLocaleString("fr-FR") + " €";
 }
 
-function getEpargneTotale(){
-  return Number(localStorage.getItem("epargneTotale")) || 0;
-}
-
-// =========================
-// SAFE SET TEXT
-// =========================
-
 function setText(id, value){
   const el = document.getElementById(id);
   if(el) el.innerText = value;
+}
+
+// =========================
+// SAFE CALLS (anti-bug)
+// =========================
+
+function safe(fn, fallback = 0){
+  try{
+    return (typeof fn === "function") ? fn() : fallback;
+  }catch(e){
+    console.warn("Erreur fonction :", fn?.name, e);
+    return fallback;
+  }
 }
 
 // =========================
@@ -33,162 +38,52 @@ function setText(id, value){
 // =========================
 
 function updateBudget(){
-  
-  console.log("UPDATE BUDGET RUN 🔥");
 
-  const mois = getMoisBudget?.() || getMoisActuel();
+  console.log("UPDATE BUDGET 🔄");
+
+  const mois = (typeof getMoisBudget === "function")
+    ? getMoisBudget()
+    : new Date().toISOString().slice(0,7);
 
   const especes = Number(localStorage.getItem("especes")) || 0;
-  const revenus = (getRevenusDuMois?.(mois) || 0) + especes;
 
-  const depenses = calculTotalDepenses?.() || 0;
+  const revenus = safe(() => getRevenusDuMois(mois)) + especes;
+  const depenses = safe(() => calculTotalDepenses());
+  const epargneTotale = safe(() => getTotalEpargne());
 
-  // 🎯 OBJECTIF UNIQUE
+  const epargneMois = safe(() => getEpargneDuMois(mois));
+
+  // =========================
+  // OBJECTIFS
+  // =========================
+
   const objectifDepenses = 1250;
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
-
-  const epargneValue = getTotalEpargne?.() || 0;
-
-  // =========================
-  // 📊 POURCENTAGE DEPENSES
-  // =========================
-
-  const depensesP = (depenses / objectifDepenses) * 100;
 
   // =========================
   // TEXTES
   // =========================
 
-  setText(
-    "budgetDepensesText",
-    `${Math.round(depenses).toLocaleString("fr-FR")} / ${Math.round(objectifDepenses).toLocaleString("fr-FR")} €`
+  setText("budgetDepensesText",
+    `${Math.round(depenses)} / ${objectifDepenses} €`
   );
 
-  setText(
-    "budgetEpargneText",
-    `${Math.round(epargneValue).toLocaleString("fr-FR")} / ${Math.round(objectifEpargne).toLocaleString("fr-FR")} €`
+  setText("budgetEpargneText",
+    `${Math.round(epargneTotale)} / ${objectifEpargne} €`
   );
 
-  setText(
-    "budgetRevenusText",
-    `${Math.round(revenus).toLocaleString("fr-FR")} / ${Math.round(objectifRevenus).toLocaleString("fr-FR")} €`
+  setText("budgetRevenusText",
+    `${Math.round(revenus)} / ${objectifRevenus} €`
   );
 
   // =========================
-  // ELEMENTS
+  // BARRES
   // =========================
 
-  const depBar = document.getElementById("budgetDepensesBar");
-  const epBar = document.getElementById("budgetEpargneBar");
-  const revBar = document.getElementById("budgetRevenusBar");
-
-  // =========================
-  // 💸 DEPENSES (BARRE + COULEUR)
-  // =========================
-
-  if(depBar){
-
-    const percent = Math.min(depensesP, 100);
-    depBar.style.width = percent + "%";
-
-    if(depenses < 800){
-      depBar.style.background = "#22c55e"; // vert
-    }
-    else if(depenses <= 1250){
-      depBar.style.background = "#f97316"; // orange
-    }
-    else{
-      depBar.style.background = "#ef4444"; // rouge
-    }
-  }
-
-  const depText = document.getElementById("budgetDepensesText");
-  if(depText && depBar){
-    depText.style.color = depBar.style.background;
-  }
-
-  // =========================
-  // 🎨 MINI CARTE DEPENSES
-  // =========================
-
-  const depensesMini = document.getElementById("depensesDisplay");
-
-  if(depensesMini){
-
-    if(depenses < 800){
-      depensesMini.style.color = "#22c55e";
-    }
-    else if(depenses <= 1250){
-      depensesMini.style.color = "#f97316";
-    }
-    else{
-      depensesMini.style.color = "#ef4444";
-    }
-  }
-
-  // =========================
-  // 💰 EPARGNE
-  // =========================
-
-  if(epBar){
-
-    const percent = objectifEpargne
-      ? (epargneValue / objectifEpargne) * 100
-      : 0;
-
-    epBar.style.width = Math.min(percent, 100) + "%";
-    epBar.style.background = "var(--color-epargne)";
-  }
-
-  // =========================
-  // 💵 REVENUS
-  // =========================
-
-  if(revBar){
-
-    const revenusP = objectifRevenus
-      ? (revenus / objectifRevenus) * 100
-      : 0;
-
-    revBar.style.width = Math.min(revenusP, 100) + "%";
-    revBar.style.background = "var(--color-revenus)";
-  }
-
-  const revText = document.getElementById("budgetRevenusText");
-  if(revText){
-    revText.style.color = "var(--color-revenus)";
-  }
-
-  // =========================
-  // 🎨 TOTAL DEPENSES (PAGE)
-  // =========================
-
-  const totalDepensesEl = document.getElementById("depensesTotalPage");
-
-  if(totalDepensesEl){
-
-    if(depenses < 800){
-      totalDepensesEl.style.color = "#22c55e";
-    }
-    else if(depenses <= 1250){
-      totalDepensesEl.style.color = "#f97316";
-    }
-    else{
-      totalDepensesEl.style.color = "#ef4444";
-    }
-
-    // animation
-    totalDepensesEl.style.transform = "scale(1)";
-    
-    setTimeout(()=>{
-      totalDepensesEl.style.transform = "scale(1.05)";
-      
-      setTimeout(()=>{
-        totalDepensesEl.style.transform = "scale(1)";
-      },150);
-    },10);
-  }
+  updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
+  updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
+  updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
 
   // =========================
   // DASHBOARD
@@ -196,33 +91,62 @@ function updateBudget(){
 
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
-  const epargneMois = getEpargneDuMois?.(mois) || 0;
   setText("epargneMoisDisplay", euro(epargneMois));
 
   // =========================
-  // PAGES DÉTAILLÉES
+  // PAGES
   // =========================
 
   setText("epargneMoisPage", euro(epargneMois));
-  setText("epargneTotalePage", euro(epargneValue));
-  
-  renderEpargneMois?.();
-  
+  setText("epargneTotalePage", euro(epargneTotale));
+
+  if(typeof renderEpargneMois === "function"){
+    renderEpargneMois();
+  }
 }
 
+// =========================
+// BARRES (clean)
+// =========================
 
+function updateBar(id, value, objectif, type){
+
+  const el = document.getElementById(id);
+  if(!el) return;
+
+  const percent = objectif ? (value / objectif) * 100 : 0;
+  el.style.width = Math.min(percent, 100) + "%";
+
+  if(type === "depense"){
+    if(value < 800) el.style.background = "#22c55e";
+    else if(value <= 1250) el.style.background = "#f97316";
+    else el.style.background = "#ef4444";
+  }
+
+  if(type === "epargne"){
+    el.style.background = "var(--color-epargne)";
+  }
+
+  if(type === "revenus"){
+    el.style.background = "var(--color-revenus)";
+  }
+}
 
 // =========================
 // INIT UI
 // =========================
 
 function initUI(){
-  renderEspeces?.();
+  if(typeof renderEspeces === "function"){
+    renderEspeces();
+  }
 }
 
-function resetApp(){
+// =========================
+// RESET
+// =========================
 
-  console.log("RESET CLICK 🔥");
+function resetApp(){
 
   if(!confirm("⚠️ Supprimer toutes les données ?")) return;
 
@@ -231,32 +155,35 @@ function resetApp(){
 }
 
 // =========================
-// INIT APP
+// INIT APP (propre)
 // =========================
 
 window.addEventListener("DOMContentLoaded", () => {
 
+  console.log("INIT APP 🚀");
+
   initUI();
 
-  setTimeout(()=>{
-    renderRevenusPage?.();
-    renderDepensesPage?.();
-    renderEpargneHistorique?.();
-    renderEpargneMois?.();
-    updateBudget();
-  }, 200);
+  // render pages
+  if(typeof renderRevenusPage === "function") renderRevenusPage();
+  if(typeof renderDepensesPage === "function") renderDepensesPage();
+  if(typeof renderEpargneHistorique === "function") renderEpargneHistorique();
+  if(typeof renderEpargneMois === "function") renderEpargneMois();
 
-  const dateElement = document.getElementById("todayDate");
-  if(dateElement){
+  // update global
+  updateBudget();
+
+  // date affichée
+  const el = document.getElementById("todayDate");
+  if(el){
     const d = new Date();
-    let dateStr = d.toLocaleDateString("fr-FR",{
+    let str = d.toLocaleDateString("fr-FR",{
       weekday:"long",
       day:"numeric",
       month:"long"
     });
-    dateElement.textContent =
-      dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+    el.textContent = str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  console.log("APP READY 🚀");
+  console.log("APP READY ✅");
 });

@@ -59,6 +59,10 @@ function showSection(name, element){
   // 🔥 RENDER DYNAMIQUE
   // =========================
 
+  if(name === "resume"){
+  updateBudget?.();
+  }
+
   if(name === "revenus"){
     renderRevenusPage?.();
   }

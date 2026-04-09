@@ -255,7 +255,6 @@ function restaurerDepuisIcloud(){
 
   input.click();
 }
-
 // =========================
 // RESET
 // =========================

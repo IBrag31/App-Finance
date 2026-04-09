@@ -1,4 +1,4 @@
-console.log("app.js FINAL clean loaded ✅");
+console.log("app.js FINAL PRO loaded ✅");
 
 // =========================
 // UTILS
@@ -43,6 +43,14 @@ function getDepenseColor(value){
   return "#ef4444";
 }
 
+function getRevenusColor(){
+  return "#22c55e"; // vert
+}
+
+function getEpargneColor(){
+  return "#3b82f6"; // bleu
+}
+
 // =========================
 // CORE APP
 // =========================
@@ -62,10 +70,6 @@ function updateBudget(){
   const epargneTotale = safe(() => getTotalEpargne());
   const epargneMois = safe(() => getEpargneDuMois(mois));
 
-  // =========================
-  // OBJECTIFS
-  // =========================
-
   const objectifDepenses = 1250;
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
@@ -74,17 +78,9 @@ function updateBudget(){
   // TEXTES
   // =========================
 
-  setText("budgetDepensesText",
-    `${Math.round(depenses)} / ${objectifDepenses} €`
-  );
-
-  setText("budgetEpargneText",
-    `${Math.round(epargneTotale)} / ${objectifEpargne} €`
-  );
-
-  setText("budgetRevenusText",
-    `${Math.round(revenus)} / ${objectifRevenus} €`
-  );
+  setText("budgetDepensesText", `${Math.round(depenses)} / ${objectifDepenses} €`);
+  setText("budgetEpargneText", `${Math.round(epargneTotale)} / ${objectifEpargne} €`);
+  setText("budgetRevenusText", `${Math.round(revenus)} / ${objectifRevenus} €`);
 
   // =========================
   // BARRES
@@ -100,17 +96,29 @@ function updateBudget(){
 
   const depColor = getDepenseColor(depenses);
 
-  // Texte dépenses (budget)
+  // Budget textes
   const depText = document.getElementById("budgetDepensesText");
   if(depText) depText.style.color = depColor;
 
-  // Texte revenus (budget)
   const revText = document.getElementById("budgetRevenusText");
-  if(revText) revText.style.color = "var(--color-revenus)";
+  if(revText) revText.style.color = getRevenusColor();
 
-  // Carte dépenses dashboard
+  const epText = document.getElementById("budgetEpargneText");
+  if(epText) epText.style.color = getEpargneColor();
+
+  // Dashboard cartes
   const depensesDisplay = document.getElementById("depensesDisplay");
   if(depensesDisplay) depensesDisplay.style.color = depColor;
+
+  const revenusDisplay = document.getElementById("revenusDisplay");
+  if(revenusDisplay) revenusDisplay.style.color = getRevenusColor();
+
+  const epargneDisplay = document.getElementById("epargneMoisDisplay");
+  if(epargneDisplay) epargneDisplay.style.color = getEpargneColor();
+
+  // Page Dépenses
+  const depensesPage = document.getElementById("depensesTotalPage");
+  if(depensesPage) depensesPage.style.color = depColor;
 
   // =========================
   // DASHBOARD
@@ -149,11 +157,11 @@ function updateBar(id, value, objectif, type){
   }
 
   if(type === "epargne"){
-    el.style.background = "var(--color-epargne)";
+    el.style.background = getEpargneColor();
   }
 
   if(type === "revenus"){
-    el.style.background = "var(--color-revenus)";
+    el.style.background = getRevenusColor();
   }
 }
 

@@ -11,10 +11,14 @@ let depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
 // =========================
 
 function calculTotalDepenses(){
-  const total = depensesDetail.reduce(
+
+  const data = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+
+  const total = data.reduce(
     (sum, d) => sum + (Number(d.montant) || 0),
     0
   );
+
   return Math.round(total * 100) / 100;
 }
 

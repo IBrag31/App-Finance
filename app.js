@@ -84,6 +84,24 @@ function updateBudget(){
   updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
   updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
   updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
+  
+  // =========================
+// 🎨 COULEUR TEXTE DEPENSES
+// =========================
+
+const depText = document.getElementById("budgetDepensesText");
+
+if(depText){
+  if(depenses < 800){
+    depText.style.color = "#22c55e";
+  }
+  else if(depenses <= 1250){
+    depText.style.color = "#f97316";
+  }
+  else{
+    depText.style.color = "#ef4444";
+  }
+}
 
   // =========================
   // DASHBOARD
@@ -92,6 +110,21 @@ function updateBudget(){
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargneMois));
+
+// 🎨 COULEUR DEPENSES (carte dashboard)
+const depensesDisplay = document.getElementById("depensesDisplay");
+
+if(depensesDisplay){
+  if(depenses < 800){
+    depensesDisplay.style.color = "#22c55e";
+  }
+  else if(depenses <= 1250){
+    depensesDisplay.style.color = "#f97316";
+  }
+  else{
+    depensesDisplay.style.color = "#ef4444";
+  }
+}
 
   // =========================
   // PAGES
@@ -117,16 +150,25 @@ function updateBar(id, value, objectif, type){
   const percent = objectif ? (value / objectif) * 100 : 0;
   el.style.width = Math.min(percent, 100) + "%";
 
+  // 🎯 DEPENSES (logique complète restaurée)
   if(type === "depense"){
-    if(value < 800) el.style.background = "#22c55e";
-    else if(value <= 1250) el.style.background = "#f97316";
-    else el.style.background = "#ef4444";
+    if(value < 800){
+      el.style.background = "#22c55e"; // vert
+    }
+    else if(value <= 1250){
+      el.style.background = "#f97316"; // orange
+    }
+    else{
+      el.style.background = "#ef4444"; // rouge
+    }
   }
 
+  // 💰 EPARGNE
   if(type === "epargne"){
     el.style.background = "var(--color-epargne)";
   }
 
+  // 💵 REVENUS (AJOUT MANQUANT ❗)
   if(type === "revenus"){
     el.style.background = "var(--color-revenus)";
   }

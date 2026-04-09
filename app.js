@@ -1,4 +1,4 @@
-console.log("app.js clean loaded ✅");
+console.log("app.js FINAL clean loaded ✅");
 
 // =========================
 // UTILS
@@ -21,7 +21,7 @@ function setText(id, value){
 }
 
 // =========================
-// SAFE CALLS (anti-bug)
+// SAFE CALLS
 // =========================
 
 function safe(fn, fallback = 0){
@@ -31,6 +31,16 @@ function safe(fn, fallback = 0){
     console.warn("Erreur fonction :", fn?.name, e);
     return fallback;
   }
+}
+
+// =========================
+// COULEURS
+// =========================
+
+function getDepenseColor(value){
+  if(value < 800) return "#22c55e";
+  if(value <= 1250) return "#f97316";
+  return "#ef4444";
 }
 
 // =========================
@@ -50,7 +60,6 @@ function updateBudget(){
   const revenus = safe(() => getRevenusDuMois(mois)) + especes;
   const depenses = safe(() => calculTotalDepenses());
   const epargneTotale = safe(() => getTotalEpargne());
-
   const epargneMois = safe(() => getEpargneDuMois(mois));
 
   // =========================
@@ -84,24 +93,24 @@ function updateBudget(){
   updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
   updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
   updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
-  
+
   // =========================
-// 🎨 COULEUR TEXTE DEPENSES
-// =========================
+  // 🎨 COULEURS
+  // =========================
 
-const depText = document.getElementById("budgetDepensesText");
+  const depColor = getDepenseColor(depenses);
 
-if(depText){
-  if(depenses < 800){
-    depText.style.color = "#22c55e";
-  }
-  else if(depenses <= 1250){
-    depText.style.color = "#f97316";
-  }
-  else{
-    depText.style.color = "#ef4444";
-  }
-}
+  // Texte dépenses (budget)
+  const depText = document.getElementById("budgetDepensesText");
+  if(depText) depText.style.color = depColor;
+
+  // Texte revenus (budget)
+  const revText = document.getElementById("budgetRevenusText");
+  if(revText) revText.style.color = "var(--color-revenus)";
+
+  // Carte dépenses dashboard
+  const depensesDisplay = document.getElementById("depensesDisplay");
+  if(depensesDisplay) depensesDisplay.style.color = depColor;
 
   // =========================
   // DASHBOARD
@@ -110,21 +119,6 @@ if(depText){
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargneMois));
-
-// 🎨 COULEUR DEPENSES (carte dashboard)
-const depensesDisplay = document.getElementById("depensesDisplay");
-
-if(depensesDisplay){
-  if(depenses < 800){
-    depensesDisplay.style.color = "#22c55e";
-  }
-  else if(depenses <= 1250){
-    depensesDisplay.style.color = "#f97316";
-  }
-  else{
-    depensesDisplay.style.color = "#ef4444";
-  }
-}
 
   // =========================
   // PAGES
@@ -139,7 +133,7 @@ if(depensesDisplay){
 }
 
 // =========================
-// BARRES (clean)
+// BARRES
 // =========================
 
 function updateBar(id, value, objectif, type){
@@ -150,25 +144,14 @@ function updateBar(id, value, objectif, type){
   const percent = objectif ? (value / objectif) * 100 : 0;
   el.style.width = Math.min(percent, 100) + "%";
 
-  // 🎯 DEPENSES (logique complète restaurée)
   if(type === "depense"){
-    if(value < 800){
-      el.style.background = "#22c55e"; // vert
-    }
-    else if(value <= 1250){
-      el.style.background = "#f97316"; // orange
-    }
-    else{
-      el.style.background = "#ef4444"; // rouge
-    }
+    el.style.background = getDepenseColor(value);
   }
 
-  // 💰 EPARGNE
   if(type === "epargne"){
     el.style.background = "var(--color-epargne)";
   }
 
-  // 💵 REVENUS (AJOUT MANQUANT ❗)
   if(type === "revenus"){
     el.style.background = "var(--color-revenus)";
   }
@@ -197,7 +180,7 @@ function resetApp(){
 }
 
 // =========================
-// INIT APP (propre)
+// INIT APP
 // =========================
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -206,16 +189,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
   initUI();
 
-  // render pages
   if(typeof renderRevenusPage === "function") renderRevenusPage();
   if(typeof renderDepensesPage === "function") renderDepensesPage();
   if(typeof renderEpargneHistorique === "function") renderEpargneHistorique();
   if(typeof renderEpargneMois === "function") renderEpargneMois();
 
-  // update global
   updateBudget();
 
-  // date affichée
   const el = document.getElementById("todayDate");
   if(el){
     const d = new Date();

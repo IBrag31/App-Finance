@@ -1,4 +1,4 @@
-console.log("app.js FINAL PRO loaded ✅");
+console.log("app.js FINAL PRO+ loaded ✅");
 
 // =========================
 // UTILS
@@ -44,11 +44,11 @@ function getDepenseColor(value){
 }
 
 function getRevenusColor(){
-  return "#22c55e"; // vert
+  return "#22c55e";
 }
 
 function getEpargneColor(){
-  return "#3b82f6"; // bleu
+  return "#3b82f6";
 }
 
 // =========================
@@ -56,8 +56,6 @@ function getEpargneColor(){
 // =========================
 
 function updateBudget(){
-
-  console.log("UPDATE BUDGET 🔄");
 
   const mois = (typeof getMoisBudget === "function")
     ? getMoisBudget()
@@ -74,29 +72,19 @@ function updateBudget(){
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
 
-  // =========================
   // TEXTES
-  // =========================
-
   setText("budgetDepensesText", `${Math.round(depenses)} / ${objectifDepenses} €`);
   setText("budgetEpargneText", `${Math.round(epargneTotale)} / ${objectifEpargne} €`);
   setText("budgetRevenusText", `${Math.round(revenus)} / ${objectifRevenus} €`);
 
-  // =========================
   // BARRES
-  // =========================
-
   updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
   updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
   updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
 
-  // =========================
-  // 🎨 COULEURS
-  // =========================
-
+  // COULEURS
   const depColor = getDepenseColor(depenses);
 
-  // Budget textes
   const depText = document.getElementById("budgetDepensesText");
   if(depText) depText.style.color = depColor;
 
@@ -106,7 +94,6 @@ function updateBudget(){
   const epText = document.getElementById("budgetEpargneText");
   if(epText) epText.style.color = getEpargneColor();
 
-  // Dashboard cartes
   const depensesDisplay = document.getElementById("depensesDisplay");
   if(depensesDisplay) depensesDisplay.style.color = depColor;
 
@@ -116,46 +103,35 @@ function updateBudget(){
   const epargneDisplay = document.getElementById("epargneMoisDisplay");
   if(epargneDisplay) epargneDisplay.style.color = getEpargneColor();
 
-  // Page Dépenses
+  // PAGE DEPENSES
   const depensesPage = document.getElementById("depensesTotalPage");
   if(depensesPage) depensesPage.style.color = depColor;
-  
-  // =========================
-// 🎨 FIXES / VARIABLES
-// =========================
 
-const depensesFixes = document.getElementById("depensesFixes");
-const depensesVariables = document.getElementById("depensesVariables");
+  // FIXES / VARIABLES (FIX HTML)
+  const depensesFixes = document.getElementById("totalFixesPage");
+  const depensesVariables = document.getElementById("totalVariablesPage");
 
-// récup des valeurs (sécurisé)
-const totalFixes = safe(() => calculDepensesFixes());
-const totalVariables = safe(() => calculDepensesVariables());
+  const totalFixes = safe(() => calculDepensesFixes());
+  const totalVariables = safe(() => calculDepensesVariables());
 
-// couleur basée sur intensité (option simple)
-if(depensesFixes){
-  depensesFixes.style.color = totalFixes > totalVariables
-    ? "#f97316"
-    : "#22c55e";
-}
+  if(depensesFixes){
+    depensesFixes.style.color = totalFixes > totalVariables
+      ? "#f97316"
+      : "#22c55e";
+  }
 
-if(depensesVariables){
-  depensesVariables.style.color = totalVariables > totalFixes
-    ? "#f97316"
-    : "#22c55e";
-}
+  if(depensesVariables){
+    depensesVariables.style.color = totalVariables > totalFixes
+      ? "#f97316"
+      : "#22c55e";
+  }
 
-  // =========================
   // DASHBOARD
-  // =========================
-
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargneMois));
 
-  // =========================
   // PAGES
-  // =========================
-
   setText("epargneMoisPage", euro(epargneMois));
   setText("epargneTotalePage", euro(epargneTotale));
 
@@ -176,27 +152,84 @@ function updateBar(id, value, objectif, type){
   const percent = objectif ? (value / objectif) * 100 : 0;
   el.style.width = Math.min(percent, 100) + "%";
 
-  if(type === "depense"){
-    el.style.background = getDepenseColor(value);
-  }
-
-  if(type === "epargne"){
-    el.style.background = getEpargneColor();
-  }
-
-  if(type === "revenus"){
-    el.style.background = getRevenusColor();
-  }
+  if(type === "depense") el.style.background = getDepenseColor(value);
+  if(type === "epargne") el.style.background = getEpargneColor();
+  if(type === "revenus") el.style.background = getRevenusColor();
 }
 
 // =========================
-// INIT UI
+// SAUVEGARDE
 // =========================
 
-function initUI(){
-  if(typeof renderEspeces === "function"){
-    renderEspeces();
-  }
+function sauvegardeAuto(){
+
+  const data = {
+    revenus: JSON.parse(localStorage.getItem("revenusDetail") || "[]"),
+    depenses: JSON.parse(localStorage.getItem("depensesDetail") || "[]"),
+    epargne: JSON.parse(localStorage.getItem("epargneDetail") || "[]"),
+    especes: Number(localStorage.getItem("especes")) || 0
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "finance-plus-backup.json";
+
+  document.body.appendChild(a); // 🔥 FIX iOS
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+
+  showToast?.("💾 Sauvegarde téléchargée");
+}
+
+// =========================
+// RESTAURATION
+// =========================
+
+function restaurerDepuisIcloud(){
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+
+  showToast?.("📂 Import en cours...");
+
+  input.onchange = (event) => {
+
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+      try{
+        const data = JSON.parse(e.target.result);
+
+        if(data.revenus) localStorage.setItem("revenusDetail", JSON.stringify(data.revenus));
+        if(data.depenses) localStorage.setItem("depensesDetail", JSON.stringify(data.depenses));
+        if(data.epargne) localStorage.setItem("epargneDetail", JSON.stringify(data.epargne));
+        if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
+
+        showToast?.("✅ Données restaurées");
+
+        setTimeout(() => location.reload(), 500);
+
+      }catch(err){
+        showToast?.("❌ Fichier invalide");
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  input.click();
 }
 
 // =========================
@@ -204,27 +237,25 @@ function initUI(){
 // =========================
 
 function resetApp(){
-
   if(!confirm("⚠️ Supprimer toutes les données ?")) return;
-
   localStorage.clear();
   location.reload();
 }
 
 // =========================
-// INIT APP
+// INIT
 // =========================
 
 window.addEventListener("DOMContentLoaded", () => {
 
   console.log("INIT APP 🚀");
 
-  initUI();
+  initUI?.();
 
-  if(typeof renderRevenusPage === "function") renderRevenusPage();
-  if(typeof renderDepensesPage === "function") renderDepensesPage();
-  if(typeof renderEpargneHistorique === "function") renderEpargneHistorique();
-  if(typeof renderEpargneMois === "function") renderEpargneMois();
+  renderRevenusPage?.();
+  renderDepensesPage?.();
+  renderEpargneHistorique?.();
+  renderEpargneMois?.();
 
   updateBudget();
 

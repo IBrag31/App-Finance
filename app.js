@@ -219,7 +219,26 @@ function restaurerDepuisIcloud(){
 
         showToast?.("✅ Données restaurées");
 
-        setTimeout(() => location.reload(), 500);
+        // 🔄 recharge mémoire + UI sans reload violent
+
+// Recharge épargne
+if(typeof epargneHistorique !== "undefined"){
+  epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+}
+
+// Recharge dépenses
+if(typeof depensesDetail !== "undefined"){
+  depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+}
+
+// Refresh UI complet
+renderRevenusPage?.();
+renderDepensesPage?.();
+renderEpargneHistorique?.();
+renderEpargneMois?.();
+updateBudget();
+
+showToast?.("✅ Données restaurées");
 
       }catch(err){
         showToast?.("❌ Fichier invalide");

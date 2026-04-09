@@ -212,33 +212,38 @@ function restaurerDepuisIcloud(){
       try{
         const data = JSON.parse(e.target.result);
 
+        // =========================
+        // 💾 RESTAURATION STORAGE
+        // =========================
+
         if(data.revenus) localStorage.setItem("revenusDetail", JSON.stringify(data.revenus));
         if(data.depenses) localStorage.setItem("depensesDetail", JSON.stringify(data.depenses));
-        if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne)); // ✅ FIX
+        if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne));
         if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
 
+        // =========================
+        // 🔄 SYNC MÉMOIRE
+        // =========================
+
+        if(typeof depensesDetail !== "undefined"){
+          depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+        }
+
+        if(typeof epargneHistorique !== "undefined"){
+          epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+        }
+
+        // =========================
+        // 🎨 REFRESH UI
+        // =========================
+
+        renderRevenusPage?.();
+        renderDepensesPage?.();
+        renderEpargneHistorique?.();
+        renderEpargneMois?.();
+        updateBudget();
+
         showToast?.("✅ Données restaurées");
-
-        // 🔄 recharge mémoire + UI sans reload violent
-
-// Recharge épargne
-if(typeof epargneHistorique !== "undefined"){
-  epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-}
-
-// Recharge dépenses
-if(typeof depensesDetail !== "undefined"){
-  depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
-}
-
-// Refresh UI complet
-renderRevenusPage?.();
-renderDepensesPage?.();
-renderEpargneHistorique?.();
-renderEpargneMois?.();
-updateBudget();
-
-showToast?.("✅ Données restaurées");
 
       }catch(err){
         showToast?.("❌ Fichier invalide");

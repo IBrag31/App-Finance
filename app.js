@@ -212,17 +212,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
   initUI?.();
 
-  // 🔥 1. On charge TOUT
   renderEspeces?.();
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  updateBudget(); // 🔥 calcul final
-
-  // 🔥 2. ENSUITE on affiche
+  // 🔥 1er affichage
   showSection("resume");
+
+  // 🔥 🔥 LE FIX MAGIQUE
+  requestAnimationFrame(() => {
+    console.log("FORCE RENDER 🎯");
+    updateBudget();
+  });
 
   console.log("APP READY ✅");
 });

@@ -1,12 +1,4 @@
-console.log("epargne.js loaded");
-
-// =========================
-// DATA
-// =========================
-
-let epargneHistorique = JSON.parse(
-  localStorage.getItem("epargneHistorique") || "[]"
-);
+console.log("epargne.js SYNC CLEAN ✅");
 
 // =========================
 // UTILS
@@ -29,36 +21,24 @@ function formatMois(moisStr){
 }
 
 // =========================
-// CALCULS
+// CALCULS (GLOBAL)
 // =========================
 
-function getTotalEpargneHistorique(){
-  return epargneHistorique.reduce((sum, e) => {
-    return sum + (Number(e.montant) || 0);
-  }, 0);
-}
-
-// 🔥 total global utilisé par app.js
 function getTotalEpargne(){
-
-  const data = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-
-  return data.reduce((sum, e) => {
-    return sum + (Number(e.montant) || 0);
-  }, 0);
+  return window.epargneHistorique.reduce(
+    (sum, e) => sum + (Number(e.montant) || 0),
+    0
+  );
 }
 
 function getEpargneDuMois(mois){
-
-  const data = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-
-  return data
+  return window.epargneHistorique
     .filter(e => e.mois === mois)
     .reduce((sum, e) => sum + (Number(e.montant) || 0), 0);
 }
 
 // =========================
-// RENDER
+// RENDER HISTORIQUE
 // =========================
 
 function renderEpargneHistorique(){
@@ -70,83 +50,17 @@ function renderEpargneHistorique(){
 
   let total = 0;
 
-  [...epargneHistorique]
+  [...window.epargneHistorique]
     .sort((a,b) => b.mois.localeCompare(a.mois))
-    .forEach((e) => {
+    .forEach((e, i) => {
 
       const montant = Number(e.montant) || 0;
       total += montant;
 
       const row = document.createElement("div");
-      row.className = "depense-row swipe-item";
+      row.className = "depense-row";
 
-      // 👉 index réel (important à cause du sort)
-      const realIndex = epargneHistorique.indexOf(e);
-
-      // =========================
-      // SWIPE
-      // =========================
-
-      let startX = 0;
-      let currentX = 0;
-      let isSwiping = false;
-
-      row.addEventListener("touchstart", (ev) => {
-        startX = ev.touches[0].clientX;
-        currentX = startX;
-        isSwiping = true;
-      });
-
-      row.addEventListener("touchmove", (ev) => {
-        if(!isSwiping) return;
-
-        currentX = ev.touches[0].clientX;
-        const diff = currentX - startX;
-
-        // 👉 évite le scroll si vrai swipe
-        if(Math.abs(diff) > 10){
-          ev.preventDefault();
-        }
-
-       if(diff < 0){
-  row.classList.add("swiping"); // 🔥 AJOUT ICI
-
-  row.style.transform = `translateX(${diff}px)`;
-  row.style.opacity = Math.max(1 + diff / 200, 0.5);
-}
-      });
-
-     row.addEventListener("touchend", () => {
-  if(!isSwiping) return;
-
-  const diff = currentX - startX;
-
-  row.classList.remove("swiping"); // 🔥 nettoyage
-
-  if(diff < -100){
-    supprimerEpargne(realIndex);
-    showToast?.("🗑️ Épargne supprimée");
-  }else{
-    row.style.transform = "translateX(0)";
-    row.style.opacity = "1";
-  }
-
-  isSwiping = false;
-});
-
-      // =========================
-      // CLICK SAFE (évite conflit swipe)
-      // =========================
-
-      row.addEventListener("click", () => {
-        if(!isSwiping){
-          modifierEpargne(realIndex);
-        }
-      });
-
-      // =========================
-      // CONTENU
-      // =========================
+      row.onclick = () => modifierEpargne(i);
 
       row.innerHTML = `
         <span>${formatMois(e.mois)}</span>
@@ -161,13 +75,15 @@ function renderEpargneHistorique(){
   setText("epargneHistoriqueTotal", total ? euro(total) : "—");
 }
 
-// 🔥 rendu du mois avec style
+// =========================
+// RENDER MOIS
+// =========================
+
 function renderEpargneMois(){
 
   const el = document.getElementById("epargneMoisPage");
   if(!el) return;
 
-  // 💙 force couleur (simple et fiable)
   el.style.color = "var(--color-epargne)";
 
   el.style.transform = "scale(1.05)";
@@ -250,7 +166,7 @@ function fermerModalEpargne(){
 }
 
 // =========================
-// CRUD
+// CRUD (SYNC GLOBAL)
 // =========================
 
 function validerEpargne(){
@@ -267,23 +183,22 @@ function validerEpargne(){
     return;
   }
 
-  epargneHistorique.push({
+  window.epargneHistorique.push({
     montant: Math.round(montant * 100) / 100,
     mois
   });
 
-  saveEpargne();
-
-  renderEpargneHistorique();
-  updateBudget();
-  renderEpargneMois();
+  saveAll();
+  refreshApp();
 
   showToast?.("💙 Épargne ajoutée");
 }
 
+// =========================
+
 function modifierEpargne(index){
 
-  const e = epargneHistorique[index];
+  const e = window.epargneHistorique[index];
 
   const choix = prompt(
     "Modifier montant ou taper 'supprimer'",
@@ -294,7 +209,6 @@ function modifierEpargne(index){
 
   if(choix.toLowerCase() === "supprimer"){
     supprimerEpargne(index);
-    showToast?.("🗑️ Épargne supprimée");
     return;
   }
 
@@ -302,34 +216,22 @@ function modifierEpargne(index){
 
   if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
 
-  e.montant = nouveauMontant;
+  window.epargneHistorique[index].montant = nouveauMontant;
 
-  saveEpargne();
-
-  renderEpargneHistorique();
-  updateBudget();
-  renderEpargneMois();
+  saveAll();
+  refreshApp();
 
   showToast?.("✏️ Épargne modifiée");
 }
 
+// =========================
+
 function supprimerEpargne(index){
 
-  epargneHistorique.splice(index,1);
+  window.epargneHistorique.splice(index,1);
 
-  saveEpargne();
-  renderEpargneHistorique();
-  updateBudget();
-  renderEpargneMois();
-}
+  saveAll();
+  refreshApp();
 
-// =========================
-// STORAGE
-// =========================
-
-function saveEpargne(){
-  localStorage.setItem(
-    "epargneHistorique",
-    JSON.stringify(epargneHistorique)
-  );
+  showToast?.("🗑️ Épargne supprimée");
 }

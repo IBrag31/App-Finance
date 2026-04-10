@@ -51,8 +51,11 @@ function renderEpargneHistorique(){
   let total = 0;
 
   [...window.epargneHistorique]
-    .sort((a,b) => b.mois.localeCompare(a.mois))
-    .forEach((e, i) => {
+    .forEach((e) => {
+
+  const realIndex = window.epargneHistorique.indexOf(e);
+
+  row.onclick = () => modifierEpargne(realIndex);
 
       const montant = Number(e.montant) || 0;
       total += montant;
@@ -63,11 +66,9 @@ function renderEpargneHistorique(){
       row.onclick = () => modifierEpargne(i);
 
       row.innerHTML = `
-        <span>${formatMois(e.mois)}</span>
-        <span style="color: var(--color-epargne)">
-          ${euro(montant)}
-        </span>
-      `;
+  <span>${formatMois(e.mois)}</span>
+  <span style="color:#3b82f6">${euro(montant)}</span>
+`;
 
       list.appendChild(row);
     });
@@ -227,9 +228,7 @@ function modifierEpargne(index){
 // =========================
 
 function supprimerEpargne(index){
-
   window.epargneHistorique.splice(index,1);
-
   saveAll();
   refreshApp();
 

@@ -25,6 +25,16 @@ body{
 }
 
 /* =========================
+APP CONTAINER (🔥 FIX)
+========================= */
+
+.app-container{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* =========================
 VARIABLES
 ========================= */
 
@@ -120,12 +130,15 @@ TABBAR
 }
 
 /* =========================
-SECTIONS
+SECTIONS (🔥 FIX IMPORTANT)
 ========================= */
 
 .section{
   display:none;
   min-height:100vh;
+  width:100%;
+  position:relative;
+  transform: translateZ(0); /* 🔥 fix iOS */
 }
 
 .section.active{
@@ -137,6 +150,7 @@ SECTIONS
   flex-direction:column;
   gap:12px;
   padding:16px 12px 120px;
+  min-height:100%;
 }
 
 /* =========================
@@ -160,7 +174,7 @@ BUDGET
 }
 
 .budget-row .progress-bar{
-  flex:0 0 50%; /* 🔥 garde ton design */
+  flex:0 0 50%;
 }
 
 .progress-fill{
@@ -174,12 +188,8 @@ BUDGET
 .progress-fill.depenses{background:var(--color-depenses);}
 .progress-fill.epargne{background:var(--color-epargne);}
 
-#budgetEpargneText{
-  color:var(--color-epargne);
-}
-
 /* =========================
-TEXTES BUDGET
+TEXTES
 ========================= */
 
 .budget-info{
@@ -199,7 +209,7 @@ TEXTES BUDGET
 }
 
 /* =========================
-CARDS GRID
+GRID
 ========================= */
 
 .cards-grid{
@@ -257,142 +267,13 @@ HEADER
 }
 
 /* =========================
-REVENUS
-========================= */
-
-.revenus-card{
-  padding:22px;
-  border-radius:18px;
-  background:linear-gradient(145deg,#1a1a1a,#111);
-  transition:transform 0.15s ease;
-  min-height:130px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.revenus-card-header{
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-
-.revenus-card-value{
-  font-size:28px;
-  font-weight:700;
-  line-height:1.2;
-}
-
-#section-revenus .revenus-card-value{
-  color:var(--color-revenus);
-}
-
-#section-revenus .revenus-small div{
-  color:var(--color-revenus);
-}
-
-/* =========================
-ESPÈCES (🔥 FIX)
-========================= */
-
-.revenus-especes-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:auto;
-}
-
-.circle-btn{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:#2a2a2a;
-  color:white;
-  border:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-#especesValue{
-  font-size:20px;
-  font-weight:700;
-  color:var(--color-revenus);
-  text-align:center;
-  min-width:60px;
-}
-
-.revenus-small{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-/* =========================
-EPARGNE
-========================= */
-
-#section-epargne .revenus-small div{
-  color:var(--color-epargne);
-}
-
-#section-epargne .revenus-card{
-  min-height:140px;
-}
-
-#section-epargne .revenus-card-value{
-  color:var(--color-epargne);
-  font-size:28px;
-  text-align:center;
-}
-
-#section-epargne .revenus-card-header{
-  font-size:18px;
-  margin-bottom:8px;
-}
-
-#section-epargne #epargneMoisPage{
-  color:var(--color-epargne);
-}
-
-/* =========================
-DEPENSES
+LISTES
 ========================= */
 
 .depense-row{
   display:flex;
   justify-content:space-between;
   padding:12px;
-}
-
-/* =========================
-COULEURS DASHBOARD
-========================= */
-
-#revenusDisplay{
-  color:var(--color-revenus);
-}
-
-#epargneTotaleDisplay,
-#epargneMoisDisplay{
-  color:var(--color-epargne);
-}
-
-/* =========================
-FORM
-========================= */
-
-input, select{
-  font-size:16px;
-}
-
-select{
-  background:rgba(255,255,255,0.10);
-  border-radius:14px;
-  padding:16px;
-  width:100%;
-  color:white;
 }
 
 /* =========================
@@ -414,24 +295,4 @@ MODAL
   background:#1c1c1e;
   border-radius:20px;
   padding:20px;
-}
-
-.swipe-item{
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  position:relative;
-}
-
-.swipe-item::after{
-  content:"Supprimer";
-  position:absolute;
-  right:16px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#ef4444;
-  font-weight:600;
-  opacity:0;
-}
-
-.swipe-item.swiping::after{
-  opacity:1;
 }

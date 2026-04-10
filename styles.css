@@ -273,6 +273,7 @@ LISTES
 .depense-row{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   padding:12px;
 }
 
@@ -295,12 +296,6 @@ MODAL
   background:#1c1c1e;
   border-radius:20px;
   padding:20px;
-}
-
-.revenus-especes-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
 }
 
 .delete-btn{

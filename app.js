@@ -218,14 +218,20 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  // 🔥 1er affichage
+  // 🔥 1. Affiche la section
   showSection("resume");
 
-  // 🔥 🔥 LE FIX MAGIQUE
-  requestAnimationFrame(() => {
-    console.log("FORCE RENDER 🎯");
+  // 🔥 2. Double render sécurisé
+  setTimeout(() => {
+    console.log("FORCE RENDER 1");
     updateBudget();
-  });
+
+    requestAnimationFrame(() => {
+      console.log("FORCE RENDER 2");
+      updateBudget();
+    });
+
+  }, 50);
 
   console.log("APP READY ✅");
 });

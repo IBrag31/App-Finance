@@ -91,9 +91,14 @@ function renderRevenusPage(){
         modifierRevenu(r);
       });
 
-      div.innerHTML = `
-  <span>${r.nom}</span>
-  <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+     div.innerHTML = `
+  <div style="flex:1">
+    <div>${r.nom}</div>
+    <div style="opacity:0.6;font-size:13px">
+      ${formatMois(r.mois)} • ${euro(r.montant)}
+    </div>
+  </div>
+
   <button class="delete-btn" onclick="supprimerRevenu(${r.id})">×</button>
 `;
 

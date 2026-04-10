@@ -22,6 +22,9 @@ function saveAll(){
 }
 
 function refreshApp(){
+  
+   if(!window.revenusDetail) return;
+  
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEpargneHistorique?.();
@@ -156,23 +159,20 @@ function renderDashboard(){
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  console.log("INIT FINAL ✅");
+  console.log("INIT SAFE 🔥");
 
   loadAll();
 
-  initUI?.();
-
-  // 🔥 premier rendu
+  // 🔥 attendre que tout soit prêt
   setTimeout(() => {
-  refreshApp();
-}, 0);
 
-  // 🔥 forcer affichage correct iOS
-  setTimeout(() => {
-    renderDashboard();
+    initUI?.();
+
+    refreshApp();
+
+    showSection("resume");
+
   }, 50);
-
-  showSection("resume");
 });
 
 function sauvegardeAuto(){

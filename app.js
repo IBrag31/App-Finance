@@ -1,4 +1,4 @@
-console.log("app.js MASTER SYNC 🔥");
+console.log("app.js MASTER SYNC FINAL 🚀");
 
 // =========================
 // DATA CENTRALISÉE
@@ -24,6 +24,7 @@ function refreshApp(){
   renderEpargneHistorique?.();
   renderEpargneMois?.();
   renderEspeces?.();
+
   renderDashboard();
 }
 
@@ -38,13 +39,52 @@ function euro(n){
   }) + " €";
 }
 
+function euroShort(n){
+  return Math.round(n || 0) + " €";
+}
+
 function setText(id, value){
   const el = document.getElementById(id);
   if(el) el.innerText = value;
 }
 
 // =========================
-// BUDGET
+// COULEURS
+// =========================
+
+function getDepenseColor(value){
+  if(value < 800) return "#22c55e";
+  if(value <= 1250) return "#f97316";
+  return "#ef4444";
+}
+
+function getRevenusColor(){
+  return "#22c55e";
+}
+
+function getEpargneColor(){
+  return "#3b82f6";
+}
+
+// =========================
+// BARRES
+// =========================
+
+function updateBar(id, value, objectif, type){
+
+  const el = document.getElementById(id);
+  if(!el) return;
+
+  const percent = objectif ? (value / objectif) * 100 : 0;
+  el.style.width = Math.min(percent, 100) + "%";
+
+  if(type === "depense") el.style.background = getDepenseColor(value);
+  if(type === "epargne") el.style.background = getEpargneColor();
+  if(type === "revenus") el.style.background = getRevenusColor();
+}
+
+// =========================
+// BUDGET (RÉSUMÉ)
 // =========================
 
 function updateBudget(){
@@ -53,11 +93,37 @@ function updateBudget(){
     ? getMoisBudget()
     : new Date().toISOString().slice(0,7);
 
-  const revenus = getRevenusDuMois(mois) + window.especes;
-  const depenses = calculTotalDepenses();
-  const epargneTotale = getTotalEpargne();
-  const epargneMois = getEpargneDuMois(mois);
+  const revenus = (typeof getRevenusDuMois === "function" ? getRevenusDuMois(mois) : 0) + window.especes;
+  const depenses = typeof calculTotalDepenses === "function" ? calculTotalDepenses() : 0;
+  const epargneTotale = typeof getTotalEpargne === "function" ? getTotalEpargne() : 0;
+  const epargneMois = typeof getEpargneDuMois === "function" ? getEpargneDuMois(mois) : 0;
 
+  const objectifDepenses = 1250;
+  const objectifEpargne = 5000;
+  const objectifRevenus = 2300;
+
+  // TEXTES
+  setText("budgetDepensesText", `${Math.round(depenses)} / ${objectifDepenses} €`);
+  setText("budgetEpargneText", `${Math.round(epargneTotale)} / ${objectifEpargne} €`);
+  setText("budgetRevenusText", `${Math.round(revenus)} / ${objectifRevenus} €`);
+
+  // BARRES
+  updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
+  updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
+  updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
+
+  // COULEURS
+  const depColor = getDepenseColor(depenses);
+
+  document.getElementById("budgetDepensesText")?.style.setProperty("color", depColor);
+  document.getElementById("budgetRevenusText")?.style.setProperty("color", getRevenusColor());
+  document.getElementById("budgetEpargneText")?.style.setProperty("color", getEpargneColor());
+
+  document.getElementById("depensesDisplay")?.style.setProperty("color", depColor);
+  document.getElementById("revenusDisplay")?.style.setProperty("color", getRevenusColor());
+  document.getElementById("epargneMoisDisplay")?.style.setProperty("color", getEpargneColor());
+
+  // VALEURS
   setText("revenusDisplay", euro(revenus));
   setText("depensesDisplay", euro(depenses));
   setText("epargneMoisDisplay", euro(epargneMois));
@@ -67,18 +133,42 @@ function updateBudget(){
 }
 
 // =========================
+// DASHBOARD
+// =========================
+
+function renderDashboard(){
+  updateBudget();
+}
+
+// =========================
 // INIT
 // =========================
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  console.log("INIT CLEAN 🚀");
+  console.log("INIT FINAL ✅");
 
   loadAll();
 
   initUI?.();
 
+  // 🔥 premier rendu
   refreshApp();
 
+  // 🔥 forcer affichage correct iOS
+  setTimeout(() => {
+    renderDashboard();
+  }, 50);
+
   showSection("resume");
+});
+
+// =========================
+// VISIBILITY FIX (iOS)
+// =========================
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    refreshApp();
+  }
 });

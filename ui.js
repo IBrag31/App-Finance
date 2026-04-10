@@ -54,7 +54,7 @@ function showSection(name, element){
   if(element) element.classList.add("active");
 
   if(name === "resume"){
-    updateBudget?.();
+    renderDashboard?.();
   }
 
   if(name === "revenus"){

@@ -218,18 +218,17 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  // 🔥 1. Affiche la section
-  showSection("resume");
+  // 🔥 ASTUCE ULTIME : désactiver puis réactiver la section
+  const section = document.getElementById("section-resume");
 
-  // 🔥 2. Double render sécurisé
+  section.classList.remove("active");
+
   setTimeout(() => {
-    console.log("FORCE RENDER 1");
-    updateBudget();
 
-    requestAnimationFrame(() => {
-      console.log("FORCE RENDER 2");
-      updateBudget();
-    });
+    section.classList.add("active");
+
+    // 💥 FORCER LE VRAI RENDER
+    updateBudget();
 
   }, 50);
 

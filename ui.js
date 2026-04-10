@@ -42,31 +42,30 @@ let currentSectionIndex = 0;
 
 function showSection(name, element){
 
-  // RESET
-  document.querySelectorAll(".section")
-    .forEach(sec => sec.classList.remove("active"));
+  const sections = document.querySelectorAll(".section");
+  const tabs = document.querySelectorAll(".tab");
 
-  document.querySelectorAll(".tab")
-    .forEach(tab => tab.classList.remove("active"));
+  // 🔥 FORCE reset (même si déjà actif)
+  sections.forEach(sec => {
+    sec.classList.remove("active");
+    sec.style.display = "none"; // 💥 force repaint
+  });
 
-  // ACTIVATE
+  tabs.forEach(tab => tab.classList.remove("active"));
+
+  // 🔥 ACTIVE
   const section = document.getElementById("section-" + name);
-  if(section) section.classList.add("active");
+  if(section){
+    section.classList.add("active");
+    section.style.display = "block"; // 💥 force affichage
+  }
 
   if(element) element.classList.add("active");
 
-  // =========================
-  // 🔥 RENDER DYNAMIQUE
-  // =========================
-
+  // 🔥 RENDER
   if(name === "resume"){
-
-  // 🔥 attendre que la section soit vraiment active
-  requestAnimationFrame(() => {
-    updateBudget?.();
-  });
-
-}
+    requestAnimationFrame(() => updateBudget?.());
+  }
 
   if(name === "revenus"){
     renderRevenusPage?.();
@@ -76,19 +75,9 @@ function showSection(name, element){
     renderDepensesPage?.();
   }
 
-if(name === "epargne"){
-  renderEpargneHistorique?.();
-  renderEpargneMois?.();
-}
-
-  if(name === "epargne-historique"){
-  renderEpargneHistorique?.();
-}
-
-  // SCROLL RESET
-  const scroll = section?.querySelector(".section-scroll");
-  if(scroll){
-    scroll.scrollTop = 0;
+  if(name === "epargne"){
+    renderEpargneHistorique?.();
+    renderEpargneMois?.();
   }
 }
 

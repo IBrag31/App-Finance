@@ -1,10 +1,12 @@
-console.log("depenses.js loaded");
+console.log("depenses.js CLEAN FINAL ✅");
 
 // =========================
 // DATA
 // =========================
 
-let depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+function getDepensesDetail(){
+  return JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+}
 
 // =========================
 // CALCULS
@@ -12,7 +14,7 @@ let depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
 
 function calculTotalDepenses(){
 
-  const data = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+  const data = getDepensesDetail();
 
   const total = data.reduce(
     (sum, d) => sum + (Number(d.montant) || 0),
@@ -27,20 +29,19 @@ function calculTotalDepenses(){
 // =========================
 
 function renderDepensesPage(){
-  
-  console.log("depensesDetail:", depensesDetail);
 
   const fixes = document.getElementById("depensesFixesPage");
   const variables = document.getElementById("depensesVariablesPage");
 
-  // 🔥 reset uniquement si présent
   if(fixes) fixes.innerHTML = "";
   if(variables) variables.innerHTML = "";
 
   let totalFixes = 0;
   let totalVariables = 0;
 
-  depensesDetail.forEach((d, i) => {
+  const data = getDepensesDetail();
+
+  data.forEach((d, i) => {
 
     const montant = Number(d.montant) || 0;
 
@@ -57,23 +58,22 @@ function renderDepensesPage(){
     `;
 
     if(d.type === "fixe"){
-      if(fixes) fixes.appendChild(row); // 🔥 sécurité
+      if(fixes) fixes.appendChild(row);
       totalFixes += montant;
     } else {
-      if(variables) variables.appendChild(row); // 🔥 sécurité
+      if(variables) variables.appendChild(row);
       totalVariables += montant;
     }
 
   });
 
-  // 🔥 TOUJOURS mettre à jour les cartes
   setText("totalFixesPage", euro(totalFixes));
   setText("totalVariablesPage", euro(totalVariables));
   setText("depensesTotalPage", euro(totalFixes + totalVariables));
 }
 
 // =========================
-// CRUD
+// AJOUT
 // =========================
 
 function validerDepense(){
@@ -85,28 +85,31 @@ function validerDepense(){
   const type = document.getElementById("typeDepense")?.value || "variable";
 
   if(!nom || isNaN(montant) || montant <= 0){
-  showToast?.("⚠️ Valeur invalide");
-  return;
-}
+    showToast?.("⚠️ Valeur invalide");
+    return;
+  }
 
-  depensesDetail.push({
+  const data = getDepensesDetail();
+
+  data.push({
     nom,
     montant: Math.round(montant * 100) / 100,
     type
   });
 
-  saveDepenses();
+  saveDepenses(data);
   renderDepensesPage();
-  updateBudget(); // 🔥 AJOUT
+  updateBudget();
 
-  const nomInput = document.getElementById("depenseNom");
-  const montantInput = document.getElementById("depenseMontant");
-
-  if(nomInput) nomInput.value = "";
-  if(montantInput) montantInput.value = "";
+  document.getElementById("depenseNom").value = "";
+  document.getElementById("depenseMontant").value = "";
 
   fermerModalDepense();
 }
+
+// =========================
+// MODAL
+// =========================
 
 function openAddDepense(){
 
@@ -122,15 +125,12 @@ function openAddDepense(){
 
       <input id="depenseNom" placeholder="Nom de la dépense">
 
-      <input id="depenseMontant" 
-             type="number" 
-             inputmode="decimal" 
-             placeholder="Montant">
+      <input id="depenseMontant" type="number" inputmode="decimal" placeholder="Montant">
 
-     <select id="typeDepense">
-   <option value="fixe">📦 Fixe</option>
-   <option value="variable">🛒 Variable</option>
-     </select>
+      <select id="typeDepense">
+        <option value="fixe">📦 Fixe</option>
+        <option value="variable">🛒 Variable</option>
+      </select>
 
       <button id="btnAddDepense">Ajouter</button>
       <button id="btnCancelDepense">Annuler</button>
@@ -139,26 +139,22 @@ function openAddDepense(){
 
   document.body.appendChild(modal);
 
-  // focus
   setTimeout(()=>{
     modal.querySelector("#depenseNom")?.focus();
   }, 200);
 
-  // fermer clic extérieur
   modal.addEventListener("click", (e)=>{
     if(e.target === modal){
       fermerModalDepense();
     }
   });
 
-  // annuler
   modal.querySelector("#btnCancelDepense")
     .addEventListener("click", (e)=>{
       e.stopPropagation();
       fermerModalDepense();
     });
 
-  // ajouter
   modal.querySelector("#btnAddDepense")
     .addEventListener("click", (e)=>{
       e.stopPropagation();
@@ -168,13 +164,17 @@ function openAddDepense(){
 }
 
 function fermerModalDepense(){
-  const modal = document.getElementById("modalDepense");
-  if(modal) modal.remove();
+  document.getElementById("modalDepense")?.remove();
 }
+
+// =========================
+// MODIFIER
+// =========================
 
 function modifierDepense(index){
 
-  const depense = depensesDetail[index];
+  const data = getDepensesDetail();
+  const depense = data[index];
 
   const nouveauNom = prompt("Nom :", depense.nom);
   if(nouveauNom === null) return;
@@ -194,38 +194,42 @@ function modifierDepense(index){
 
   nouveauType = nouveauType.toLowerCase().trim();
 
-  depensesDetail[index] = {
+  data[index] = {
     nom: nouveauNom,
     montant: nouveauMontant,
     type: nouveauType
   };
 
-  saveDepenses();
+  saveDepenses(data);
   renderDepensesPage();
-  updateBudget(); // 🔥 AJOUT
+  updateBudget();
 
   showToast("✏️ Dépense modifiée");
 }
 
+// =========================
+// SUPPRIMER
+// =========================
+
 function supprimerDepense(index){
 
-  depensesDetail.splice(index,1);
+  const data = getDepensesDetail();
 
-  saveDepenses();
+  data.splice(index,1);
+
+  saveDepenses(data);
   renderDepensesPage();
   updateBudget();
 
+  showToast("🗑️ Dépense supprimée");
 }
 
 // =========================
 // STORAGE
 // =========================
 
-function saveDepenses(){
-  localStorage.setItem(
-    "depensesDetail",
-    JSON.stringify(depensesDetail)
-  );
+function saveDepenses(data){
+  localStorage.setItem("depensesDetail", JSON.stringify(data));
 }
 
 // =========================
@@ -260,7 +264,6 @@ function endSwipe(e,index){
 
       setTimeout(()=>{
         supprimerDepense(index);
-        showToast("🗑️ Dépense supprimée");
       },200);
 
       armedRow = null;

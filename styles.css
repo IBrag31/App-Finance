@@ -335,3 +335,20 @@ MODAL
   font-size:28px;
   font-weight:700;
 }
+
+.revenus-especes-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.circle-btn{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:none;
+  background:#3b82f6;
+  color:white;
+  font-size:18px;
+}

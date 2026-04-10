@@ -76,11 +76,9 @@ function validerDepense(){
     return;
   }
 
-  window.depensesDetail.push({
-    nom,
-    montant: Math.round(montant * 100) / 100,
-    type
-  });
+  if(!Array.isArray(window.depensesDetail)) window.depensesDetail = [];
+
+window.depensesDetail.push(...)
 
   saveAll();
   refreshApp();

@@ -5,13 +5,21 @@ console.log("app.js MASTER SYNC FINAL 🚀");
 // =========================
 
 function loadAll(){
-  window.revenusDetail = JSON.parse(localStorage.getItem("revenusDetail") || "[]");
-  window.depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
-  window.epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-  window.especes = Number(localStorage.getItem("especes")) || 0;
+
+  const revenus = localStorage.getItem("revenusDetail");
+  const depenses = localStorage.getItem("depensesDetail");
+  const epargne = localStorage.getItem("epargneHistorique");
+  const especes = localStorage.getItem("especes");
+
+  window.revenusDetail = revenus ? JSON.parse(revenus) : [];
+  window.depensesDetail = depenses ? JSON.parse(depenses) : [];
+  window.epargneHistorique = epargne ? JSON.parse(epargne) : [];
+  window.especes = especes ? Number(especes) : 0;
 }
 
 function saveAll(){
+  console.log("SAVE 🔥", window.revenusDetail);
+
   localStorage.setItem("revenusDetail", JSON.stringify(window.revenusDetail));
   localStorage.setItem("depensesDetail", JSON.stringify(window.depensesDetail));
   localStorage.setItem("epargneHistorique", JSON.stringify(window.epargneHistorique));

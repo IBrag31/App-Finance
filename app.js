@@ -132,6 +132,8 @@ function updateBudget(){
   setText("epargneTotalePage", euro(epargneTotale));
 }
 
+document.getElementById("epargneTotalePage")?.style.setProperty("color", "#3b82f6");
+
 // =========================
 // DASHBOARD
 // =========================

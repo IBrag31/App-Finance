@@ -60,8 +60,13 @@ function showSection(name, element){
   // =========================
 
   if(name === "resume"){
-  updateBudget?.();
-  }
+
+  // 🔥 attendre que la section soit vraiment active
+  requestAnimationFrame(() => {
+    updateBudget?.();
+  });
+
+}
 
   if(name === "revenus"){
     renderRevenusPage?.();

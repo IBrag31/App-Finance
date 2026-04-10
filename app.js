@@ -58,9 +58,6 @@ function getEpargneColor(){
 function updateBudget(){
   
   // 🔥 SYNC FORCÉ AVANT CALCUL
-  if(typeof depensesDetail !== "undefined"){
-  depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
-}
 
   if(typeof epargneHistorique !== "undefined"){
   epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
@@ -193,6 +190,16 @@ function resetApp(){
   location.reload();
 }
 
+function initData(){
+
+  window.revenusDetail = JSON.parse(localStorage.getItem("revenusDetail") || "[]");
+  window.depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
+  window.epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
+  window.especes = Number(localStorage.getItem("especes")) || 0;
+
+  console.log("DATA LOADED ✅");
+}
+
 // =========================
 // INIT
 // =========================
@@ -201,18 +208,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
   console.log("INIT APP 🚀");
 
+  initData();        // 🔥 TRÈS IMPORTANT
+
   initUI?.();
 
-  renderEspeces?.();
+  showSection("resume"); // 🔥 AVANT les render
 
+  renderEspeces?.();
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
   updateBudget();
-  
-  showSection("resume");
 
   console.log("APP READY ✅");
 });

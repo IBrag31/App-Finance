@@ -138,8 +138,6 @@ if(ep){
   ep.style.fontWeight = "700";
 }
 	}
-	
-document.getElementById("epargneTotalePage")?.style.setProperty("color", "#3b82f6");
 
 // =========================
 // DASHBOARD

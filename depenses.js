@@ -38,7 +38,7 @@ function renderDepensesPage(){
     row.innerHTML = `
   <span>${d.nom}</span>
   <span>${euro(montant)}</span>
-  <button class="delete-btn" onclick="supprimerRevenu(${r.id})">×</button>
+  <button class="delete-btn" onclick="supprimerDepense(${i})">×</button>
 `;
 
     if(d.type === "fixe"){

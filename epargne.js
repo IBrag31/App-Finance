@@ -189,10 +189,14 @@ function validerEpargne(){
     return;
   }
 
-  window.epargneHistorique.push({
-    montant: Math.round(montant * 100) / 100,
-    mois
-  });
+  if(!Array.isArray(window.epargneHistorique)){
+  window.epargneHistorique = [];
+}
+
+window.epargneHistorique.push({
+  montant: Math.round(montant * 100) / 100,
+  mois
+});
 
   saveAll();
   refreshApp();

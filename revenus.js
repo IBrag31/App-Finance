@@ -1,16 +1,4 @@
-console.log("revenus.js FINAL clean loaded ✅");
-
-// =========================
-// STORAGE (SOURCE UNIQUE)
-// =========================
-
-function getRevenusDetail(){
-  return JSON.parse(localStorage.getItem("revenusDetail") || "[]");
-}
-
-function saveRevenus(data){
-  localStorage.setItem("revenusDetail", JSON.stringify(data));
-}
+console.log("revenus.js SYNC CLEAN ✅");
 
 // =========================
 // UTILS DATE
@@ -41,36 +29,29 @@ function formatMois(moisStr){
 }
 
 // =========================
-// ESPECES
+// ESPECES (GLOBAL)
 // =========================
-
-function getEspeces(){
-  return Number(localStorage.getItem("especes")) || 0;
-}
-
-function setEspeces(val){
-  localStorage.setItem("especes", val);
-}
 
 function renderEspeces(){
   const el = document.getElementById("especesValue");
   if(!el) return;
 
-  el.innerText = euroShort(getEspeces());
+  el.innerText = euroShort(window.especes);
 
   el.style.transform = "scale(1.1)";
   setTimeout(()=> el.style.transform = "scale(1)", 120);
 }
 
 function ajouterEspeces(){
-  setEspeces(getEspeces() + 5);
-  refreshAll();
+  window.especes += 5;
+  saveAll();
+  refreshApp();
 }
 
 function retirerEspeces(){
-  const val = Math.max(0, getEspeces() - 5);
-  setEspeces(val);
-  refreshAll();
+  window.especes = Math.max(0, window.especes - 5);
+  saveAll();
+  refreshApp();
 }
 
 // =========================
@@ -78,13 +59,13 @@ function retirerEspeces(){
 // =========================
 
 function getRevenusDuMois(mois){
-  return getRevenusDetail()
+  return window.revenusDetail
     .filter(r => r.mois === mois)
     .reduce((sum, r) => sum + (Number(r.montant) || 0), 0);
 }
 
 function getTotalRevenus(){
-  return getRevenusDetail()
+  return window.revenusDetail
     .reduce((sum, r) => sum + (Number(r.montant) || 0), 0);
 }
 
@@ -97,26 +78,18 @@ function renderRevenusPage(){
   const list = document.getElementById("revenusList");
   if(!list) return;
 
-  const data = getRevenusDetail();
-
   list.innerHTML = "";
 
-  data
+  [...window.revenusDetail]
     .sort((a, b) => b.mois.localeCompare(a.mois))
     .forEach((r) => {
 
       const div = document.createElement("div");
       div.className = "depense-row";
 
-      // CLICK sécurisé (évite conflit swipe)
       div.addEventListener("click", () => {
-        if(currentRevenuRow) return;
         modifierRevenu(r);
       });
-
-      // SWIPE
-      div.ontouchstart = (e) => startSwipeRevenu(e, r);
-      div.ontouchend = (e) => endSwipeRevenu(e);
 
       div.innerHTML = `
         <span>${r.nom}</span>
@@ -126,11 +99,9 @@ function renderRevenusPage(){
       list.appendChild(div);
     });
 
-  // TOTAL GLOBAL
-  const totalGlobal = getTotalRevenus() + getEspeces();
+  const totalGlobal = getTotalRevenus() + window.especes;
   setText("revenusPage", euro(totalGlobal));
 
-  // MOIS LOGIQUE
   const moisBudget = getMoisBudget();
 
   const label = document.getElementById("moisActuelLabel");
@@ -180,7 +151,7 @@ function fermerModalRevenu(){
 }
 
 // =========================
-// CRUD
+// CRUD (SYNC GLOBAL)
 // =========================
 
 function validerRevenu(){
@@ -193,25 +164,24 @@ function validerRevenu(){
     return;
   }
 
-  const data = getRevenusDetail();
-
-  data.push({
+  window.revenusDetail.push({
     id: Date.now(),
     nom,
     montant: Math.round(montant * 100) / 100,
     mois: getMoisBudget()
   });
 
-  saveRevenus(data);
-  refreshAll();
+  saveAll();
+  refreshApp();
 
   showToast?.("💰 Revenu ajouté");
 }
 
+// =========================
+
 function modifierRevenu(revenu){
 
-  const data = getRevenusDetail();
-  const index = data.findIndex(r => r.id === revenu.id);
+  const index = window.revenusDetail.findIndex(r => r.id === revenu.id);
   if(index === -1) return;
 
   const nouveauNom = prompt("Nom :", revenu.nom);
@@ -220,98 +190,23 @@ function modifierRevenu(revenu){
   const nouveauMontant = parseFloat(prompt("Montant :", revenu.montant));
   if(isNaN(nouveauMontant)) return;
 
-  data[index].nom = nouveauNom;
-  data[index].montant = nouveauMontant;
+  window.revenusDetail[index].nom = nouveauNom;
+  window.revenusDetail[index].montant = nouveauMontant;
 
-  saveRevenus(data);
-  refreshAll();
+  saveAll();
+  refreshApp();
 
   showToast?.("✏️ Revenu modifié");
 }
 
+// =========================
+
 function supprimerRevenu(revenu){
 
-  const data = getRevenusDetail().filter(r => r.id !== revenu.id);
+  window.revenusDetail = window.revenusDetail.filter(r => r.id !== revenu.id);
 
-  saveRevenus(data);
-  refreshAll();
+  saveAll();
+  refreshApp();
 
   showToast?.("🗑️ Revenu supprimé");
-}
-
-// =========================
-// REFRESH GLOBAL
-// =========================
-
-function refreshAll(){
-  renderRevenusPage();
-  renderEspeces();
-  updateBudget();
-}
-
-// =========================
-// SWIPE REVENUS (PRO)
-// =========================
-
-let revenuSwipeStartX = 0;
-let currentRevenuRow = null;
-let currentRevenu = null;
-let armedRevenuRow = null;
-
-function startSwipeRevenu(e, revenu){
-  revenuSwipeStartX = e.touches[0].clientX;
-  currentRevenuRow = e.currentTarget;
-  currentRevenu = revenu;
-
-  currentRevenuRow.style.transition = "transform 0.2s ease";
-}
-
-function endSwipeRevenu(e){
-
-  if(!currentRevenuRow) return;
-
-  const diff = e.changedTouches[0].clientX - revenuSwipeStartX;
-
-  if(diff < -20){
-    currentRevenuRow.style.transform = "translateX(-40px)";
-    currentRevenuRow.classList.add("swiping");
-  }
-
-  if(diff < -100){
-
-    if(armedRevenuRow === currentRevenuRow){
-
-      navigator.vibrate?.(10);
-
-      currentRevenuRow.style.transform = "translateX(-100%)";
-
-      setTimeout(()=>{
-        supprimerRevenu(currentRevenu);
-      },200);
-
-      armedRevenuRow = null;
-      return;
-    }
-
-    if(armedRevenuRow){
-      armedRevenuRow.style.transform = "translateX(0)";
-      armedRevenuRow.classList.remove("swiping");
-    }
-
-    armedRevenuRow = currentRevenuRow;
-
-    currentRevenuRow.style.transform = "translateX(-80px)";
-    currentRevenuRow.classList.add("swiping");
-
-    showToast?.("👉 Glisse encore pour supprimer");
-  }
-
-  else{
-    currentRevenuRow.style.transform = "translateX(0)";
-    currentRevenuRow.classList.remove("swiping");
-    armedRevenuRow = null;
-  }
-
-  currentRevenuRow = null;
-  currentRevenu = null;
 }

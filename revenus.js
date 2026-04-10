@@ -94,7 +94,7 @@ function renderRevenusPage(){
       div.innerHTML = `
   <span>${r.nom}</span>
   <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
-  <button onclick="supprimerRevenu(${r.id})">🗑️</button>
+  <button class="delete-btn" onclick="supprimerRevenu(${r.id})">×</button>
 `;
 
       list.appendChild(div);

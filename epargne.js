@@ -74,6 +74,9 @@ function renderEpargneHistorique(){
     });
 
   setText("epargneHistoriqueTotal", total ? euro(total) : "—");
+
+document.getElementById("epargneHistoriqueTotal")
+  ?.style.setProperty("color", "#3b82f6");
 }
 
 // =========================

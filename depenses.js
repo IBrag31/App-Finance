@@ -36,9 +36,10 @@ function renderDepensesPage(){
     row.onclick = () => modifierDepense(i);
 
     row.innerHTML = `
-      <span>${d.nom}</span>
-      <span>${euro(montant)}</span>
-    `;
+  <span>${d.nom}</span>
+  <span>${euro(montant)}</span>
+  <button onclick="supprimerDepense(${i})">🗑️</button>
+`;
 
     if(d.type === "fixe"){
       if(fixes) fixes.appendChild(row);

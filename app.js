@@ -177,8 +177,12 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  // 🔥 AFFICHAGE PROPRE
+  // 🔥 SIMULE UN VRAI NAVIGATEUR (clé du bug)
+showSection("settings");
+
+setTimeout(() => {
   showSection("resume");
+}, 10);
 
   // 🔥 DOUBLE RENDER (clé 🔑)
   setTimeout(() => {

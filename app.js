@@ -130,8 +130,15 @@ function updateBudget(){
 
   setText("epargneMoisPage", euro(epargneMois));
   setText("epargneTotalePage", euro(epargneTotale));
-}
 
+const ep = document.getElementById("epargneTotalePage");
+if(ep){
+  ep.style.color = "#3b82f6";
+  ep.style.fontSize = "28px";
+  ep.style.fontWeight = "700";
+}
+	}
+	
 document.getElementById("epargneTotalePage")?.style.setProperty("color", "#3b82f6");
 
 // =========================

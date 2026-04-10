@@ -81,7 +81,7 @@ CARDS
 BUTTONS
 ========================= */
 
-button:not(.circle-btn):not(.add-btn),
+button:not(.circle-btn):not(.add-btn):not(.delete-btn),
 .restore-btn{
   width:100%;
   padding:14px;
@@ -315,6 +315,11 @@ MODAL
 
   flex-shrink:0;
   padding:0;
+  cursor:pointer;
+}
+
+.delete-btn:active{
+  transform:scale(0.9);
 }
 
 .revenus-card,

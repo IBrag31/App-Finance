@@ -6,11 +6,6 @@ console.log("app.js MASTER SYNC FINAL 🚀");
 
 function loadAll(){
 
-  const revenus = localStorage.getItem("revenusDetail");
-  const depenses = localStorage.getItem("depensesDetail");
-  const epargne = localStorage.getItem("epargneHistorique");
-  const especes = localStorage.getItem("especes");
-
   window.revenusDetail = revenus ? JSON.parse(revenus) : [];
   window.depensesDetail = depenses ? JSON.parse(depenses) : [];
   window.epargneHistorique = epargne ? JSON.parse(epargne) : [];

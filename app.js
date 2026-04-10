@@ -98,8 +98,8 @@ function updateBudget(){
 
   const revenus = (typeof getRevenusDuMois === "function" ? getRevenusDuMois(mois) : 0) + window.especes;
   const depenses = typeof calculTotalDepenses === "function" ? calculTotalDepenses() : 0;
-  const epargneTotale = typeof getTotalEpargne === "function" ? getTotalEpargne() : 0;
-  const epargneMois = typeof getEpargneDuMois === "function" ? getEpargneDuMois(mois) : 0;
+  const epargneTotale = getTotalEpargne();
+const epargneMois = getEpargneDuMois(mois);
 
   const objectifDepenses = 1250;
   const objectifEpargne = 5000;
@@ -163,7 +163,9 @@ window.addEventListener("DOMContentLoaded", () => {
   initUI?.();
 
   // 🔥 premier rendu
+  setTimeout(() => {
   refreshApp();
+}, 0);
 
   // 🔥 forcer affichage correct iOS
   setTimeout(() => {
@@ -219,7 +221,9 @@ function restaurerDepuisIcloud(){
         window.especes = data.especes || 0;
 
         saveAll();
-        refreshApp();
+        setTimeout(() => {
+  refreshApp();
+}, 0);
 
         alert("✅ Données restaurées");
       }catch{
@@ -244,7 +248,10 @@ function resetApp(){
   window.epargneHistorique = [];
   window.especes = 0;
 
+  setTimeout(() => {
   refreshApp();
+}, 0);
+
 
   alert("🗑️ Données réinitialisées");
 }
@@ -255,6 +262,10 @@ function resetApp(){
 
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
-    refreshApp();
+    setTimeout(() => {
+  setTimeout(() => {
+  refreshApp();
+}, 0);
+}, 0);
   }
 });

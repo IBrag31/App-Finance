@@ -50,28 +50,24 @@ function renderEpargneHistorique(){
 
   let total = 0;
 
-  [...window.epargneHistorique]
-    .forEach((e) => {
+  [...window.epargneHistorique].forEach((e) => {
+
+  const montant = Number(e.montant) || 0;
+  total += montant;
+
+  const row = document.createElement("div");
+  row.className = "depense-row";
 
   const realIndex = window.epargneHistorique.indexOf(e);
-
   row.onclick = () => modifierEpargne(realIndex);
 
-      const montant = Number(e.montant) || 0;
-      total += montant;
+  row.innerHTML = `
+    <span>${formatMois(e.mois)}</span>
+    <span style="color:#3b82f6">${euro(montant)}</span>
+  `;
 
-      const row = document.createElement("div");
-      row.className = "depense-row";
-
-      row.onclick = () => modifierEpargne(i);
-
-      row.innerHTML = `
-  <span>${formatMois(e.mois)}</span>
-  <span style="color:#3b82f6">${euro(montant)}</span>
-`;
-
-      list.appendChild(row);
-    });
+  list.appendChild(row);
+});
 
   setText("epargneHistoriqueTotal", total ? euro(total) : "—");
 

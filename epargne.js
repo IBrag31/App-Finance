@@ -62,9 +62,15 @@ function renderEpargneHistorique(){
   row.onclick = () => modifierEpargne(realIndex);
 
   row.innerHTML = `
-    <span>${formatMois(e.mois)}</span>
-    <span style="color:#3b82f6">${euro(montant)}</span>
-  `;
+  <div style="flex:1">
+    <div>${formatMois(e.mois)}</div>
+    <div style="opacity:0.6;font-size:13px;color:#3b82f6">
+      ${euro(montant)}
+    </div>
+  </div>
+
+  <button class="delete-btn" onclick="supprimerEpargne(${realIndex})">×</button>
+`;
 
   list.appendChild(row);
 });

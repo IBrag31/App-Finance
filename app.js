@@ -172,6 +172,46 @@ window.addEventListener("DOMContentLoaded", () => {
   showSection("resume");
 });
 
+function sauvegardeAuto(){
+
+  const data = {
+    revenus: window.revenusDetail,
+    depenses: window.depensesDetail,
+    epargne: window.epargneHistorique,
+    especes: window.especes
+  };
+
+  const blob = new Blob([JSON.stringify(data)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "finance_backup.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  alert("💾 Sauvegarde téléchargée");
+}
+
+// =========================
+
+function resetApp(){
+
+  if(!confirm("⚠️ Supprimer toutes les données ?")) return;
+
+  localStorage.clear();
+
+  window.revenusDetail = [];
+  window.depensesDetail = [];
+  window.epargneHistorique = [];
+  window.especes = 0;
+
+  refreshApp();
+
+  alert("🗑️ Données réinitialisées");
+}
+
 // =========================
 // VISIBILITY FIX (iOS)
 // =========================

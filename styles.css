@@ -316,3 +316,22 @@ MODAL
   justify-content:center;
   flex-shrink:0;
 }
+
+.revenus-card,
+.total-card{
+  background:#1c1c1e;
+  border-radius:20px;
+  padding:16px;
+}
+
+.revenus-card-value{
+  font-size:28px;
+  font-weight:700;
+  color:#22c55e;
+}
+
+#depensesTotalPage{
+  color:#f97316;
+  font-size:28px;
+  font-weight:700;
+}

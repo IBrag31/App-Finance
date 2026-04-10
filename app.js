@@ -1,4 +1,8 @@
-console.log("app.js MASTER SYNC FINAL 🚀");
+// 🔥 INIT GLOBAL SAFE (CRITIQUE)
+window.revenusDetail = [];
+window.depensesDetail = [];
+window.epargneHistorique = [];
+window.especes = 0;
 
 // =========================
 // DATA CENTRALISÉE
@@ -18,9 +22,6 @@ function loadAll(){
     window.especes = especes ? Number(especes) : 0;
 
   }catch(e){
-
-    console.log("⚠️ Erreur loadAll → reset safe");
-
     window.revenusDetail = [];
     window.depensesDetail = [];
     window.epargneHistorique = [];

@@ -170,12 +170,9 @@ function validerRevenu(){
     return;
   }
 
-  window.revenusDetail.push({
-    id: Date.now(),
-    nom,
-    montant: Math.round(montant * 100) / 100,
-    mois: getMoisBudget()
-  });
+ if(!Array.isArray(window.revenusDetail)) window.revenusDetail = [];
+
+window.revenusDetail.push(...)
 
   saveAll();
   refreshApp();

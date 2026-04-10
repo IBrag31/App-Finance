@@ -92,9 +92,10 @@ function renderRevenusPage(){
       });
 
       div.innerHTML = `
-        <span>${r.nom}</span>
-        <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
-      `;
+  <span>${r.nom}</span>
+  <span>${formatMois(r.mois)} • ${euro(r.montant)}</span>
+  <button onclick="supprimerRevenu(${r.id})">🗑️</button>
+`;
 
       list.appendChild(div);
     });
@@ -201,9 +202,9 @@ function modifierRevenu(revenu){
 
 // =========================
 
-function supprimerRevenu(revenu){
+function supprimerRevenu(id){
 
-  window.revenusDetail = window.revenusDetail.filter(r => r.id !== revenu.id);
+  window.revenusDetail = window.revenusDetail.filter(r => r.id !== id);
 
   saveAll();
   refreshApp();

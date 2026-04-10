@@ -1,27 +1,14 @@
-console.log("depenses.js CLEAN FINAL ✅");
-
-// =========================
-// DATA
-// =========================
-
-function getDepensesDetail(){
-  return JSON.parse(localStorage.getItem("depensesDetail") || "[]");
-}
+console.log("depenses.js SYNC CLEAN ✅");
 
 // =========================
 // CALCULS
 // =========================
 
 function calculTotalDepenses(){
-
-  const data = getDepensesDetail();
-
-  const total = data.reduce(
+  return window.depensesDetail.reduce(
     (sum, d) => sum + (Number(d.montant) || 0),
     0
   );
-
-  return Math.round(total * 100) / 100;
 }
 
 // =========================
@@ -39,9 +26,7 @@ function renderDepensesPage(){
   let totalFixes = 0;
   let totalVariables = 0;
 
-  const data = getDepensesDetail();
-
-  data.forEach((d, i) => {
+  window.depensesDetail.forEach((d, i) => {
 
     const montant = Number(d.montant) || 0;
 
@@ -49,8 +34,6 @@ function renderDepensesPage(){
     row.className = "depense-row";
 
     row.onclick = () => modifierDepense(i);
-    row.ontouchstart = (e) => startSwipe(e, i);
-    row.ontouchend = (e) => endSwipe(e, i);
 
     row.innerHTML = `
       <span>${d.nom}</span>
@@ -79,9 +62,7 @@ function renderDepensesPage(){
 function validerDepense(){
 
   const nom = document.getElementById("depenseNom")?.value.trim();
-  const montant = parseFloat(
-    document.getElementById("depenseMontant")?.value
-  );
+  const montant = parseFloat(document.getElementById("depenseMontant")?.value);
   const type = document.getElementById("typeDepense")?.value || "variable";
 
   if(!nom || isNaN(montant) || montant <= 0){
@@ -89,17 +70,14 @@ function validerDepense(){
     return;
   }
 
-  const data = getDepensesDetail();
-
-  data.push({
+  window.depensesDetail.push({
     nom,
     montant: Math.round(montant * 100) / 100,
     type
   });
 
-  saveDepenses(data);
-  renderDepensesPage();
-  updateBudget();
+  saveAll();
+  refreshApp();
 
   document.getElementById("depenseNom").value = "";
   document.getElementById("depenseMontant").value = "";
@@ -173,8 +151,7 @@ function fermerModalDepense(){
 
 function modifierDepense(index){
 
-  const data = getDepensesDetail();
-  const depense = data[index];
+  const depense = window.depensesDetail[index];
 
   const nouveauNom = prompt("Nom :", depense.nom);
   if(nouveauNom === null) return;
@@ -194,17 +171,16 @@ function modifierDepense(index){
 
   nouveauType = nouveauType.toLowerCase().trim();
 
-  data[index] = {
+  window.depensesDetail[index] = {
     nom: nouveauNom,
     montant: nouveauMontant,
     type: nouveauType
   };
 
-  saveDepenses(data);
-  renderDepensesPage();
-  updateBudget();
+  saveAll();
+  refreshApp();
 
-  showToast("✏️ Dépense modifiée");
+  showToast?.("✏️ Dépense modifiée");
 }
 
 // =========================
@@ -213,79 +189,10 @@ function modifierDepense(index){
 
 function supprimerDepense(index){
 
-  const data = getDepensesDetail();
+  window.depensesDetail.splice(index,1);
 
-  data.splice(index,1);
+  saveAll();
+  refreshApp();
 
-  saveDepenses(data);
-  renderDepensesPage();
-  updateBudget();
-
-  showToast("🗑️ Dépense supprimée");
-}
-
-// =========================
-// STORAGE
-// =========================
-
-function saveDepenses(data){
-  localStorage.setItem("depensesDetail", JSON.stringify(data));
-}
-
-// =========================
-// SWIPE
-// =========================
-
-let swipeStartX = 0;
-let currentRow = null;
-let armedRow = null;
-
-function startSwipe(e, index){
-  swipeStartX = e.touches[0].clientX;
-  currentRow = e.currentTarget;
-}
-
-function endSwipe(e,index){
-
-  const diff = e.changedTouches[0].clientX - swipeStartX;
-
-  if(diff < -20 && currentRow){
-    currentRow.style.transform = "translateX(-40px)";
-    currentRow.classList.add("swiping");
-  }
-
-  if(diff < -100){
-
-    if(armedRow === currentRow){
-
-      navigator.vibrate?.(10);
-
-      currentRow.style.transform = "translateX(-100%)";
-
-      setTimeout(()=>{
-        supprimerDepense(index);
-      },200);
-
-      armedRow = null;
-      return;
-    }
-
-    if(armedRow){
-      armedRow.style.transform = "translateX(0)";
-      armedRow.classList.remove("swiping");
-    }
-
-    armedRow = currentRow;
-
-    currentRow.style.transform = "translateX(-72px)";
-    currentRow.classList.add("swiping");
-
-    showToast("👉 Glisse encore pour supprimer");
-  }
-
-  else if(currentRow){
-    currentRow.style.transform = "translateX(0)";
-    currentRow.classList.remove("swiping");
-    armedRow = null;
-  }
+  showToast?.("🗑️ Dépense supprimée");
 }

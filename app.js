@@ -194,6 +194,42 @@ function sauvegardeAuto(){
 
 // =========================
 
+function restaurerDepuisIcloud(){
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      try{
+        const data = JSON.parse(event.target.result);
+
+        window.revenusDetail = data.revenus || [];
+        window.depensesDetail = data.depenses || [];
+        window.epargneHistorique = data.epargne || [];
+        window.especes = data.especes || 0;
+
+        saveAll();
+        refreshApp();
+
+        alert("✅ Données restaurées");
+      }catch{
+        alert("❌ Fichier invalide");
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  input.click();
+}
+
 function resetApp(){
 
   if(!confirm("⚠️ Supprimer toutes les données ?")) return;

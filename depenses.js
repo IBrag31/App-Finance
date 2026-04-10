@@ -36,8 +36,13 @@ function renderDepensesPage(){
     row.onclick = () => modifierDepense(i);
 
     row.innerHTML = `
-  <span>${d.nom}</span>
-  <span>${euro(montant)}</span>
+  <div style="flex:1">
+    <div>${d.nom}</div>
+    <div style="opacity:0.6;font-size:13px">
+      ${euro(montant)}
+    </div>
+  </div>
+
   <button class="delete-btn" onclick="supprimerDepense(${i})">×</button>
 `;
 

@@ -42,29 +42,19 @@ let currentSectionIndex = 0;
 
 function showSection(name, element){
 
-  const sections = document.querySelectorAll(".section");
-  const tabs = document.querySelectorAll(".tab");
+  document.querySelectorAll(".section")
+    .forEach(sec => sec.classList.remove("active"));
 
-  // 🔥 FORCE reset (même si déjà actif)
-  sections.forEach(sec => {
-    sec.classList.remove("active");
-    sec.style.display = "none"; // 💥 force repaint
-  });
+  document.querySelectorAll(".tab")
+    .forEach(tab => tab.classList.remove("active"));
 
-  tabs.forEach(tab => tab.classList.remove("active"));
-
-  // 🔥 ACTIVE
   const section = document.getElementById("section-" + name);
-  if(section){
-    section.classList.add("active");
-    section.style.display = "block"; // 💥 force affichage
-  }
+  if(section) section.classList.add("active");
 
   if(element) element.classList.add("active");
 
-  // 🔥 RENDER
   if(name === "resume"){
-    requestAnimationFrame(() => updateBudget?.());
+    updateBudget?.();
   }
 
   if(name === "revenus"){
@@ -80,7 +70,6 @@ function showSection(name, element){
     renderEpargneMois?.();
   }
 }
-
 // =========================
 // NAVIGATION SWIPE (optionnel)
 // =========================

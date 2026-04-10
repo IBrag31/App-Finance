@@ -1,4 +1,4 @@
-console.log("app.js FINAL STABLE ✅");
+console.log("app.js CLEAN FINAL ✅");
 
 // =========================
 // UTILS
@@ -9,10 +9,6 @@ function euro(n){
     minimumFractionDigits:2,
     maximumFractionDigits:2
   }) + " €";
-}
-
-function euroShort(n){
-  return Math.round(Number(n || 0)).toLocaleString("fr-FR") + " €";
 }
 
 function setText(id, value){
@@ -107,17 +103,28 @@ function updateBudget(){
   setText("epargneMoisPage", euro(epargneMois));
   setText("epargneTotalePage", euro(epargneTotale));
 
-  if(typeof renderEpargneMois === "function"){
-    renderEpargneMois();
-  }
+  renderEpargneMois?.();
 
-  // 🔥 FORCE REPAINT SAFE (iOS FIX)
+  // 🔥 repaint léger iOS
   const el = document.getElementById("section-resume");
   if(el){
     el.style.transform = "scale(0.9999)";
     requestAnimationFrame(() => {
       el.style.transform = "scale(1)";
     });
+  }
+}
+
+// =========================
+// DASHBOARD
+// =========================
+
+function renderDashboard(){
+  updateBudget();
+
+  const el = document.getElementById("section-resume");
+  if(el){
+    el.innerHTML = el.innerHTML;
   }
 }
 
@@ -137,6 +144,10 @@ function updateBar(id, value, objectif, type){
   if(type === "epargne") el.style.background = getEpargneColor();
   if(type === "revenus") el.style.background = getRevenusColor();
 }
+
+// =========================
+// RESTORE
+// =========================
 
 function restaurerDepuisIcloud(){
 
@@ -160,14 +171,13 @@ function restaurerDepuisIcloud(){
         if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne));
         if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
 
-        // 🔥 refresh UI
         renderRevenusPage?.();
         renderDepensesPage?.();
         renderEpargneHistorique?.();
         renderEpargneMois?.();
         renderEspeces?.();
 
-        updateBudget();
+        renderDashboard();
 
         alert("✅ Sauvegarde restaurée");
 
@@ -180,16 +190,6 @@ function restaurerDepuisIcloud(){
   };
 
   input.click();
-}
-
-// =========================
-// RESET
-// =========================
-
-function resetApp(){
-  if(!confirm("⚠️ Supprimer toutes les données ?")) return;
-  localStorage.clear();
-  location.reload();
 }
 
 // =========================
@@ -221,28 +221,27 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  // 🔥 SIMULE UN VRAI NAVIGATEUR (clé du bug)
-showSection("settings");
+  // 🔥 simulation navigation
+  showSection("settings");
 
-setTimeout(() => {
-  showSection("resume");
-}, 10);
-
-  // 🔥 DOUBLE RENDER (clé 🔑)
   setTimeout(() => {
-    updateBudget();
+    showSection("resume");
+  }, 10);
+
+  // 🔥 double render
+  setTimeout(() => {
+    renderDashboard();
 
     requestAnimationFrame(() => {
-      updateBudget();
+      renderDashboard();
     });
 
   }, 50);
 
-  console.log("APP READY ✅");
 });
 
 // =========================
-// FIX PWA iOS
+// VISIBILITY FIX
 // =========================
 
 document.addEventListener("visibilitychange", () => {
@@ -254,6 +253,6 @@ document.addEventListener("visibilitychange", () => {
     renderEpargneMois?.();
     renderEspeces?.();
 
-    updateBudget();
+    renderDashboard();
   }
 });

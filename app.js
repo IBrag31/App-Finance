@@ -208,19 +208,21 @@ window.addEventListener("DOMContentLoaded", () => {
 
   console.log("INIT APP 🚀");
 
-  initData();        // 🔥 TRÈS IMPORTANT
+  initData();
 
   initUI?.();
 
-  showSection("resume"); // 🔥 AVANT les render
-
+  // 🔥 1. On charge TOUT
   renderEspeces?.();
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  updateBudget();
+  updateBudget(); // 🔥 calcul final
+
+  // 🔥 2. ENSUITE on affiche
+  showSection("resume");
 
   console.log("APP READY ✅");
 });

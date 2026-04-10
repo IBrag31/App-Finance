@@ -1,4 +1,4 @@
-console.log("app.js FINAL PRO+ loaded ✅");
+console.log("app.js FINAL STABLE ✅");
 
 // =========================
 // UTILS
@@ -56,12 +56,6 @@ function getEpargneColor(){
 // =========================
 
 function updateBudget(){
-  
-  // 🔥 SYNC FORCÉ AVANT CALCUL
-
-  if(typeof epargneHistorique !== "undefined"){
-  epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
-}
 
   const mois = (typeof getMoisBudget === "function")
     ? getMoisBudget()
@@ -116,6 +110,15 @@ function updateBudget(){
   if(typeof renderEpargneMois === "function"){
     renderEpargneMois();
   }
+
+  // 🔥 FORCE REPAINT SAFE (iOS FIX)
+  const el = document.getElementById("section-resume");
+  if(el){
+    el.style.transform = "scale(0.9999)";
+    requestAnimationFrame(() => {
+      el.style.transform = "scale(1)";
+    });
+  }
 }
 
 // =========================
@@ -136,51 +139,6 @@ function updateBar(id, value, objectif, type){
 }
 
 // =========================
-// RESTAURATION
-// =========================
-
-function restaurerDepuisIcloud(){
-
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "application/json";
-
-  input.onchange = (event) => {
-
-    const file = event.target.files[0];
-    if(!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(e){
-      try{
-        const data = JSON.parse(e.target.result);
-
-        if(data.revenus) localStorage.setItem("revenusDetail", JSON.stringify(data.revenus));
-        if(data.depenses) localStorage.setItem("depensesDetail", JSON.stringify(data.depenses));
-        if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne));
-        if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
-
-        renderRevenusPage?.();
-        renderDepensesPage?.();
-        renderEpargneHistorique?.();
-        renderEpargneMois?.();
-        renderEspeces?.();
-
-        updateBudget();
-
-      }catch(err){
-        alert("❌ Fichier invalide");
-      }
-    };
-
-    reader.readAsText(file);
-  };
-
-  input.click();
-}
-
-// =========================
 // RESET
 // =========================
 
@@ -190,14 +148,15 @@ function resetApp(){
   location.reload();
 }
 
-function initData(){
+// =========================
+// INIT DATA
+// =========================
 
+function initData(){
   window.revenusDetail = JSON.parse(localStorage.getItem("revenusDetail") || "[]");
   window.depensesDetail = JSON.parse(localStorage.getItem("depensesDetail") || "[]");
   window.epargneHistorique = JSON.parse(localStorage.getItem("epargneHistorique") || "[]");
   window.especes = Number(localStorage.getItem("especes")) || 0;
-
-  console.log("DATA LOADED ✅");
 }
 
 // =========================
@@ -218,17 +177,16 @@ window.addEventListener("DOMContentLoaded", () => {
   renderEpargneHistorique?.();
   renderEpargneMois?.();
 
-  // 🔥 ASTUCE ULTIME : désactiver puis réactiver la section
-  const section = document.getElementById("section-resume");
+  // 🔥 AFFICHAGE PROPRE
+  showSection("resume");
 
-  section.classList.remove("active");
-
+  // 🔥 DOUBLE RENDER (clé 🔑)
   setTimeout(() => {
-
-    section.classList.add("active");
-
-    // 💥 FORCER LE VRAI RENDER
     updateBudget();
+
+    requestAnimationFrame(() => {
+      updateBudget();
+    });
 
   }, 50);
 
@@ -241,8 +199,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
-
-    console.log("🔄 Refresh app");
 
     renderRevenusPage?.();
     renderDepensesPage?.();

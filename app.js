@@ -210,6 +210,10 @@ function initData(){
 window.addEventListener("DOMContentLoaded", () => {
 
   console.log("INIT APP 🚀");
+  
+  caches.keys().then(keys => {
+  keys.forEach(key => caches.delete(key));
+});
 
   initData();
 

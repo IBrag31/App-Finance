@@ -300,13 +300,9 @@ MODAL
 }
 
 .delete-btn{
-  width:26px !important;
-  height:26px !important;
-  min-width:26px;
-  max-width:26px;
-
-  border-radius:50% !important;
-
+  width:26px;
+  height:26px;
+  border-radius:50%;
   border:none;
   font-size:14px;
 
@@ -317,9 +313,8 @@ MODAL
   align-items:center;
   justify-content:center;
 
-  flex:0 0 auto !important;
-
-  padding:0 !important;
+  flex-shrink:0;
+  padding:0;
 }
 
 .revenus-card,

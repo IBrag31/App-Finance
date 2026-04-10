@@ -138,6 +138,50 @@ function updateBar(id, value, objectif, type){
   if(type === "revenus") el.style.background = getRevenusColor();
 }
 
+function restaurerDepuisIcloud(){
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+
+  input.onchange = (event) => {
+
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+      try{
+        const data = JSON.parse(e.target.result);
+
+        if(data.revenus) localStorage.setItem("revenusDetail", JSON.stringify(data.revenus));
+        if(data.depenses) localStorage.setItem("depensesDetail", JSON.stringify(data.depenses));
+        if(data.epargne) localStorage.setItem("epargneHistorique", JSON.stringify(data.epargne));
+        if(data.especes !== undefined) localStorage.setItem("especes", data.especes);
+
+        // 🔥 refresh UI
+        renderRevenusPage?.();
+        renderDepensesPage?.();
+        renderEpargneHistorique?.();
+        renderEpargneMois?.();
+        renderEspeces?.();
+
+        updateBudget();
+
+        alert("✅ Sauvegarde restaurée");
+
+      }catch(err){
+        alert("❌ Fichier invalide");
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  input.click();
+}
+
 // =========================
 // RESET
 // =========================

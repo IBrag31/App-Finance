@@ -2,8 +2,8 @@
 // CONFIG
 // =========================
 
-const DEV_MODE = true; // 🔥 true = dev / false = production
-const CACHE_NAME = "financeplus-v2";
+const DEV_MODE = false; // 🔥 true = dev / false = production
+const CACHE_NAME = "financeplus-v3";
 
 // fichiers à cacher (prod uniquement)
 const urlsToCache = [

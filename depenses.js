@@ -81,9 +81,10 @@ function validerDepense(){
 }
 
 		window.depensesDetail.push({
-		-nom,
-		type
-}) ;
+  nom,
+  montant: Math.round(montant * 100) / 100,
+  type
+});
 		montant: Math.round(montant * 100) / 100,
 
   saveAll();

@@ -180,7 +180,12 @@ montant: Math. round(montant * 100) / 100, mois: getMoisBudget()
 });
 
   saveAll();
-  refreshApp();
+refreshApp();
+
+// 🔥 ajoute ça
+setTimeout(() => {
+  fermerModalRevenu();
+}, 0);
 
   showToast?.("💰 Revenu ajouté");
 }

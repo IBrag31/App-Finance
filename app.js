@@ -40,7 +40,7 @@ function saveAll(){
 
 function refreshApp(){
   
-   if(!window.revenusDetail) return;
+   if(!Array.isArray(window.revenusDetail)) return;
   
   renderRevenusPage?.();
   renderDepensesPage?.();

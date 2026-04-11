@@ -86,14 +86,14 @@ document.getElementById("epargneHistoriqueTotal")
 // =========================
 
 function renderEpargneMois(){
-
   const el = document.getElementById("epargneMoisPage");
   if(!el) return;
 
-  el.style.color = "var(--color-epargne)";
+  const mois = new Date().toISOString().slice(0,7);
+  const total = getEpargneDuMois(mois);
 
-  el.style.transform = "scale(1.05)";
-  setTimeout(()=> el.style.transform = "scale(1)", 120);
+  el.innerText = euro(total);
+  el.style.color = "var(--color-epargne)";
 }
 
 // =========================

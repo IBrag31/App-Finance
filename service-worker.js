@@ -3,18 +3,25 @@
 // =========================
 
 const DEV_MODE = false; // 🔥 true = dev / false = production
-const CACHE_NAME = "financeplus-v3";
+const CACHE_NAME = "financeplus-v4";
 
 // fichiers à cacher (prod uniquement)
 const urlsToCache = [
   "./",
   "./index.html",
   "./styles.css",
+
   "./app.js",
-  "./depenses.js",
+  "./ui.js",
+
   "./revenus.js",
+  "./depenses.js",
   "./epargne.js",
-  "./ui.js"
+
+  "./manifest.json",
+
+  "./iconapp-180.png",
+  "./iconapp-512.png"
 ];
 
 // =========================
@@ -60,17 +67,43 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
 
-  // 🔥 MODE DEV → PAS DE CACHE
-  if(DEV_MODE){
-    event.respondWith(fetch(event.request));
-    return;
-  }
-
-  // 🚀 MODE PROD → CACHE
   event.respondWith(
+
     caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
+      .then(cachedResponse => {
+
+        // ✅ cache trouvé
+        if(cachedResponse){
+          return cachedResponse;
+        }
+
+        // 🌐 sinon réseau
+        return fetch(event.request)
+          .then(networkResponse => {
+
+            // copie réponse
+            const responseClone = networkResponse.clone();
+
+            // sauvegarde cache
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseClone);
+              });
+
+            return networkResponse;
+
+          });
+
       })
+      .catch(() => {
+
+        // fallback offline minimal
+        if(event.request.mode === "navigate"){
+          return caches.match("./index.html");
+        }
+
+      })
+
   );
+
 });

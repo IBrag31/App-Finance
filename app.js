@@ -11,33 +11,85 @@ window.especes = 0;
 function loadAll(){
 
   try{
-    const revenus = localStorage.getItem("revenusDetail");
-    const depenses = localStorage.getItem("depensesDetail");
-    const epargne = localStorage.getItem("epargneHistorique");
-    const especes = localStorage.getItem("especes");
 
-    window.revenusDetail = revenus ? JSON.parse(revenus) : [];
-    window.depensesDetail = depenses ? JSON.parse(depenses) : [];
-    window.epargneHistorique = epargne ? JSON.parse(epargne) : [];
-    window.especes = especes ? Number(especes) : 0;
+    const revenus =
+      localStorage.getItem("revenusDetail");
+
+    const depenses =
+      localStorage.getItem("depensesDetail");
+
+    const epargne =
+      localStorage.getItem("epargneHistorique");
+
+    const especes =
+      localStorage.getItem("especes");
+
+    window.revenusDetail =
+      revenus ? JSON.parse(revenus) : [];
+
+    window.depensesDetail =
+      depenses ? JSON.parse(depenses) : [];
+
+    window.epargneHistorique =
+      epargne ? JSON.parse(epargne) : [];
+
+    window.especes =
+      especes ? JSON.parse(especes) : 0;
 
   }catch(e){
+
+    console.error(
+      "❌ Erreur chargement données",
+      e
+    );
+
     window.revenusDetail = [];
     window.depensesDetail = [];
     window.epargneHistorique = [];
     window.especes = 0;
+
   }
+
+}
+
+function safeSet(key, value){
+
+  try {
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
+
+    return true;
+
+  } catch(error){
+
+    console.error(
+      "❌ Erreur sauvegarde :",
+      key,
+      error
+    );
+
+    return false;
+
+  }
+
 }
 
 function saveAll(){
+
   console.log("SAVE OK");
 
-  localStorage.setItem("revenusDetail", JSON.stringify(window.revenusDetail));
-  localStorage.setItem("depensesDetail", JSON.stringify(window.depensesDetail));
-  localStorage.setItem("epargneHistorique", JSON.stringify(window.epargneHistorique));
-  localStorage.setItem("especes", window.especes || 0);
-}
+  safeSet("revenusDetail", window.revenusDetail);
 
+  safeSet("depensesDetail", window.depensesDetail);
+
+  safeSet("epargneHistorique", window.epargneHistorique);
+
+  safeSet("especes", window.especes || 0);
+
+}
 function refreshApp(){
   
    if(!Array.isArray(window.revenusDetail)) return;

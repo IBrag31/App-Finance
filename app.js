@@ -234,23 +234,42 @@ window.addEventListener("DOMContentLoaded", () => {
 
   loadAll();
 
-  // 🔥 attendre Safari/iOS
   setTimeout(() => {
 
     initUI?.();
 
-    // ✅ D'abord afficher la section
     showSection("resume");
 
-    // ✅ Puis render APRÈS
     refreshApp();
 
-    // 🔥 Double refresh spécial iOS PWA
-    setTimeout(() => {
+    // 🔥 sécurité iOS
+    requestAnimationFrame(() => {
 
-      refreshApp();
+      setTimeout(() => {
 
-    }, 120);
+        refreshApp();
+
+      }, 80);
+
+    });
+
+  }, 50);
+
+});
+
+// =========================
+// PAGESHOW FIX (iOS SAFARI)
+// =========================
+
+window.addEventListener("pageshow", (event) => {
+
+  console.log("📱 pageshow", event.persisted);
+
+  loadAll();
+
+  setTimeout(() => {
+
+    refreshApp();
 
   }, 50);
 
@@ -342,13 +361,19 @@ function resetApp(){
 // =========================
 
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") {
+
+  if(document.visibilityState === "visible"){
+
+    loadAll();
+
     setTimeout(() => {
-  setTimeout(() => {
-  refreshApp();
-}, 0);
-}, 0);
+
+      refreshApp();
+
+    }, 50);
+
   }
+
 });
 
 // =========================

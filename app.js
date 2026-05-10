@@ -91,9 +91,11 @@ function saveAll(){
 
 }
 function refreshApp(){
-  
-   if(!Array.isArray(window.revenusDetail)) return;
-  
+
+  loadAll();
+
+  if(!Array.isArray(window.revenusDetail)) return;
+
   renderRevenusPage?.();
   renderDepensesPage?.();
   renderEpargneHistorique?.();
@@ -232,16 +234,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
   loadAll();
 
-  // 🔥 attendre que tout soit prêt
+  // 🔥 attendre Safari/iOS
   setTimeout(() => {
 
     initUI?.();
 
-    refreshApp();
-
+    // ✅ D'abord afficher la section
     showSection("resume");
 
+    // ✅ Puis render APRÈS
+    refreshApp();
+
+    // 🔥 Double refresh spécial iOS PWA
+    setTimeout(() => {
+
+      refreshApp();
+
+    }, 120);
+
   }, 50);
+
 });
 
 function sauvegardeAuto(){

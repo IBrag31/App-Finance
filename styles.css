@@ -486,3 +486,11 @@ MODAL
   cursor: pointer;
 
 }
+
+/* =========================
+   SAFE AREA iOS
+========================= */
+
+.safe-ios{
+  padding-bottom: env(safe-area-inset-bottom);
+}

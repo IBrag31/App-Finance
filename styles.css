@@ -357,3 +357,132 @@ MODAL
   color:white;
   font-size:18px;
 }
+
+/* =========================
+   MODALE GLOBALE
+========================= */
+
+.modal-overlay{
+
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.65);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 9999;
+
+  backdrop-filter: blur(6px);
+
+  opacity: 1;
+  transition: opacity 0.2s ease;
+
+}
+
+.modal-overlay.hidden{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-box{
+
+  width: 100%;
+  max-width: 420px;
+
+  background: #111827;
+
+  border-radius: 22px;
+
+  padding: 20px;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.45);
+
+  transform: translateY(0);
+  transition: transform 0.2s ease;
+
+}
+
+.modal-overlay.hidden .modal-box{
+  transform: translateY(10px);
+}
+
+.modal-header{
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+
+}
+
+.modal-header h2{
+
+  margin: 0;
+
+  color: white;
+  font-size: 20px;
+
+}
+
+#closeModalBtn{
+
+  background: transparent;
+  border: none;
+
+  color: white;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+}
+
+.modal-input{
+
+  width: 100%;
+
+  background: #1f2937;
+
+  border: 1px solid #374151;
+
+  border-radius: 14px;
+
+  padding: 14px;
+
+  color: white;
+
+  font-size: 16px;
+
+  margin-bottom: 14px;
+
+  box-sizing: border-box;
+
+}
+
+.modal-button{
+
+  width: 100%;
+
+  border: none;
+
+  border-radius: 14px;
+
+  padding: 14px;
+
+  background: #3b82f6;
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+}

@@ -286,3 +286,27 @@ document.addEventListener("visibilitychange", () => {
 }, 0);
   }
 });
+
+// =========================
+// PWA / SERVICE WORKER
+// =========================
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", async () => {
+
+    try {
+
+      const registration = await navigator.serviceWorker.register("./service-worker.js");
+
+      console.log("✅ Service Worker actif :", registration.scope);
+
+    } catch (error) {
+
+      console.error("❌ Erreur Service Worker :", error);
+
+    }
+
+  });
+
+}

@@ -1,4 +1,61 @@
 // =========================
+// MODALE GLOBALE
+// =========================
+
+function openModal(title, contentHTML){
+
+  const modal =
+    document.getElementById("appModal");
+
+  const modalTitle =
+    document.getElementById("modalTitle");
+
+  const modalContent =
+    document.getElementById("modalContent");
+
+  if(!modal) return;
+
+  modalTitle.innerHTML = title;
+  modalContent.innerHTML = contentHTML;
+
+  modal.classList.remove("hidden");
+
+  document.body.style.overflow = "hidden";
+
+}
+
+function closeModal(){
+
+  const modal =
+    document.getElementById("appModal");
+
+  if(!modal) return;
+
+  modal.classList.add("hidden");
+
+  document.body.style.overflow = "";
+
+}
+
+// fermeture bouton X
+document.addEventListener("click", e => {
+
+  if(e.target.id === "closeModalBtn"){
+    closeModal();
+  }
+
+});
+
+// fermeture fond noir
+document.addEventListener("click", e => {
+
+  if(e.target.id === "appModal"){
+    closeModal();
+  }
+
+});
+
+// =========================
 // TOAST
 // =========================
 

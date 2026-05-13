@@ -75,48 +75,118 @@ function getTotalRevenus(){
 
 function renderRevenusPage(){
 
-  const list = document.getElementById("revenusList");
+  const list =
+    document.getElementById("revenusList");
+
   if(!list) return;
 
+  // reset liste
   list.innerHTML = "";
 
-  [...window.revenusDetail]
-    .sort((a, b) => b.mois.localeCompare(a.mois))
-    .forEach((r) => {
-
-      const div = document.createElement("div");
-      div.className = "depense-row";
-
-      div.addEventListener("click", () => {
-        modifierRevenu(r);
-      });
-
-     div.innerHTML = `
-  <div style="flex:1">
-    <div>${r.nom}</div>
-    <div style="opacity:0.6;font-size:13px">
-      ${formatMois(r.mois)} • ${euro(r.montant)}
-    </div>
-  </div>
-
-  <button class="delete-btn" onclick="supprimerRevenu(${r.id})">×</button>
-`;
-
-      list.appendChild(div);
-    });
-
-  const totalGlobal = getTotalRevenus() + window.especes;
-  setText("revenusPage", euro(totalGlobal));
-
-  const moisBudget = getMoisBudget();
-
-  const label = document.getElementById("moisActuelLabel");
-  if(label){
-    label.innerText = formatMois(moisBudget);
+  // sécurité
+  if(!Array.isArray(window.revenusDetail)){
+    window.revenusDetail = [];
   }
 
-  const totalMois = getRevenusDuMois(moisBudget);
-  setText("revenusMois", euro(totalMois));
+  // tri revenus
+  [...window.revenusDetail]
+
+    .sort((a, b) =>
+      b.mois.localeCompare(a.mois)
+    )
+
+    .forEach((r) => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "depense-row";
+
+      // clic modification
+      div.addEventListener("click", () => {
+
+        modifierRevenu(r);
+
+      });
+
+      div.innerHTML = `
+
+        <div style="flex:1">
+
+          <div>
+            ${r.nom}
+          </div>
+
+          <div style="
+            opacity:0.6;
+            font-size:13px;
+            margin-top:2px;
+          ">
+
+            ${formatMois(r.mois)}
+            •
+            ${euro(r.montant)}
+
+          </div>
+
+        </div>
+
+        <button
+          class="delete-btn"
+          data-id="${r.id}"
+        >
+          ×
+        </button>
+
+      `;
+
+      // suppression sécurisée
+      div.querySelector(".delete-btn")
+        ?.addEventListener("click", (e) => {
+
+          e.stopPropagation();
+
+          supprimerRevenu(r.id);
+
+        });
+
+      list.appendChild(div);
+
+    });
+
+  // total global
+  const totalGlobal =
+    getTotalRevenus() + window.especes;
+
+  setText(
+    "revenusPage",
+    euro(totalGlobal)
+  );
+
+  // mois budget
+  const moisBudget =
+    getMoisBudget();
+
+  // label mois
+  const label =
+    document.getElementById("moisActuelLabel");
+
+  if(label){
+
+    label.innerText =
+      formatMois(moisBudget);
+
+  }
+
+  // total mois
+  const totalMois =
+    getRevenusDuMois(moisBudget);
+
+  setText(
+    "revenusMois",
+    euro(totalMois)
+  );
+
 }
 
 // =========================
@@ -125,35 +195,48 @@ function renderRevenusPage(){
 
 function openAddRevenu(){
 
-  if(document.getElementById("modalRevenu")) return;
+  openModal("Ajouter un revenu", `
 
-  const modal = document.createElement("div");
-  modal.className = "modal show";
-  modal.id = "modalRevenu";
+    <input
+      id="revenuNom"
+      class="modal-input"
+      placeholder="Nom du revenu"
+    >
 
-  modal.innerHTML = `
-    <div class="modal-content">
-      <h3>Ajouter un revenu</h3>
+    <input
+      id="revenuMontant"
+      class="modal-input"
+      type="number"
+      placeholder="Montant"
+    >
 
-      <input id="revenuNom" placeholder="Nom du revenu">
-      <input id="revenuMontant" type="number" placeholder="Montant">
+    <button
+      id="btnValidateRevenu"
+      class="modal-button"
+    >
+      Ajouter
+    </button>
 
-      <button id="btnAddRevenu">Ajouter</button>
-      <button id="btnCancelRevenu">Annuler</button>
-    </div>
-  `;
+  `);
 
-  document.body.appendChild(modal);
+  // focus auto iPhone
+  setTimeout(() => {
 
-  modal.querySelector("#btnCancelRevenu").onclick = fermerModalRevenu;
-  modal.querySelector("#btnAddRevenu").onclick = () => {
-    validerRevenu();
-    fermerModalRevenu();
-  };
-}
+    document
+      .getElementById("revenuNom")
+      ?.focus();
 
-function fermerModalRevenu(){
-  document.getElementById("modalRevenu")?.remove();
+  }, 120);
+
+  // validation
+  document
+    .getElementById("btnValidateRevenu")
+    ?.addEventListener("click", () => {
+
+      validerRevenu();
+
+    });
+
 }
 
 // =========================
@@ -162,54 +245,146 @@ function fermerModalRevenu(){
 
 function validerRevenu(){
 
-  const nom = document.getElementById("revenuNom")?.value.trim();
-  const montant = parseFloat(document.getElementById("revenuMontant")?.value);
+  const nom =
+    document
+      .getElementById("revenuNom")
+      ?.value
+      .trim();
 
+  const montant =
+    parseFloat(
+      document
+        .getElementById("revenuMontant")
+        ?.value
+    );
+
+  // validation
   if(!nom || isNaN(montant) || montant <= 0){
+
     showToast?.("⚠️ Montant invalide");
+
     return;
+
   }
 
-if(!Array.isArray(window.revenusDetail)){
-  window.revenusDetail = [];
-}
+  // sécurité
+  if(!Array.isArray(window.revenusDetail)){
+    window.revenusDetail = [];
+  }
 
-window.revenusDetail.push({
-id: Date. now(), nom,
-montant: Math. round(montant * 100) / 100, mois: getMoisBudget()
-});
+  // ajout revenu
+  window.revenusDetail.push({
 
+    id: Date.now(),
+
+    nom,
+
+    montant:
+      Math.round(montant * 100) / 100,
+
+    mois: getMoisBudget()
+
+  });
+
+  // sauvegarde
   saveAll();
-refreshApp();
 
-// 🔥 ajoute ça
-setTimeout(() => {
-  fermerModalRevenu();
-}, 0);
+  // refresh UI
+  refreshApp();
 
+  // fermeture modale
+  closeModal();
+
+  // toast
   showToast?.("💰 Revenu ajouté");
+
 }
 
 // =========================
 
 function modifierRevenu(revenu){
 
-  const index = window.revenusDetail.findIndex(r => r.id === revenu.id);
-  if(index === -1) return;
+  openModal("Modifier revenu", `
 
-  const nouveauNom = prompt("Nom :", revenu.nom);
-  if(!nouveauNom) return;
+    <input
+      id="editRevenuNom"
+      class="modal-input"
+      value="${revenu.nom}"
+    >
 
-  const nouveauMontant = parseFloat(prompt("Montant :", revenu.montant));
-  if(isNaN(nouveauMontant)) return;
+    <input
+      id="editRevenuMontant"
+      class="modal-input"
+      type="number"
+      value="${revenu.montant}"
+    >
 
-  window.revenusDetail[index].nom = nouveauNom;
-  window.revenusDetail[index].montant = nouveauMontant;
+    <button
+      id="btnSaveRevenu"
+      class="modal-button"
+    >
+      Enregistrer
+    </button>
 
-  saveAll();
-  refreshApp();
+  `);
 
-  showToast?.("✏️ Revenu modifié");
+  setTimeout(() => {
+
+    document
+      .getElementById("editRevenuNom")
+      ?.focus();
+
+  }, 120);
+
+  document
+    .getElementById("btnSaveRevenu")
+    ?.addEventListener("click", () => {
+
+      const nouveauNom =
+        document
+          .getElementById("editRevenuNom")
+          ?.value
+          .trim();
+
+      const nouveauMontant =
+        parseFloat(
+          document
+            .getElementById("editRevenuMontant")
+            ?.value
+        );
+
+      if(
+        !nouveauNom ||
+        isNaN(nouveauMontant) ||
+        nouveauMontant <= 0
+      ){
+
+        showToast?.("⚠️ Montant invalide");
+        return;
+
+      }
+
+      const index =
+        window.revenusDetail
+          .findIndex(r => r.id === revenu.id);
+
+      if(index === -1) return;
+
+      window.revenusDetail[index].nom =
+        nouveauNom;
+
+      window.revenusDetail[index].montant =
+        Math.round(nouveauMontant * 100) / 100;
+
+      saveAll();
+      refreshApp();
+
+      closeModal();
+
+      showToast?.("✏️ Revenu modifié");
+
+    });
+
 }
 
 // =========================

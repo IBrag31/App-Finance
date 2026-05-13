@@ -492,5 +492,20 @@ MODAL
 ========================= */
 
 .safe-ios{
-  padding-bottom: env(safe-area-inset-bottom);
+
+  padding-top: env(safe-area-inset-top);
+
+  padding-bottom:
+    env(safe-area-inset-bottom);
+
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header{
+
+  padding-top: 12px;
+
 }

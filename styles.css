@@ -152,10 +152,11 @@ SECTIONS (🔥 FIX IMPORTANT)
 
   gap:12px;
 
-  padding-top: 42px;
+  padding-top:
+    calc(env(safe-area-inset-top) + 6px);
 
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left:12px;
+  padding-right:12px;
 
   padding-bottom:
     calc(120px + env(safe-area-inset-bottom));

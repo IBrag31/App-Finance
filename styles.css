@@ -146,11 +146,22 @@ SECTIONS (🔥 FIX IMPORTANT)
 }
 
 .section-scroll{
+
   display:flex;
   flex-direction:column;
+
   gap:12px;
-  padding:16px 12px 120px;
+
+  padding-top: 42px;
+
+  padding-left: 12px;
+  padding-right: 12px;
+
+  padding-bottom:
+    calc(120px + env(safe-area-inset-bottom));
+
   min-height:100%;
+
 }
 
 /* =========================
@@ -497,17 +508,5 @@ MODAL
 
   padding-bottom:
     env(safe-area-inset-bottom);
-
-}
-
-/* =========================
-   PAGE HEADER
-========================= */
-
-.page-header{
-
-  padding-top: 24px;
-
-  padding-left: 4px;
 
 }

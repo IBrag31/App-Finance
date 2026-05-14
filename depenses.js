@@ -17,48 +17,116 @@ function calculTotalDepenses(){
 
 function renderDepensesPage(){
 
-  const fixes = document.getElementById("depensesFixesPage");
-  const variables = document.getElementById("depensesVariablesPage");
+  const fixes =
+    document.getElementById("depensesFixesPage");
+
+  const variables =
+    document.getElementById("depensesVariablesPage");
 
   if(fixes) fixes.innerHTML = "";
   if(variables) variables.innerHTML = "";
+
+  // sécurité
+  if(!Array.isArray(window.depensesDetail)){
+    window.depensesDetail = [];
+  }
 
   let totalFixes = 0;
   let totalVariables = 0;
 
   window.depensesDetail.forEach((d, i) => {
 
-    const montant = Number(d.montant) || 0;
+    const montant =
+      Number(d.montant) || 0;
 
-    const row = document.createElement("div");
+    const row =
+      document.createElement("div");
+
     row.className = "depense-row";
 
-    row.onclick = () => modifierDepense(i);
+    // clic modification
+    row.addEventListener("click", () => {
+
+      modifierDepense(i);
+
+    });
 
     row.innerHTML = `
-  <div style="flex:1">
-    <div>${d.nom}</div>
-    <div style="opacity:0.6;font-size:13px">
-      ${euro(montant)}
-    </div>
-  </div>
 
-  <button class="delete-btn" onclick="supprimerDepense(${i})">×</button>
-`;
+      <div style="flex:1">
 
+        <div>
+          ${d.nom}
+        </div>
+
+        <div style="
+          opacity:0.6;
+          font-size:13px;
+          margin-top:2px;
+        ">
+
+          ${euro(montant)}
+
+        </div>
+
+      </div>
+
+      <button
+        class="delete-btn"
+        data-index="${i}"
+      >
+        ×
+      </button>
+
+    `;
+
+    // suppression sécurisée
+    row.querySelector(".delete-btn")
+      ?.addEventListener("click", (e) => {
+
+        e.stopPropagation();
+
+        supprimerDepense(i);
+
+      });
+
+    // append
     if(d.type === "fixe"){
-      if(fixes) fixes.appendChild(row);
+
+      if(fixes){
+        fixes.appendChild(row);
+      }
+
       totalFixes += montant;
+
     } else {
-      if(variables) variables.appendChild(row);
+
+      if(variables){
+        variables.appendChild(row);
+      }
+
       totalVariables += montant;
+
     }
 
   });
 
-  setText("totalFixesPage", euro(totalFixes));
-  setText("totalVariablesPage", euro(totalVariables));
-  setText("depensesTotalPage", euro(totalFixes + totalVariables));
+  // totaux
+  setText(
+    "totalFixesPage",
+    euro(totalFixes)
+  );
+
+  setText(
+    "totalVariablesPage",
+    euro(totalVariables)
+  );
+
+  setText(
+    "depensesTotalPage",
+    euro(totalFixes + totalVariables)
+  );
+
 }
 
 // =========================
@@ -67,33 +135,60 @@ function renderDepensesPage(){
 
 function validerDepense(){
 
-  const nom = document.getElementById("depenseNom")?.value.trim();
-  const montant = parseFloat(document.getElementById("depenseMontant")?.value);
-  const type = document.getElementById("typeDepense")?.value || "variable";
+  const nom =
+    document
+      .getElementById("depenseNom")
+      ?.value
+      .trim();
 
+  const montant =
+    parseFloat(
+      document
+        .getElementById("depenseMontant")
+        ?.value
+    );
+
+  const type =
+    document
+      .getElementById("typeDepense")
+      ?.value || "variable";
+
+  // validation
   if(!nom || isNaN(montant) || montant <= 0){
+
     showToast?.("⚠️ Valeur invalide");
+
     return;
+
   }
 
+  // sécurité
   if(!Array.isArray(window.depensesDetail)){
-  window.depensesDetail = [];
-}
+    window.depensesDetail = [];
+  }
 
-		window.depensesDetail.push({
-  nom,
-  montant: Math.round(montant * 100) / 100,
-  type
-});
-		montant: Math.round(montant * 100) / 100,
+  // ajout
+  window.depensesDetail.push({
+
+    id: Date.now(),
+
+    nom,
+
+    montant:
+      Math.round(montant * 100) / 100,
+
+    type
+
+  });
 
   saveAll();
+
   refreshApp();
 
-  document.getElementById("depenseNom").value = "";
-  document.getElementById("depenseMontant").value = "";
+  closeModal();
 
-  fermerModalDepense();
+  showToast?.("💸 Dépense ajoutée");
+
 }
 
 // =========================
@@ -102,58 +197,62 @@ function validerDepense(){
 
 function openAddDepense(){
 
-  if(document.getElementById("modalDepense")) return;
+  openModal("Ajouter une dépense", `
 
-  const modal = document.createElement("div");
-  modal.className = "modal show";
-  modal.id = "modalDepense";
+    <input
+      id="depenseNom"
+      class="modal-input"
+      placeholder="Nom de la dépense"
+    >
 
-  modal.innerHTML = `
-    <div class="modal-content">
-      <h3>Ajouter une dépense</h3>
+    <input
+      id="depenseMontant"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      placeholder="Montant"
+    >
 
-      <input id="depenseNom" placeholder="Nom de la dépense">
+    <select
+      id="typeDepense"
+      class="modal-input"
+    >
+      <option value="fixe">
+        📦 Fixe
+      </option>
 
-      <input id="depenseMontant" type="number" inputmode="decimal" placeholder="Montant">
+      <option value="variable">
+        🛒 Variable
+      </option>
+    </select>
 
-      <select id="typeDepense">
-        <option value="fixe">📦 Fixe</option>
-        <option value="variable">🛒 Variable</option>
-      </select>
+    <button
+      id="btnValidateDepense"
+      class="modal-button"
+    >
+      Ajouter
+    </button>
 
-      <button id="btnAddDepense">Ajouter</button>
-      <button id="btnCancelDepense">Annuler</button>
-    </div>
-  `;
+  `);
 
-  document.body.appendChild(modal);
+  // focus auto iPhone
+  setTimeout(() => {
 
-  setTimeout(()=>{
-    modal.querySelector("#depenseNom")?.focus();
-  }, 200);
+    document
+      .getElementById("depenseNom")
+      ?.focus();
 
-  modal.addEventListener("click", (e)=>{
-    if(e.target === modal){
-      fermerModalDepense();
-    }
-  });
+  }, 120);
 
-  modal.querySelector("#btnCancelDepense")
-    .addEventListener("click", (e)=>{
-      e.stopPropagation();
-      fermerModalDepense();
-    });
+  // validation
+  document
+    .getElementById("btnValidateDepense")
+    ?.addEventListener("click", () => {
 
-  modal.querySelector("#btnAddDepense")
-    .addEventListener("click", (e)=>{
-      e.stopPropagation();
       validerDepense();
-      fermerModalDepense();
-    });
-}
 
-function fermerModalDepense(){
-  document.getElementById("modalDepense")?.remove();
+    });
+
 }
 
 // =========================
@@ -162,36 +261,121 @@ function fermerModalDepense(){
 
 function modifierDepense(index){
 
-  const depense = window.depensesDetail[index];
+  const depense =
+    window.depensesDetail[index];
 
-  const nouveauNom = prompt("Nom :", depense.nom);
-  if(nouveauNom === null) return;
+  if(!depense) return;
 
-  const nouveauMontant = parseFloat(
-    prompt("Montant :", depense.montant)
-  );
+  openModal("Modifier dépense", `
 
-  if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
+    <input
+      id="editDepenseNom"
+      class="modal-input"
+      value="${depense.nom}"
+    >
 
-  let nouveauType = prompt(
-    "Type : fixe ou variable",
-    depense.type
-  );
+    <input
+      id="editDepenseMontant"
+      class="modal-input"
+      type="number"
+      value="${depense.montant}"
+    >
 
-  if(!nouveauType) return;
+    <select
+      id="editTypeDepense"
+      class="modal-input"
+    >
 
-  nouveauType = nouveauType.toLowerCase().trim();
+      <option
+        value="fixe"
+        ${depense.type === "fixe" ? "selected" : ""}
+      >
+        📦 Fixe
+      </option>
 
-  window.depensesDetail[index] = {
-    nom: nouveauNom,
-    montant: nouveauMontant,
-    type: nouveauType
-  };
+      <option
+        value="variable"
+        ${depense.type === "variable" ? "selected" : ""}
+      >
+        🛒 Variable
+      </option>
 
-  saveAll();
-  refreshApp();
+    </select>
 
-  showToast?.("✏️ Dépense modifiée");
+    <button
+      id="btnSaveDepense"
+      class="modal-button"
+    >
+      Enregistrer
+    </button>
+
+  `);
+
+  setTimeout(() => {
+
+    document
+      .getElementById("editDepenseNom")
+      ?.focus();
+
+  }, 120);
+
+  document
+    .getElementById("btnSaveDepense")
+    ?.addEventListener("click", () => {
+
+      const nouveauNom =
+        document
+          .getElementById("editDepenseNom")
+          ?.value
+          .trim();
+
+      const nouveauMontant =
+        parseFloat(
+          document
+            .getElementById("editDepenseMontant")
+            ?.value
+        );
+
+      const nouveauType =
+        document
+          .getElementById("editTypeDepense")
+          ?.value || "variable";
+
+      if(
+        !nouveauNom ||
+        isNaN(nouveauMontant) ||
+        nouveauMontant <= 0
+      ){
+
+        showToast?.("⚠️ Valeur invalide");
+
+        return;
+
+      }
+
+      window.depensesDetail[index] = {
+
+        ...depense,
+
+        nom: nouveauNom,
+
+        montant:
+          Math.round(nouveauMontant * 100) / 100,
+
+        type: nouveauType
+
+      };
+
+      saveAll();
+
+      refreshApp();
+
+      closeModal();
+
+      showToast?.("✏️ Dépense modifiée");
+
+    });
+
 }
 
 // =========================

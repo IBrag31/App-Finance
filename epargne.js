@@ -9,15 +9,24 @@ function getMoisActuel(){
 }
 
 function formatMois(moisStr){
-  const [annee, mois] = moisStr.split("-");
-  const date = new Date(annee, mois - 1);
 
-  let str = date.toLocaleDateString("fr-FR", {
-    month: "long",
-    year: "numeric"
-  });
+  const [annee, mois] =
+    moisStr.split("-");
 
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  const date =
+    new Date(annee, mois - 1);
+
+  let str =
+    date.toLocaleDateString("fr-FR", {
+      month: "long",
+      year: "numeric"
+    });
+
+  return (
+    str.charAt(0).toUpperCase() +
+    str.slice(1)
+  );
+
 }
 
 // =========================
@@ -25,16 +34,35 @@ function formatMois(moisStr){
 // =========================
 
 function getTotalEpargne(){
+
   return window.epargneHistorique.reduce(
-    (sum, e) => sum + (Number(e.montant) || 0),
+
+    (sum, e) =>
+
+      sum + (Number(e.montant) || 0),
+
     0
+
   );
+
 }
 
 function getEpargneDuMois(mois){
+
   return window.epargneHistorique
+
     .filter(e => e.mois === mois)
-    .reduce((sum, e) => sum + (Number(e.montant) || 0), 0);
+
+    .reduce(
+
+      (sum, e) =>
+
+        sum + (Number(e.montant) || 0),
+
+      0
+
+    );
+
 }
 
 // =========================
@@ -43,42 +71,102 @@ function getEpargneDuMois(mois){
 
 function renderEpargneHistorique(){
 
-  const list = document.getElementById("epargneHistoriqueList");
+  const list =
+    document.getElementById(
+      "epargneHistoriqueList"
+    );
+
   if(!list) return;
 
   list.innerHTML = "";
 
+  // sécurité
+  if(!Array.isArray(window.epargneHistorique)){
+    window.epargneHistorique = [];
+  }
+
   let total = 0;
 
-  [...window.epargneHistorique].forEach((e) => {
+  [...window.epargneHistorique]
 
-  const montant = Number(e.montant) || 0;
-  total += montant;
+    .forEach((e) => {
 
-  const row = document.createElement("div");
-  row.className = "depense-row";
+      const montant =
+        Number(e.montant) || 0;
 
-  const realIndex = window.epargneHistorique.indexOf(e);
-  row.onclick = () => modifierEpargne(realIndex);
+      total += montant;
 
-  row.innerHTML = `
-  <div style="flex:1">
-    <div>${formatMois(e.mois)}</div>
-    <div style="opacity:0.6;font-size:13px;color:#3b82f6">
-      ${euro(montant)}
-    </div>
-  </div>
+      const row =
+        document.createElement("div");
 
-  <button class="delete-btn" onclick="supprimerEpargne(${realIndex})">×</button>
-`;
+      row.className = "depense-row";
 
-  list.appendChild(row);
-});
+      const realIndex =
+        window.epargneHistorique.indexOf(e);
 
-  setText("epargneHistoriqueTotal", total ? euro(total) : "—");
+      // clic modification
+      row.addEventListener("click", () => {
 
-document.getElementById("epargneHistoriqueTotal")
-  ?.style.setProperty("color", "#3b82f6");
+        modifierEpargne(realIndex);
+
+      });
+
+      row.innerHTML = `
+
+        <div style="flex:1">
+
+          <div>
+            ${formatMois(e.mois)}
+          </div>
+
+          <div style="
+            opacity:0.6;
+            font-size:13px;
+            color:#3b82f6;
+            margin-top:2px;
+          ">
+
+            ${euro(montant)}
+
+          </div>
+
+        </div>
+
+        <button
+          class="delete-btn"
+          data-index="${realIndex}"
+        >
+          ×
+        </button>
+
+      `;
+
+      // suppression sécurisée
+      row.querySelector(".delete-btn")
+        ?.addEventListener("click", (e) => {
+
+          e.stopPropagation();
+
+          supprimerEpargne(realIndex);
+
+        });
+
+      list.appendChild(row);
+
+    });
+
+  setText(
+    "epargneHistoriqueTotal",
+    total ? euro(total) : "—"
+  );
+
+  document
+    .getElementById("epargneHistoriqueTotal")
+    ?.style.setProperty(
+      "color",
+      "#3b82f6"
+    );
+
 }
 
 // =========================
@@ -86,14 +174,27 @@ document.getElementById("epargneHistoriqueTotal")
 // =========================
 
 function renderEpargneMois(){
-  const el = document.getElementById("epargneMoisPage");
+
+  const el =
+    document.getElementById(
+      "epargneMoisPage"
+    );
+
   if(!el) return;
 
-  const mois = new Date().toISOString().slice(0,7);
-  const total = getEpargneDuMois(mois);
+  const mois =
+    new Date()
+      .toISOString()
+      .slice(0,7);
+
+  const total =
+    getEpargneDuMois(mois);
 
   el.innerText = euro(total);
-  el.style.color = "var(--color-epargne)";
+
+  el.style.color =
+    "var(--color-epargne)";
+
 }
 
 // =========================
@@ -102,73 +203,71 @@ function renderEpargneMois(){
 
 function openAddEpargne(){
 
-  if(document.getElementById("modalEpargne")) return;
+  const moisActuel =
+    getMoisActuel().slice(5,7);
 
-  const modal = document.createElement("div");
-  modal.className = "modal show";
-  modal.id = "modalEpargne";
+  openModal("Ajouter épargne", `
 
-  const moisActuel = getMoisActuel().slice(5,7);
+    <input
+      id="epargneMontant"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      placeholder="Montant"
+    >
 
-  modal.innerHTML = `
-    <div class="modal-content">
-      <h3>Ajouter épargne</h3>
+    <select
+      id="epargneMois"
+      class="modal-input"
+    >
 
-      <input id="epargneMontant"
-             type="number"
-             inputmode="decimal"
-             placeholder="Montant">
+      <option value="01">Janvier</option>
+      <option value="02">Février</option>
+      <option value="03">Mars</option>
+      <option value="04">Avril</option>
+      <option value="05">Mai</option>
+      <option value="06">Juin</option>
+      <option value="07">Juillet</option>
+      <option value="08">Août</option>
+      <option value="09">Septembre</option>
+      <option value="10">Octobre</option>
+      <option value="11">Novembre</option>
+      <option value="12">Décembre</option>
 
-      <select id="epargneMois">
-        <option value="01">Janvier</option>
-        <option value="02">Février</option>
-        <option value="03">Mars</option>
-        <option value="04">Avril</option>
-        <option value="05">Mai</option>
-        <option value="06">Juin</option>
-        <option value="07">Juillet</option>
-        <option value="08">Août</option>
-        <option value="09">Septembre</option>
-        <option value="10">Octobre</option>
-        <option value="11">Novembre</option>
-        <option value="12">Décembre</option>
-      </select>
+    </select>
 
-      <button id="btnAddEpargne">Ajouter</button>
-      <button id="btnCancelEpargne">Annuler</button>
-    </div>
-  `;
+    <button
+      id="btnValidateEpargne"
+      class="modal-button"
+    >
+      Ajouter
+    </button>
 
-  document.body.appendChild(modal);
+  `);
 
-  modal.querySelector("#epargneMois").value = moisActuel;
+  // mois actuel
+  document
+    .getElementById("epargneMois")
+    .value = moisActuel;
 
-  setTimeout(()=>{
-    modal.querySelector("#epargneMontant")?.focus();
-  },200);
+  // focus iPhone
+  setTimeout(() => {
 
-  modal.addEventListener("click",(e)=>{
-    if(e.target === modal){
-      fermerModalEpargne();
-    }
-  });
+    document
+      .getElementById("epargneMontant")
+      ?.focus();
 
-  modal.querySelector("#btnCancelEpargne")
-    .addEventListener("click",(e)=>{
-      e.stopPropagation();
-      fermerModalEpargne();
-    });
+  }, 120);
 
-  modal.querySelector("#btnAddEpargne")
-    .addEventListener("click",(e)=>{
-      e.stopPropagation();
+  // validation
+  document
+    .getElementById("btnValidateEpargne")
+    ?.addEventListener("click", () => {
+
       validerEpargne();
-      fermerModalEpargne();
-    });
-}
 
-function fermerModalEpargne(){
-  document.getElementById("modalEpargne")?.remove();
+    });
+
 }
 
 // =========================
@@ -177,69 +276,155 @@ function fermerModalEpargne(){
 
 function validerEpargne(){
 
-  const montantInput = document.getElementById("epargneMontant");
-  const moisInput = document.getElementById("epargneMois");
+  const montant =
+    parseFloat(
 
-  const montant = parseFloat(montantInput?.value);
-  const annee = new Date().getFullYear();
-  const mois = `${annee}-${moisInput.value}`;
+      document
+        .getElementById("epargneMontant")
+        ?.value
 
+    );
+
+  const moisInput =
+    document
+      .getElementById("epargneMois");
+
+  const annee =
+    new Date().getFullYear();
+
+  const mois =
+    `${annee}-${moisInput.value}`;
+
+  // validation
   if(isNaN(montant) || montant <= 0){
+
     showToast?.("⚠️ Montant invalide");
+
     return;
+
   }
 
+  // sécurité
   if(!Array.isArray(window.epargneHistorique)){
-  window.epargneHistorique = [];
-}
+    window.epargneHistorique = [];
+  }
 
-window.epargneHistorique.push({
-  montant: Math.round(montant * 100) / 100,
-  mois
-});
+  // ajout
+  window.epargneHistorique.push({
+
+    id: Date.now(),
+
+    montant:
+      Math.round(montant * 100) / 100,
+
+    mois
+
+  });
 
   saveAll();
+
   refreshApp();
 
+  closeModal();
+
   showToast?.("💙 Épargne ajoutée");
+
 }
 
+// =========================
+// MODIFIER
 // =========================
 
 function modifierEpargne(index){
 
-  const e = window.epargneHistorique[index];
+  const e =
+    window.epargneHistorique[index];
 
-  const choix = prompt(
-    "Modifier montant ou taper 'supprimer'",
-    e.montant
-  );
+  if(!e) return;
 
-  if(choix === null) return;
+  openModal("Modifier épargne", `
 
-  if(choix.toLowerCase() === "supprimer"){
-    supprimerEpargne(index);
-    return;
-  }
+    <input
+      id="editEpargneMontant"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      value="${e.montant}"
+    >
 
-  const nouveauMontant = parseFloat(choix);
+    <button
+      id="btnSaveEpargne"
+      class="modal-button"
+    >
+      Enregistrer
+    </button>
 
-  if(isNaN(nouveauMontant) || nouveauMontant < 0) return;
+  `);
 
-  window.epargneHistorique[index].montant = nouveauMontant;
+  // focus iPhone
+  setTimeout(() => {
 
-  saveAll();
-  refreshApp();
+    document
+      .getElementById("editEpargneMontant")
+      ?.focus();
 
-  showToast?.("✏️ Épargne modifiée");
+  }, 120);
+
+  // sauvegarde
+  document
+    .getElementById("btnSaveEpargne")
+    ?.addEventListener("click", () => {
+
+      const nouveauMontant =
+        parseFloat(
+
+          document
+            .getElementById("editEpargneMontant")
+            ?.value
+
+        );
+
+      // validation
+      if(
+        isNaN(nouveauMontant) ||
+        nouveauMontant <= 0
+      ){
+
+        showToast?.("⚠️ Montant invalide");
+
+        return;
+
+      }
+
+      // update
+      window.epargneHistorique[index].montant =
+
+        Math.round(nouveauMontant * 100) / 100;
+
+      saveAll();
+
+      refreshApp();
+
+      closeModal();
+
+      showToast?.("✏️ Épargne modifiée");
+
+    });
+
 }
 
 // =========================
+// SUPPRIMER
+// =========================
 
 function supprimerEpargne(index){
+
   window.epargneHistorique.splice(index,1);
+
   saveAll();
+
   refreshApp();
 
   showToast?.("🗑️ Épargne supprimée");
+
 }

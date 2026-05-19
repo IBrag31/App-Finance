@@ -29,9 +29,13 @@ APP CONTAINER (🔥 FIX)
 ========================= */
 
 .app-container{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow: hidden;
+
 }
 
 /* =========================
@@ -130,19 +134,45 @@ TABBAR
 }
 
 /* =========================
-SECTIONS (🔥 FIX IMPORTANT)
+SECTIONS
 ========================= */
 
 .section{
-  display:none;
-  min-height:100vh;
-  width:100%;
-  position:relative;
-  transform: translateZ(0); /* 🔥 fix iOS */
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  opacity: 0;
+
+  transform:
+    translateY(12px);
+
+  pointer-events: none;
+
+  transition:
+
+    opacity 0.22s ease,
+
+    transform 0.22s ease;
+
+  will-change:
+    opacity,
+    transform;
+
 }
 
 .section.active{
-  display:block;
+
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  pointer-events: auto;
+
 }
 
 .section-scroll{
@@ -162,6 +192,12 @@ SECTIONS (🔥 FIX IMPORTANT)
     calc(120px + env(safe-area-inset-bottom));
 
   min-height:100%;
+
+  height:100vh;
+
+  overflow-y:auto;
+
+  -webkit-overflow-scrolling:touch;
 
 }
 

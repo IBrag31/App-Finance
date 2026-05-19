@@ -28,6 +28,26 @@ function getMoisBudget(){
 
 }
 
+function changerMois(direction){
+
+  const date =
+    new Date(
+      window.moisSelectionne + "-01"
+    );
+
+  date.setMonth(
+    date.getMonth() + direction
+  );
+
+  window.moisSelectionne =
+    date
+      .toISOString()
+      .slice(0,7);
+
+  refreshApp();
+
+}
+
 // =========================
 // DATA CENTRALISÉE
 // =========================
@@ -358,13 +378,20 @@ function updateBudget(){
     getEpargneDuMois(mois);
 
   // label mois
-  const moisLabel =
-    formatMois?.(mois);
+const moisLabel =
+  formatMois?.(mois);
 
-  setText(
-    "revenusDashboardMois",
-    moisLabel || "Ce mois"
-  );
+setText(
+  "revenusDashboardMois",
+  moisLabel || "Ce mois"
+);
+
+setText(
+  "moisGlobalLabel",
+  formatMois(mois)
+);
+  
+  
 
   // objectifs
   const objectifDepenses = 1250;

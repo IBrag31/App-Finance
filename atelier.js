@@ -58,6 +58,18 @@ function getMargeMoyenne(){
 
 }
 
+function calculCoutTotal(appareil){
+
+  return (
+    (Number(appareil.achat) || 0)
+    +
+    (Number(appareil.pieces) || 0)
+    +
+    (Number(appareil.frais) || 0)
+  );
+
+}
+
 // =========================
 // COULEURS MARGE
 // =========================
@@ -193,6 +205,9 @@ function renderAtelier(){
 
       const marge =
         calculMarge(a);
+      
+      const coutTotal =
+  calculCoutTotal(a);
         
       const realIndex =
   window.atelier.findIndex(
@@ -284,6 +299,25 @@ ${a.appareil}
 // =========================
 
 function openAddAppareil(){
+  
+  <select
+  id="atelierStatut"
+  class="modal-input"
+>
+
+  <option value="encours">
+    🔧 En cours
+  </option>
+
+  <option value="repare">
+    ✅ Réparé
+  </option>
+
+  <option value="vendu">
+    💰 Vendu
+  </option>
+
+</select>
 
   openModal("Ajouter appareil", `
 
@@ -308,6 +342,14 @@ function openAddAppareil(){
       inputmode="decimal"
       placeholder="Coût pièces"
     >
+    
+    <input
+  id="atelierFrais"
+  class="modal-input"
+  type="number"
+  inputmode="decimal"
+  placeholder="Autres frais"
+>
 
     <input
       id="atelierVente"
@@ -371,6 +413,18 @@ function validerAppareil(){
         .getElementById("atelierPieces")
         ?.value
     ) || 0;
+    
+  const frais =
+  parseFloat(
+    document
+      .getElementById("atelierFrais")
+      ?.value
+  ) || 0;
+
+const statut =
+  document
+    .getElementById("atelierStatut")
+    ?.value || "encours";
 
   const vente =
     parseFloat(
@@ -397,21 +451,25 @@ function validerAppareil(){
   }
 
   // ajout
-  window.atelier.push({
+window.atelier.push({
 
-    id: Date.now(),
+  id: Date.now(),
 
-    appareil,
+  appareil,
 
-    achat,
+  achat,
 
-    pieces,
+  pieces,
 
-    vente,
+  frais,
 
-    date: getMoisActuel()
+  vente,
 
-  });
+  statut,
+
+  date: getMoisActuel()
+
+});
 
   saveAll();
 

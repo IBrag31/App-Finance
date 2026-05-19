@@ -103,6 +103,21 @@ href="iconapp-180.png">
   <span>Ce mois</span>
   <div id="epargneMoisDisplay">0 €</div>
 </div>
+
+      <div
+  class="card small-card clickable"
+  onclick="showSection('atelier')"
+>
+
+  <h3>🛠️ Atelier</h3>
+
+  <span>Réparation</span>
+
+  <div id="atelierResumeValue">
+    0 €
+  </div>
+
+</div>
     </div>
 
   </div>
@@ -286,6 +301,82 @@ href="iconapp-180.png">
 </div>
 
 <!-- ========================= -->
+<!-- 🛠️ ATELIER -->
+<!-- ========================= -->
+
+<div class="section" id="section-atelier">
+
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+
+      <div
+        class="back-btn"
+        onclick="showSection('resume')"
+      >
+        ←
+      </div>
+
+      <h1>Atelier</h1>
+
+      <button
+        onclick="openAddAppareil()"
+        class="add-btn"
+      >
+        +
+      </button>
+
+    </div>
+
+    <!-- CARTE PRINCIPALE -->
+    <div class="card revenus-card total-card">
+
+      <div class="revenus-card-header">
+        Marge totale
+      </div>
+
+      <div
+        class="revenus-card-value"
+        id="atelierTotalMarge"
+      >
+        0 €
+      </div>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="cards-grid revenus-grid">
+
+      <div class="card small-card revenus-small">
+
+        <h3>📦 Appareils</h3>
+
+        <div id="atelierTotalAppareils">
+          0
+        </div>
+
+      </div>
+
+      <div class="card small-card revenus-small">
+
+        <h3>📈 Marge moyenne</h3>
+
+        <div id="atelierMargeMoyenne">
+          0 €
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- LISTE -->
+    <div id="atelierList"></div>
+
+  </div>
+
+</div>
+
+<!-- ========================= -->
 <!-- ⚙️ RÉGLAGES -->
 <!-- ========================= -->
 
@@ -330,14 +421,17 @@ href="iconapp-180.png">
 <!-- SCRIPTS -->
 <!-- ========================= -->
 
-<script src="atelier.js"></script>
+<script src="app.js" defer></script>
+
 <script src="ui.js" defer></script>
 
 <script src="revenus.js" defer></script>
+
 <script src="depenses.js" defer></script>
+
 <script src="epargne.js" defer></script>
 
-<script src="app.js" defer></script>
+<script src="atelier.js" defer></script>
 
 <!-- ========================= -->
 <!-- MODALE GLOBALE -->

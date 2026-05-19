@@ -3,6 +3,7 @@ window.revenusDetail = [];
 window.depensesDetail = [];
 window.epargneHistorique = [];
 window.especes = 0;
+window.atelier = [];
 
 // =========================
 // DATA CENTRALISÉE
@@ -23,6 +24,9 @@ function loadAll(){
 
     const especes =
       localStorage.getItem("especes");
+      
+    const atelier =
+      localStorage.getItem("atelier");
 
     window.revenusDetail =
       revenus ? JSON.parse(revenus) : [];
@@ -35,6 +39,9 @@ function loadAll(){
 
     window.especes =
       especes ? JSON.parse(especes) : 0;
+      
+    window.atelier =
+      atelier ? JSON.parse(atelier) : [];
 
   }catch(e){
 
@@ -47,6 +54,7 @@ function loadAll(){
     window.depensesDetail = [];
     window.epargneHistorique = [];
     window.especes = 0;
+    window.atelier = [];
 
   }
 
@@ -88,6 +96,8 @@ function saveAll(){
   safeSet("epargneHistorique", window.epargneHistorique);
 
   safeSet("especes", window.especes || 0);
+  
+  safeSet("atelier", window.atelier);
 
 }
 function refreshApp(){
@@ -101,6 +111,7 @@ function refreshApp(){
   renderEpargneHistorique?.();
   renderEpargneMois?.();
   renderEspeces?.();
+  renderAtelier?.();
 
   renderDashboard();
 }
@@ -281,7 +292,8 @@ function sauvegardeAuto(){
     revenus: window.revenusDetail,
     depenses: window.depensesDetail,
     epargne: window.epargneHistorique,
-    especes: window.especes
+    especes: window.especes,
+    atelier: window.atelier
   };
 
   const blob = new Blob([JSON.stringify(data)], {type:"application/json"});
@@ -319,6 +331,7 @@ function restaurerDepuisIcloud(){
         window.depensesDetail = data.depenses || [];
         window.epargneHistorique = data.epargne || [];
         window.especes = data.especes || 0;
+        window.atelier = data.atelier || [];
 
         saveAll();
         setTimeout(() => {
@@ -347,6 +360,7 @@ function resetApp(){
   window.depensesDetail = [];
   window.epargneHistorique = [];
   window.especes = 0;
+  window.atelier = [];
 
   setTimeout(() => {
   refreshApp();

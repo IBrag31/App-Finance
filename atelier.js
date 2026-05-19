@@ -253,22 +253,43 @@ ${a.appareil}
 
         <div class="atelier-details">
 
-          <div>
-            Achat :
-            ${euro(a.achat)}
-          </div>
+  <div>
+    Achat :
+    ${euro(a.achat)}
+  </div>
 
-          <div>
-            Pièces :
-            ${euro(a.pieces)}
-          </div>
+  <div>
+    Pièces :
+    ${euro(a.pieces)}
+  </div>
 
-          <div>
-            Vente :
-            ${euro(a.vente)}
-          </div>
+  <div>
+    Frais :
+    ${euro(a.frais || 0)}
+  </div>
 
-        </div>
+  <div>
+    Coût total :
+    ${euro(coutTotal)}
+  </div>
+
+  <div>
+    Vente :
+    ${euro(a.vente)}
+  </div>
+
+  <div>
+    Statut :
+    ${
+      a.statut === "vendu"
+        ? "💰 Vendu"
+        : a.statut === "repare"
+        ? "✅ Réparé"
+        : "🔧 En cours"
+    }
+  </div>
+
+</div>
 
         <button
           class="delete-btn atelier-delete"

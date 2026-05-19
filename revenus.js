@@ -51,16 +51,60 @@ function renderEspeces(){
   setTimeout(()=> el.style.transform = "scale(1)", 120);
 }
 
-function ajouterEspeces(){
-  window.especes += 5;
-  saveAll();
-  refreshApp();
-}
+function editEspeces(){
 
-function retirerEspeces(){
-  window.especes = Math.max(0, window.especes - 5);
-  saveAll();
-  refreshApp();
+  openModal("Modifier espèces", `
+
+    <input
+      id="editEspecesInput"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      value="${window.especes || 0}"
+      placeholder="Montant espèces"
+    >
+
+    <button
+      id="btnSaveEspeces"
+      class="modal-button"
+    >
+      Enregistrer
+    </button>
+
+  `);
+
+  setTimeout(() => {
+
+    document
+      .getElementById("editEspecesInput")
+      ?.focus();
+
+  }, 120);
+
+  document
+    .getElementById("btnSaveEspeces")
+    ?.addEventListener("click", () => {
+
+      const value =
+        parseFloat(
+          document
+            .getElementById("editEspecesInput")
+            ?.value
+        );
+
+      window.especes =
+        isNaN(value) ? 0 : value;
+
+      saveAll();
+
+      refreshApp();
+
+      closeModal();
+
+      showToast?.("💵 Espèces modifiées");
+
+    });
+
 }
 
 // =========================

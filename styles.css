@@ -85,7 +85,7 @@ CARDS
 BUTTONS
 ========================= */
 
-button:not(.circle-btn):not(.add-btn):not(.delete-btn),
+button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn),
 .restore-btn{
   width:100%;
   padding:14px;

@@ -11,18 +11,34 @@ window.atelier =
 // CALCULS
 // =========================
 
+function calculCoutTotal(appareil){
+
+  return (
+
+    (Number(appareil.achat) || 0)
+
+    +
+
+    (Number(appareil.pieces) || 0)
+
+    +
+
+    (Number(appareil.frais) || 0)
+
+  );
+
+}
+
 function calculMarge(appareil){
 
   return (
+
     (Number(appareil.vente) || 0)
 
     -
 
-    (Number(appareil.achat) || 0)
+    calculCoutTotal(appareil)
 
-    -
-
-    (Number(appareil.pieces) || 0)
   );
 
 }
@@ -52,26 +68,17 @@ function getMargeMoyenne(){
   if(!window.atelier.length) return 0;
 
   return (
+
     getTotalMarge() /
+
     window.atelier.length
-  );
 
-}
-
-function calculCoutTotal(appareil){
-
-  return (
-    (Number(appareil.achat) || 0)
-    +
-    (Number(appareil.pieces) || 0)
-    +
-    (Number(appareil.frais) || 0)
   );
 
 }
 
 // =========================
-// COULEURS MARGE
+// COULEURS
 // =========================
 
 function getMargeColor(marge){
@@ -89,7 +96,7 @@ function getMargeColor(marge){
 }
 
 // =========================
-// RENDER
+// ICONES
 // =========================
 
 function getAppareilIcon(nom){
@@ -146,6 +153,10 @@ function getAppareilIcon(nom){
 
 }
 
+// =========================
+// RENDER
+// =========================
+
 function renderAtelier(){
 
   const list =
@@ -168,11 +179,11 @@ function renderAtelier(){
     "atelierTotalMarge",
     euro(totalMarge)
   );
-  
+
   setText(
-  "atelierResumeValue",
-  euro(totalMarge)
-);
+    "atelierResumeValue",
+    euro(totalMarge)
+  );
 
   // couleur marge totale
   document
@@ -197,34 +208,34 @@ function renderAtelier(){
   // render appareils
   [...window.atelier]
 
-  .slice()
+    .slice()
 
-  .reverse()
+    .reverse()
 
-  .forEach((a) => {
+    .forEach((a) => {
 
       const marge =
         calculMarge(a);
-      
+
       const coutTotal =
-  calculCoutTotal(a);
-        
+        calculCoutTotal(a);
+
       const realIndex =
-  window.atelier.findIndex(
-    item => item.id === a.id
-  );
+        window.atelier.findIndex(
+          item => item.id === a.id
+        );
 
       const row =
         document.createElement("div");
-        
-        row.addEventListener("click", () => {
-
-  modifierAppareil(realIndex);
-
-});
 
       row.className =
         "atelier-card";
+
+      row.addEventListener("click", () => {
+
+        modifierAppareil(realIndex);
+
+      });
 
       row.innerHTML = `
 
@@ -233,7 +244,7 @@ function renderAtelier(){
           <div class="atelier-title">
 
             ${getAppareilIcon(a.appareil)}
-${a.appareil}
+            ${a.appareil}
 
           </div>
 
@@ -253,43 +264,43 @@ ${a.appareil}
 
         <div class="atelier-details">
 
-  <div>
-    Achat :
-    ${euro(a.achat)}
-  </div>
+          <div>
+            Achat :
+            ${euro(a.achat)}
+          </div>
 
-  <div>
-    Pièces :
-    ${euro(a.pieces)}
-  </div>
+          <div>
+            Pièces :
+            ${euro(a.pieces)}
+          </div>
 
-  <div>
-    Frais :
-    ${euro(a.frais || 0)}
-  </div>
+          <div>
+            Frais :
+            ${euro(a.frais || 0)}
+          </div>
 
-  <div>
-    Coût total :
-    ${euro(coutTotal)}
-  </div>
+          <div>
+            Coût total :
+            ${euro(coutTotal)}
+          </div>
 
-  <div>
-    Vente :
-    ${euro(a.vente)}
-  </div>
+          <div>
+            Vente :
+            ${euro(a.vente)}
+          </div>
 
-  <div>
-    Statut :
-    ${
-      a.statut === "vendu"
-        ? "💰 Vendu"
-        : a.statut === "repare"
-        ? "✅ Réparé"
-        : "🔧 En cours"
-    }
-  </div>
+          <div>
+            Statut :
+            ${
+              a.statut === "vendu"
+                ? "💰 Vendu"
+                : a.statut === "repare"
+                ? "✅ Réparé"
+                : "🔧 En cours"
+            }
+          </div>
 
-</div>
+        </div>
 
         <button
           class="delete-btn atelier-delete"
@@ -320,25 +331,6 @@ ${a.appareil}
 // =========================
 
 function openAddAppareil(){
-  
-  <select
-  id="atelierStatut"
-  class="modal-input"
->
-
-  <option value="encours">
-    🔧 En cours
-  </option>
-
-  <option value="repare">
-    ✅ Réparé
-  </option>
-
-  <option value="vendu">
-    💰 Vendu
-  </option>
-
-</select>
 
   openModal("Ajouter appareil", `
 
@@ -363,14 +355,14 @@ function openAddAppareil(){
       inputmode="decimal"
       placeholder="Coût pièces"
     >
-    
+
     <input
-  id="atelierFrais"
-  class="modal-input"
-  type="number"
-  inputmode="decimal"
-  placeholder="Autres frais"
->
+      id="atelierFrais"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      placeholder="Autres frais"
+    >
 
     <input
       id="atelierVente"
@@ -379,6 +371,25 @@ function openAddAppareil(){
       inputmode="decimal"
       placeholder="Prix revente"
     >
+
+    <select
+      id="atelierStatut"
+      class="modal-input"
+    >
+
+      <option value="encours">
+        🔧 En cours
+      </option>
+
+      <option value="repare">
+        ✅ Réparé
+      </option>
+
+      <option value="vendu">
+        💰 Vendu
+      </option>
+
+    </select>
 
     <button
       id="btnAddAppareil"
@@ -434,18 +445,13 @@ function validerAppareil(){
         .getElementById("atelierPieces")
         ?.value
     ) || 0;
-    
-  const frais =
-  parseFloat(
-    document
-      .getElementById("atelierFrais")
-      ?.value
-  ) || 0;
 
-const statut =
-  document
-    .getElementById("atelierStatut")
-    ?.value || "encours";
+  const frais =
+    parseFloat(
+      document
+        .getElementById("atelierFrais")
+        ?.value
+    ) || 0;
 
   const vente =
     parseFloat(
@@ -453,6 +459,11 @@ const statut =
         .getElementById("atelierVente")
         ?.value
     ) || 0;
+
+  const statut =
+    document
+      .getElementById("atelierStatut")
+      ?.value || "encours";
 
   // validation
   if(
@@ -472,25 +483,25 @@ const statut =
   }
 
   // ajout
-window.atelier.push({
+  window.atelier.push({
 
-  id: Date.now(),
+    id: Date.now(),
 
-  appareil,
+    appareil,
 
-  achat,
+    achat,
 
-  pieces,
+    pieces,
 
-  frais,
+    frais,
 
-  vente,
+    vente,
 
-  statut,
+    statut,
 
-  date: getMoisActuel()
+    date: getMoisActuel()
 
-});
+  });
 
   saveAll();
 
@@ -540,6 +551,15 @@ function modifierAppareil(index){
     >
 
     <input
+      id="editAtelierFrais"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      value="${a.frais || 0}"
+      placeholder="Autres frais"
+    >
+
+    <input
       id="editAtelierVente"
       class="modal-input"
       type="number"
@@ -547,6 +567,34 @@ function modifierAppareil(index){
       value="${a.vente}"
       placeholder="Prix vente"
     >
+
+    <select
+      id="editAtelierStatut"
+      class="modal-input"
+    >
+
+      <option
+        value="encours"
+        ${a.statut === "encours" ? "selected" : ""}
+      >
+        🔧 En cours
+      </option>
+
+      <option
+        value="repare"
+        ${a.statut === "repare" ? "selected" : ""}
+      >
+        ✅ Réparé
+      </option>
+
+      <option
+        value="vendu"
+        ${a.statut === "vendu" ? "selected" : ""}
+      >
+        💰 Vendu
+      </option>
+
+    </select>
 
     <button
       id="btnSaveAppareil"
@@ -591,12 +639,24 @@ function modifierAppareil(index){
             ?.value
         ) || 0;
 
+      const frais =
+        parseFloat(
+          document
+            .getElementById("editAtelierFrais")
+            ?.value
+        ) || 0;
+
       const vente =
         parseFloat(
           document
             .getElementById("editAtelierVente")
             ?.value
         ) || 0;
+
+      const statut =
+        document
+          .getElementById("editAtelierStatut")
+          ?.value || "encours";
 
       // validation
       if(
@@ -621,7 +681,11 @@ function modifierAppareil(index){
 
         pieces,
 
-        vente
+        frais,
+
+        vente,
+
+        statut
 
       };
 
@@ -636,6 +700,7 @@ function modifierAppareil(index){
     });
 
 }
+
 // =========================
 // DELETE
 // =========================

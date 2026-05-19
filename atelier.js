@@ -80,6 +80,60 @@ function getMargeColor(marge){
 // RENDER
 // =========================
 
+function getAppareilIcon(nom){
+
+  const n =
+    nom.toLowerCase();
+
+  if(
+    n.includes("lave") ||
+    n.includes("machine")
+  ){
+    return "🧺";
+  }
+
+  if(
+    n.includes("frigo") ||
+    n.includes("réfrigérateur")
+  ){
+    return "🧊";
+  }
+
+  if(
+    n.includes("micro")
+  ){
+    return "📡";
+  }
+
+  if(
+    n.includes("aspirateur")
+  ){
+    return "🌀";
+  }
+
+  if(
+    n.includes("cafetière") ||
+    n.includes("cafe")
+  ){
+    return "☕";
+  }
+
+  if(
+    n.includes("four")
+  ){
+    return "🔥";
+  }
+
+  if(
+    n.includes("lave-vaisselle")
+  ){
+    return "🍽️";
+  }
+
+  return "🔧";
+
+}
+
 function renderAtelier(){
 
   const list =
@@ -157,7 +211,8 @@ function renderAtelier(){
 
           <div class="atelier-title">
 
-            📱 ${a.appareil}
+            ${getAppareilIcon(a.appareil)}
+${a.appareil}
 
           </div>
 

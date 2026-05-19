@@ -102,6 +102,11 @@ function renderAtelier(){
     "atelierTotalMarge",
     euro(totalMarge)
   );
+  
+  setText(
+  "atelierResumeValue",
+  euro(totalMarge)
+);
 
   // couleur marge totale
   document
@@ -126,12 +131,19 @@ function renderAtelier(){
   // render appareils
   [...window.atelier]
 
-    .reverse()
+  .slice()
 
-    .forEach((a, index) => {
+  .reverse()
+
+  .forEach((a) => {
 
       const marge =
         calculMarge(a);
+        
+      const realIndex =
+  window.atelier.findIndex(
+    item => item.id === a.id
+  );
 
       const row =
         document.createElement("div");
@@ -196,7 +208,7 @@ function renderAtelier(){
 
           e.stopPropagation();
 
-          supprimerAppareil(index);
+          supprimerAppareil(realIndex);
 
         });
 

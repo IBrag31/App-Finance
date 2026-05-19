@@ -42,6 +42,18 @@ function loadAll(){
       
     window.atelier =
       atelier ? JSON.parse(atelier) : [];
+      
+      // migration sécurité atelier
+window.atelier =
+  window.atelier.map(a => ({
+
+    frais: 0,
+
+    statut: "encours",
+
+    ...a
+
+  }));
 
   }catch(e){
 

@@ -10,7 +10,16 @@ function getMoisActuel(){
 
 function getMoisBudget(){
 
-  return new Date()
+  const date =
+    new Date();
+
+  // budget basé sur
+  // le salaire du mois précédent
+  date.setMonth(
+    date.getMonth() - 1
+  );
+
+  return date
     .toISOString()
     .slice(0,7);
 

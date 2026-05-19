@@ -9,11 +9,11 @@ function getMoisActuel(){
 }
 
 function getMoisBudget(){
-  const date = new Date();
-  if(date.getDate() <= 10){
-    date.setMonth(date.getMonth() - 1);
-  }
-  return date.toISOString().slice(0,7);
+
+  return new Date()
+    .toISOString()
+    .slice(0,7);
+
 }
 
 function formatMois(moisStr){

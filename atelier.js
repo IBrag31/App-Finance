@@ -201,6 +201,12 @@ function renderAtelier(){
 
       const row =
         document.createElement("div");
+        
+        row.addEventListener("click", () => {
+
+  modifierAppareil(realIndex);
+
+});
 
       row.className =
         "atelier-card";
@@ -417,6 +423,140 @@ function validerAppareil(){
 
 }
 
+// =========================
+// MODIFIER
+// =========================
+
+function modifierAppareil(index){
+
+  const a =
+    window.atelier[index];
+
+  if(!a) return;
+
+  openModal("Modifier appareil", `
+
+    <input
+      id="editAtelierNom"
+      class="modal-input"
+      value="${a.appareil}"
+    >
+
+    <input
+      id="editAtelierAchat"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      value="${a.achat}"
+      placeholder="Prix achat"
+    >
+
+    <input
+      id="editAtelierPieces"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      value="${a.pieces}"
+      placeholder="Coût pièces"
+    >
+
+    <input
+      id="editAtelierVente"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      value="${a.vente}"
+      placeholder="Prix vente"
+    >
+
+    <button
+      id="btnSaveAppareil"
+      class="modal-button"
+    >
+      Enregistrer
+    </button>
+
+  `);
+
+  // focus iPhone
+  setTimeout(() => {
+
+    document
+      .getElementById("editAtelierNom")
+      ?.focus();
+
+  }, 120);
+
+  // save
+  document
+    .getElementById("btnSaveAppareil")
+    ?.addEventListener("click", () => {
+
+      const appareil =
+        document
+          .getElementById("editAtelierNom")
+          ?.value
+          .trim();
+
+      const achat =
+        parseFloat(
+          document
+            .getElementById("editAtelierAchat")
+            ?.value
+        ) || 0;
+
+      const pieces =
+        parseFloat(
+          document
+            .getElementById("editAtelierPieces")
+            ?.value
+        ) || 0;
+
+      const vente =
+        parseFloat(
+          document
+            .getElementById("editAtelierVente")
+            ?.value
+        ) || 0;
+
+      // validation
+      if(
+        !appareil ||
+        vente <= 0
+      ){
+
+        showToast?.("⚠️ Valeurs invalides");
+
+        return;
+
+      }
+
+      // update
+      window.atelier[index] = {
+
+        ...window.atelier[index],
+
+        appareil,
+
+        achat,
+
+        pieces,
+
+        vente
+
+      };
+
+      saveAll();
+
+      renderAtelier();
+
+      closeModal();
+
+      showToast?.("✏️ Appareil modifié");
+
+    });
+
+}
 // =========================
 // DELETE
 // =========================

@@ -270,6 +270,13 @@ GRID
   grid-column:span 2;
 }
 
+.cards-grid.four{
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+}
+
 /* =========================
 MINI CARDS
 ========================= */

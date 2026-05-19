@@ -104,7 +104,21 @@ function refreshApp(){
 
   loadAll();
 
-  if(!Array.isArray(window.revenusDetail)) return;
+  if(!Array.isArray(window.revenusDetail)){
+  window.revenusDetail = [];
+}
+
+if(!Array.isArray(window.depensesDetail)){
+  window.depensesDetail = [];
+}
+
+if(!Array.isArray(window.epargneHistorique)){
+  window.epargneHistorique = [];
+}
+
+if(!Array.isArray(window.atelier)){
+  window.atelier = [];
+}
 
   renderRevenusPage?.();
   renderDepensesPage?.();

@@ -102,7 +102,8 @@ function getMargeColor(marge){
 function getAppareilIcon(nom){
 
   const n =
-    nom.toLowerCase();
+  String(nom || "")
+    .toLowerCase();
 
   if(
     n.includes("lave") ||

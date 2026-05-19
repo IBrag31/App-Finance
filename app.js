@@ -198,7 +198,15 @@ function updateBudget(){
   const revenus = (typeof getRevenusDuMois === "function" ? getRevenusDuMois(mois) : 0) + window.especes;
   const depenses = typeof calculTotalDepenses === "function" ? calculTotalDepenses() : 0;
   const epargneTotale = getTotalEpargne();
-const epargneMois = getEpargneDuMois(mois);
+  const epargneMois = getEpargneDuMois(mois);
+
+  const moisLabel =
+  formatMois?.(mois);
+
+setText(
+  "revenusDashboardMois",
+  moisLabel || "Ce mois"
+);
 
   const objectifDepenses = 1250;
   const objectifEpargne = 5000;

@@ -195,6 +195,9 @@ function renderRevenusPage(){
 
 function openAddRevenu(){
 
+  const moisActuel =
+    getMoisBudget().slice(5,7);
+
   openModal("Ajouter un revenu", `
 
     <input
@@ -207,8 +210,29 @@ function openAddRevenu(){
       id="revenuMontant"
       class="modal-input"
       type="number"
+      inputmode="decimal"
       placeholder="Montant"
     >
+
+    <select
+      id="revenuMois"
+      class="modal-input"
+    >
+
+      <option value="01">Janvier</option>
+      <option value="02">Février</option>
+      <option value="03">Mars</option>
+      <option value="04">Avril</option>
+      <option value="05">Mai</option>
+      <option value="06">Juin</option>
+      <option value="07">Juillet</option>
+      <option value="08">Août</option>
+      <option value="09">Septembre</option>
+      <option value="10">Octobre</option>
+      <option value="11">Novembre</option>
+      <option value="12">Décembre</option>
+
+    </select>
 
     <button
       id="btnValidateRevenu"
@@ -219,7 +243,12 @@ function openAddRevenu(){
 
   `);
 
-  // focus auto iPhone
+  // mois actuel
+  document
+    .getElementById("revenuMois")
+    .value = moisActuel;
+
+  // focus iPhone
   setTimeout(() => {
 
     document
@@ -258,6 +287,16 @@ function validerRevenu(){
         ?.value
     );
 
+  const moisInput =
+    document
+      .getElementById("revenuMois");
+
+  const annee =
+    new Date().getFullYear();
+
+  const mois =
+    `${annee}-${moisInput.value}`;
+
   // validation
   if(!nom || isNaN(montant) || montant <= 0){
 
@@ -282,7 +321,7 @@ function validerRevenu(){
     montant:
       Math.round(montant * 100) / 100,
 
-    mois: getMoisBudget()
+    mois
 
   });
 

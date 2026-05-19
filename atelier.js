@@ -505,7 +505,7 @@ function validerAppareil(){
 
   saveAll();
 
-  renderAtelier();
+  refreshApp();
 
   closeModal();
 
@@ -691,7 +691,7 @@ function modifierAppareil(index){
 
       saveAll();
 
-      renderAtelier();
+      refreshApp();
 
       closeModal();
 
@@ -711,7 +711,7 @@ function supprimerAppareil(index){
 
   saveAll();
 
-  renderAtelier();
+  refreshApp();
 
   showToast?.("🗑️ Appareil supprimé");
 

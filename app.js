@@ -5,6 +5,29 @@ window.epargneHistorique = [];
 window.especes = 0;
 window.atelier = [];
 
+window.moisSelectionne =
+  new Date()
+    .toISOString()
+    .slice(0,7);
+
+// =========================
+// MOIS GLOBAL
+// =========================
+
+function getMoisBudget(){
+
+  return (
+
+    window.moisSelectionne ||
+
+    new Date()
+      .toISOString()
+      .slice(0,7)
+
+  );
+
+}
+
 // =========================
 // DATA CENTRALISÉE
 // =========================
@@ -24,9 +47,13 @@ function loadAll(){
 
     const especes =
       localStorage.getItem("especes");
-      
+
     const atelier =
       localStorage.getItem("atelier");
+
+    // =========================
+    // LOAD
+    // =========================
 
     window.revenusDetail =
       revenus ? JSON.parse(revenus) : [];
@@ -39,21 +66,24 @@ function loadAll(){
 
     window.especes =
       especes ? JSON.parse(especes) : 0;
-      
+
     window.atelier =
       atelier ? JSON.parse(atelier) : [];
-      
-      // migration sécurité atelier
-window.atelier =
-  window.atelier.map(a => ({
 
-    frais: 0,
+    // =========================
+    // MIGRATION ATELIER
+    // =========================
 
-    statut: "encours",
+    window.atelier =
+      window.atelier.map(a => ({
 
-    ...a
+        frais: 0,
 
-  }));
+        statut: "encours",
+
+        ...a
+
+      }));
 
   }catch(e){
 
@@ -68,9 +98,18 @@ window.atelier =
     window.especes = 0;
     window.atelier = [];
 
+    window.moisSelectionne =
+      new Date()
+        .toISOString()
+        .slice(0,7);
+
   }
 
 }
+
+// =========================
+// SAFE STORAGE
+// =========================
 
 function safeSet(key, value){
 
@@ -97,49 +136,82 @@ function safeSet(key, value){
 
 }
 
+// =========================
+// SAVE
+// =========================
+
 function saveAll(){
 
   console.log("SAVE OK");
 
-  safeSet("revenusDetail", window.revenusDetail);
+  safeSet(
+    "revenusDetail",
+    window.revenusDetail
+  );
 
-  safeSet("depensesDetail", window.depensesDetail);
+  safeSet(
+    "depensesDetail",
+    window.depensesDetail
+  );
 
-  safeSet("epargneHistorique", window.epargneHistorique);
+  safeSet(
+    "epargneHistorique",
+    window.epargneHistorique
+  );
 
-  safeSet("especes", window.especes || 0);
-  
-  safeSet("atelier", window.atelier);
+  safeSet(
+    "especes",
+    window.especes || 0
+  );
+
+  safeSet(
+    "atelier",
+    window.atelier
+  );
 
 }
+
+// =========================
+// REFRESH GLOBAL
+// =========================
+
 function refreshApp(){
 
   loadAll();
 
+  // sécurité
   if(!Array.isArray(window.revenusDetail)){
-  window.revenusDetail = [];
-}
+    window.revenusDetail = [];
+  }
 
-if(!Array.isArray(window.depensesDetail)){
-  window.depensesDetail = [];
-}
+  if(!Array.isArray(window.depensesDetail)){
+    window.depensesDetail = [];
+  }
 
-if(!Array.isArray(window.epargneHistorique)){
-  window.epargneHistorique = [];
-}
+  if(!Array.isArray(window.epargneHistorique)){
+    window.epargneHistorique = [];
+  }
 
-if(!Array.isArray(window.atelier)){
-  window.atelier = [];
-}
+  if(!Array.isArray(window.atelier)){
+    window.atelier = [];
+  }
 
+  // render modules
   renderRevenusPage?.();
+
   renderDepensesPage?.();
+
   renderEpargneHistorique?.();
+
   renderEpargneMois?.();
+
   renderEspeces?.();
+
   renderAtelier?.();
 
+  // dashboard
   renderDashboard();
+
 }
 
 // =========================
@@ -147,19 +219,33 @@ if(!Array.isArray(window.atelier)){
 // =========================
 
 function euro(n){
-  return Number(n || 0).toLocaleString("fr-FR",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  }) + " €";
+
+  return Number(n || 0)
+    .toLocaleString("fr-FR",{
+
+      minimumFractionDigits:2,
+
+      maximumFractionDigits:2
+
+    }) + " €";
+
 }
 
 function euroShort(n){
+
   return Math.round(n || 0) + " €";
+
 }
 
 function setText(id, value){
-  const el = document.getElementById(id);
-  if(el) el.innerText = value;
+
+  const el =
+    document.getElementById(id);
+
+  if(el){
+    el.innerText = value;
+  }
+
 }
 
 // =========================
@@ -167,250 +253,322 @@ function setText(id, value){
 // =========================
 
 function getDepenseColor(value){
-  if(value < 800) return "#22c55e";
-  if(value <= 1250) return "#f97316";
+
+  if(value < 800){
+    return "#22c55e";
+  }
+
+  if(value <= 1250){
+    return "#f97316";
+  }
+
   return "#ef4444";
+
 }
 
 function getRevenusColor(){
+
   return "#22c55e";
+
 }
 
 function getEpargneColor(){
+
   return "#3b82f6";
+
 }
 
 // =========================
 // BARRES
 // =========================
 
-function updateBar(id, value, objectif, type){
+function updateBar(
+  id,
+  value,
+  objectif,
+  type
+){
 
-  const el = document.getElementById(id);
+  const el =
+    document.getElementById(id);
+
   if(!el) return;
 
-  const percent = objectif ? (value / objectif) * 100 : 0;
-  el.style.width = Math.min(percent, 100) + "%";
+  const percent =
+    objectif
+      ? (value / objectif) * 100
+      : 0;
 
-  if(type === "depense") el.style.background = getDepenseColor(value);
-  if(type === "epargne") el.style.background = getEpargneColor();
-  if(type === "revenus") el.style.background = getRevenusColor();
+  el.style.width =
+    Math.min(percent, 100) + "%";
+
+  if(type === "depense"){
+    el.style.background =
+      getDepenseColor(value);
+  }
+
+  if(type === "epargne"){
+    el.style.background =
+      getEpargneColor();
+  }
+
+  if(type === "revenus"){
+    el.style.background =
+      getRevenusColor();
+  }
+
 }
 
 // =========================
-// BUDGET (RÉSUMÉ)
+// BUDGET
 // =========================
 
 function updateBudget(){
 
-  const mois = (typeof getMoisBudget === "function")
-    ? getMoisBudget()
-    : new Date().toISOString().slice(0,7);
+  const mois =
+    getMoisBudget();
 
-  const revenus = (typeof getRevenusDuMois === "function" ? getRevenusDuMois(mois) : 0) + window.especes;
-  const depenses = typeof calculTotalDepenses === "function" ? calculTotalDepenses() : 0;
-  const epargneTotale = getTotalEpargne();
-  const epargneMois = getEpargneDuMois(mois);
+  const revenus =
 
+    (
+      typeof getRevenusDuMois === "function"
+
+        ? getRevenusDuMois(mois)
+
+        : 0
+
+    )
+
+    +
+
+    window.especes;
+
+  const depenses =
+
+    typeof calculTotalDepenses === "function"
+
+      ? calculTotalDepenses()
+
+      : 0;
+
+  const epargneTotale =
+    getTotalEpargne();
+
+  const epargneMois =
+    getEpargneDuMois(mois);
+
+  // label mois
   const moisLabel =
-  formatMois?.(mois);
+    formatMois?.(mois);
 
-setText(
-  "revenusDashboardMois",
-  moisLabel || "Ce mois"
-);
+  setText(
+    "revenusDashboardMois",
+    moisLabel || "Ce mois"
+  );
 
+  // objectifs
   const objectifDepenses = 1250;
   const objectifEpargne = 5000;
   const objectifRevenus = 2300;
 
+  // =========================
   // TEXTES
-  setText("budgetDepensesText", `${Math.round(depenses)} / ${objectifDepenses} €`);
-  setText("budgetEpargneText", `${Math.round(epargneTotale)} / ${objectifEpargne} €`);
-  setText("budgetRevenusText", `${Math.round(revenus)} / ${objectifRevenus} €`);
+  // =========================
 
+  setText(
+    "budgetDepensesText",
+    `${Math.round(depenses)} / ${objectifDepenses} €`
+  );
+
+  setText(
+    "budgetEpargneText",
+    `${Math.round(epargneTotale)} / ${objectifEpargne} €`
+  );
+
+  setText(
+    "budgetRevenusText",
+    `${Math.round(revenus)} / ${objectifRevenus} €`
+  );
+
+  // =========================
   // BARRES
-  updateBar("budgetDepensesBar", depenses, objectifDepenses, "depense");
-  updateBar("budgetEpargneBar", epargneTotale, objectifEpargne, "epargne");
-  updateBar("budgetRevenusBar", revenus, objectifRevenus, "revenus");
+  // =========================
 
+  updateBar(
+    "budgetDepensesBar",
+    depenses,
+    objectifDepenses,
+    "depense"
+  );
+
+  updateBar(
+    "budgetEpargneBar",
+    epargneTotale,
+    objectifEpargne,
+    "epargne"
+  );
+
+  updateBar(
+    "budgetRevenusBar",
+    revenus,
+    objectifRevenus,
+    "revenus"
+  );
+
+  // =========================
   // COULEURS
-  const depColor = getDepenseColor(depenses);
+  // =========================
 
-  document.getElementById("budgetDepensesText")?.style.setProperty("color", depColor);
-  document.getElementById("budgetRevenusText")?.style.setProperty("color", getRevenusColor());
-  document.getElementById("budgetEpargneText")?.style.setProperty("color", getEpargneColor());
+  const depColor =
+    getDepenseColor(depenses);
 
-  document.getElementById("depensesDisplay")?.style.setProperty("color", depColor);
-  document.getElementById("revenusDisplay")?.style.setProperty("color", getRevenusColor());
-  document.getElementById("epargneMoisDisplay")?.style.setProperty("color", getEpargneColor());
+  document
+    .getElementById("budgetDepensesText")
+    ?.style.setProperty(
+      "color",
+      depColor
+    );
 
+  document
+    .getElementById("budgetRevenusText")
+    ?.style.setProperty(
+      "color",
+      getRevenusColor()
+    );
+
+  document
+    .getElementById("budgetEpargneText")
+    ?.style.setProperty(
+      "color",
+      getEpargneColor()
+    );
+
+  document
+    .getElementById("depensesDisplay")
+    ?.style.setProperty(
+      "color",
+      depColor
+    );
+
+  document
+    .getElementById("revenusDisplay")
+    ?.style.setProperty(
+      "color",
+      getRevenusColor()
+    );
+
+  document
+    .getElementById("epargneMoisDisplay")
+    ?.style.setProperty(
+      "color",
+      getEpargneColor()
+    );
+
+  // =========================
   // VALEURS
-  setText("revenusDisplay", euro(revenus));
-  setText("depensesDisplay", euro(depenses));
-  setText("epargneMoisDisplay", euro(epargneMois));
+  // =========================
 
-  setText("epargneMoisPage", euro(epargneMois));
-  setText("epargneTotalePage", euro(epargneTotale));
+  setText(
+    "revenusDisplay",
+    euro(revenus)
+  );
 
-const ep = document.getElementById("epargneTotalePage");
-if(ep){
-  ep.style.color = "#3b82f6";
-  ep.style.fontSize = "28px";
-  ep.style.fontWeight = "700";
+  setText(
+    "depensesDisplay",
+    euro(depenses)
+  );
+
+  setText(
+    "epargneMoisDisplay",
+    euro(epargneMois)
+  );
+
+  setText(
+    "epargneMoisPage",
+    euro(epargneMois)
+  );
+
+  setText(
+    "epargneTotalePage",
+    euro(epargneTotale)
+  );
+
+  // style épargne
+  const ep =
+    document.getElementById(
+      "epargneTotalePage"
+    );
+
+  if(ep){
+
+    ep.style.color = "#3b82f6";
+
+    ep.style.fontSize = "28px";
+
+    ep.style.fontWeight = "700";
+
+  }
+
 }
-	}
 
 // =========================
 // DASHBOARD
 // =========================
 
 function renderDashboard(){
+
   updateBudget();
+
 }
 
 // =========================
 // INIT
 // =========================
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-  console.log("INIT SAFE 🔥");
+    console.log("INIT SAFE 🔥");
 
-  loadAll();
+    loadAll();
 
-  setTimeout(() => {
+    setTimeout(() => {
 
-    initUI?.();
+      initUI?.();
 
-    showSection("resume");
+      showSection("resume");
 
-    refreshApp();
+      refreshApp();
 
-    // 🔥 sécurité iOS
-    requestAnimationFrame(() => {
+      // sécurité iOS
+      requestAnimationFrame(() => {
 
-      setTimeout(() => {
-
-        refreshApp();
-
-      }, 80);
-
-    });
-
-  }, 50);
-
-});
-
-// =========================
-// PAGESHOW FIX (iOS SAFARI)
-// =========================
-
-window.addEventListener("pageshow", (event) => {
-
-  console.log("📱 pageshow", event.persisted);
-
-  loadAll();
-
-  setTimeout(() => {
-
-    refreshApp();
-
-  }, 50);
-
-});
-
-function sauvegardeAuto(){
-
-  const data = {
-    revenus: window.revenusDetail,
-    depenses: window.depensesDetail,
-    epargne: window.epargneHistorique,
-    especes: window.especes,
-    atelier: window.atelier
-  };
-
-  const blob = new Blob([JSON.stringify(data)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "finance_backup.json";
-  a.click();
-
-  URL.revokeObjectURL(url);
-
-  alert("💾 Sauvegarde téléchargée");
-}
-
-// =========================
-
-function restaurerDepuisIcloud(){
-
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "application/json";
-
-  input.onchange = e => {
-    const file = e.target.files[0];
-    if(!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = event => {
-      try{
-        const data = JSON.parse(event.target.result);
-
-        window.revenusDetail = data.revenus || [];
-        window.depensesDetail = data.depenses || [];
-        window.epargneHistorique = data.epargne || [];
-        window.especes = data.especes || 0;
-        window.atelier = data.atelier || [];
-
-        saveAll();
         setTimeout(() => {
-  refreshApp();
-}, 0);
 
-        alert("✅ Données restaurées");
-      }catch{
-        alert("❌ Fichier invalide");
-      }
-    };
+          refreshApp();
 
-    reader.readAsText(file);
-  };
+        }, 80);
 
-  input.click();
-}
+      });
 
-function resetApp(){
+    }, 50);
 
-  if(!confirm("⚠️ Supprimer toutes les données ?")) return;
-
-  localStorage.clear();
-
-  window.revenusDetail = [];
-  window.depensesDetail = [];
-  window.epargneHistorique = [];
-  window.especes = 0;
-  window.atelier = [];
-
-  setTimeout(() => {
-  refreshApp();
-}, 0);
-
-
-  alert("🗑️ Données réinitialisées");
-}
+  }
+);
 
 // =========================
-// VISIBILITY FIX (iOS)
+// PAGESHOW FIX
 // =========================
 
-document.addEventListener("visibilitychange", () => {
+window.addEventListener(
+  "pageshow",
+  (event) => {
 
-  if(document.visibilityState === "visible"){
+    console.log(
+      "📱 pageshow",
+      event.persisted
+    );
 
     loadAll();
 
@@ -421,29 +579,233 @@ document.addEventListener("visibilitychange", () => {
     }, 50);
 
   }
-
-});
+);
 
 // =========================
-// PWA / SERVICE WORKER
+// BACKUP
+// =========================
+
+function sauvegardeAuto(){
+
+  const data = {
+
+    revenus:
+      window.revenusDetail,
+
+    depenses:
+      window.depensesDetail,
+
+    epargne:
+      window.epargneHistorique,
+
+    especes:
+      window.especes,
+
+    atelier:
+      window.atelier
+
+  };
+
+  const blob =
+    new Blob(
+      [JSON.stringify(data)],
+      {type:"application/json"}
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement("a");
+
+  a.href = url;
+
+  a.download =
+    "finance_backup.json";
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  alert("💾 Sauvegarde téléchargée");
+
+}
+
+// =========================
+// RESTORE
+// =========================
+
+function restaurerDepuisIcloud(){
+
+  const input =
+    document.createElement("input");
+
+  input.type = "file";
+
+  input.accept =
+    "application/json";
+
+  input.onchange = e => {
+
+    const file =
+      e.target.files[0];
+
+    if(!file) return;
+
+    const reader =
+      new FileReader();
+
+    reader.onload = event => {
+
+      try{
+
+        const data =
+          JSON.parse(
+            event.target.result
+          );
+
+        window.revenusDetail =
+          data.revenus || [];
+
+        window.depensesDetail =
+          data.depenses || [];
+
+        window.epargneHistorique =
+          data.epargne || [];
+
+        window.especes =
+          data.especes || 0;
+
+        window.atelier =
+          data.atelier || [];
+
+        saveAll();
+
+        setTimeout(() => {
+
+          refreshApp();
+
+        }, 0);
+
+        alert(
+          "✅ Données restaurées"
+        );
+
+      }catch{
+
+        alert(
+          "❌ Fichier invalide"
+        );
+
+      }
+
+    };
+
+    reader.readAsText(file);
+
+  };
+
+  input.click();
+
+}
+
+// =========================
+// RESET
+// =========================
+
+function resetApp(){
+
+  if(
+    !confirm(
+      "⚠️ Supprimer toutes les données ?"
+    )
+  ){
+    return;
+  }
+
+  localStorage.clear();
+
+  window.revenusDetail = [];
+  window.depensesDetail = [];
+  window.epargneHistorique = [];
+  window.especes = 0;
+  window.atelier = [];
+
+  window.moisSelectionne =
+    new Date()
+      .toISOString()
+      .slice(0,7);
+
+  setTimeout(() => {
+
+    refreshApp();
+
+  }, 0);
+
+  alert("🗑️ Données réinitialisées");
+
+}
+
+// =========================
+// VISIBILITY FIX
+// =========================
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if(
+      document.visibilityState === "visible"
+    ){
+
+      loadAll();
+
+      setTimeout(() => {
+
+        refreshApp();
+
+      }, 50);
+
+    }
+
+  }
+);
+
+// =========================
+// PWA
 // =========================
 
 if ("serviceWorker" in navigator) {
 
-  window.addEventListener("load", async () => {
+  window.addEventListener(
+    "load",
+    async () => {
 
-    try {
+      try {
 
-      const registration = await navigator.serviceWorker.register("./service-worker.js");
+        const registration =
 
-      console.log("✅ Service Worker actif :", registration.scope);
+          await navigator
+            .serviceWorker
+            .register(
+              "./service-worker.js"
+            );
 
-    } catch (error) {
+        console.log(
+          "✅ Service Worker actif :",
+          registration.scope
+        );
 
-      console.error("❌ Erreur Service Worker :", error);
+      } catch (error) {
+
+        console.error(
+          "❌ Erreur Service Worker :",
+          error
+        );
+
+      }
 
     }
-
-  });
+  );
 
 }

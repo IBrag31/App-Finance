@@ -5,8 +5,15 @@ window.epargneHistorique = [];
 window.especes = 0;
 window.atelier = [];
 
+const date =
+  new Date();
+
+date.setMonth(
+  date.getMonth() - 1
+);
+
 window.moisSelectionne =
-  new Date()
+  date
     .toISOString()
     .slice(0,7);
 

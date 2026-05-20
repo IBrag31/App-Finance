@@ -29,6 +29,19 @@ function calculCoutTotal(appareil){
 
 }
 
+function getAppareilsDuMois(){
+
+  const mois =
+    getMoisBudget();
+
+  return window.atelier.filter(
+
+    a => a.date === mois
+
+  );
+
+}
+
 function calculMarge(appareil){
 
   return (
@@ -207,7 +220,7 @@ function renderAtelier(){
   );
 
   // render appareils
-  [...window.atelier]
+  [...getAppareilsDuMois()]
 
     .slice()
 

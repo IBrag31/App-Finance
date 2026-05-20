@@ -30,19 +30,25 @@ function getMoisBudget(){
 
 function changerMois(direction){
 
+  const [annee, mois] =
+    window.moisSelectionne
+      .split("-")
+      .map(Number);
+
   const date =
     new Date(
-      window.moisSelectionne + "-01"
+      annee,
+      mois - 1 + direction,
+      1
     );
 
-  date.setMonth(
-    date.getMonth() + direction
-  );
-
   window.moisSelectionne =
-    date
-      .toISOString()
-      .slice(0,7);
+
+    `${date.getFullYear()}-${
+      String(
+        date.getMonth() + 1
+      ).padStart(2,"0")
+    }`;
 
   refreshApp();
 

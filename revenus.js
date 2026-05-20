@@ -201,7 +201,7 @@ function renderRevenusPage(){
 
   // mois budget
   const moisBudget =
-    getMoisBudget();
+  window.moisSelectionne;
 
   // label mois
   const label =

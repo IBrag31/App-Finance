@@ -76,6 +76,26 @@ function getTotalAppareils(){
 
 }
 
+function getCapitalImmobilise(){
+
+  return window.atelier
+
+    .filter(a =>
+
+      a.statut !== "vendu"
+
+    )
+
+    .reduce((sum, a) =>
+
+      sum + calculCoutTotal(a),
+
+      0
+
+    );
+
+}
+
 function getMargeMoyenne(){
 
   if(!window.atelier.length) return 0;

@@ -238,6 +238,13 @@ function renderAtelier(){
     "atelierMargeMoyenne",
     euro(getMargeMoyenne())
   );
+  
+  setText(
+  "atelierCapital",
+  euro(
+    getCapitalImmobilise()
+  )
+);
 
   // render appareils
   [...getAppareilsDuMois()]

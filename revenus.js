@@ -8,23 +8,6 @@ function getMoisActuel(){
   return new Date().toISOString().slice(0,7);
 }
 
-function getMoisBudget(){
-
-  const date =
-    new Date();
-
-  // budget basé sur
-  // le salaire du mois précédent
-  date.setMonth(
-    date.getMonth() - 1
-  );
-
-  return date
-    .toISOString()
-    .slice(0,7);
-
-}
-
 function formatMois(moisStr){
   const [annee, mois] = moisStr.split("-");
   const date = new Date(annee, mois - 1);
@@ -345,7 +328,8 @@ function validerRevenu(){
       .getElementById("revenuMois");
 
   const annee =
-    new Date().getFullYear();
+  getMoisBudget()
+    .slice(0,4);
 
   const mois =
     `${annee}-${moisInput.value}`;

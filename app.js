@@ -519,9 +519,9 @@ setText(
   );
 
   setText(
-    "epargneMoisDisplay",
-    euro(epargneMois)
-  );
+  "epargneMoisDisplay",
+  euro(epargneTotale)
+);
 
   setText(
     "epargneMoisPage",

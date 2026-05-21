@@ -4,10 +4,6 @@ console.log("epargne.js SYNC CLEAN ✅");
 // UTILS
 // =========================
 
-function getMoisActuel(){
-  return new Date().toISOString().slice(0,7);
-}
-
 function formatMois(moisStr){
 
   const [annee, mois] =

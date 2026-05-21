@@ -4,10 +4,6 @@ console.log("revenus.js SYNC CLEAN ✅");
 // UTILS DATE
 // =========================
 
-function getMoisActuel(){
-  return new Date().toISOString().slice(0,7);
-}
-
 function formatMois(moisStr){
   const [annee, mois] = moisStr.split("-");
   const date = new Date(annee, mois - 1);

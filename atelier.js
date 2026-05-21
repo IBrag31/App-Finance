@@ -58,27 +58,29 @@ function calculMarge(appareil){
 
 function getTotalMarge(){
 
-  return window.atelier.reduce(
+  return getAppareilsDuMois()
 
-    (sum, a) =>
+    .reduce(
 
-      sum + calculMarge(a),
+      (sum, a) =>
 
-    0
+        sum + calculMarge(a),
 
-  );
+      0
+
+    );
 
 }
 
 function getTotalAppareils(){
 
-  return window.atelier.length;
+  return getAppareilsDuMois().length;
 
 }
 
 function getCapitalImmobilise(){
 
-  return window.atelier
+  return getAppareilsDuMois()
 
     .filter(a =>
 
@@ -86,9 +88,11 @@ function getCapitalImmobilise(){
 
     )
 
-    .reduce((sum, a) =>
+    .reduce(
 
-      sum + calculCoutTotal(a),
+      (sum, a) =>
+
+        sum + calculCoutTotal(a),
 
       0
 
@@ -98,13 +102,16 @@ function getCapitalImmobilise(){
 
 function getMargeMoyenne(){
 
-  if(!window.atelier.length) return 0;
+  const appareils =
+    getAppareilsDuMois();
+
+  if(!appareils.length) return 0;
 
   return (
 
     getTotalMarge() /
 
-    window.atelier.length
+    appareils.length
 
   );
 
@@ -135,8 +142,8 @@ function getMargeColor(marge){
 function getAppareilIcon(nom){
 
   const n =
-  String(nom || "")
-    .toLowerCase();
+    String(nom || "")
+      .toLowerCase();
 
   if(
     n.includes("lave") ||
@@ -205,6 +212,9 @@ function renderAtelier(){
     window.atelier = [];
   }
 
+  const appareilsDuMois =
+    getAppareilsDuMois();
+
   // total marge
   const totalMarge =
     getTotalMarge();
@@ -238,16 +248,35 @@ function renderAtelier(){
     "atelierMargeMoyenne",
     euro(getMargeMoyenne())
   );
-  
+
+  // capital engagé
   setText(
-  "atelierCapital",
-  euro(
-    getCapitalImmobilise()
-  )
-);
+    "atelierCapital",
+    euro(
+      getCapitalImmobilise()
+    )
+  );
+
+  // aucun appareil
+  if(!appareilsDuMois.length){
+
+    list.innerHTML = `
+
+      <div class="card">
+
+        Aucun appareil
+        pour ce mois 📅
+
+      </div>
+
+    `;
+
+    return;
+
+  }
 
   // render appareils
-  [...getAppareilsDuMois()]
+  [...appareilsDuMois]
 
     .slice()
 
@@ -330,15 +359,36 @@ function renderAtelier(){
             ${euro(a.vente)}
           </div>
 
-          <div>
-            Statut :
+          <div
+            class="
+              atelier-badge
+
+              ${
+                a.statut === "vendu"
+
+                  ? "badge-vendu"
+
+                  : a.statut === "repare"
+
+                  ? "badge-repare"
+
+                  : "badge-encours"
+              }
+            "
+          >
+
             ${
               a.statut === "vendu"
+
                 ? "💰 Vendu"
+
                 : a.statut === "repare"
+
                 ? "✅ Réparé"
+
                 : "🔧 En cours"
             }
+
           </div>
 
         </div>
@@ -540,7 +590,7 @@ function validerAppareil(){
 
     statut,
 
-    date: getMoisActuel()
+    date: getMoisBudget()
 
   });
 

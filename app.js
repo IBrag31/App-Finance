@@ -35,6 +35,14 @@ function getMoisBudget(){
 
 }
 
+function getMoisActuel(){
+
+  return new Date()
+    .toISOString()
+    .slice(0,7);
+
+}
+
 function changerMois(direction){
 
   const [annee, mois] =

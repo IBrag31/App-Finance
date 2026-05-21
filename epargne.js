@@ -179,9 +179,7 @@ function renderEpargneMois(){
   if(!el) return;
 
   const mois =
-    new Date()
-      .toISOString()
-      .slice(0,7);
+  getMoisBudget();
 
   const total =
     getEpargneDuMois(mois);
@@ -200,7 +198,7 @@ function renderEpargneMois(){
 function openAddEpargne(){
 
   const moisActuel =
-    getMoisActuel().slice(5,7);
+  getMoisBudget().slice(5,7);
 
   openModal("Ajouter épargne", `
 

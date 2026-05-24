@@ -303,7 +303,7 @@ function renderAtelier(){
 
       row.addEventListener("click", () => {
 
-        modifierAppareil(realIndex);
+        voirDetailsAppareil(realIndex);
 
       });
 
@@ -572,6 +572,140 @@ function validerAppareil(){
   closeModal();
 
   showToast?.("🛠️ Appareil ajouté");
+
+}
+
+function voirDetailsAppareil(index){
+
+  const a =
+    window.atelier[index];
+
+  if(!a) return;
+
+  const marge =
+    calculMarge(a);
+
+  const coutTotal =
+    calculCoutTotal(a);
+
+  openModal(`
+
+    ${getAppareilIcon(a.appareil)}
+    ${a.appareil}
+
+  `, `
+
+    <div class="atelier-detail-grid">
+
+      <div>
+        Achat :
+        ${euro(a.achat)}
+      </div>
+
+      <div>
+        Pièces :
+        ${euro(a.pieces)}
+      </div>
+
+      <div>
+        Frais :
+        ${euro(a.frais || 0)}
+      </div>
+
+      <div>
+        Coût total :
+        ${euro(coutTotal)}
+      </div>
+
+      <div>
+        Vente :
+        ${euro(a.vente)}
+      </div>
+
+      <div>
+        Marge :
+        <span style="
+          color:${getMargeColor(marge)};
+          font-weight:700;
+        ">
+          ${euro(marge)}
+        </span>
+      </div>
+
+      <div>
+        Date :
+        ${formatMois(a.date)}
+      </div>
+
+      <div
+        class="
+          atelier-badge
+
+          ${
+            a.statut === "vendu"
+
+              ? "badge-vendu"
+
+              : a.statut === "repare"
+
+              ? "badge-repare"
+
+              : "badge-encours"
+          }
+        "
+      >
+
+        ${
+          a.statut === "vendu"
+
+            ? "💰 Vendu"
+
+            : a.statut === "repare"
+
+            ? "✅ Réparé"
+
+            : "🔧 En cours"
+        }
+
+      </div>
+
+    </div>
+
+    <button
+      id="btnModifierAppareil"
+      class="modal-button"
+    >
+      Modifier
+    </button>
+
+    <button
+      id="btnDeleteAppareil"
+      class="modal-button delete-modal-btn"
+    >
+      Supprimer
+    </button>
+
+  `);
+
+  // modifier
+  document
+    .getElementById("btnModifierAppareil")
+    ?.addEventListener("click", () => {
+
+      modifierAppareil(index);
+
+    });
+
+  // supprimer
+  document
+    .getElementById("btnDeleteAppareil")
+    ?.addEventListener("click", () => {
+
+      closeModal();
+
+      supprimerAppareil(index);
+
+    });
 
 }
 

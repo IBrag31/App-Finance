@@ -309,97 +309,68 @@ function renderAtelier(){
 
       row.innerHTML = `
 
-        <div class="atelier-top">
+  <div class="atelier-top">
 
-          <div class="atelier-title">
+    <div class="atelier-title">
 
-            ${getAppareilIcon(a.appareil)}
-            ${a.appareil}
+      ${getAppareilIcon(a.appareil)}
+      ${a.appareil}
 
-          </div>
+    </div>
 
-          <div
-            class="atelier-marge"
-            style="
-              color:${getMargeColor(marge)}
-            "
-          >
+    <div
+      class="atelier-marge"
+      style="
+        color:${getMargeColor(marge)}
+      "
+    >
 
-            ${marge >= 0 ? "+" : ""}
-            ${euro(marge)}
+      ${marge >= 0 ? "+" : ""}
+      ${euro(marge)}
 
-          </div>
+    </div>
 
-        </div>
+  </div>
 
-        <div class="atelier-details">
+  <div
+    class="
+      atelier-badge
 
-          <div>
-            Achat :
-            ${euro(a.achat)}
-          </div>
+      ${
+        a.statut === "vendu"
 
-          <div>
-            Pièces :
-            ${euro(a.pieces)}
-          </div>
+          ? "badge-vendu"
 
-          <div>
-            Frais :
-            ${euro(a.frais || 0)}
-          </div>
+          : a.statut === "repare"
 
-          <div>
-            Coût total :
-            ${euro(coutTotal)}
-          </div>
+          ? "badge-repare"
 
-          <div>
-            Vente :
-            ${euro(a.vente)}
-          </div>
+          : "badge-encours"
+      }
+    "
+  >
 
-          <div
-            class="
-              atelier-badge
+    ${
+      a.statut === "vendu"
 
-              ${
-                a.statut === "vendu"
+        ? "💰 Vendu"
 
-                  ? "badge-vendu"
+        : a.statut === "repare"
 
-                  : a.statut === "repare"
+        ? "✅ Réparé"
 
-                  ? "badge-repare"
+        : "🔧 En cours"
+    }
 
-                  : "badge-encours"
-              }
-            "
-          >
+  </div>
 
-            ${
-              a.statut === "vendu"
+  <button
+    class="delete-btn atelier-delete"
+  >
+    ×
+  </button>
 
-                ? "💰 Vendu"
-
-                : a.statut === "repare"
-
-                ? "✅ Réparé"
-
-                : "🔧 En cours"
-            }
-
-          </div>
-
-        </div>
-
-        <button
-          class="delete-btn atelier-delete"
-        >
-          ×
-        </button>
-
-      `;
+`;
 
       // delete
       row.querySelector(".atelier-delete")

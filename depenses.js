@@ -390,4 +390,113 @@ function supprimerDepense(index){
   refreshApp();
 
   showToast?.("🗑️ Dépense supprimée");
+  
+}
+
+async function importTransactionsCB(){
+
+  const input =
+    document.createElement("input");
+
+  input.type = "file";
+
+  input.accept = ".txt";
+
+  input.onchange = async (e) => {
+
+    const file =
+      e.target.files[0];
+
+    if(!file) return;
+
+    const text =
+      await file.text();
+
+    const lignes =
+      text
+        .split("\n")
+        .filter(l => l.trim());
+
+    let imported = 0;
+
+    lignes.forEach((ligne) => {
+
+      const [
+        nom,
+        montantRaw,
+        date
+      ] = ligne.split("|");
+
+      if(
+        !nom ||
+        !montantRaw
+      ) return;
+
+      // nettoyage montant
+      const montant =
+        parseFloat(
+
+          montantRaw
+
+            .replace("€","")
+
+            .replace(",", ".")
+
+            .trim()
+
+        );
+
+      if(isNaN(montant)) return;
+
+      // anti doublon
+      const existe =
+        window.depensesDetail.some(
+
+          d =>
+
+            d.nom === nom &&
+
+            Number(d.montant) === montant &&
+
+            d.date === date
+
+        );
+
+      if(existe) return;
+
+      // ajout dépense
+      window.depensesDetail.push({
+
+  id: Date.now() + Math.random(),
+
+  nom,
+
+  montant,
+
+  date,
+
+  categorie: "CB",
+
+  type: "variable"
+
+});
+
+      imported++;
+
+    });
+
+    saveAll();
+
+    refreshApp();
+
+    showToast?.(
+
+      `💳 ${imported} transaction(s) importée(s)`
+
+    );
+
+  };
+
+  input.click();
+
 }

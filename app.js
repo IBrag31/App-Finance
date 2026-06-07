@@ -290,6 +290,189 @@ function setText(id, value){
 }
 
 // =========================
+// CATEGORIES FINANCE
+// =========================
+
+window.CATEGORIES_FINANCE = [
+
+  "🏠 Logement",
+  "⚡ Énergie",
+  "🌐 Télécom & Internet",
+  "🚗 Automobile",
+  "⛽ Carburant",
+  "🛒 Courses",
+  "🍽️ Restauration",
+  "🛍️ Shopping",
+  "🎮 Loisirs",
+  "🏥 Santé",
+  "🐱 Animaux",
+  "🔧 Bricolage / Maison",
+  "💰 Banque & Assurances",
+  "🏛️ Impôts & Taxes",
+  "📦 Autre"
+
+];
+
+// =========================
+// DETECTION CATEGORIES
+// =========================
+
+function detecterCategorie(nom){
+
+  const n =
+    String(nom || "")
+      .toLowerCase();
+
+  // 🏠 LOGEMENT
+  if(
+    n.includes("loyer") ||
+    n.includes("foncia") ||
+    n.includes("orpi")
+  ){
+    return "🏠 Logement";
+  }
+
+  // ⚡ ENERGIE
+  if(
+    n.includes("edf") ||
+    n.includes("engie") ||
+    n.includes("total energies electricite") ||
+    n.includes("eni")
+  ){
+    return "⚡ Énergie";
+  }
+
+  // 🌐 TELECOM
+  if(
+    n.includes("bouygues") ||
+    n.includes("orange") ||
+    n.includes("sfr") ||
+    n.includes("free")
+  ){
+    return "🌐 Télécom & Internet";
+  }
+
+  // 🚗 AUTOMOBILE
+  if(
+    n.includes("norauto") ||
+    n.includes("feu vert") ||
+    n.includes("controle technique") ||
+    n.includes("midas")
+  ){
+    return "🚗 Automobile";
+  }
+
+  // ⛽ CARBURANT
+  if(
+    n.includes("total") ||
+    n.includes("shell") ||
+    n.includes("esso") ||
+    n.includes("avia")
+  ){
+    return "⛽ Carburant";
+  }
+
+  // 🛒 COURSES
+  if(
+    n.includes("carrefour") ||
+    n.includes("leclerc") ||
+    n.includes("intermarche") ||
+    n.includes("lidl") ||
+    n.includes("aldi") ||
+    n.includes("auchan") ||
+    n.includes("super u")
+  ){
+    return "🛒 Courses";
+  }
+
+  // 🍽️ RESTAURATION
+  if(
+    n.includes("restaurant") ||
+    n.includes("pizzeria") ||
+    n.includes("burger") ||
+    n.includes("mcdonald") ||
+    n.includes("kfc") ||
+    n.includes("la mie de pain") ||
+    n.includes("boulangerie")
+  ){
+    return "🍽️ Restauration";
+  }
+
+  // 🛍️ SHOPPING
+  if(
+    n.includes("amazon") ||
+    n.includes("fnac") ||
+    n.includes("darty") ||
+    n.includes("ikea") ||
+    n.includes("action")
+  ){
+    return "🛍️ Shopping";
+  }
+
+  // 🎮 LOISIRS
+  if(
+    n.includes("netflix") ||
+    n.includes("spotify") ||
+    n.includes("disney") ||
+    n.includes("steam") ||
+    n.includes("cinema")
+  ){
+    return "🎮 Loisirs";
+  }
+
+  // 🏥 SANTE
+  if(
+    n.includes("pharmacie") ||
+    n.includes("dentiste") ||
+    n.includes("medecin") ||
+    n.includes("docteur")
+  ){
+    return "🏥 Santé";
+  }
+
+  // 🐱 ANIMAUX
+  if(
+    n.includes("maxi zoo") ||
+    n.includes("veterinaire") ||
+    n.includes("croquettes")
+  ){
+    return "🐱 Animaux";
+  }
+
+  // 🔧 BRICOLAGE
+  if(
+    n.includes("leroy merlin") ||
+    n.includes("castorama") ||
+    n.includes("brico depot") ||
+    n.includes("manomano")
+  ){
+    return "🔧 Bricolage / Maison";
+  }
+
+  // 💰 BANQUE
+  if(
+    n.includes("credit agricole") ||
+    n.includes("banque populaire") ||
+    n.includes("caisse epargne") ||
+    n.includes("frais bancaires")
+  ){
+    return "💰 Banque & Assurances";
+  }
+
+  // 🏛️ IMPOTS
+  if(
+    n.includes("dgfip") ||
+    n.includes("impots") ||
+    n.includes("taxe fonciere")
+  ){
+    return "🏛️ Impôts & Taxes";
+  }
+
+  return "📦 Autre";
+
+}
+
+// =========================
 // COULEURS
 // =========================
 

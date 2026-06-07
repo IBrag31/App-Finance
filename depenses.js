@@ -74,7 +74,7 @@ ${
         font-size:12px;
         margin-top:2px;
       ">
-        DATE = ${d.date}
+        🕒 ${d.date}
       </div>
     `
     : ""

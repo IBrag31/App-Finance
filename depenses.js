@@ -67,7 +67,8 @@ function renderDepensesPage(){
 </div>
 
 ${
-  d.type === "CB"
+  d.type === "CB" ||
+  d.categorie === "CB"
     ? `
       <div style="
         opacity:0.5;
@@ -113,7 +114,10 @@ ${
 
     // append
 
-if(d.type === "CB"){
+if(
+  d.type === "CB" ||
+  d.categorie === "CB"
+){
 
   if(cb){
     cb.appendChild(row);

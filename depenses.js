@@ -62,20 +62,27 @@ function renderDepensesPage(){
 
       <div style="flex:1">
 
-        <div>
+<div>
   ${d.nom}
 </div>
 
 ${
-  d.type === "CB" ||
-  d.categorie === "CB"
+  d.type === "CB"
     ? `
+      <div style="
+        opacity:0.75;
+        font-size:12px;
+        margin-top:2px;
+      ">
+        ${d.categorie || "📦 Autre"}
+      </div>
+
       <div style="
         opacity:0.5;
         font-size:12px;
         margin-top:2px;
       ">
-        🕒 ${d.date}
+        🕒 ${d.date || ""}
       </div>
     `
     : ""

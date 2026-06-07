@@ -63,18 +63,32 @@ function renderDepensesPage(){
       <div style="flex:1">
 
         <div>
-          ${d.nom}
-        </div>
+  ${d.nom}
+</div>
 
-        <div style="
-          opacity:0.6;
-          font-size:13px;
-          margin-top:2px;
-        ">
+${
+  d.categorie === "CB" && d.date
+    ? `
+      <div style="
+        opacity:0.5;
+        font-size:12px;
+        margin-top:2px;
+      ">
+        ${d.date}
+      </div>
+    `
+    : ""
+}
 
-          ${euro(montant)}
+<div style="
+  opacity:0.6;
+  font-size:13px;
+  margin-top:2px;
+">
 
-        </div>
+  ${euro(montant)}
+
+</div>
 
       </div>
 

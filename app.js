@@ -101,6 +101,34 @@ function loadAll(){
 
     window.depensesDetail =
       depenses ? JSON.parse(depenses) : [];
+      
+      // =========================
+// MIGRATION CB CATEGORIES
+// =========================
+
+window.depensesDetail =
+  window.depensesDetail.map(d => {
+
+    if(d.categorie === "CB"){
+
+      return {
+
+        ...d,
+
+        type: "CB",
+
+        categorie:
+          detecterCategorie(d.nom)
+
+      };
+
+    }
+
+    return d;
+
+  });
+  
+  saveAll();
 
     window.epargneHistorique =
       epargne ? JSON.parse(epargne) : [];

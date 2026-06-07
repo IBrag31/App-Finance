@@ -67,14 +67,14 @@ function renderDepensesPage(){
 </div>
 
 ${
-  d.categorie === "CB" && d.date
+  d.categorie === "CB"
     ? `
       <div style="
         opacity:0.5;
         font-size:12px;
         margin-top:2px;
       ">
-        ${d.date}
+        DATE = ${d.date}
       </div>
     `
     : ""

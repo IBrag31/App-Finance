@@ -331,10 +331,32 @@ function modifierDepense(index){
       value="${depense.montant}"
     >
 
-    <select
-      id="editTypeDepense"
-      class="modal-input"
-    >
+    ${
+  depense.type === "CB"
+    ? ""
+    : `
+      <select
+        id="editTypeDepense"
+        class="modal-input"
+      >
+
+        <option
+          value="fixe"
+          ${depense.type === "fixe" ? "selected" : ""}
+        >
+          📦 Fixe
+        </option>
+
+        <option
+          value="variable"
+          ${depense.type === "variable" ? "selected" : ""}
+        >
+          🛒 Variable
+        </option>
+
+      </select>
+    `
+}
 
       <option
         value="fixe"
@@ -351,6 +373,24 @@ function modifierDepense(index){
       </option>
 
     </select>
+    
+    <select
+  id="editCategorie"
+  class="modal-input"
+>
+
+  ${window.CATEGORIES_FINANCE.map(cat => `
+
+    <option
+      value="${cat}"
+      ${depense.categorie === cat ? "selected" : ""}
+    >
+      ${cat}
+    </option>
+
+  `).join("")}
+
+</select>
 
     <button
       id="btnSaveDepense"
@@ -387,9 +427,16 @@ function modifierDepense(index){
         );
 
       const nouveauType =
-        document
-          .getElementById("editTypeDepense")
-          ?.value || "variable";
+  depense.type === "CB"
+    ? "CB"
+    : document
+        .getElementById("editTypeDepense")
+        ?.value || "variable";
+          
+          const nouvelleCategorie =
+  document
+    .getElementById("editCategorie")
+    ?.value || "📦 Autre";
 
       if(
         !nouveauNom ||
@@ -405,16 +452,18 @@ function modifierDepense(index){
 
       window.depensesDetail[index] = {
 
-        ...depense,
+  ...depense,
 
-        nom: nouveauNom,
+  nom: nouveauNom,
 
-        montant:
-          Math.round(nouveauMontant * 100) / 100,
+  montant:
+    Math.round(nouveauMontant * 100) / 100,
 
-        type: nouveauType
+  type: nouveauType,
 
-      };
+  categorie: nouvelleCategorie
+
+};
 
       saveAll();
 

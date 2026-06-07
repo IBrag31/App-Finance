@@ -23,8 +23,14 @@ function renderDepensesPage(){
   const variables =
     document.getElementById("depensesVariablesPage");
 
+  const cb =
+  document.getElementById("depensesCBPage");
+
   if(fixes) fixes.innerHTML = "";
   if(variables) variables.innerHTML = "";
+  if(cb){
+  cb.innerHTML = "";
+}
 
   // sécurité
   if(!Array.isArray(window.depensesDetail)){
@@ -33,6 +39,7 @@ function renderDepensesPage(){
 
   let totalFixes = 0;
   let totalVariables = 0;
+  let totalCB = 0;
 
   window.depensesDetail.forEach((d, i) => {
 
@@ -91,23 +98,36 @@ function renderDepensesPage(){
       });
 
     // append
-    if(d.type === "fixe"){
 
-      if(fixes){
-        fixes.appendChild(row);
-      }
+if(d.categorie === "CB"){
 
-      totalFixes += montant;
+  if(cb){
+    cb.appendChild(row);
+  }
 
-    } else {
+  totalCB += montant;
 
-      if(variables){
-        variables.appendChild(row);
-      }
+}
 
-      totalVariables += montant;
+else if(d.type === "fixe"){
 
-    }
+  if(fixes){
+    fixes.appendChild(row);
+  }
+
+  totalFixes += montant;
+
+}
+
+else{
+
+  if(variables){
+    variables.appendChild(row);
+  }
+
+  totalVariables += montant;
+
+}
 
   });
 
@@ -121,10 +141,15 @@ function renderDepensesPage(){
     "totalVariablesPage",
     euro(totalVariables)
   );
+  
+  setText(
+  "totalCBPage",
+  euro(totalCB)
+  );
 
   setText(
     "depensesTotalPage",
-    euro(totalFixes + totalVariables)
+    euro(totalFixes + totalVariables + totalCB)
   );
 
 }

@@ -67,7 +67,7 @@ function renderDepensesPage(){
 </div>
 
 ${
-  d.categorie === "CB"
+  d.type === "CB"
     ? `
       <div style="
         opacity:0.5;
@@ -113,7 +113,7 @@ ${
 
     // append
 
-if(d.categorie === "CB"){
+if(d.type === "CB"){
 
   if(cb){
     cb.appendChild(row);
@@ -504,7 +504,7 @@ async function importTransactionsCB(){
       if(existe) return;
 
       // ajout dépense
-      window.depensesDetail.push({
+     window.depensesDetail.push({
 
   id: Date.now() + Math.random(),
 
@@ -514,9 +514,10 @@ async function importTransactionsCB(){
 
   date,
 
-  categorie: "CB",
+  type: "CB",
 
-  type: "variable"
+  categorie:
+    detecterCategorie(nom)
 
 });
 

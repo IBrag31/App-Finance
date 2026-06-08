@@ -558,26 +558,23 @@ function renderStatsCategories(){
 
       container.innerHTML += `
 
-        <div class="card">
+  <div class="stats-row">
 
-          <div>
-            <strong>${categorie}</strong>
-          </div>
+    <div>
+      <strong>${categorie}</strong>
+    </div>
 
-          <div>
-            ${euro(montant)}
-          </div>
+    <div>
+      ${euro(montant)}
+    </div>
 
-          <div style="
-            opacity:0.7;
-            font-size:13px;
-          ">
-            ${ratio} %
-          </div>
+    <div class="stats-ratio">
+      ${ratio} %
+    </div>
 
-        </div>
+  </div>
 
-      `;
+`;
 
     });
 

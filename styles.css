@@ -183,30 +183,6 @@ TABBAR
 
 }
 
-/* reflet supérieur */
-
-.tabbar::before{
-
-  content:"";
-
-  position:absolute;
-
-  top:0;
-  left:0;
-  right:0;
-
-  height:1px;
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.18
-    );
-
-}
-
 /* léger reflet intérieur */
 
 .tab{
@@ -797,7 +773,7 @@ MODAL
 
   grid-template-columns:
     minmax(0,1fr)
-    auto
+    120px
     70px;
 
   align-items:center;
@@ -817,6 +793,12 @@ MODAL
   overflow:hidden;
 
   text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+}
+
+.stats-row span{
 
   white-space:nowrap;
 
@@ -844,7 +826,7 @@ MODAL
   right:0;
   bottom:0;
 
-  height:180px;
+  height:220px;
 
   pointer-events:none;
 
@@ -873,5 +855,11 @@ MODAL
     );
 
   z-index:998;
+  
+  border:none;
+  outline:none;
+  
+  top:auto;
+  transform:translateY(20px);
 
 }

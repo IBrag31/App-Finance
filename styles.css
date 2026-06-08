@@ -289,7 +289,7 @@ SECTIONS
   padding-right:12px;
 
   padding-bottom:
-    calc(120px + env(safe-area-inset-bottom));
+    calc(170px + env(safe-area-inset-bottom));
 
   min-height:100%;
 
@@ -829,5 +829,38 @@ MODAL
   opacity:.7;
 
   font-size:13px;
+
+}
+
+/* =========================
+   TABBAR FADE
+========================= */
+
+.tabbar-fade{
+
+  position:fixed;
+
+  left:0;
+  right:0;
+
+  bottom:
+    calc(
+      68px +
+      12px +
+      env(safe-area-inset-bottom)
+    );
+
+  height:90px;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0),
+      rgba(0,0,0,0.85)
+    );
+
+  z-index:998;
 
 }

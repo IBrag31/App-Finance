@@ -127,8 +127,6 @@ window.depensesDetail =
     return d;
 
   });
-  
-  saveAll();
 
     window.epargneHistorique =
       epargne ? JSON.parse(epargne) : [];

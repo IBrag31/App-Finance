@@ -177,9 +177,32 @@ TABBAR
       0.12
     );
 
-  overflow: hidden;
+  overflow: visible;
 
   z-index: 999;
+
+}
+
+.tabbar::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:-30px;
+
+  border-radius:40px;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,0.05),
+      transparent 70%
+    );
+
+  pointer-events:none;
+
+  z-index:-1;
 
 }
 
@@ -842,15 +865,9 @@ MODAL
 
   left:0;
   right:0;
+  bottom:0;
 
-  bottom:
-    calc(
-      68px +
-      12px +
-      env(safe-area-inset-bottom)
-    );
-
-  height:90px;
+  height:220px;
 
   pointer-events:none;
 
@@ -858,7 +875,9 @@ MODAL
     linear-gradient(
       to bottom,
       rgba(0,0,0,0),
-      rgba(0,0,0,0.85)
+      rgba(0,0,0,0.15) 35%,
+      rgba(0,0,0,0.45) 65%,
+      rgba(0,0,0,0.85) 100%
     );
 
   z-index:998;

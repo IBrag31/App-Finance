@@ -269,6 +269,8 @@ function refreshApp(){
   renderRevenusPage?.();
 
   renderDepensesPage?.();
+  
+  renderStatsCategories?.();
 
   renderEpargneHistorique?.();
 
@@ -497,6 +499,89 @@ function detecterCategorie(nom){
   }
 
   return "📦 Autre";
+
+}
+
+function getStatsCategories(){
+
+  const stats = {};
+
+  window.depensesDetail.forEach(d => {
+
+    const categorie =
+      d.categorie || "📦 Autre";
+
+    const montant =
+      Number(d.montant) || 0;
+
+    if(!stats[categorie]){
+      stats[categorie] = 0;
+    }
+
+    stats[categorie] += montant;
+
+  });
+
+  return stats;
+
+}
+
+function renderStatsCategories(){
+
+  const container =
+    document.getElementById(
+      "statsCategories"
+    );
+
+  if(!container) return;
+
+  const stats =
+    getStatsCategories();
+
+  const total =
+    calculTotalDepenses();
+
+  container.innerHTML = "";
+
+  Object.entries(stats)
+
+    .sort((a,b) => b[1] - a[1])
+
+    .forEach(([categorie,montant]) => {
+
+      const ratio =
+        total > 0
+
+          ? (
+              montant / total * 100
+            ).toFixed(1)
+
+          : 0;
+
+      container.innerHTML += `
+
+        <div class="card">
+
+          <div>
+            <strong>${categorie}</strong>
+          </div>
+
+          <div>
+            ${euro(montant)}
+          </div>
+
+          <div style="
+            opacity:0.7;
+            font-size:13px;
+          ">
+            ${ratio} %
+          </div>
+
+        </div>
+
+      `;
+
+    });
 
 }
 

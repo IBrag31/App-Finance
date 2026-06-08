@@ -674,3 +674,43 @@ MODAL
   color:#22c55e;
 
 }
+
+/* =========================
+   STATS CATEGORIES
+========================= */
+
+#statsCategories{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+  margin-top:12px;
+
+}
+
+.stats-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  background:#1e293b;
+
+  border-radius:12px;
+
+  padding:12px;
+
+}
+
+.stats-ratio{
+
+  opacity:.7;
+
+  font-size:13px;
+
+}

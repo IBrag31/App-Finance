@@ -357,22 +357,6 @@ function modifierDepense(index){
       </select>
     `
 }
-
-      <option
-        value="fixe"
-        ${depense.type === "fixe" ? "selected" : ""}
-      >
-        📦 Fixe
-      </option>
-
-      <option
-        value="variable"
-        ${depense.type === "variable" ? "selected" : ""}
-      >
-        🛒 Variable
-      </option>
-
-    </select>
     
     <select
   id="editCategorie"

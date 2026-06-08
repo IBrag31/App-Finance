@@ -177,7 +177,7 @@ TABBAR
       0.12
     );
 
-  overflow: hidden;
+  overflow: visible;
 
   z-index: 999;
 
@@ -209,31 +209,50 @@ TABBAR
 
 /* léger reflet intérieur */
 
+/* =========================
+   LIQUID GLASS BOTTOM FADE
+========================= */
+
 .tabbar::after{
 
   content:"";
 
-  position:absolute;
+  position:fixed;
 
-  inset:0;
+  left:0;
+  right:0;
+
+  bottom:0;
+
+  height:180px;
+
+  pointer-events:none;
 
   background:
+
     linear-gradient(
 
       to bottom,
 
-      rgba(
-        255,
-        255,
-        255,
-        0.06
-      ),
+      rgba(0,0,0,0),
 
-      transparent 35%
+      rgba(10,15,30,0.15),
+
+      rgba(10,15,30,0.45),
+
+      rgba(10,15,30,0.90)
 
     );
 
-  pointer-events:none;
+  backdrop-filter:
+    blur(30px)
+    saturate(180%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(180%);
+
+  z-index:-1;
 
 }
 

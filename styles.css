@@ -177,7 +177,7 @@ TABBAR
       0.12
     );
 
-  overflow: visible;
+  overflow: hidden;
 
   z-index: 999;
 
@@ -208,53 +208,6 @@ TABBAR
 }
 
 /* léger reflet intérieur */
-
-/* =========================
-   LIQUID GLASS BOTTOM FADE
-========================= */
-
-.tabbar::after{
-
-  content:"";
-
-  position:fixed;
-
-  left:0;
-  right:0;
-
-  bottom:0;
-
-  height:180px;
-
-  pointer-events:none;
-
-  background:
-
-    linear-gradient(
-
-      to bottom,
-
-      rgba(0,0,0,0),
-
-      rgba(10,15,30,0.15),
-
-      rgba(10,15,30,0.45),
-
-      rgba(10,15,30,0.90)
-
-    );
-
-  backdrop-filter:
-    blur(30px)
-    saturate(180%);
-
-  -webkit-backdrop-filter:
-    blur(30px)
-    saturate(180%);
-
-  z-index:-1;
-
-}
 
 .tab{
 
@@ -840,11 +793,16 @@ MODAL
 
 .stats-row{
 
-  display:flex;
+  display:grid;
 
-  justify-content:space-between;
+  grid-template-columns:
+    minmax(0,1fr)
+    auto
+    70px;
 
   align-items:center;
+
+  gap:12px;
 
   background:#1e293b;
 
@@ -854,7 +812,19 @@ MODAL
 
 }
 
+.stats-row strong{
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+}
+
 .stats-ratio{
+
+  text-align:right;
 
   opacity:.7;
 

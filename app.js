@@ -243,6 +243,8 @@ function saveAll(){
 // =========================
 
 function refreshApp(){
+  
+  updateTodayDate();
 
   loadAll();
 
@@ -264,8 +266,6 @@ function refreshApp(){
   }
 
   // render modules
-
-  updateTodayDate();
 
   renderRevenusPage?.();
 

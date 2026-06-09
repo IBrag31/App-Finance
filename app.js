@@ -325,7 +325,7 @@ window.CATEGORIES_FINANCE = [
 
   "🏠 Logement",
   "⚡ Énergie",
-  "🌐 Opérateur réseau",
+  "🌐 Réseau",
   "🚗 Automobile",
   "⛽ Carburant",
   "🛒 Courses",
@@ -378,7 +378,7 @@ function detecterCategorie(nom){
     n.includes("sfr") ||
     n.includes("free")
   ){
-    return "🌐 Télécom & Internet";
+    return "🌐 Réseau";
   }
 
   // 🚗 AUTOMOBILE
@@ -442,35 +442,35 @@ function detecterCategorie(nom){
 
 if(
 
-  texte.includes("NETFLIX") ||
+  n.includes("NETFLIX") ||
 
-  texte.includes("SPOTIFY") ||
+  n.includes("SPOTIFY") ||
 
-  texte.includes("DISNEY") ||
+  n.includes("DISNEY") ||
 
-  texte.includes("DISNEY+") ||
+  n.includes("DISNEY+") ||
 
-  texte.includes("PRIME VIDEO") ||
+  n.includes("PRIME VIDEO") ||
 
-  texte.includes("AMAZON PRIME") ||
+  n.includes("AMAZON PRIME") ||
 
-  texte.includes("YOUTUBE") ||
+  n.includes("YOUTUBE") ||
 
-  texte.includes("APPLE ONE") ||
+  n.includes("APPLE ONE") ||
 
-  texte.includes("ICLOUD") ||
+  n.includes("ICLOUD") ||
 
-  texte.includes("GOOGLE ONE") ||
+  n.includes("GOOGLE ONE") ||
 
-  texte.includes("CANAL+") ||
+  n.includes("CANAL+") ||
 
-  texte.includes("GAME PASS") ||
+  n.includes("GAME PASS") ||
 
-  texte.includes("PLAYSTATION") ||
+  n.includes("PLAYSTATION") ||
 
-  texte.includes("PS PLUS") ||
+  n.includes("PS PLUS") ||
 
-  texte.includes("XBOX")
+  n.includes("XBOX")
 
 ){
 
@@ -525,7 +525,7 @@ if(
     n.includes("caisse epargne") ||
     n.includes("frais bancaires")
   ){
-    return "💰 Banque & Assurances";
+    return "💰 Banque";
   }
 
   // 🏛️ IMPOTS

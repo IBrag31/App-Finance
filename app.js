@@ -264,6 +264,9 @@ function refreshApp(){
   }
 
   // render modules
+
+  updateTodayDate();
+
   renderRevenusPage?.();
 
   renderDepensesPage?.();
@@ -314,6 +317,32 @@ function setText(id, value){
   if(el){
     el.innerText = value;
   }
+
+}
+
+// =========================
+// DATE DU JOUR
+// =========================
+
+function updateTodayDate(){
+
+  const el =
+    document.getElementById("todayDate");
+
+  if(!el) return;
+
+  const date = new Date();
+
+  el.textContent =
+    date.toLocaleDateString(
+      "fr-FR",
+      {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
 
 }
 

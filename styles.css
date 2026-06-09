@@ -103,7 +103,8 @@ button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn),
   font-weight:600;
 }
 
-button:not(.delete-btn){
+button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn),
+.restore-btn{
   background:linear-gradient(145deg,#3b82f6,#2563eb);
   color:white;
 }

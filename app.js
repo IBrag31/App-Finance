@@ -448,6 +448,48 @@ function detecterCategorie(nom){
   ){
     return "🎮 Loisirs";
   }
+  
+  // =========================
+// 📱 ABONNEMENTS
+// =========================
+
+if(
+
+  texte.includes("NETFLIX") ||
+
+  texte.includes("SPOTIFY") ||
+
+  texte.includes("DISNEY") ||
+
+  texte.includes("DISNEY+") ||
+
+  texte.includes("PRIME VIDEO") ||
+
+  texte.includes("AMAZON PRIME") ||
+
+  texte.includes("YOUTUBE") ||
+
+  texte.includes("APPLE ONE") ||
+
+  texte.includes("ICLOUD") ||
+
+  texte.includes("GOOGLE ONE") ||
+
+  texte.includes("CANAL+") ||
+
+  texte.includes("GAME PASS") ||
+
+  texte.includes("PLAYSTATION") ||
+
+  texte.includes("PS PLUS") ||
+
+  texte.includes("XBOX")
+
+){
+
+  return "📱 Abonnements";
+
+}
 
   // 🏥 SANTE
   if(

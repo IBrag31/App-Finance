@@ -544,7 +544,7 @@ MODAL
 
 .revenus-card,
 .total-card{
-  padding:12px;
+  padding:16px;
 }
 
 .revenus-card-value{
@@ -555,7 +555,9 @@ MODAL
 
   color:#22c55e;
 
-  line-height:1.15;
+  line-height:1.2;
+
+  padding-bottom:4px;
 
 }
 

@@ -548,9 +548,15 @@ MODAL
 }
 
 .revenus-card-value{
+
   font-size:28px;
+
   font-weight:700;
+
   color:#22c55e;
+
+  line-height:1.15;
+
 }
 
 #depensesTotalPage{

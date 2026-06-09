@@ -102,6 +102,12 @@ CARDS
     inset 0 1px 0 rgba(255,255,255,.08);
 
   border-radius:22px;
+  
+  position:relative;
+  
+  padding:20px;
+  
+  overflow:hidden;
 
 }
 
@@ -497,8 +503,6 @@ MODAL
 
 .revenus-card,
 .total-card{
-  background:#1c1c1e;
-  border-radius:20px;
   padding:16px;
 }
 

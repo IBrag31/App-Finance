@@ -143,34 +143,53 @@ function renderRevenusPage(){
 
       div.innerHTML = `
 
-        <div style="flex:1">
+  <div
+    style="
+      flex:1;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    "
+  >
 
-          <div>
-            ${r.nom}
-          </div>
+    <div>
 
-          <div style="
-            opacity:0.6;
-            font-size:13px;
-            margin-top:2px;
-          ">
+      <div style="
+        font-weight:600;
+      ">
+        💰 ${r.nom}
+      </div>
 
-            ${formatMois(r.mois)}
-            •
-            ${euro(r.montant)}
+      <div style="
+        opacity:.55;
+        font-size:13px;
+        margin-top:3px;
+      ">
+        ${formatMois(r.mois)}
+      </div>
 
-          </div>
+    </div>
 
-        </div>
+    <div style="
+      font-weight:700;
+      font-size:17px;
+      color:#22c55e;
+      white-space:nowrap;
+    ">
+      ${euro(r.montant)}
+    </div>
 
-        <button
-          class="delete-btn"
-          data-id="${r.id}"
-        >
-          ×
-        </button>
+  </div>
 
-      `;
+  <button
+    class="delete-btn"
+    data-id="${r.id}"
+  >
+    ×
+  </button>
+
+`;
 
       // suppression sécurisée
       div.querySelector(".delete-btn")

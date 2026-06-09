@@ -437,21 +437,8 @@ function detecterCategorie(nom){
   ){
     return "🛍️ Shopping";
   }
-
-  // 🎮 LOISIRS
-  if(
-    n.includes("netflix") ||
-    n.includes("spotify") ||
-    n.includes("disney") ||
-    n.includes("steam") ||
-    n.includes("cinema")
-  ){
-    return "🎮 Loisirs";
-  }
   
-  // =========================
-// 📱 ABONNEMENTS
-// =========================
+  // 📱 ABONNEMENTS
 
 if(
 
@@ -490,6 +477,17 @@ if(
   return "📱 Abonnements";
 
 }
+
+  // 🎮 LOISIRS
+  if(
+    n.includes("netflix") ||
+    n.includes("spotify") ||
+    n.includes("disney") ||
+    n.includes("steam") ||
+    n.includes("cinema")
+  ){
+    return "🎮 Loisirs";
+  }
 
   // 🏥 SANTE
   if(

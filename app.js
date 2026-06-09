@@ -325,17 +325,18 @@ window.CATEGORIES_FINANCE = [
 
   "🏠 Logement",
   "⚡ Énergie",
-  "🌐 Télécom & Internet",
+  "🌐 Opérateur réseau",
   "🚗 Automobile",
   "⛽ Carburant",
   "🛒 Courses",
   "🍽️ Restauration",
   "🛍️ Shopping",
+  "📱 Abonnements",
   "🎮 Loisirs",
   "🏥 Santé",
   "🐱 Animaux",
-  "🔧 Bricolage / Maison",
-  "💰 Banque & Assurances",
+  "🔧 Maison",
+  "💰 Banque",
   "🏛️ Impôts & Taxes",
   "📦 Autre"
 

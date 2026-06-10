@@ -129,13 +129,18 @@ window.depensesDetail =
   });
 
     window.epargneHistorique =
-      epargne ? JSON.parse(epargne) : [];
+  epargne ? JSON.parse(epargne) : [];
 
-    window.especes =
-      especes ? JSON.parse(especes) : 0;
+window.objectifsEpargne =
+  JSON.parse(
+    localStorage.getItem("finance_objectifs_epargne")
+  ) || [];
 
-    window.atelier =
-      atelier ? JSON.parse(atelier) : [];
+window.especes =
+  especes ? JSON.parse(especes) : 0;
+
+window.atelier =
+  atelier ? JSON.parse(atelier) : [];
 
     // =========================
     // MIGRATION ATELIER
@@ -225,6 +230,11 @@ function saveAll(){
     "epargneHistorique",
     window.epargneHistorique
   );
+  
+  safeSet(
+  "finance_objectifs_epargne",
+  window.objectifsEpargne || []
+);
 
   safeSet(
     "especes",

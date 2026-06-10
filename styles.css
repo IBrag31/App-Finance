@@ -1332,8 +1332,33 @@ MODAL
   gap:10px;
 
   padding-right:12px;
-  
+
+  opacity:0;
+
   pointer-events:none;
+
+  transition:
+    opacity .20s ease;
+
+}
+
+.objectif-card.swiped .objectif-actions{
+
+  opacity:1;
+
+  pointer-events:auto;
+
+}
+
+.objectif-actions{
+
+  z-index:5;
+
+}
+
+.objectif-content{
+
+  z-index:10;
 
 }
 

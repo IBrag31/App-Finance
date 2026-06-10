@@ -547,8 +547,9 @@ MODAL
 
 #depensesTotalPage{
   color:#f97316;
-  font-size:28px;
+  font-size:22px;
   font-weight:700;
+  white-space:nowrap;
 }
 
 .revenus-especes-row{

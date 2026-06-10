@@ -509,3 +509,77 @@ document.addEventListener(
 
   }
 );
+
+function renderObjectifsEpargne(){
+
+  const list =
+    document.getElementById(
+      "objectifsEpargneList"
+    );
+
+  if(!list) return;
+
+  list.innerHTML = "";
+
+  if(!Array.isArray(window.objectifsEpargne)){
+    window.objectifsEpargne = [];
+  }
+
+  window.objectifsEpargne.forEach(obj => {
+
+    const pourcentage =
+      Math.min(
+        100,
+        Math.round(
+          (obj.montant / obj.cible) * 100
+        )
+      );
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "card objectif-card";
+
+    card.innerHTML = `
+
+      <div class="objectif-header">
+
+        <div class="objectif-title">
+          ${obj.emoji} ${obj.nom}
+        </div>
+
+      </div>
+
+      <div class="objectif-amount">
+
+        ${euro(obj.montant)}
+        /
+        ${euro(obj.cible)}
+
+      </div>
+
+      <div class="objectif-progress">
+
+        <div
+          class="objectif-fill"
+          style="
+            width:${pourcentage}%;
+          "
+        ></div>
+
+      </div>
+
+      <div class="objectif-percent">
+
+        ${pourcentage} %
+
+      </div>
+
+    `;
+
+    list.appendChild(card);
+
+  });
+
+}

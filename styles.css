@@ -1303,4 +1303,73 @@ MODAL
 
 }
 
+.objectif-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+.objectif-actions{
+
+  position:absolute;
+
+  top:0;
+  right:0;
+  bottom:0;
+
+  display:flex;
+
+  gap:8px;
+
+  padding:10px;
+
+}
+
+.objectif-edit,
+.objectif-delete{
+
+  width:90px;
+
+  border:none;
+
+  border-radius:16px;
+
+  color:white;
+
+  font-weight:600;
+
+}
+
+.objectif-edit{
+
+  background:
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(20px);
+
+}
+
+.objectif-delete{
+
+  background:#ff3b30;
+
+}
+
+.objectif-content{
+
+  position:relative;
+
+  z-index:2;
+
+  transition:
+    transform .25s ease;
+
+  background:
+    rgba(28,28,30,.45);
+
+}
+
 

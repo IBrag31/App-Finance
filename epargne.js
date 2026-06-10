@@ -197,8 +197,56 @@ function renderEpargneMois(){
 
 function openAddEpargne(){
 
-  const moisActuel =
-  getMoisBudget().slice(5,7);
+  openModal("", `
+
+    <button
+      id="btnAddVersement"
+      class="modal-button"
+      style="margin-bottom:10px;"
+    >
+      💙 Ajouter un versement
+    </button>
+
+    <button
+      id="btnAddObjectif"
+      class="modal-button"
+    >
+      🎯 Ajouter un objectif
+    </button>
+
+  `);
+
+  document
+    .getElementById("btnAddVersement")
+    ?.addEventListener("click", () => {
+
+      closeModal();
+
+      setTimeout(() => {
+
+        openAddVersementEpargne();
+
+      }, 150);
+
+    });
+
+  document
+    .getElementById("btnAddObjectif")
+    ?.addEventListener("click", () => {
+
+      closeModal();
+
+      setTimeout(() => {
+
+        openAddObjectifEpargne();
+
+      }, 150);
+
+    });
+
+}
+
+function openAddVersementEpargne(){
 
   openModal("Ajouter épargne", `
 
@@ -210,28 +258,15 @@ function openAddEpargne(){
       placeholder="Montant"
     >
 
-    <select
+    <input
       id="epargneMois"
       class="modal-input"
+      type="month"
+      value="${getMoisBudget()}"
     >
 
-      <option value="01">Janvier</option>
-      <option value="02">Février</option>
-      <option value="03">Mars</option>
-      <option value="04">Avril</option>
-      <option value="05">Mai</option>
-      <option value="06">Juin</option>
-      <option value="07">Juillet</option>
-      <option value="08">Août</option>
-      <option value="09">Septembre</option>
-      <option value="10">Octobre</option>
-      <option value="11">Novembre</option>
-      <option value="12">Décembre</option>
-
-    </select>
-
     <button
-      id="btnValidateEpargne"
+      id="btnSaveEpargne"
       class="modal-button"
     >
       Ajouter
@@ -239,28 +274,9 @@ function openAddEpargne(){
 
   `);
 
-  // mois actuel
   document
-    .getElementById("epargneMois")
-    .value = moisActuel;
-
-  // focus iPhone
-  setTimeout(() => {
-
-    document
-      .getElementById("epargneMontant")
-      ?.focus();
-
-  }, 120);
-
-  // validation
-  document
-    .getElementById("btnValidateEpargne")
-    ?.addEventListener("click", () => {
-
-      validerEpargne();
-
-    });
+    .getElementById("btnSaveEpargne")
+    ?.addEventListener("click", validerEpargne);
 
 }
 
@@ -420,5 +436,91 @@ function supprimerEpargne(index){
   refreshApp();
 
   showToast?.("🗑️ Épargne supprimée");
+
+}
+
+function openAddObjectifEpargne(){
+
+  openModal("Nouvel objectif", `
+
+    <input
+      id="objectifEmoji"
+      class="modal-input"
+      placeholder="🎯"
+      maxlength="2"
+    >
+
+    <input
+      id="objectifNom"
+      class="modal-input"
+      placeholder="Nom de l'objectif"
+    >
+
+    <input
+      id="objectifCible"
+      class="modal-input"
+      type="number"
+      placeholder="Montant cible"
+    >
+
+    <button
+      id="btnSaveObjectif"
+      class="modal-button"
+    >
+      Créer
+    </button>
+
+  `);
+
+  document
+    .getElementById("btnSaveObjectif")
+    ?.addEventListener("click", () => {
+
+      const emoji =
+        document.getElementById("objectifEmoji")?.value || "🎯";
+
+      const nom =
+        document.getElementById("objectifNom")?.value?.trim();
+
+      const cible =
+        parseFloat(
+          document.getElementById("objectifCible")?.value
+        );
+
+      if(!nom || isNaN(cible) || cible <= 0){
+
+        showToast?.("⚠️ Données invalides");
+
+        return;
+
+      }
+
+      if(!Array.isArray(window.objectifsEpargne)){
+        window.objectifsEpargne = [];
+      }
+
+      window.objectifsEpargne.push({
+
+        id: Date.now(),
+
+        emoji,
+
+        nom,
+
+        cible,
+
+        montant: 0
+
+      });
+
+      saveAll();
+
+      refreshApp();
+
+      closeModal();
+
+      showToast?.("🎯 Objectif créé");
+
+    });
 
 }

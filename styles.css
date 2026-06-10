@@ -128,7 +128,7 @@ CARDS
 BUTTONS
 ========================= */
 
-button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn),
+button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn):not(.back-btn-liquid),
 .restore-btn{
   width:100%;
   padding:14px;
@@ -1002,6 +1002,54 @@ MODAL
 
 .depenses-stats-card{
   overflow:visible !important;
+}
+
+.back-btn-liquid{
+
+  width:48px;
+  height:48px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.08);
+
+  backdrop-filter:
+    blur(24px)
+    saturate(180%);
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(180%);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.10);
+
+  color:white;
+
+  font-size:32px;
+
+  font-weight:200;
+
+  line-height:1;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-bottom:2px;
+
+}
+
+.back-btn-liquid:active{
+
+  transform:scale(0.94);
+
 }
 
 

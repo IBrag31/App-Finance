@@ -543,40 +543,62 @@ function renderObjectifsEpargne(){
 
     card.innerHTML = `
 
-      <div class="objectif-header">
+  <div class="objectif-actions">
 
-        <div class="objectif-title">
-          ${obj.emoji} ${obj.nom}
-        </div>
+    <button
+      class="objectif-edit"
+      data-id="${obj.id}"
+    >
+      Modifier
+    </button>
 
+    <button
+      class="objectif-delete"
+      data-id="${obj.id}"
+    >
+      Supprimer
+    </button>
+
+  </div>
+
+  <div class="objectif-content">
+
+    <div class="objectif-header">
+
+      <div class="objectif-title">
+        ${obj.emoji} ${obj.nom}
       </div>
 
-      <div class="objectif-amount">
+    </div>
 
-        ${euro(obj.montant)}
-        /
-        ${euro(obj.cible)}
+    <div class="objectif-amount">
 
-      </div>
+      ${euro(obj.montant)}
+      /
+      ${euro(obj.cible)}
 
-      <div class="objectif-progress">
+    </div>
 
-        <div
-          class="objectif-fill"
-          style="
-            width:${pourcentage}%;
-          "
-        ></div>
+    <div class="objectif-progress">
 
-      </div>
+      <div
+        class="objectif-fill"
+        style="
+          width:${pourcentage}%;
+        "
+      ></div>
 
-      <div class="objectif-percent">
+    </div>
 
-        ${pourcentage} %
+    <div class="objectif-percent">
 
-      </div>
+      ${pourcentage} %
 
-    `;
+    </div>
+
+  </div>
+
+`;
 
     list.appendChild(card);
 

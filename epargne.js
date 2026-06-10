@@ -630,38 +630,46 @@ card.addEventListener(
       startX - endX;
 
     // swipe gauche
-    if(delta > 50){
+if(delta > 50){
 
-      document
-        .querySelectorAll(
-          ".objectif-content.swiped"
-        )
-        .forEach(el => {
+  document
+    .querySelectorAll(
+      ".objectif-card"
+    )
+    .forEach(c => {
 
-          if(el !== content){
+      if(c !== card){
 
-            el.classList.remove(
-              "swiped"
-            );
+        c.classList.remove("swiped");
 
-          }
+        c.querySelector(
+          ".objectif-content"
+        )?.classList.remove(
+          "swiped"
+        );
 
-        });
+      }
 
-      content.classList.add(
-        "swiped"
-      );
+    });
 
-    }
+  card.classList.add("swiped");
+
+  content.classList.add("swiped");
+
+}
 
     // swipe droite
-    if(delta < -50){
+if(delta < -50){
 
-      content.classList.remove(
-        "swiped"
-      );
+  card.classList.remove(
+    "swiped"
+  );
 
-    }
+  content.classList.remove(
+    "swiped"
+  );
+
+}
 
   }
 );

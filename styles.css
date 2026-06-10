@@ -1105,4 +1105,84 @@ MODAL
 
 }
 
+.epargne-add-wrapper{
+
+  position:relative;
+
+}
+
+.epargne-quick-menu{
+
+  position:absolute;
+
+  top:58px;
+
+  right:0;
+
+  width:180px;
+
+  padding:8px;
+
+  border-radius:20px;
+
+  background:
+    rgba(28,28,30,.70);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(180%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(180%);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.35);
+
+  display:none;
+
+  z-index:9999;
+
+}
+
+.epargne-quick-menu.show{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:6px;
+
+}
+
+.quick-action{
+
+  border:none;
+
+  background:transparent;
+
+  color:white;
+
+  text-align:left;
+
+  padding:12px;
+
+  border-radius:14px;
+
+  font-size:15px;
+
+  font-weight:600;
+
+}
+
+.quick-action:hover{
+
+  background:
+    rgba(255,255,255,.08);
+
+}
+
 

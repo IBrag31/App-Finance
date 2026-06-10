@@ -1323,24 +1323,39 @@ MODAL
 
   display:flex;
 
-  gap:8px;
+  align-items:center;
 
-  padding:10px;
+  gap:10px;
+
+  padding-right:12px;
+
+  z-index:1;
 
 }
 
 .objectif-edit,
 .objectif-delete{
 
-  width:90px;
+  width:82px;
+
+  height:72px;
 
   border:none;
 
-  border-radius:16px;
+  border-radius:18px;
 
   color:white;
 
   font-weight:600;
+
+  flex-shrink:0;
+
+}
+
+.objectif-content.swiped{
+
+  transform:
+    translateX(-180px);
 
 }
 

@@ -1322,6 +1322,8 @@ MODAL
   bottom:0;
 
   width:180px;
+  
+  z-index:5;
 
   display:flex;
 
@@ -1347,18 +1349,6 @@ MODAL
   opacity:1;
 
   pointer-events:auto;
-
-}
-
-.objectif-actions{
-
-  z-index:5;
-
-}
-
-.objectif-content{
-
-  z-index:10;
 
 }
 

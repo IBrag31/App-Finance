@@ -460,9 +460,9 @@ function openAddObjectifEpargne(){
 
       saveAll();
 
-      refreshApp();
-
       closeModal();
+
+      renderObjectifsEpargne?.();
 
       showToast?.("🎯 Objectif créé");
 

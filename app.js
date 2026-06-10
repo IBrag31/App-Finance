@@ -275,24 +275,26 @@ function refreshApp(){
     window.atelier = [];
   }
 
-  // render modules
+// render modules
 
-  renderRevenusPage?.();
+renderRevenusPage?.();
 
-  renderDepensesPage?.();
-  
-  renderStatsCategories?.();
+renderDepensesPage?.();
 
-  renderEpargneHistorique?.();
+renderStatsCategories?.();
 
-  renderEpargneMois?.();
+renderEpargneHistorique?.();
 
-  renderEspeces?.();
+renderEpargneMois?.();
 
-  renderAtelier?.();
+renderObjectifsEpargne?.();
 
-  // dashboard
-  renderDashboard();
+renderEspeces?.();
+
+renderAtelier?.();
+
+// dashboard
+renderDashboard();
 
 }
 

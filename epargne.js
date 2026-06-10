@@ -601,6 +601,70 @@ function renderObjectifsEpargne(){
 `;
 
     list.appendChild(card);
+    
+    const content =
+  card.querySelector(
+    ".objectif-content"
+  );
+
+let startX = 0;
+
+card.addEventListener(
+  "touchstart",
+  (e) => {
+
+    startX =
+      e.touches[0].clientX;
+
+  }
+);
+
+card.addEventListener(
+  "touchend",
+  (e) => {
+
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const delta =
+      startX - endX;
+
+    // swipe gauche
+    if(delta > 50){
+
+      document
+        .querySelectorAll(
+          ".objectif-content.swiped"
+        )
+        .forEach(el => {
+
+          if(el !== content){
+
+            el.classList.remove(
+              "swiped"
+            );
+
+          }
+
+        });
+
+      content.classList.add(
+        "swiped"
+      );
+
+    }
+
+    // swipe droite
+    if(delta < -50){
+
+      content.classList.remove(
+        "swiped"
+      );
+
+    }
+
+  }
+);
 
   });
 

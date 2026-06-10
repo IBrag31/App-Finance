@@ -195,57 +195,6 @@ function renderEpargneMois(){
 // MODAL
 // =========================
 
-function openAddEpargne(){
-
-  openModal("", `
-
-    <button
-      id="btnAddVersement"
-      class="modal-button"
-      style="margin-bottom:10px;"
-    >
-      💙 Ajouter un versement
-    </button>
-
-    <button
-      id="btnAddObjectif"
-      class="modal-button"
-    >
-      🎯 Ajouter un objectif
-    </button>
-
-  `);
-
-  document
-    .getElementById("btnAddVersement")
-    ?.addEventListener("click", () => {
-
-      closeModal();
-
-      setTimeout(() => {
-
-        openAddVersementEpargne();
-
-      }, 150);
-
-    });
-
-  document
-    .getElementById("btnAddObjectif")
-    ?.addEventListener("click", () => {
-
-      closeModal();
-
-      setTimeout(() => {
-
-        openAddObjectifEpargne();
-
-      }, 150);
-
-    });
-
-}
-
 function openAddVersementEpargne(){
 
   openModal("Ajouter épargne", `
@@ -443,7 +392,7 @@ function openAddObjectifEpargne(){
       id="objectifEmoji"
       class="modal-input"
       placeholder="🎯"
-      maxlength="2"
+      maxlength="6"
     >
 
     <input
@@ -520,3 +469,43 @@ function openAddObjectifEpargne(){
     });
 
 }
+
+function toggleEpargneMenu(){
+
+  const menu =
+    document.getElementById(
+      "epargneQuickMenu"
+    );
+
+  if(!menu) return;
+
+  menu.classList.toggle("show");
+
+}
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    const menu =
+      document.getElementById(
+        "epargneQuickMenu"
+      );
+
+    const wrapper =
+      document.querySelector(
+        ".epargne-add-wrapper"
+      );
+
+    if(
+      menu &&
+      wrapper &&
+      !wrapper.contains(e.target)
+    ){
+
+      menu.classList.remove("show");
+
+    }
+
+  }
+);

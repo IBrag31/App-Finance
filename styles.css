@@ -1013,8 +1013,9 @@ MODAL
 
 }
 
-  .total-card{
+.total-card{
   min-height:140px !important;
+  overflow:visible !important;
 }
 
 

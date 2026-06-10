@@ -111,8 +111,6 @@ CARDS
 
 }
 
-
-
 .card::before{
   content:"";
 
@@ -143,10 +141,7 @@ button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn),
   border-radius:18px;
   font-size:16px;
   font-weight:600;
-}
 
-button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn),
-.restore-btn{
   background:linear-gradient(145deg,#3b82f6,#2563eb);
   color:white;
 }
@@ -317,9 +312,7 @@ SECTIONS
   padding-bottom:
     calc(170px + env(safe-area-inset-bottom));
 
-  min-height:100%;
-
-  height:100vh;
+  min-height:100vh;
 
   overflow-y:auto;
 
@@ -550,17 +543,10 @@ MODAL
 }
 
 .revenus-card-value{
-
   font-size:28px;
-
   font-weight:700;
-
   color:#22c55e;
-
-  line-height:1.2;
-
-  padding-bottom:4px;
-
+  line-height:1;
 }
 
 #depensesTotalPage{
@@ -1014,7 +1000,7 @@ MODAL
 }
 
 .total-card{
-  min-height:140px !important;
+  min-height:95px !important;
   overflow:visible !important;
 }
 

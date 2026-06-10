@@ -299,11 +299,7 @@ function validerEpargne(){
     document
       .getElementById("epargneMois");
 
-  const annee =
-    new Date().getFullYear();
-
-  const mois =
-    `${annee}-${moisInput.value}`;
+  const mois = moisInput.value;
 
   // validation
   if(isNaN(montant) || montant <= 0){

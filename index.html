@@ -400,7 +400,37 @@ href="iconapp-180.png">
   ‹
 </button>
   <h1>Épargne</h1>
-  <button onclick="openAddEpargne()" class="add-btn">+</button>
+  <div class="epargne-add-wrapper">
+
+  <button
+    onclick="toggleEpargneMenu()"
+    class="add-btn"
+  >
+    +
+  </button>
+
+  <div
+    id="epargneQuickMenu"
+    class="epargne-quick-menu"
+  >
+
+    <button
+      onclick="openAddVersementEpargne()"
+      class="quick-action"
+    >
+      💙 Versement
+    </button>
+
+    <button
+      onclick="openAddObjectifEpargne()"
+      class="quick-action"
+    >
+      🎯 Objectif
+    </button>
+
+  </div>
+
+</div>
 </div>
 
     <!-- TOTAL -->

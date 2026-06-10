@@ -282,7 +282,7 @@ function validerEpargne(){
 
   closeModal();
 
-  showToast?.("💙 Épargne ajoutée");
+  showToast?.("💶 Épargne ajoutée");
 
 }
 

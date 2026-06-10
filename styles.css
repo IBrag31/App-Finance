@@ -1332,6 +1332,8 @@ MODAL
   gap:10px;
 
   padding-right:12px;
+  
+  pointer-events:none;
 
 }
 
@@ -1373,7 +1375,12 @@ MODAL
 
 .objectif-delete{
 
-  background:#ff3b30;
+  background:
+    linear-gradient(
+      180deg,
+      #ff453a,
+      #ff3b30
+    );
 
 }
 
@@ -1384,6 +1391,10 @@ MODAL
   z-index:10;
 
   width:100%;
+  
+  min-height:100%;
+  
+  padding:20px;
 
   background:
     rgba(28,28,30,.45);

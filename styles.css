@@ -1218,6 +1218,16 @@ MODAL
 
 .objectif-card{
 
+  position:relative;
+
+  overflow:hidden;
+
+  padding:0 !important;
+
+  background:transparent !important;
+
+  border:none !important;
+
   display:flex;
 
   flex-direction:column;

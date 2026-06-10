@@ -128,7 +128,13 @@ CARDS
 BUTTONS
 ========================= */
 
-button:not(.circle-btn):not(.add-btn):not(.delete-btn):not(.mois-btn):not(.back-btn-liquid):not(.action-btn-liquid),
+button:not(.circle-btn)
+:not(.add-btn)
+:not(.delete-btn)
+:not(.mois-btn)
+:not(.back-btn-liquid)
+:not(.action-btn-liquid)
+:not(.quick-action),
 .restore-btn{
   width:100%;
   padding:14px;
@@ -1163,7 +1169,7 @@ MODAL
   width:100%;
 
   background:
-    rgba(255,255,255,.06);
+    rgba(255,255,255,.06) !important;
 
   backdrop-filter:
     blur(24px)
@@ -1179,7 +1185,7 @@ MODAL
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.08);
 
-  color:white;
+  color:white !important;
 
   text-align:left;
 

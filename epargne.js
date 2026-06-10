@@ -460,9 +460,9 @@ function openAddObjectifEpargne(){
 
       saveAll();
 
-      closeModal();
+      refreshApp();
 
-      renderObjectifsEpargne?.();
+      closeModal();
 
       showToast?.("🎯 Objectif créé");
 
@@ -601,6 +601,120 @@ function renderObjectifsEpargne(){
 `;
 
     list.appendChild(card);
+    
+    card
+  .querySelector(".objectif-delete")
+  ?.addEventListener("click", () => {
+
+    if(
+      !confirm(
+        `Supprimer "${obj.nom}" ?`
+      )
+    ){
+      return;
+    }
+
+    window.objectifsEpargne =
+      window.objectifsEpargne.filter(
+        o => o.id !== obj.id
+      );
+
+    saveAll();
+
+    refreshApp();
+
+    showToast?.(
+      "🗑️ Objectif supprimé"
+    );
+
+  });
+  
+  card
+  .querySelector(".objectif-edit")
+  ?.addEventListener("click", () => {
+
+    openModal(
+      "Modifier objectif",
+      `
+
+      <input
+        id="editEmoji"
+        class="modal-input"
+        value="${obj.emoji}"
+      >
+
+      <input
+        id="editNom"
+        class="modal-input"
+        value="${obj.nom}"
+      >
+
+      <input
+        id="editCible"
+        class="modal-input"
+        type="number"
+        value="${obj.cible}"
+      >
+
+      <button
+        id="saveEditObjectif"
+        class="modal-button"
+      >
+        Enregistrer
+      </button>
+
+      `
+    );
+
+    document
+      .getElementById(
+        "saveEditObjectif"
+      )
+      ?.addEventListener(
+        "click",
+        () => {
+
+          obj.emoji =
+            document.getElementById(
+              "editEmoji"
+            ).value;
+
+          obj.nom =
+            document.getElementById(
+              "editNom"
+            ).value;
+
+          const nouvelleCible =
+  parseFloat(
+    document.getElementById(
+      "editCible"
+    ).value
+  );
+
+if(
+  isNaN(nouvelleCible) ||
+  nouvelleCible <= 0
+){
+  showToast?.("⚠️ Montant invalide");
+  return;
+}
+
+obj.cible = nouvelleCible;
+
+          saveAll();
+
+          refreshApp();
+
+          closeModal();
+
+          showToast?.(
+            "✏️ Objectif modifié"
+          );
+
+        }
+      );
+
+  });
     
     const content =
   card.querySelector(

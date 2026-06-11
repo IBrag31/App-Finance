@@ -1321,7 +1321,7 @@ MODAL
   right:0;
   bottom:0;
 
-  width:180px;
+  width:200px;
   
   z-index:5;
 
@@ -1374,7 +1374,7 @@ MODAL
 .objectif-content.swiped{
 
   transform:
-    translateX(-180px);
+    translateX(-200px);
 
 }
 

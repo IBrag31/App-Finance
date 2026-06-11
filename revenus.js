@@ -135,72 +135,177 @@ function renderRevenusPage(){
 div.className =
   "revenu-card";
 
-      // clic modification
       div.addEventListener("click", () => {
 
-        modifierRevenu(r);
+  if(
+    div.classList.contains("swiped")
+  ){
+    return;
+  }
 
-      });
+  modifierRevenu(r);
+
+});
 
       div.innerHTML = `
 
-  <div
-    style="
-      flex:1;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-    "
-  >
+  <div class="revenu-actions">
 
-    <div>
+    <button
+      class="revenu-edit"
+      data-id="${r.id}"
+    >
+      Modifier
+    </button>
 
-      <div style="
-        font-weight:600;
-      ">
-        💰 ${r.nom}
+    <button
+      class="revenu-delete"
+      data-id="${r.id}"
+    >
+      Supprimer
+    </button>
+
+  </div>
+
+  <div class="revenu-content">
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        gap:12px;
+      "
+    >
+
+      <div>
+
+        <div style="font-weight:600;">
+          💰 ${r.nom}
+        </div>
+
+        <div
+          style="
+            opacity:.55;
+            font-size:13px;
+            margin-top:3px;
+          "
+        >
+          ${formatMois(r.mois)}
+        </div>
+
       </div>
 
-      <div style="
-        opacity:.55;
-        font-size:13px;
-        margin-top:3px;
-      ">
-        ${formatMois(r.mois)}
+      <div
+        style="
+          font-weight:700;
+          font-size:17px;
+          color:#22c55e;
+          white-space:nowrap;
+        "
+      >
+        ${euro(r.montant)}
       </div>
 
-    </div>
-
-    <div style="
-      font-weight:700;
-      font-size:17px;
-      color:#22c55e;
-      white-space:nowrap;
-    ">
-      ${euro(r.montant)}
     </div>
 
   </div>
 
-  <button
-    class="delete-btn"
-    data-id="${r.id}"
-  >
-    ×
-  </button>
-
 `;
 
-      // suppression sécurisée
-      div.querySelector(".delete-btn")
-        ?.addEventListener("click", (e) => {
+      div
+  .querySelector(".revenu-delete")
+  ?.addEventListener("click", (e) => {
 
-          e.stopPropagation();
+    e.stopPropagation();
 
-          supprimerRevenu(r.id);
+    supprimerRevenu(r.id);
+
+  });
+
+div
+  .querySelector(".revenu-edit")
+  ?.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    modifierRevenu(r);
+
+  });
+  
+  const content =
+  div.querySelector(
+    ".revenu-content"
+  );
+  
+  let startX = 0;
+
+div.addEventListener(
+  "touchstart",
+  (e) => {
+
+    startX =
+      e.touches[0].clientX;
+
+  }
+);
+
+div.addEventListener(
+  "touchend",
+  (e) => {
+
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const delta =
+      startX - endX;
+
+    // swipe gauche
+    if(delta > 50){
+
+      document
+        .querySelectorAll(
+          ".revenu-card"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".revenu-content"
+          )?.classList.remove(
+            "swiped"
+          );
 
         });
+
+      div.classList.add(
+        "swiped"
+      );
+
+      content.classList.add(
+        "swiped"
+      );
+
+    }
+
+    // swipe droite
+    if(delta < -50){
+
+      div.classList.remove(
+        "swiped"
+      );
+
+      content.classList.remove(
+        "swiped"
+      );
+
+    }
+
+  }
+);
 
       list.appendChild(div);
 
@@ -489,4 +594,30 @@ function supprimerRevenu(id){
   refreshApp();
 
   showToast?.("🗑️ Revenu supprimé");
+  
+  
 }
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    if(
+      !e.target.closest(".revenu-card")
+    ){
+
+      document
+        .querySelectorAll(".revenu-card")
+        .forEach(c => {
+
+          c.classList.remove("swiped");
+
+          c.querySelector(".revenu-content")
+            ?.classList.remove("swiped");
+
+        });
+
+    }
+
+  }
+);

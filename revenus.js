@@ -130,9 +130,10 @@ function renderRevenusPage(){
     .forEach((r) => {
 
       const div =
-        document.createElement("div");
+  document.createElement("div");
 
-      div.className = "depense-row";
+div.className =
+  "revenu-card";
 
       // clic modification
       div.addEventListener("click", () => {

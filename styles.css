@@ -306,7 +306,7 @@ SECTIONS
   gap:12px;
 
   padding-top:
-    calc(env(safe-area-inset-top) + 6px);
+    calc(env(safe-area-inset-top) + 4px);
 
   padding-left:12px;
   padding-right:12px;

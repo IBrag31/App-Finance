@@ -1422,6 +1422,138 @@ MODAL
 
   transition:
     transform .25s ease;
+    
+    will-change: transform;
+
+}
+
+/* =========================
+   REVENUS SWIPE
+========================= */
+
+.revenu-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:0 !important;
+
+  background:transparent !important;
+
+  border:none !important;
+
+}
+
+.revenu-actions{
+
+  position:absolute;
+
+  top:0;
+  right:0;
+  bottom:0;
+
+  width:200px;
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding-right:12px;
+
+  z-index:5;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .20s ease;
+
+}
+
+.revenu-card.swiped .revenu-actions{
+
+  opacity:1;
+
+  pointer-events:auto;
+
+}
+
+.revenu-edit,
+.revenu-delete{
+
+  width:82px;
+
+  height:76px;
+
+  border:none;
+
+  border-radius:18px;
+
+  color:white;
+
+  font-weight:600;
+
+  flex-shrink:0;
+
+}
+
+.revenu-edit{
+
+  background:
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(20px);
+
+}
+
+.revenu-delete{
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff453a,
+      #ff3b30
+    );
+
+}
+
+.revenu-content{
+
+  position:relative;
+
+  z-index:10;
+
+  width:100%;
+
+  padding:12px;
+
+  background:
+    rgba(28,28,30,.45);
+
+  backdrop-filter:
+    blur(24px)
+    saturate(180%);
+
+  border-radius:22px;
+
+  transition:
+    transform .25s ease;
+    
+    will-change: transform;
+
+}
+
+.revenu-content.swiped{
+
+  transform:
+    translateX(-200px);
 
 }
 

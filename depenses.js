@@ -5,10 +5,26 @@ console.log("depenses.js SYNC CLEAN ✅");
 // =========================
 
 function calculTotalDepenses(){
+
   return window.depensesDetail.reduce(
-    (sum, d) => sum + (Number(d.montant) || 0),
+
+    (sum, d) => {
+
+      const montant =
+        Number(d.montant) || 0;
+
+      return sum + (
+        d.commun
+          ? montant / 2
+          : montant
+      );
+
+    },
+
     0
+
   );
+
 }
 
 // =========================
@@ -43,8 +59,13 @@ function renderDepensesPage(){
 
   window.depensesDetail.forEach((d, i) => {
 
-    const montant =
-      Number(d.montant) || 0;
+    const montantBrut =
+  Number(d.montant) || 0;
+
+const montant =
+  d.commun
+    ? montantBrut / 2
+    : montantBrut;
 
     const row =
       document.createElement("div");
@@ -65,6 +86,20 @@ function renderDepensesPage(){
 <div>
   ${d.nom}
 </div>
+
+${
+  d.commun
+    ? `
+      <div style="
+        color:#60a5fa;
+        font-size:12px;
+        margin-top:2px;
+      ">
+        👥 Dépense commune
+      </div>
+    `
+    : ""
+}
 
 ${
   d.type === "CB"
@@ -94,7 +129,11 @@ ${
   margin-top:2px;
 ">
 
-  ${euro(montant)}
+  ${
+  d.commun
+    ? `${euro(montantBrut)} • Ma part : ${euro(montant)}`
+    : euro(montant)
+}
 
 </div>
 
@@ -202,6 +241,11 @@ function validerDepense(){
     document
       .getElementById("typeDepense")
       ?.value || "variable";
+      
+      const commun =
+  document
+    .getElementById("depenseCommune")
+    ?.checked || false;
 
   // validation
   if(!nom || isNaN(montant) || montant <= 0){
@@ -220,16 +264,18 @@ function validerDepense(){
   // ajout
   window.depensesDetail.push({
 
-    id: Date.now(),
+  id: Date.now(),
 
-    nom,
+  nom,
 
-    montant:
-      Math.round(montant * 100) / 100,
+  montant:
+    Math.round(montant * 100) / 100,
 
-    type
+  type,
 
-  });
+  commun
+
+});
 
   saveAll();
 
@@ -275,6 +321,25 @@ function openAddDepense(){
         🛒 Variable
       </option>
     </select>
+    
+    <label
+  style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    color:white;
+  "
+>
+
+  <input
+    type="checkbox"
+    id="depenseCommune"
+  >
+
+  👥 Dépense commune (50/50)
+
+</label>
 
     <button
       id="btnValidateDepense"
@@ -335,6 +400,7 @@ function modifierDepense(index){
   depense.type === "CB"
     ? ""
     : `
+
       <select
         id="editTypeDepense"
         class="modal-input"
@@ -355,6 +421,27 @@ function modifierDepense(index){
         </option>
 
       </select>
+
+      <label
+        style="
+          display:flex;
+          align-items:center;
+          gap:10px;
+          margin-bottom:14px;
+          color:white;
+        "
+      >
+
+        <input
+          type="checkbox"
+          id="editDepenseCommune"
+          ${depense.commun ? "checked" : ""}
+        >
+
+        👥 Dépense commune (50/50)
+
+      </label>
+
     `
 }
     
@@ -421,6 +508,11 @@ function modifierDepense(index){
   document
     .getElementById("editCategorie")
     ?.value || "📦 Autre";
+    
+    const commun =
+  document
+    .getElementById("editDepenseCommune")
+    ?.checked || false;
 
       if(
         !nouveauNom ||
@@ -445,7 +537,9 @@ function modifierDepense(index){
 
   type: nouveauType,
 
-  categorie: nouvelleCategorie
+  categorie: nouvelleCategorie,
+
+  commun
 
 };
 
@@ -561,7 +655,9 @@ async function importTransactionsCB(){
   type: "CB",
 
   categorie:
-    detecterCategorie(nom)
+    detecterCategorie(nom),
+
+  commun: false
 
 });
 

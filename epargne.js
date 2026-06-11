@@ -31,32 +31,28 @@ function formatMois(moisStr){
 
 function getTotalEpargne(){
 
+  if(!Array.isArray(window.epargneHistorique)){
+    return 0;
+  }
+
   return window.epargneHistorique.reduce(
-
-    (sum, e) =>
-
-      sum + (Number(e.montant) || 0),
-
+    (sum,e) => sum + (Number(e.montant) || 0),
     0
-
   );
 
 }
 
 function getEpargneDuMois(mois){
 
+  if(!Array.isArray(window.epargneHistorique)){
+    return 0;
+  }
+
   return window.epargneHistorique
-
     .filter(e => e.mois === mois)
-
     .reduce(
-
-      (sum, e) =>
-
-        sum + (Number(e.montant) || 0),
-
+      (sum,e) => sum + (Number(e.montant) || 0),
       0
-
     );
 
 }
@@ -546,11 +542,11 @@ function renderObjectifsEpargne(){
   <div class="objectif-actions">
 
     <button
-      class="objectif-edit"
-      data-id="${obj.id}"
-    >
-      Modifier
-    </button>
+  class="objectif-edit"
+  data-id="${obj.id}"
+>
+  Ajouter
+</button>
 
     <button
       class="objectif-delete"
@@ -633,86 +629,9 @@ function renderObjectifsEpargne(){
   .querySelector(".objectif-edit")
   ?.addEventListener("click", () => {
 
-    openModal(
-      "Modifier objectif",
-      `
-
-      <input
-        id="editEmoji"
-        class="modal-input"
-        value="${obj.emoji}"
-      >
-
-      <input
-        id="editNom"
-        class="modal-input"
-        value="${obj.nom}"
-      >
-
-      <input
-        id="editCible"
-        class="modal-input"
-        type="number"
-        value="${obj.cible}"
-      >
-
-      <button
-        id="saveEditObjectif"
-        class="modal-button"
-      >
-        Enregistrer
-      </button>
-
-      `
+    ajouterObjectifEpargne(
+      obj.id
     );
-
-    document
-      .getElementById(
-        "saveEditObjectif"
-      )
-      ?.addEventListener(
-        "click",
-        () => {
-
-          obj.emoji =
-            document.getElementById(
-              "editEmoji"
-            ).value;
-
-          obj.nom =
-            document.getElementById(
-              "editNom"
-            ).value;
-
-          const nouvelleCible =
-  parseFloat(
-    document.getElementById(
-      "editCible"
-    ).value
-  );
-
-if(
-  isNaN(nouvelleCible) ||
-  nouvelleCible <= 0
-){
-  showToast?.("⚠️ Montant invalide");
-  return;
-}
-
-obj.cible = nouvelleCible;
-
-          saveAll();
-
-          refreshApp();
-
-          closeModal();
-
-          showToast?.(
-            "✏️ Objectif modifié"
-          );
-
-        }
-      );
 
   });
     
@@ -789,5 +708,80 @@ if(delta < -50){
 );
 
   });
+
+}
+
+function ajouterObjectifEpargne(id){
+
+  const obj =
+    window.objectifsEpargne.find(
+      o => o.id === id
+    );
+
+  if(!obj) return;
+
+  openModal(
+    `Ajouter à ${obj.nom}`,
+    `
+
+    <input
+      id="ajoutObjectifMontant"
+      class="modal-input"
+      type="number"
+      placeholder="Montant"
+    >
+
+    <button
+      id="btnAjoutObjectif"
+      class="modal-button"
+    >
+      Ajouter
+    </button>
+
+    `
+  );
+
+  document
+    .getElementById(
+      "btnAjoutObjectif"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
+
+        const montant =
+          parseFloat(
+            document.getElementById(
+              "ajoutObjectifMontant"
+            ).value
+          );
+
+        if(
+          isNaN(montant) ||
+          montant <= 0
+        ){
+          showToast?.(
+            "⚠️ Montant invalide"
+          );
+          return;
+        }
+
+        obj.montant =
+  Math.round(
+    (obj.montant + montant) * 100
+  ) / 100;
+
+        saveAll();
+
+        refreshApp();
+
+        closeModal();
+
+        showToast?.(
+          "💶 Objectif alimenté"
+        );
+
+      }
+    );
 
 }

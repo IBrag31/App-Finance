@@ -127,26 +127,34 @@ const montant =
     }
 
     ${
-      d.type === "CB"
-        ? `
-          <div style="
-            opacity:0.75;
-            font-size:12px;
-            margin-top:2px;
-          ">
-            ${d.categorie || "📦 Autre"}
-          </div>
+  d.type === "CB"
+    ? `
+      <div style="
+        opacity:0.75;
+        font-size:12px;
+        margin-top:2px;
+      ">
+        ${d.categorie || "📦 Autre"}
+      </div>
 
-          <div style="
-            opacity:0.5;
-            font-size:12px;
-            margin-top:2px;
-          ">
-            🕒 ${d.date || ""}
-          </div>
-        `
-        : ""
-    }
+      <div style="
+        opacity:0.65;
+        font-size:12px;
+        margin-top:2px;
+      ">
+        💳 ${d.carte || "Carte inconnue"}
+      </div>
+
+      <div style="
+        opacity:0.5;
+        font-size:12px;
+        margin-top:2px;
+      ">
+        🕒 ${d.date || ""}
+      </div>
+    `
+    : ""
+}
 
     <div style="
       opacity:0.6;
@@ -534,28 +542,28 @@ function modifierDepense(index){
 
       </select>
 
-      <label
-        style="
-          display:flex;
-          align-items:center;
-          gap:10px;
-          margin-bottom:14px;
-          color:white;
-        "
-      >
-
-        <input
-          type="checkbox"
-          id="editDepenseCommune"
-          ${depense.commun ? "checked" : ""}
-        >
-
-        👥 Dépense commune (50/50)
-
-      </label>
-
     `
 }
+
+<label
+  style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    color:white;
+  "
+>
+
+  <input
+    type="checkbox"
+    id="editDepenseCommune"
+    ${depense.commun ? "checked" : ""}
+  >
+
+  👥 Dépense commune (50/50)
+
+</label>
     
     <select
   id="editCategorie"

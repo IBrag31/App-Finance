@@ -1876,3 +1876,134 @@ MODAL
 
 }
 
+/* =========================
+   EPARGNE SWIPE
+========================= */
+
+.epargne-row{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:0 !important;
+
+  background:transparent !important;
+
+  border:none !important;
+  
+  margin-bottom:14px;
+
+}
+
+.epargne-actions{
+
+  position:absolute;
+
+  top:0;
+  right:0;
+  bottom:0;
+
+  width:200px;
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding-right:12px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .20s ease;
+
+}
+
+.epargne-row.swiped .epargne-actions{
+
+  opacity:1;
+
+  pointer-events:auto;
+
+}
+
+.epargne-edit,
+.epargne-delete{
+
+  width:82px;
+
+  height:76px;
+
+  border:none;
+
+  border-radius:18px;
+
+  color:white;
+
+  font-weight:600;
+
+}
+
+.epargne-edit{
+
+  background:
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(20px);
+
+}
+
+.epargne-delete{
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff453a,
+      #ff3b30
+    );
+
+}
+
+.epargne-content{
+
+  position:relative;
+
+  z-index:10;
+
+  width:100%;
+
+  background:
+    rgba(28,28,30,.45);
+
+  backdrop-filter:
+    blur(24px)
+    saturate(180%);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:22px;
+
+  padding:12px;
+
+  transition:
+    transform .25s ease;
+
+  will-change:transform;
+
+}
+
+.epargne-content.swiped{
+
+  transform:
+    translateX(-200px);
+
+}
+

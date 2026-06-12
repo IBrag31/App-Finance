@@ -91,7 +91,8 @@ function renderEpargneHistorique(){
       const row =
         document.createElement("div");
 
-      row.className = "depense-row";
+      row.className =
+  "epargne-row swipe-card";
 
       const realIndex =
         window.epargneHistorique.indexOf(e);
@@ -99,49 +100,163 @@ function renderEpargneHistorique(){
       // clic modification
       row.addEventListener("click", () => {
 
-        modifierEpargne(realIndex);
+  if(
+    row.classList.contains("swiped")
+  ){
+    return;
+  }
 
-      });
+  modifierEpargne(realIndex);
+
+});
 
       row.innerHTML = `
 
-        <div style="flex:1">
+<div class="epargne-actions">
 
-          <div>
-            ${formatMois(e.mois)}
-          </div>
+  <button
+    class="epargne-edit"
+  >
+    Modifier
+  </button>
 
-          <div style="
-            opacity:0.6;
-            font-size:13px;
-            color:#3b82f6;
-            margin-top:2px;
-          ">
+  <button
+    class="epargne-delete"
+  >
+    Supprimer
+  </button>
 
-            ${euro(montant)}
+</div>
 
-          </div>
+<div class="epargne-content">
 
-        </div>
+  <div style="flex:1">
 
-        <button
-          class="delete-btn"
-          data-index="${realIndex}"
-        >
-          ×
-        </button>
+    <div>
+      ${formatMois(e.mois)}
+    </div>
 
-      `;
+    <div style="
+      opacity:0.6;
+      font-size:13px;
+      color:#3b82f6;
+      margin-top:2px;
+    ">
+
+      ${euro(montant)}
+
+    </div>
+
+  </div>
+
+</div>
+
+`;
 
       // suppression sécurisée
-      row.querySelector(".delete-btn")
-        ?.addEventListener("click", (e) => {
+      row
+  .querySelector(".epargne-edit")
+  ?.addEventListener("click", (e) => {
 
-          e.stopPropagation();
+    e.stopPropagation();
 
-          supprimerEpargne(realIndex);
+    modifierEpargne(realIndex);
+
+  });
+
+row
+  .querySelector(".epargne-delete")
+  ?.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    if(
+      confirm(
+        "Supprimer ce versement ?"
+      )
+    ){
+
+      supprimerEpargne(
+        realIndex
+      );
+
+    }
+
+  });
+  
+  const content =
+  row.querySelector(
+    ".epargne-content"
+  );
+
+let startX = 0;
+
+row.addEventListener(
+  "touchstart",
+  (e) => {
+
+    startX =
+      e.touches[0].clientX;
+
+  }
+);
+
+row.addEventListener(
+  "touchend",
+  (e) => {
+
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const delta =
+      startX - endX;
+
+    // swipe gauche
+    if(delta > 50){
+
+      document
+        .querySelectorAll(
+          ".epargne-row"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".epargne-content"
+          )?.classList.remove(
+            "swiped"
+          );
 
         });
+
+      row.classList.add(
+        "swiped"
+      );
+
+      content.classList.add(
+        "swiped"
+      );
+
+    }
+
+    // swipe droite
+    if(delta < -50){
+
+      row.classList.remove(
+        "swiped"
+      );
+
+      content.classList.remove(
+        "swiped"
+      );
+
+    }
+
+  }
+);
 
       list.appendChild(row);
 

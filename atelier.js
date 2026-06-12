@@ -564,6 +564,21 @@ function openAddAppareil(){
       inputmode="decimal"
       placeholder="Prix revente"
     >
+    
+    <div
+  id="atelierPreview"
+  class="atelier-preview"
+>
+
+  <div id="previewCoutTotal">
+    💰 Coût total : 0 €
+  </div>
+
+  <div id="previewMarge">
+    📈 Marge estimée : 0 €
+  </div>
+
+</div>
 
     <select
       id="atelierStatut"
@@ -610,6 +625,71 @@ function openAddAppareil(){
       validerAppareil();
 
     });
+
+}
+
+function updateAtelierPreview(prefix = ""){
+
+  const achat =
+    parseFloat(
+      document.getElementById(
+        prefix + "AtelierAchat"
+      )?.value
+    ) || 0;
+
+  const pieces =
+    parseFloat(
+      document.getElementById(
+        prefix + "AtelierPieces"
+      )?.value
+    ) || 0;
+
+  const frais =
+    parseFloat(
+      document.getElementById(
+        prefix + "AtelierFrais"
+      )?.value
+    ) || 0;
+
+  const vente =
+    parseFloat(
+      document.getElementById(
+        prefix + "AtelierVente"
+      )?.value
+    ) || 0;
+
+  const coutTotal =
+    achat + pieces + frais;
+
+  const marge =
+    vente - coutTotal;
+
+  const coutEl =
+    document.getElementById(
+      "previewCoutTotal"
+    );
+
+  const margeEl =
+    document.getElementById(
+      "previewMarge"
+    );
+
+  if(coutEl){
+
+    coutEl.textContent =
+      `💰 Coût total : ${euro(coutTotal)}`;
+
+  }
+
+  if(margeEl){
+
+    margeEl.textContent =
+      `📈 Marge estimée : ${euro(marge)}`;
+
+    margeEl.style.color =
+      getMargeColor(marge);
+
+  }
 
 }
 
@@ -894,6 +974,21 @@ function modifierAppareil(index){
       value="${a.vente}"
       placeholder="Prix vente"
     >
+    
+    <div
+  id="atelierPreview"
+  class="atelier-preview"
+>
+
+  <div id="previewCoutTotal">
+    💰 Coût total : 0 €
+  </div>
+
+  <div id="previewMarge">
+    📈 Marge estimée : 0 €
+  </div>
+
+</div>
 
     <select
       id="editAtelierStatut"

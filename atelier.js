@@ -299,15 +299,40 @@ function renderAtelier(){
         document.createElement("div");
 
       row.className =
-        "atelier-card";
+  "atelier-card swipe-card";
 
       row.addEventListener("click", () => {
 
-        voirDetailsAppareil(realIndex);
+  if(
+    row.classList.contains("swiped")
+  ){
+    return;
+  }
 
-      });
+  voirDetailsAppareil(realIndex);
+
+});
+
 
       row.innerHTML = `
+
+<div class="atelier-actions">
+
+  <button
+    class="atelier-edit"
+  >
+    Modifier
+  </button>
+
+  <button
+    class="atelier-delete"
+  >
+    Supprimer
+  </button>
+
+</div>
+
+<div class="atelier-content">
 
   <div class="atelier-top">
 
@@ -324,8 +349,10 @@ function renderAtelier(){
         color:${getMargeColor(marge)}
       "
     >
+
       ${marge >= 0 ? "+" : ""}
       ${euro(marge)}
+
     </div>
 
   </div>
@@ -371,9 +398,110 @@ function renderAtelier(){
       <strong>${euro(a.vente)}</strong>
     </div>
 
+    <div>
+      Coût total :
+      <strong>${euro(coutTotal)}</strong>
+    </div>
+
   </div>
 
+</div>
+
 `;
+
+row
+  .querySelector(".atelier-edit")
+  ?.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    modifierAppareil(realIndex);
+
+  });
+
+row
+  .querySelector(".atelier-delete")
+  ?.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    supprimerAppareil(realIndex);
+
+  });
+  
+  const content =
+  row.querySelector(
+    ".atelier-content"
+  );
+
+let startX = 0;
+
+row.addEventListener(
+  "touchstart",
+  (e) => {
+
+    startX =
+      e.touches[0].clientX;
+
+  }
+);
+
+row.addEventListener(
+  "touchend",
+  (e) => {
+
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const delta =
+      startX - endX;
+
+    // swipe gauche
+    if(delta > 50){
+
+      document
+        .querySelectorAll(
+          ".atelier-card"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".atelier-content"
+          )?.classList.remove(
+            "swiped"
+          );
+
+        });
+
+      row.classList.add(
+        "swiped"
+      );
+
+      content.classList.add(
+        "swiped"
+      );
+
+    }
+
+    // swipe droite
+    if(delta < -50){
+
+      row.classList.remove(
+        "swiped"
+      );
+
+      content.classList.remove(
+        "swiped"
+      );
+
+    }
+
+  }
+);
 
       list.appendChild(row);
 
@@ -905,3 +1033,34 @@ function supprimerAppareil(index){
   showToast?.("🗑️ Appareil supprimé");
 
 }
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    if(
+      !e.target.closest(".atelier-card")
+    ){
+
+      document
+        .querySelectorAll(
+          ".atelier-card"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".atelier-content"
+          )?.classList.remove(
+            "swiped"
+          );
+
+        });
+
+    }
+
+  }
+);

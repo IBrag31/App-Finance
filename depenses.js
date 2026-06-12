@@ -70,93 +70,205 @@ const montant =
     const row =
       document.createElement("div");
 
-    row.className = "depense-row";
+    row.className =
+  "depense-row swipe-card";
 
     // clic modification
     row.addEventListener("click", () => {
 
-      modifierDepense(i);
+  if(
+    row.classList.contains("swiped")
+  ){
+    return;
+  }
 
-    });
+  modifierDepense(i);
+
+});
 
     row.innerHTML = `
 
-      <div style="flex:1">
+<div class="depense-actions">
 
-<div>
-  ${d.nom}
-</div>
+  <button
+    class="depense-edit"
+  >
+    Modifier
+  </button>
 
-${
-  d.commun
-    ? `
-      <div style="
-        color:#60a5fa;
-        font-size:12px;
-        margin-top:2px;
-      ">
-        👥 Dépense commune
-      </div>
-    `
-    : ""
-}
-
-${
-  d.type === "CB"
-    ? `
-      <div style="
-        opacity:0.75;
-        font-size:12px;
-        margin-top:2px;
-      ">
-        ${d.categorie || "📦 Autre"}
-      </div>
-
-      <div style="
-        opacity:0.5;
-        font-size:12px;
-        margin-top:2px;
-      ">
-        🕒 ${d.date || ""}
-      </div>
-    `
-    : ""
-}
-
-<div style="
-  opacity:0.6;
-  font-size:13px;
-  margin-top:2px;
-">
-
-  ${
-  d.commun
-    ? `${euro(montantBrut)} • Ma part : ${euro(montant)}`
-    : euro(montant)
-}
+  <button
+    class="depense-delete"
+  >
+    Supprimer
+  </button>
 
 </div>
 
-      </div>
+<div class="depense-content">
 
-      <button
-        class="delete-btn"
-        data-index="${i}"
-      >
-        ×
-      </button>
+  <div style="flex:1">
 
-    `;
+    <div>
+      ${d.nom}
+    </div>
 
-    // suppression sécurisée
-    row.querySelector(".delete-btn")
-      ?.addEventListener("click", (e) => {
+    ${
+      d.commun
+        ? `
+          <div style="
+            color:#60a5fa;
+            font-size:12px;
+            margin-top:2px;
+          ">
+            👥 Dépense commune
+          </div>
+        `
+        : ""
+    }
 
-        e.stopPropagation();
+    ${
+      d.type === "CB"
+        ? `
+          <div style="
+            opacity:0.75;
+            font-size:12px;
+            margin-top:2px;
+          ">
+            ${d.categorie || "📦 Autre"}
+          </div>
 
-        supprimerDepense(i);
+          <div style="
+            opacity:0.5;
+            font-size:12px;
+            margin-top:2px;
+          ">
+            🕒 ${d.date || ""}
+          </div>
+        `
+        : ""
+    }
 
-      });
+    <div style="
+      opacity:0.6;
+      font-size:13px;
+      margin-top:2px;
+    ">
+
+      ${
+        d.commun
+          ? `${euro(montantBrut)} • Ma part : ${euro(montant)}`
+          : euro(montant)
+      }
+
+    </div>
+
+  </div>
+
+</div>
+
+`;
+
+row
+  .querySelector(".depense-edit")
+  ?.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    modifierDepense(i);
+
+  });
+
+row
+  .querySelector(".depense-delete")
+  ?.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    if(
+      confirm(
+        "Supprimer cette dépense ?"
+      )
+    ){
+
+      supprimerDepense(i);
+
+    }
+
+  });
+  
+  const content =
+  row.querySelector(
+    ".depense-content"
+  );
+
+let startX = 0;
+
+row.addEventListener(
+  "touchstart",
+  (e) => {
+
+    startX =
+      e.touches[0].clientX;
+
+  }
+);
+
+row.addEventListener(
+  "touchend",
+  (e) => {
+
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const delta =
+      startX - endX;
+
+    // swipe gauche
+    if(delta > 50){
+
+      document
+        .querySelectorAll(
+          ".depense-row"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".depense-content"
+          )?.classList.remove(
+            "swiped"
+          );
+
+        });
+
+      row.classList.add(
+        "swiped"
+      );
+
+      content.classList.add(
+        "swiped"
+      );
+
+    }
+
+    // swipe droite
+    if(delta < -50){
+
+      row.classList.remove(
+        "swiped"
+      );
+
+      content.classList.remove(
+        "swiped"
+      );
+
+    }
+
+  }
+);
 
     // append
 
@@ -685,3 +797,36 @@ async function importTransactionsCB(){
   input.click();
 
 }
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    if(
+      !e.target.closest(
+        ".depense-row"
+      )
+    ){
+
+      document
+        .querySelectorAll(
+          ".depense-row"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".depense-content"
+          )?.classList.remove(
+            "swiped"
+          );
+
+        });
+
+    }
+
+  }
+);

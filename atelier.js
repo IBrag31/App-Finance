@@ -425,7 +425,17 @@ row
 
     e.stopPropagation();
 
-    supprimerAppareil(realIndex);
+    if(
+      confirm(
+        "Supprimer cet appareil ?"
+      )
+    ){
+
+      supprimerAppareil(
+        realIndex
+      );
+
+    }
 
   });
   

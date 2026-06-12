@@ -324,10 +324,8 @@ function renderAtelier(){
         color:${getMargeColor(marge)}
       "
     >
-
       ${marge >= 0 ? "+" : ""}
       ${euro(marge)}
-
     </div>
 
   </div>
@@ -338,13 +336,9 @@ function renderAtelier(){
 
       ${
         a.statut === "vendu"
-
           ? "badge-vendu"
-
           : a.statut === "repare"
-
           ? "badge-repare"
-
           : "badge-encours"
       }
     "
@@ -352,35 +346,34 @@ function renderAtelier(){
 
     ${
       a.statut === "vendu"
-
         ? "💰 Vendu"
-
         : a.statut === "repare"
-
         ? "✅ Réparé"
-
-        : "🔧 En cours"
+        : "🔧 En réparation"
     }
 
   </div>
 
-  <button
-    class="delete-btn atelier-delete"
-  >
-    ×
-  </button>
+  <div class="atelier-infos">
+
+    <div>
+      Achat :
+      <strong>${euro(a.achat)}</strong>
+    </div>
+
+    <div>
+      Pièces :
+      <strong>${euro(a.pieces)}</strong>
+    </div>
+
+    <div>
+      Vente :
+      <strong>${euro(a.vente)}</strong>
+    </div>
+
+  </div>
 
 `;
-
-      // delete
-      row.querySelector(".atelier-delete")
-        ?.addEventListener("click", (e) => {
-
-          e.stopPropagation();
-
-          supprimerAppareil(realIndex);
-
-        });
 
       list.appendChild(row);
 

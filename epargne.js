@@ -900,3 +900,36 @@ function ajouterObjectifEpargne(id){
     );
 
 }
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    if(
+      !e.target.closest(
+        ".epargne-row"
+      )
+    ){
+
+      document
+        .querySelectorAll(
+          ".epargne-row"
+        )
+        .forEach(c => {
+
+          c.classList.remove(
+            "swiped"
+          );
+
+          c.querySelector(
+            ".epargne-content"
+          )?.classList.remove(
+            "swiped"
+          );
+
+        });
+
+    }
+
+  }
+);

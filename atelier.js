@@ -655,28 +655,36 @@ function updateAtelierPreview(prefix = ""){
   const achat =
     parseFloat(
       document.getElementById(
-        prefix + "AtelierAchat"
+        prefix
+  ? prefix + "AtelierAchat"
+  : "atelierAchat"
       )?.value
     ) || 0;
 
   const pieces =
     parseFloat(
       document.getElementById(
-        prefix + "AtelierPieces"
+        prefix
+  ? prefix + "AtelierPieces"
+  : "atelierPieces"
       )?.value
     ) || 0;
 
   const frais =
     parseFloat(
       document.getElementById(
-        prefix + "AtelierFrais"
+        prefix
+  ? prefix + "AtelierFrais"
+  : "atelierFrais"
       )?.value
     ) || 0;
 
   const vente =
     parseFloat(
       document.getElementById(
-        prefix + "AtelierVente"
+        prefix
+  ? prefix + "AtelierVente"
+  : "atelierVente"
       )?.value
     ) || 0;
 

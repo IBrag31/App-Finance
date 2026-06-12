@@ -625,6 +625,28 @@ function openAddAppareil(){
       validerAppareil();
 
     });
+    
+    updateAtelierPreview();
+    
+    [
+  "atelierAchat",
+  "atelierPieces",
+  "atelierFrais",
+  "atelierVente"
+].forEach(id => {
+
+  document
+    .getElementById(id)
+    ?.addEventListener(
+      "input",
+      () => {
+
+        updateAtelierPreview();
+
+      }
+    );
+
+});
 
 }
 
@@ -1037,6 +1059,28 @@ function modifierAppareil(index){
   }, 120);
 
   // save
+  updateAtelierPreview("edit");
+  
+  [
+  "editAtelierAchat",
+  "editAtelierPieces",
+  "editAtelierFrais",
+  "editAtelierVente"
+].forEach(id => {
+
+  document
+    .getElementById(id)
+    ?.addEventListener(
+      "input",
+      () => {
+
+        updateAtelierPreview("edit");
+
+      }
+    );
+
+});
+  
   document
     .getElementById("btnSaveAppareil")
     ?.addEventListener("click", () => {

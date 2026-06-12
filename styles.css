@@ -1763,7 +1763,7 @@ MODAL
 
 }
 
-.depenses-actions{
+.depense-actions{
 
   position:absolute;
 
@@ -1792,7 +1792,7 @@ MODAL
 
 }
 
-.atelier-card.swiped .atelier-actions{
+.depense-card.swiped .depense-actions{
 
   opacity:1;
 
@@ -1800,8 +1800,8 @@ MODAL
 
 }
 
-.atelier-edit,
-.atelier-delete{
+.depense-edit,
+.depense-delete{
 
   width:82px;
 
@@ -1817,7 +1817,7 @@ MODAL
 
 }
 
-.atelier-edit{
+.depense-edit{
 
   background:
     rgba(255,255,255,.12);
@@ -1827,7 +1827,7 @@ MODAL
 
 }
 
-.atelier-delete{
+.depense-delete{
 
   background:
     linear-gradient(
@@ -1838,7 +1838,7 @@ MODAL
 
 }
 
-.atelier-content{
+.depense-content{
 
   position:relative;
 
@@ -1855,7 +1855,7 @@ MODAL
 
 }
 
-.atelier-content.swiped{
+.depense-content.swiped{
 
   transform:
     translateX(-200px);

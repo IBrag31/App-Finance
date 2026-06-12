@@ -224,11 +224,6 @@ function renderAtelier(){
     euro(totalMarge)
   );
 
-  setText(
-    "atelierResumeValue",
-    euro(totalMarge)
-  );
-
   // couleur marge totale
   document
     .getElementById("atelierTotalMarge")

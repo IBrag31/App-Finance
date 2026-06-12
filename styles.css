@@ -1745,4 +1745,120 @@ MODAL
 
 }
 
+/* =========================
+   DEPENSES SWIPE
+========================= */
+
+.depense-row
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:0 !important;
+
+  background:transparent !important;
+
+  border:none !important;
+
+}
+
+.depenses-actions{
+
+  position:absolute;
+
+  top:0;
+  right:0;
+  bottom:0;
+
+  width:200px;
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding-right:12px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .20s ease;
+
+}
+
+.atelier-card.swiped .atelier-actions{
+
+  opacity:1;
+
+  pointer-events:auto;
+
+}
+
+.atelier-edit,
+.atelier-delete{
+
+  width:82px;
+
+  height:76px;
+
+  border:none;
+
+  border-radius:18px;
+
+  color:white;
+
+  font-weight:600;
+
+}
+
+.atelier-edit{
+
+  background:
+    rgba(255,255,255,.12);
+
+  backdrop-filter:
+    blur(20px);
+
+}
+
+.atelier-delete{
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff453a,
+      #ff3b30
+    );
+
+}
+
+.atelier-content{
+
+  position:relative;
+
+  z-index:10;
+
+  width:100%;
+
+  padding:16px 20px 16px 16px;
+
+  box-sizing:border-box;
+
+  transition:
+    transform .25s ease;
+
+}
+
+.atelier-content.swiped{
+
+  transform:
+    translateX(-200px);
+
+}
 

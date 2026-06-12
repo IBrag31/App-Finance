@@ -1557,4 +1557,75 @@ MODAL
 
 }
 
+/* =========================
+   ATELIER V2
+========================= */
+
+.atelier-card{
+
+  background:
+    rgba(28,28,30,.45);
+
+  backdrop-filter:
+    blur(24px)
+    saturate(180%);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:22px;
+
+  padding:16px;
+
+  margin-bottom:12px;
+
+}
+
+.atelier-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:12px;
+
+}
+
+.atelier-title{
+
+  font-size:20px;
+
+  font-weight:600;
+
+}
+
+.atelier-marge{
+
+  font-weight:700;
+
+  white-space:nowrap;
+
+  font-size:18px;
+
+}
+
+.atelier-infos{
+
+  margin-top:12px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:6px;
+
+  color:
+    rgba(255,255,255,.75);
+
+  font-size:14px;
+
+}
+
 

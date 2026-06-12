@@ -599,10 +599,12 @@ async function importTransactionsCB(){
     lignes.forEach((ligne) => {
 
       const [
-        nom,
-        montantRaw,
-        date
-      ] = ligne.split("|");
+  date,
+  nom,
+  commercant,
+  montantRaw,
+  carte
+] = ligne.split("|");
 
       if(
         !nom ||
@@ -646,16 +648,19 @@ async function importTransactionsCB(){
 
   id: Date.now() + Math.random(),
 
-  nom,
+  nom: commercant || nom,
 
   montant,
 
   date,
 
+  carte,
+
   type: "CB",
 
-  categorie:
-    detecterCategorie(nom),
+  categorie: detecterCategorie(
+    commercant || nom
+  ),
 
   commun: false
 

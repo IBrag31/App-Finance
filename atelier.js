@@ -309,7 +309,7 @@ function renderAtelier(){
     return;
   }
 
-  voirDetailsAppareil(realIndex);
+  modifierAppareil(realIndex);
 
 });
 

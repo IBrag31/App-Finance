@@ -1749,7 +1749,7 @@ MODAL
    DEPENSES SWIPE
 ========================= */
 
-.depense-row
+.depense-row{
 
   position:relative;
 
@@ -1792,7 +1792,7 @@ MODAL
 
 }
 
-.depense-card.swiped .depense-actions{
+.depense-row.swiped .depense-actions{
 
   opacity:1;
 
@@ -1846,12 +1846,24 @@ MODAL
 
   width:100%;
 
-  padding:16px 20px 16px 16px;
+  background:
+    rgba(28,28,30,.45);
 
-  box-sizing:border-box;
+  backdrop-filter:
+    blur(24px)
+    saturate(180%);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:22px;
+
+  padding:12px;
 
   transition:
     transform .25s ease;
+
+  will-change:transform;
 
 }
 

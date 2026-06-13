@@ -731,9 +731,12 @@ function updateBar(
     Math.min(percent, 100) + "%";
 
   if(type === "depense"){
-    el.style.background =
-      getDepenseColor(value);
-  }
+  el.style.background =
+    getDepenseColor(
+      value,
+      objectif
+    );
+}
 
   if(type === "epargne"){
     el.style.background =
@@ -1365,8 +1368,6 @@ localStorage.setItem(
   "objectifEpargne",
   epargne || 0
 );
-  
-  document.activeElement?.blur();
 
   updateBudget?.();
 

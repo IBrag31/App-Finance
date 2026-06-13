@@ -959,6 +959,55 @@ function renderDashboard(){
 
 }
 
+function loadBudgetSettings(){
+
+  const revenus =
+    localStorage.getItem(
+      "objectifRevenus"
+    );
+
+  const depenses =
+    localStorage.getItem(
+      "objectifDepenses"
+    );
+
+  const epargne =
+    localStorage.getItem(
+      "objectifEpargne"
+    );
+
+  const revenusInput =
+    document.getElementById(
+      "objectifRevenus"
+    );
+
+  const depensesInput =
+    document.getElementById(
+      "objectifDepenses"
+    );
+
+  const epargneInput =
+    document.getElementById(
+      "objectifEpargne"
+    );
+
+  if(revenusInput){
+    revenusInput.value =
+      revenus || "";
+  }
+
+  if(depensesInput){
+    depensesInput.value =
+      depenses || "";
+  }
+
+  if(epargneInput){
+    epargneInput.value =
+      epargne || "";
+  }
+
+}
+
 // =========================
 // INIT
 // =========================
@@ -970,6 +1019,8 @@ window.addEventListener(
     console.log("INIT SAFE 🔥");
 
     loadAll();
+    
+    loadBudgetSettings();
 
     setTimeout(() => {
 

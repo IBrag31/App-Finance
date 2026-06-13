@@ -2071,3 +2071,89 @@ MODAL
 
 }
 
+/* =========================
+   THEME SWITCH
+========================= */
+
+.theme-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:12px 0;
+
+}
+
+.switch{
+
+  position:relative;
+
+  width:52px;
+
+  height:32px;
+
+}
+
+.switch input{
+
+  opacity:0;
+
+  width:0;
+
+  height:0;
+
+}
+
+.slider{
+
+  position:absolute;
+
+  inset:0;
+
+  cursor:pointer;
+
+  background:#3a3a3c;
+
+  border-radius:999px;
+
+  transition:.25s;
+
+}
+
+.slider::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:26px;
+
+  height:26px;
+
+  left:3px;
+
+  top:3px;
+
+  border-radius:50%;
+
+  background:white;
+
+  transition:.25s;
+
+}
+
+.switch input:checked + .slider{
+
+  background:#34c759;
+
+}
+
+.switch input:checked + .slider::before{
+
+  transform:translateX(20px);
+
+}
+

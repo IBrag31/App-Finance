@@ -1399,7 +1399,10 @@ function loadThemeSettings(){
     theme === "auto";
 
   light.checked =
-    theme === "light";
+  theme === "light";
+
+light.disabled =
+  auto.checked;
 
   applyTheme(theme);
 
@@ -1420,9 +1423,20 @@ function toggleThemeAuto(){
       "auto"
     );
 
-    light.checked = false;
+    light.disabled = true;
 
     applyTheme("auto");
+
+  }else{
+
+    light.disabled = false;
+
+    localStorage.setItem(
+      "finance_theme",
+      "dark"
+    );
+
+    applyTheme("dark");
 
   }
 
@@ -1438,6 +1452,8 @@ function toggleThemeLight(){
 
   auto.checked = false;
 
+  light.disabled = false;
+
   localStorage.setItem(
     "finance_theme",
     light.checked
@@ -1452,3 +1468,49 @@ function toggleThemeLight(){
   );
 
 }
+
+function applyTheme(theme){
+
+  if(theme === "auto"){
+
+    theme =
+      window.matchMedia(
+        "(prefers-color-scheme: light)"
+      ).matches
+        ? "light"
+        : "dark";
+
+  }
+
+  document.body.classList.remove(
+    "theme-light",
+    "theme-dark"
+  );
+
+  document.body.classList.add(
+    theme === "light"
+      ? "theme-light"
+      : "theme-dark"
+  );
+
+}
+
+window.matchMedia(
+  "(prefers-color-scheme: light)"
+).addEventListener(
+  "change",
+  () => {
+
+    const theme =
+      localStorage.getItem(
+        "finance_theme"
+      );
+
+    if(theme === "auto"){
+
+      applyTheme("auto");
+
+    }
+
+  }
+);

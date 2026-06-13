@@ -13,14 +13,20 @@ RESET
 }
 
 html, body{
-  background:#000;
+
+  background:
+    var(--bg-main);
+
   min-height:100vh;
+
   overflow-x:hidden;
+
 }
 
 body{
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
-  color:white;
+  color:
+  var(--text-primary);
   overscroll-behavior:none;
 }
 
@@ -45,6 +51,44 @@ VARIABLES
 
   --text-primary: #ffffff;
   --text-secondary: rgba(255,255,255,0.65);
+}
+
+/* =========================
+   THEMES
+========================= */
+
+body.theme-dark{
+
+  --bg-main:#000000;
+
+  --card-bg:
+    rgba(28,28,30,.45);
+
+  --card-border:
+    rgba(255,255,255,.08);
+
+  --text-primary:#ffffff;
+
+  --text-secondary:
+    rgba(255,255,255,.65);
+
+}
+
+body.theme-light{
+
+  --bg-main:#f2f2f7;
+
+  --card-bg:
+    rgba(255,255,255,.75);
+
+  --card-border:
+    rgba(0,0,0,.08);
+
+  --text-primary:#111111;
+
+  --text-secondary:
+    rgba(0,0,0,.55);
+
 }
 
 /* =========================
@@ -79,7 +123,7 @@ CARDS
 .card{
 
   background:
-    rgba(28,28,30,.45);
+  var(--card-bg);
 
   backdrop-filter:
     blur(24px)
@@ -90,7 +134,7 @@ CARDS
     saturate(180%);
 
   border:
-    1px solid rgba(255,255,255,.08);
+  1px solid var(--card-border);
 
   box-shadow:
     0 8px 30px rgba(0,0,0,.25),
@@ -2154,6 +2198,39 @@ MODAL
 .switch input:checked + .slider::before{
 
   transform:translateX(20px);
+
+}
+
+/* =========================
+   THEME LIGHT
+========================= */
+
+body.theme-light .tabbar{
+
+  background:
+    rgba(255,255,255,.75);
+
+  border:
+    1px solid rgba(0,0,0,.08);
+
+}
+
+body.theme-light .card::before{
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,.35),
+      transparent
+    );
+
+}
+
+body.theme-light #todayDate{
+
+  color:
+    rgba(0,0,0,.55);
 
 }
 

@@ -560,13 +560,63 @@ href="iconapp-180.png">
   <div class="section-scroll">
 
     <div class="card">
-      <button onclick="sauvegardeAuto()">💾 Sauvegarder</button>
-      <button onclick="restaurerDepuisIcloud()">📥 Restaurer</button>
-    </div>
 
-    <div class="card">
-      <button onclick="resetApp()">🗑️ Reset données</button>
-    </div>
+  <button
+    class="action-btn-liquid"
+    onclick="sauvegardeAuto()"
+  >
+    💾 Sauvegarder
+  </button>
+
+  <button
+    class="action-btn-liquid"
+    onclick="restaurerDepuisIcloud()"
+  >
+    📂 Restaurer
+  </button>
+
+  <button
+    class="action-btn-liquid settings-danger"
+    onclick="resetApp()"
+  >
+    🗑️ Réinitialiser Finance+
+  </button>
+
+</div>
+
+<div class="card">
+
+  <h3>🎯 Objectifs Budget</h3>
+
+  <input
+    id="objectifRevenus"
+    class="modal-input"
+    type="number"
+    placeholder="Objectif revenus"
+  >
+
+  <input
+    id="objectifDepenses"
+    class="modal-input"
+    type="number"
+    placeholder="Objectif dépenses"
+  >
+
+  <input
+    id="objectifEpargne"
+    class="modal-input"
+    type="number"
+    placeholder="Objectif épargne"
+  >
+
+  <button
+    class="action-btn-liquid"
+    onclick="saveBudgetSettings()"
+  >
+    Enregistrer
+  </button>
+
+</div>
 
   </div>
 </div>

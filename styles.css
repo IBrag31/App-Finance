@@ -79,7 +79,7 @@ body.theme-light{
   --bg-main:#f2f2f7;
 
   --card-bg:
-    rgba(255,255,255,.75);
+    rgba(255,255,255,.95);
 
   --card-border:
     rgba(0,0,0,.08);
@@ -509,6 +509,10 @@ HEADER
   color:white;
 
   font-size:24px;
+  
+  body.theme-light .add-btn{
+
+  color:#111;
 
 }
 
@@ -2215,6 +2219,20 @@ body.theme-light .tabbar{
 
 }
 
+body.theme-light .tab{
+
+  color:#444;
+
+}
+
+body.theme-light .tab.active{
+
+  color:#111;
+
+  opacity:1;
+
+}
+
 body.theme-light .card::before{
 
   background:
@@ -2231,6 +2249,18 @@ body.theme-light #todayDate{
 
   color:
     rgba(0,0,0,.55);
+
+}
+
+body.theme-light .mois-btn{
+
+  color:#111;
+
+}
+
+body.theme-light .back-btn-liquid{
+
+  color:#111;
 
 }
 

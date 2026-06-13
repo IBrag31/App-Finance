@@ -1053,6 +1053,8 @@ window.addEventListener(
     loadAll();
     
     loadBudgetSettings();
+    
+    loadThemeSettings();
 
     setTimeout(() => {
 
@@ -1375,6 +1377,78 @@ localStorage.setItem(
 
   showToast?.(
     "🎯 Objectifs enregistrés"
+  );
+
+}
+
+function loadThemeSettings(){
+
+  const theme =
+    localStorage.getItem("finance_theme")
+    || "auto";
+
+  const auto =
+    document.getElementById("themeAuto");
+
+  const light =
+    document.getElementById("themeLight");
+
+  if(!auto || !light) return;
+
+  auto.checked =
+    theme === "auto";
+
+  light.checked =
+    theme === "light";
+
+  applyTheme(theme);
+
+}
+
+function toggleThemeAuto(){
+
+  const auto =
+    document.getElementById("themeAuto");
+
+  const light =
+    document.getElementById("themeLight");
+
+  if(auto.checked){
+
+    localStorage.setItem(
+      "finance_theme",
+      "auto"
+    );
+
+    light.checked = false;
+
+    applyTheme("auto");
+
+  }
+
+}
+
+function toggleThemeLight(){
+
+  const light =
+    document.getElementById("themeLight");
+
+  const auto =
+    document.getElementById("themeAuto");
+
+  auto.checked = false;
+
+  localStorage.setItem(
+    "finance_theme",
+    light.checked
+      ? "light"
+      : "dark"
+  );
+
+  applyTheme(
+    light.checked
+      ? "light"
+      : "dark"
   );
 
 }

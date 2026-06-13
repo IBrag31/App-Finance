@@ -788,9 +788,26 @@ setText(
   
 
   // objectifs
-  const objectifDepenses = 1250;
-  const objectifEpargne = 5000;
-  const objectifRevenus = 2300;
+  const objectifDepenses =
+  Number(
+    localStorage.getItem(
+      "objectifDepenses"
+    )
+  ) || 1250;
+
+const objectifEpargne =
+  Number(
+    localStorage.getItem(
+      "objectifEpargne"
+    )
+  ) || 5000;
+
+const objectifRevenus =
+  Number(
+    localStorage.getItem(
+      "objectifRevenus"
+    )
+  ) || 2300;
 
   // =========================
   // TEXTES
@@ -1227,6 +1244,66 @@ if ("serviceWorker" in navigator) {
       }
 
     }
+  );
+
+}
+
+function saveBudgetSettings(){
+
+  const revenus =
+    Number(
+      document.getElementById(
+        "objectifRevenus"
+      )?.value
+    );
+
+  const depenses =
+    Number(
+      document.getElementById(
+        "objectifDepenses"
+      )?.value
+    );
+
+  const epargne =
+    Number(
+      document.getElementById(
+        "objectifEpargne"
+      )?.value
+    );
+
+  if(revenus > 0){
+
+    localStorage.setItem(
+      "objectifRevenus",
+      revenus
+    );
+
+  }
+
+  if(depenses > 0){
+
+    localStorage.setItem(
+      "objectifDepenses",
+      depenses
+    );
+
+  }
+
+  if(epargne > 0){
+
+    localStorage.setItem(
+      "objectifEpargne",
+      epargne
+    );
+
+  }
+
+  updateBudget?.();
+
+  refreshApp?.();
+
+  showToast?.(
+    "🎯 Objectifs enregistrés"
   );
 
 }

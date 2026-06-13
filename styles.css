@@ -2007,3 +2007,14 @@ MODAL
 
 }
 
+.settings-danger{
+
+  background:
+    linear-gradient(
+      180deg,
+      #ff453a,
+      #ff3b30
+    ) !important;
+
+}
+

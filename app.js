@@ -666,13 +666,19 @@ function renderStatsCategories(){
 // COULEURS
 // =========================
 
-function getDepenseColor(value){
+function getDepenseColor(value, objectif){
 
-  if(value < 800){
+  if(!objectif || objectif <= 0){
+    return "#f97316";
+  }
+
+  const ratio = value / objectif;
+
+  if(ratio < 0.8){
     return "#22c55e";
   }
 
-  if(value <= 1250){
+  if(ratio <= 1){
     return "#f97316";
   }
 
@@ -872,7 +878,10 @@ setText(
   // =========================
 
   const depColor =
-    getDepenseColor(depenses);
+  getDepenseColor(
+    depenses,
+    objectifDepenses
+  );
 
   document
     .getElementById("budgetDepensesText")

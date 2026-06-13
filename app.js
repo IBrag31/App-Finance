@@ -483,35 +483,35 @@ function detecterCategorie(nom){
 
 if(
 
-  n.includes("NETFLIX") ||
+  n.includes("netflix") ||
 
-  n.includes("SPOTIFY") ||
+  n.includes("spotify") ||
 
-  n.includes("DISNEY") ||
+  n.includes("disney") ||
 
-  n.includes("DISNEY+") ||
+  n.includes("disney+") ||
 
-  n.includes("PRIME VIDEO") ||
+  n.includes("prime video") ||
 
-  n.includes("AMAZON PRIME") ||
+  n.includes("amazon prime") ||
 
-  n.includes("YOUTUBE") ||
+  n.includes("youtube") ||
 
-  n.includes("APPLE ONE") ||
+  n.includes("apple one") ||
 
-  n.includes("ICLOUD") ||
+  n.includes("icloud") ||
 
-  n.includes("GOOGLE ONE") ||
+  n.includes("google one") ||
 
-  n.includes("CANAL+") ||
+  n.includes("canal+") ||
 
-  n.includes("GAME PASS") ||
+  n.includes("game pass") ||
 
-  n.includes("PLAYSTATION") ||
+  n.includes("playstation") ||
 
-  n.includes("PS PLUS") ||
+  n.includes("ps plus") ||
 
-  n.includes("XBOX")
+  n.includes("xbox")
 
 ){
 
@@ -712,6 +712,14 @@ function updateBar(
     objectif
       ? (value / objectif) * 100
       : 0;
+      
+      if(!objectif){
+
+  el.style.width = "0%";
+
+  return;
+
+}
 
   el.style.width =
     Math.min(percent, 100) + "%";
@@ -793,40 +801,46 @@ setText(
     localStorage.getItem(
       "objectifDepenses"
     )
-  ) || 1250;
+  ) || 0;
 
 const objectifEpargne =
   Number(
     localStorage.getItem(
       "objectifEpargne"
     )
-  ) || 5000;
+  ) || 0;
 
 const objectifRevenus =
   Number(
     localStorage.getItem(
       "objectifRevenus"
     )
-  ) || 2300;
+  ) || 0;
 
   // =========================
   // TEXTES
   // =========================
 
   setText(
-    "budgetDepensesText",
-    `${Math.round(depenses)} / ${objectifDepenses} €`
-  );
+  "budgetRevenusText",
+  objectifRevenus > 0
+    ? `${Math.round(revenus)} / ${objectifRevenus} €`
+    : "Non défini"
+);
 
-  setText(
-    "budgetEpargneText",
-    `${Math.round(epargneTotale)} / ${objectifEpargne} €`
-  );
+setText(
+  "budgetDepensesText",
+  objectifDepenses > 0
+    ? `${Math.round(depenses)} / ${objectifDepenses} €`
+    : "Non défini"
+);
 
-  setText(
-    "budgetRevenusText",
-    `${Math.round(revenus)} / ${objectifRevenus} €`
-  );
+setText(
+  "budgetEpargneText",
+  objectifEpargne > 0
+    ? `${Math.round(epargneTotale)} / ${objectifEpargne} €`
+    : "Non défini"
+);
 
   // =========================
   // BARRES
@@ -992,19 +1006,25 @@ function loadBudgetSettings(){
     );
 
   if(revenusInput){
-    revenusInput.value =
-      revenus || "";
-  }
+  revenusInput.value =
+    revenus === "0"
+      ? ""
+      : revenus || "";
+}
 
-  if(depensesInput){
-    depensesInput.value =
-      depenses || "";
-  }
+if(depensesInput){
+  depensesInput.value =
+    depenses === "0"
+      ? ""
+      : depenses || "";
+}
 
-  if(epargneInput){
-    epargneInput.value =
-      epargne || "";
-  }
+if(epargneInput){
+  epargneInput.value =
+    epargne === "0"
+      ? ""
+      : epargne || "";
+}
 
 }
 
@@ -1322,32 +1342,22 @@ function saveBudgetSettings(){
       )?.value
     );
 
-  if(revenus > 0){
+  localStorage.setItem(
+  "objectifRevenus",
+  revenus || 0
+);
 
-    localStorage.setItem(
-      "objectifRevenus",
-      revenus
-    );
+localStorage.setItem(
+  "objectifDepenses",
+  depenses || 0
+);
 
-  }
-
-  if(depenses > 0){
-
-    localStorage.setItem(
-      "objectifDepenses",
-      depenses
-    );
-
-  }
-
-  if(epargne > 0){
-
-    localStorage.setItem(
-      "objectifEpargne",
-      epargne
-    );
-
-  }
+localStorage.setItem(
+  "objectifEpargne",
+  epargne || 0
+);
+  
+  document.activeElement?.blur();
 
   updateBudget?.();
 

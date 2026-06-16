@@ -2307,3 +2307,57 @@ body.theme-light #moisGlobalLabel{
   color:#111;
 }
 
+/* =========================
+   FIX THEME LIGHT
+========================= */
+
+body.theme-light .action-btn-liquid,
+body.theme-light .restore-btn,
+body.theme-light .quick-action{
+  color:#111 !important;
+}
+
+body.theme-light .atelier-infos{
+  color:rgba(0,0,0,.65) !important;
+}
+
+body.theme-light .objectif-amount,
+body.theme-light .objectif-percent{
+  color:rgba(0,0,0,.65) !important;
+}
+
+body.theme-light .budget-title,
+body.theme-light .small-card span{
+  color:rgba(0,0,0,.60) !important;
+}
+
+body.theme-light .stats-ratio{
+  color:rgba(0,0,0,.60) !important;
+}
+
+body.theme-light .stats-row{
+  color:#111;
+}
+
+body.theme-light .quick-action{
+  background:rgba(0,0,0,.04) !important;
+}
+
+body.theme-light .epargne-quick-menu{
+  background:rgba(255,255,255,.95);
+}
+
+body.theme-light .atelier-content{
+  color:#111;
+}
+
+body.theme-light .atelier-title,
+body.theme-light .atelier-marge{
+  color:#111;
+}
+
+body.theme-light .restore-btn,
+body.theme-light .action-btn-liquid{
+  color:#111 !important;
+}
+

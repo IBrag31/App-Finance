@@ -1535,3 +1535,65 @@ window.matchMedia(
 
   }
 );
+
+function ajouterCategorieFinance(){
+
+  const nom =
+    prompt("Nouvelle catégorie");
+
+  if(!nom) return;
+
+  const categorie =
+    nom.trim();
+
+  if(
+    window.getCategoriesFinance()
+      .includes(categorie)
+  ){
+
+    showToast?.(
+      "⚠️ Catégorie déjà existante"
+    );
+
+    return;
+
+  }
+
+  window.categoriesPersonnalisees.push(
+    categorie
+  );
+
+  saveCategoriesFinance();
+  
+  refreshApp();
+
+  showToast?.(
+    "✅ Catégorie ajoutée"
+  );
+
+}
+
+function supprimerCategorieFinance(index){
+
+  if(
+    !confirm(
+      "Supprimer cette catégorie ?"
+    )
+  ){
+    return;
+  }
+
+  window.categoriesPersonnalisees.splice(
+    index,
+    1
+  );
+
+  saveCategoriesFinance();
+  
+  refreshApp();
+
+  showToast?.(
+    "🗑️ Catégorie supprimée"
+  );
+
+}

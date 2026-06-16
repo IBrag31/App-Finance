@@ -111,6 +111,14 @@ const montant =
     <div>
       ${d.nom}
     </div>
+    
+    <div style="
+opacity:.7;
+font-size:12px;
+margin-top:2px;
+">
+${d.categorie || "📦 Autre"}
+</div>
 
     ${
       d.commun
@@ -126,35 +134,6 @@ const montant =
         : ""
     }
 
-    ${
-  d.type === "CB"
-    ? `
-      <div style="
-        opacity:0.75;
-        font-size:12px;
-        margin-top:2px;
-      ">
-        ${d.categorie || "📦 Autre"}
-      </div>
-
-      <div style="
-        opacity:0.65;
-        font-size:12px;
-        margin-top:2px;
-      ">
-        💳 ${d.carte || "Carte inconnue"}
-      </div>
-
-      <div style="
-        opacity:0.5;
-        font-size:12px;
-        margin-top:2px;
-      ">
-        🕒 ${d.date || ""}
-      </div>
-    `
-    : ""
-}
 
     <div style="
       opacity:0.6;
@@ -366,6 +345,11 @@ function validerDepense(){
   document
     .getElementById("depenseCommune")
     ?.checked || false;
+    
+    const categorie =
+document
+  .getElementById("categorieDepense")
+  ?.value || "📦 Autre";
 
   // validation
   if(!nom || isNaN(montant) || montant <= 0){
@@ -392,6 +376,8 @@ function validerDepense(){
     Math.round(montant * 100) / 100,
 
   type,
+
+  categorie,
 
   commun
 
@@ -433,6 +419,7 @@ function openAddDepense(){
       id="typeDepense"
       class="modal-input"
     >
+
       <option value="fixe">
         📦 Fixe
       </option>
@@ -440,26 +427,42 @@ function openAddDepense(){
       <option value="variable">
         🛒 Variable
       </option>
+
     </select>
-    
+
+    <select
+      id="categorieDepense"
+      class="modal-input"
+    >
+
+      ${window.getCategoriesFinance().map(cat => `
+
+        <option value="${cat}">
+          ${cat}
+        </option>
+
+      `).join("")}
+
+    </select>
+
     <label
-  style="
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:14px;
-    color:white;
-  "
->
+      style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-bottom:14px;
+        color:white;
+      "
+    >
 
-  <input
-    type="checkbox"
-    id="depenseCommune"
-  >
+      <input
+        type="checkbox"
+        id="depenseCommune"
+      >
 
-  👥 Dépense commune (50/50)
+      👥 Dépense commune (50/50)
 
-</label>
+    </label>
 
     <button
       id="btnValidateDepense"
@@ -570,7 +573,7 @@ function modifierDepense(index){
   class="modal-input"
 >
 
-  ${window.CATEGORIES_FINANCE.map(cat => `
+  ${window.getCategoriesFinance().map(cat => `
 
     <option
       value="${cat}"

@@ -383,6 +383,27 @@ window.CATEGORIES_FINANCE = [
 
 ];
 
+window.categoriesPersonnalisees =
+JSON.parse(
+  localStorage.getItem("categoriesFinance")
+) || [];
+
+window.getCategoriesFinance = () => [
+  ...window.CATEGORIES_FINANCE,
+  ...window.categoriesPersonnalisees
+];
+
+window.saveCategoriesFinance = () => {
+
+  localStorage.setItem(
+    "categoriesFinance",
+    JSON.stringify(
+      window.categoriesPersonnalisees
+    )
+  );
+
+};
+
 // =========================
 // DETECTION CATEGORIES
 // =========================

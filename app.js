@@ -293,6 +293,8 @@ renderEspeces?.();
 
 renderAtelier?.();
 
+renderCategoriesFinance?.();
+
 // dashboard
 renderDashboard();
 
@@ -383,10 +385,20 @@ window.CATEGORIES_FINANCE = [
 
 ];
 
-window.categoriesPersonnalisees =
-JSON.parse(
-  localStorage.getItem("categoriesFinance")
-) || [];
+try{
+
+  window.categoriesPersonnalisees =
+    JSON.parse(
+      localStorage.getItem(
+        "categoriesFinance"
+      )
+    ) || [];
+
+}catch{
+
+  window.categoriesPersonnalisees = [];
+
+}
 
 window.getCategoriesFinance = () => [
   ...window.CATEGORIES_FINANCE,
@@ -577,7 +589,7 @@ if(
     n.includes("brico depot") ||
     n.includes("manomano")
   ){
-    return "🔧 Bricolage / Maison";
+    return "🏠 Maison";
   }
 
   // 💰 BANQUE
@@ -1076,6 +1088,15 @@ window.addEventListener(
     loadBudgetSettings();
     
     loadThemeSettings();
+    
+    document
+  .getElementById(
+    "addCategorieBtn"
+  )
+  ?.addEventListener(
+    "click",
+    ajouterCategorieFinance
+  );
 
     setTimeout(() => {
 
@@ -1539,7 +1560,9 @@ window.matchMedia(
 function ajouterCategorieFinance(){
 
   const nom =
-    prompt("Nouvelle catégorie");
+    prompt(
+      "Nom de la catégorie"
+    );
 
   if(!nom) return;
 
@@ -1552,7 +1575,7 @@ function ajouterCategorieFinance(){
   ){
 
     showToast?.(
-      "⚠️ Catégorie déjà existante"
+      "⚠️ Catégorie existante"
     );
 
     return;
@@ -1564,7 +1587,7 @@ function ajouterCategorieFinance(){
   );
 
   saveCategoriesFinance();
-  
+
   refreshApp();
 
   showToast?.(
@@ -1589,11 +1612,55 @@ function supprimerCategorieFinance(index){
   );
 
   saveCategoriesFinance();
-  
+
   refreshApp();
 
   showToast?.(
     "🗑️ Catégorie supprimée"
   );
+
+}
+
+function renderCategoriesFinance(){
+
+  const container =
+    document.getElementById(
+      "categoriesList"
+    );
+
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  window.categoriesPersonnalisees
+    .forEach((cat,index) => {
+
+      container.innerHTML += `
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:10px 0;
+          "
+        >
+
+          <span>${cat}</span>
+
+          <button
+            onclick="
+              supprimerCategorieFinance(${index})
+            "
+            class="delete-btn"
+          >
+            ✕
+          </button>
+
+        </div>
+
+      `;
+
+    });
 
 }

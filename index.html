@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="
+    width=device-width,
+    initial-scale=1.0,
+    maximum-scale=1.0,
+    user-scalable=no,
+    viewport-fit=cover
+  "
+>
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0f172a">
+<meta
+  name="theme-color"
+  media="(prefers-color-scheme: light)"
+  content="#f2f2f7"
+>
+<meta
+  name="theme-color"
+  media="(prefers-color-scheme: dark)"
+  content="#000000"
+>
+<meta name="application-name" content="Finance+">
+<meta name="format-detection" content="telephone=no">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style"
+content="black-translucent">
+
+<meta name="apple-mobile-web-app-title"
+content="Finance+">
+
+<title>Finance+</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<link rel="manifest" href="manifest.json">
+
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="iconapp-180.png"
+>
+
+</head>
+
+
+<body class="safe-ios">
+
+<div class="app-container">
+
+<!-- ========================= -->
+<!-- 🏠 RÉSUMÉ -->
+<!-- ========================= -->
+
+<div class="section active" id="section-resume">
+  <div class="section-scroll">
+
+    <div class="page-header">
+
+  <div>
+
+    <h1>Résumé</h1>
+
+    <div id="todayDate"></div>
+
+  </div>
+
+  <div class="mois-navigation">
+
+    <button
+      class="mois-btn"
+      onclick="changerMois(-1)"
+    >
+      ‹
+    </button>
+
+    <div id="moisGlobalLabel">
+      Mai 2026
+    </div>
+
+    <button
+      class="mois-btn"
+      onclick="changerMois(1)"
+    >
+      ›
+    </button>
+
+  </div>
+
+</div>
+
+    <div class="card budget-card-new">
+      <h2>Budget</h2>
+
+      <div class="budget-rows">
+
+        <div class="budget-row">
+          <div class="progress-bar">
+            <div class="progress-fill revenus" id="budgetRevenusBar"></div>
+          </div>
+          <div class="budget-info">
+            <span class="budget-title">Revenus</span>
+            <span id="budgetRevenusText" class="budget-value"></span>
+          </div>
+        </div>
+
+        <div class="budget-row">
+          <div class="progress-bar">
+            <div class="progress-fill depenses" id="budgetDepensesBar"></div>
+          </div>
+          <div class="budget-info">
+            <span class="budget-title">Dépenses</span>
+            <span id="budgetDepensesText" class="budget-value"></span>
+          </div>
+        </div>
+
+        <div class="budget-row">
+          <div class="progress-bar">
+            <div class="progress-fill epargne" id="budgetEpargneBar"></div>
+          </div>
+          <div class="budget-info">
+            <span class="budget-title">Épargne</span>
+            <span id="budgetEpargneText" class="budget-value"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cards-grid four">
+      <div class="card small-card clickable" onclick="showSection('revenus')">
+        <h3>Revenus</h3>
+        <span id="revenusDashboardMois">
+  Ce mois
+</span>
+        <div id="revenusDisplay">0 €</div>
+      </div>
+
+      <div class="card small-card clickable" onclick="showSection('depenses')">
+        <h3>Dépenses</h3>
+        <span>Total</span>
+        <div id="depensesDisplay">0 €</div>
+      </div>
+
+      <div class="card small-card clickable" onclick="showSection('epargne')">
+  <h3>Épargne</h3>
+  <span>Total</span>
+  <div id="epargneMoisDisplay">0 €</div>
+</div>
+
+      <div
+  class="card small-card clickable"
+  onclick="showSection('atelier')"
+>
+
+  <h3>🛠️ Atelier</h3>
+
+  <span>Réparation</span>
+
+  <div id="atelierResumeValue">
+    0 €
+  </div>
+
+</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 💰 REVENUS -->
+<!-- ========================= -->
+
+<div class="section" id="section-revenus">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <button
+  class="back-btn-liquid"
+  onclick="showSection('resume')"
+>
+  ‹
+</button>
+      <h1>Revenus</h1>
+      <button onclick="openAddRevenu()" class="add-btn">+</button>
+    </div>
+
+    <!-- TOTAL -->
+<div class="card revenus-card total-card">
+  <div class="revenus-card-header">Total revenus</div>
+  <div class="revenus-card-value" id="revenusPage">0 €</div>
+</div>
+
+<!-- GRID -->
+<div class="cards-grid revenus-grid">
+
+  <!-- CE MOIS -->
+  <div class="card small-card revenus-small">
+    <h3>Ce mois-ci</h3>
+    <span id="moisActuelLabel"></span>
+    <div id="revenusMois">0 €</div>
+  </div>
+
+  <!-- ESPECES -->
+  <div class="card small-card revenus-small">
+    <h3>Espèces</h3>
+
+    <div
+  class="revenus-especes-edit"
+  onclick="editEspeces()"
+>
+
+  <div id="especesValue">
+    0 €
+  </div>
+
+</div>
+
+  </div>
+
+</div>
+
+    <div id="revenusList"></div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 💸 DÉPENSES -->
+<!-- ========================= -->
+
+<div class="section" id="section-depenses">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <button
+  class="back-btn-liquid"
+  onclick="showSection('resume')"
+>
+  ‹
+</button>
+      <h1>Dépenses</h1>
+      <button onclick="openAddDepense()" class="add-btn">+</button>
+    </div>
+    
+    <button
+  class="action-btn-liquid"
+  onclick="importTransactionsCB()"
+>
+    Synchroniser Pay
+</button>
+
+    <!-- GRID -->
+    <div class="cards-grid revenus-grid">
+
+      <!-- FIXES -->
+      <div class="card small-card revenus-small clickable"
+           onclick="showSection('depenses-fixes')">
+        <h3>📦 Fixes</h3>
+        <div id="totalFixesPage">0 €</div>
+      </div>
+
+      <!-- VARIABLES -->
+      <div class="card small-card revenus-small clickable"
+           onclick="showSection('depenses-variables')">
+        <h3>🛒 Variables</h3>
+        <div id="totalVariablesPage">0 €</div>
+      </div>
+      
+     <!-- CB -->
+
+<div
+  class="card small-card revenus-small clickable"
+  onclick="showSection('depenses-cb')"
+>
+
+  <h3>Pay </h3>
+
+  <div id="totalCBPage">
+    0 €
+  </div>
+
+</div>
+
+<!-- TOTAL -->
+
+<div
+  class="card small-card revenus-small"
+>
+
+  <h3>💰 Total</h3>
+
+  <div id="depensesTotalPage">
+    0 €
+  </div>
+
+</div>
+
+</div>
+
+<!-- 📊 STATS CATEGORIES -->
+
+<div class="card depenses-stats-card">
+
+  <h3>📊 Répartition des dépenses</h3>
+
+  <div id="statsCategories"></div>
+
+</div>
+
+</div>
+</div>
+
+<!-- ========================= -->
+<!-- 📦 DÉPENSES FIXES -->
+<!-- ========================= -->
+<div class="section" id="section-depenses-fixes">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <button
+  class="back-btn-liquid"
+  onclick="showSection('depenses')"
+>
+  ‹
+</button>
+      <h1>Dépenses fixes</h1>
+      
+      <div></div>
+      
+    </div>
+
+    <div id="depensesFixesPage"></div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 🛒 DÉPENSES VARIABLES -->
+<!-- ========================= -->
+<div class="section" id="section-depenses-variables">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+      <button
+  class="back-btn-liquid"
+  onclick="showSection('depenses')"
+>
+  ‹
+</button>
+      <h1>Dépenses variables</h1>
+      
+      <div></div>
+      
+    </div>
+
+    <div id="depensesVariablesPage"></div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 💳 DÉPENSES CB -->
+<!-- ========================= -->
+
+<div
+  class="section"
+  id="section-depenses-cb"
+>
+
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+
+  <button
+    class="back-btn-liquid"
+    onclick="showSection('depenses')"
+  >
+    ‹
+  </button>
+
+  <h1>Transactions CB</h1>
+
+  <div></div>
+
+</div>
+
+    <div id="depensesCBPage"></div>
+
+  </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- 💶 ÉPARGNE -->
+<!-- ========================= -->
+
+<div class="section" id="section-epargne">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+  <button
+  class="back-btn-liquid"
+  onclick="showSection('resume')"
+>
+  ‹
+</button>
+  <h1>Épargne</h1>
+  <div class="epargne-add-wrapper">
+
+  <button
+    onclick="toggleEpargneMenu()"
+    class="add-btn"
+  >
+    +
+  </button>
+
+  <div
+    id="epargneQuickMenu"
+    class="epargne-quick-menu"
+  >
+
+    <button
+      onclick="openAddVersementEpargne()"
+      class="quick-action"
+    >
+      💶 Versement
+    </button>
+
+    <button
+      onclick="openAddObjectifEpargne()"
+      class="quick-action"
+    >
+      🎯 Objectif
+    </button>
+
+  </div>
+
+</div>
+</div>
+
+    <!-- TOTAL -->
+    <div class="card revenus-card total-card">
+      <div class="revenus-card-header">Total épargne</div>
+      <div class="revenus-card-value" id="epargneTotalePage">0 €</div>
+    </div>
+
+    <div class="cards-grid revenus-grid">
+
+  <!-- CE MOIS -->
+  <div class="card small-card revenus-small">
+    <h3>Ce mois-ci</h3>
+    <div id="epargneMoisPage">0 €</div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="card small-card revenus-small clickable"
+       onclick="showSection('epargne-historique')">
+    <h3>🕘 Historique</h3>
+    <div id="epargneHistoriqueTotal">—</div>
+  </div>
+
+</div>
+
+  <!-- ========================= -->
+<!-- 🎯 OBJECTIFS -->
+<!-- ========================= -->
+
+<div id="objectifsEpargneList"></div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 🕘 HISTORIQUE ÉPARGNE -->
+<!-- ========================= -->
+
+<div class="section" id="section-epargne-historique">
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+
+  <button
+    class="back-btn-liquid"
+    onclick="showSection('epargne')"
+  >
+    ‹
+  </button>
+
+  <h1>Historique épargne</h1>
+
+  <div></div>
+
+</div>
+
+    <div id="epargneHistoriqueList"></div>
+
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 🛠️ ATELIER -->
+<!-- ========================= -->
+
+<div class="section" id="section-atelier">
+
+  <div class="section-scroll">
+
+    <div class="page-header revenus-header">
+
+      <button
+  class="back-btn-liquid"
+  onclick="showSection('resume')"
+>
+  ‹
+</button>
+
+      <h1>Atelier</h1>
+
+      <button
+        onclick="openAddAppareil()"
+        class="add-btn"
+      >
+        +
+      </button>
+
+    </div>
+
+    <!-- CARTE PRINCIPALE -->
+    <div class="cards-grid four">
+
+  <div class="card small-card">
+    <h3>💰 Marge totale</h3>
+    <div id="atelierTotalMarge">0 €</div>
+  </div>
+
+  <div class="card small-card">
+    <h3>📦 Appareils</h3>
+    <div id="atelierTotalAppareils">0</div>
+  </div>
+
+  <div class="card small-card">
+    <h3>📈 Marge moyenne</h3>
+    <div id="atelierMargeMoyenne">0 €</div>
+  </div>
+
+  <div class="card small-card">
+    <h3>🏦 Capital engagé</h3>
+    <div id="atelierCapital">0 €</div>
+  </div>
+
+</div>
+
+    <!-- LISTE -->
+    <div id="atelierList"></div>
+
+  </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- ⚙️ RÉGLAGES -->
+<!-- ========================= -->
+
+<div class="section" id="section-settings">
+  <div class="section-scroll">
+    
+    <div class="card">
+
+  <h3>🌗 Apparence</h3>
+
+  <div class="theme-row">
+
+    <span>🌗 Automatique</span>
+
+    <label class="switch">
+
+      <input
+        type="checkbox"
+        id="themeAuto"
+        onchange="toggleThemeAuto()"
+      >
+
+      <span class="slider"></span>
+
+    </label>
+
+  </div>
+
+  <div class="theme-row">
+
+    <span>☀️ Mode clair</span>
+
+    <label class="switch">
+
+      <input
+        type="checkbox"
+        id="themeLight"
+        onchange="toggleThemeLight()"
+      >
+
+      <span class="slider"></span>
+
+    </label>
+
+  </div>
+
+</div>
+    
+    <div class="card">
+
+  <h3>🎯 Budget Mensuel</h3>
+
+  <input
+    id="objectifRevenus"
+    class="modal-input"
+    type="number"
+    placeholder="Objectif revenus"
+  >
+
+  <input
+    id="objectifDepenses"
+    class="modal-input"
+    type="number"
+    placeholder="Objectif dépenses"
+  >
+
+  <input
+    id="objectifEpargne"
+    class="modal-input"
+    type="number"
+    placeholder="Objectif épargne"
+  >
+
+  <button
+    class="action-btn-liquid"
+    onclick="saveBudgetSettings()"
+  >
+    Enregistrer
+  </button>
+
+</div>
+
+<div class="card">
+
+  <h3>📂 Catégories</h3>
+
+  <div id="categoriesList"></div>
+
+  <button
+  id="addCategorieBtn"
+  class="action-btn-liquid"
+>
+  ➕ Ajouter une catégorie
+</button>
+
+</div>
+
+    <div class="card">
+
+  <button
+    class="action-btn-liquid"
+    onclick="sauvegardeAuto()"
+  >
+    💾 Sauvegarder
+  </button>
+
+  <button
+    class="action-btn-liquid"
+    onclick="restaurerDepuisIcloud()"
+  >
+    📂 Restaurer
+  </button>
+
+  <button
+    class="action-btn-liquid settings-danger"
+    onclick="resetApp()"
+  >
+    🗑️ Réinitialiser Finance+
+  </button>
+
+</div>
+
+
+  </div>
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- 🔔 TOAST (IMPORTANT) -->
+<!-- ========================= -->
+
+<div id="toast"></div>
+
+<!-- ========================= -->
+<!-- TABBAR -->
+<!-- ========================= -->
+
+<div class="tabbar-fade"></div>
+
+<div class="tabbar">
+  <div class="tab active" onclick="showSection('resume', this)">
+    🏠<span>Résumé</span>
+  </div>
+
+  <div class="tab" onclick="showSection('settings', this)">
+    ⚙️<span>Réglages</span>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- SCRIPTS -->
+<!-- ========================= -->
+
+<script src="app.js" defer></script>
+
+<script src="ui.js" defer></script>
+
+<script src="revenus.js" defer></script>
+
+<script src="depenses.js" defer></script>
+
+<script src="epargne.js" defer></script>
+
+<script src="atelier.js" defer></script>
+
+<!-- ========================= -->
+<!-- MODALE GLOBALE -->
+<!-- ========================= -->
+
+<div id="appModal" class="modal-overlay hidden">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2 id="modalTitle">Titre</h2>
+
+      <button id="closeModalBtn">
+        ✕
+      </button>
+
+    </div>
+
+    <div id="modalContent"></div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

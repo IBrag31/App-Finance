@@ -672,11 +672,11 @@ function renderStatsCategories(){
 
           : 0;
 
-      container.innerHTML += `
+        container.innerHTML += `
 
   <div
-    class="stats-row clickable"
-    onclick="ouvrirCategorieDepenses('${categorie}')"
+    class="stats-row"
+    onclick="ouvrirCategorie('${categorie}')"
   >
 
     <div>
@@ -691,11 +691,65 @@ function renderStatsCategories(){
       ${ratio} %
     </div>
 
+    <div class="stats-arrow">
+      ›
+    </div>
+
   </div>
 
 `;
 
     });
+
+}
+
+function ouvrirCategorie(categorie){
+
+  const depenses =
+
+    window.depensesDetail.filter(
+
+      d => d.categorie === categorie
+
+    );
+
+  let html = "";
+
+  depenses.forEach(d => {
+
+    html += `
+
+      <div
+        style="
+          padding:10px 0;
+          border-bottom:1px solid rgba(255,255,255,.08);
+        "
+      >
+
+        <div>${d.nom}</div>
+
+        <div
+          style="
+            opacity:.7;
+            font-size:12px;
+          "
+        >
+          ${euro(d.montant)}
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  openModal(
+
+    categorie,
+
+    html || "<p>Aucune dépense</p>"
+
+  );
 
 }
 

@@ -4,6 +4,7 @@ window.depensesDetail = [];
 window.epargneHistorique = [];
 window.especes = 0;
 window.atelier = [];
+window.categorieActive = null;
 
 const date =
   new Date();
@@ -673,7 +674,10 @@ function renderStatsCategories(){
 
       container.innerHTML += `
 
-  <div class="stats-row">
+  <div
+    class="stats-row clickable"
+    onclick="ouvrirCategorieDepenses('${categorie}')"
+  >
 
     <div>
       <strong>${categorie}</strong>
@@ -1662,5 +1666,102 @@ function renderCategoriesFinance(){
       `;
 
     });
+
+}
+
+// =========================
+// DETAIL CATEGORIE
+// =========================
+
+function ouvrirCategorieDepenses(categorie){
+
+  window.categorieActive = categorie;
+
+  renderCategorieDetail();
+
+  showSection("categorie-detail");
+
+}
+
+function renderCategorieDetail(){
+
+  const container =
+    document.getElementById(
+      "categorieDetailList"
+    );
+
+  const titre =
+    document.getElementById(
+      "categorieTitre"
+    );
+
+  if(!container || !titre) return;
+
+  titre.textContent =
+    window.categorieActive;
+
+  const liste =
+    window.depensesDetail.filter(
+      d =>
+        d.categorie ===
+        window.categorieActive
+    );
+
+  container.innerHTML = "";
+
+  let total = 0;
+
+  liste.forEach(d => {
+
+    total += Number(d.montant) || 0;
+
+    const index =
+      window.depensesDetail.indexOf(d);
+
+    container.innerHTML += `
+
+      <div
+        class="depense-row"
+        onclick="modifierDepense(${index})"
+      >
+
+        <div class="depense-content">
+
+          <div style="flex:1">
+
+            <div>${d.nom}</div>
+
+            <div style="
+              opacity:.6;
+              font-size:13px;
+              margin-top:4px;
+            ">
+              ${euro(d.montant)}
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  container.innerHTML += `
+
+    <div style="
+      text-align:center;
+      margin-top:20px;
+      font-weight:700;
+      font-size:18px;
+    ">
+
+      Total : ${euro(total)}
+
+    </div>
+
+  `;
 
 }

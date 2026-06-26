@@ -851,19 +851,9 @@ function updateBudget(){
     getMoisBudget();
 
   const revenus =
-
-    (
-      typeof getRevenusDuMois === "function"
-
-        ? getRevenusDuMois(mois)
-
-        : 0
-
-    )
-
-    +
-
-    window.especes;
+  typeof getRevenusDuMois === "function"
+    ? getRevenusDuMois(mois)
+    : 0;
 
   const depenses =
 
@@ -874,7 +864,7 @@ function updateBudget(){
       : 0;
 
   const epargneTotale =
-    getTotalEpargne();
+  getTotalEpargne() + window.especes;
 
   const epargneMois =
     getEpargneDuMois(mois);

@@ -44,6 +44,26 @@ function getMoisActuel(){
 
 }
 
+// =========================
+// OUTILS DATES
+// =========================
+
+function getMoisFromDate(date){
+
+  if(!date) return "";
+
+  return String(date).slice(0,7);
+
+}
+
+function getDateAujourdhui(){
+
+  return new Date()
+    .toISOString()
+    .slice(0,10);
+
+}
+
 function changerMois(direction){
 
   const [annee, mois] =
@@ -622,11 +642,25 @@ function getStatsCategories(){
 
   window.depensesDetail.forEach(d => {
 
+    // Les transactions Apple Pay ne comptent
+    // que pour le mois sélectionné
+    if(
+      d.type === "CB" &&
+      d.mois !== getMoisBudget()
+    ){
+      return;
+    }
+
     const categorie =
       d.categorie || "📦 Autre";
 
-    const montant =
+    const montantBrut =
       Number(d.montant) || 0;
+
+    const montant =
+      d.commun
+        ? montantBrut / 2
+        : montantBrut;
 
     if(!stats[categorie]){
       stats[categorie] = 0;
@@ -653,7 +687,7 @@ function renderStatsCategories(){
     getStatsCategories();
 
   const total =
-    calculTotalDepenses();
+  calculTotalDepensesMois();
 
   container.innerHTML = "";
 
@@ -706,12 +740,18 @@ function renderStatsCategories(){
 function ouvrirCategorie(categorie){
 
   const depenses =
+  window.depensesDetail.filter(d => {
 
-    window.depensesDetail.filter(
+    if(
+      d.type === "CB" &&
+      d.mois !== getMoisBudget()
+    ){
+      return false;
+    }
 
-      d => d.categorie === categorie
+    return d.categorie === categorie;
 
-    );
+  });
 
   let html = "";
 
@@ -857,11 +897,11 @@ function updateBudget(){
 
   const depenses =
 
-    typeof calculTotalDepenses === "function"
+  typeof calculTotalDepensesMois === "function"
 
-      ? calculTotalDepenses()
+    ? calculTotalDepensesMois()
 
-      : 0;
+    : 0;
 
   const epargneTotale =
   getTotalEpargne() + window.especes;
@@ -1202,22 +1242,27 @@ function sauvegardeAuto(){
 
   const data = {
 
-    revenus:
-      window.revenusDetail,
+  // Données principales
+  revenus: window.revenusDetail,
+  depenses: window.depensesDetail,
+  epargne: window.epargneHistorique,
+  especes: window.especes,
+  atelier: window.atelier,
 
-    depenses:
-      window.depensesDetail,
+  // Paramètres
+  objectifsBudget: {
+    revenus: localStorage.getItem("objectifRevenus"),
+    depenses: localStorage.getItem("objectifDepenses"),
+    epargne: localStorage.getItem("objectifEpargne")
+  },
 
-    epargne:
-      window.epargneHistorique,
+  objectifsEpargne: window.objectifsEpargne,
 
-    especes:
-      window.especes,
+  categoriesPersonnalisees: window.categoriesPersonnalisees,
 
-    atelier:
-      window.atelier
+  theme: localStorage.getItem("finance_theme")
 
-  };
+};
 
   const blob =
     new Blob(
@@ -1292,7 +1337,55 @@ function restaurerDepuisIcloud(){
         window.atelier =
           data.atelier || [];
 
+          // =========================
+// RESTAURATION PARAMÈTRES
+// =========================
+
+// Objectifs budget
+if (data.objectifsBudget) {
+
+  localStorage.setItem(
+    "objectifRevenus",
+    data.objectifsBudget.revenus || 0
+  );
+
+  localStorage.setItem(
+    "objectifDepenses",
+    data.objectifsBudget.depenses || 0
+  );
+
+  localStorage.setItem(
+    "objectifEpargne",
+    data.objectifsBudget.epargne || 0
+  );
+
+}
+
+// Objectifs épargne
+window.objectifsEpargne =
+  data.objectifsEpargne || [];
+
+// Catégories personnalisées
+window.categoriesPersonnalisees =
+  data.categoriesPersonnalisees || [];
+
+saveCategoriesFinance();
+
+// Thème
+if (data.theme) {
+
+  localStorage.setItem(
+    "finance_theme",
+    data.theme
+  );
+
+}
+
         saveAll();
+
+        loadBudgetSettings();
+
+loadThemeSettings();
 
         setTimeout(() => {
 
@@ -1321,6 +1414,8 @@ function restaurerDepuisIcloud(){
   input.click();
 
 }
+
+
 
 // =========================
 // RESET

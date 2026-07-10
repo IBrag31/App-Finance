@@ -28,6 +28,40 @@ function calculTotalDepenses(){
 }
 
 // =========================
+// TOTAL DEPENSES MOIS
+// =========================
+
+function calculTotalDepensesMois(){
+
+  return window.depensesDetail.reduce((sum, d) => {
+
+    const montant =
+      Number(d.montant) || 0;
+
+    const valeur =
+      d.commun ? montant / 2 : montant;
+
+    // Les dépenses CB ne comptent
+    // que pour le mois sélectionné
+    if(d.type === "CB"){
+
+      return d.mois === getMoisBudget()
+
+        ? sum + valeur
+
+        : sum;
+
+    }
+
+    // Les dépenses fixes et variables
+    // restent permanentes
+    return sum + valeur;
+
+  }, 0);
+
+}
+
+// =========================
 // RENDER PAGE
 // =========================
 
@@ -58,6 +92,15 @@ function renderDepensesPage(){
   let totalCB = 0;
 
   window.depensesDetail.forEach((d, i) => {
+
+    // Les transactions Apple Pay
+// ne s'affichent que pour le mois sélectionné
+if(
+  d.type === "CB" &&
+  d.mois !== getMoisBudget()
+){
+  return;
+}
 
     const montantBrut =
   Number(d.montant) || 0;
@@ -374,6 +417,10 @@ document
 
   montant:
     Math.round(montant * 100) / 100,
+
+  date: getDateAujourdhui(),
+
+  mois: getMoisActuel(),
 
   type,
 
@@ -751,18 +798,21 @@ async function importTransactionsCB(){
       if(isNaN(montant)) return;
 
       // anti doublon
-      const existe =
-        window.depensesDetail.some(
+      const libelle =
+  (commercant || nom).trim();
 
-          d =>
+const existe =
+  window.depensesDetail.some(d =>
 
-            d.nom === nom &&
+    d.type === "CB" &&
 
-            Number(d.montant) === montant &&
+    d.date === date &&
 
-            d.date === date
+    Number(d.montant) === montant &&
 
-        );
+    d.nom === libelle
+
+  );
 
       if(existe) return;
 
@@ -776,6 +826,8 @@ async function importTransactionsCB(){
   montant,
 
   date,
+
+  mois: getMoisFromDate(date),
 
   carte,
 

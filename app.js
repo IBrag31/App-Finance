@@ -148,6 +148,32 @@ window.depensesDetail =
     return d;
 
   });
+// =========================
+// MIGRATION MOIS CB
+// =========================
+
+window.depensesDetail =
+  window.depensesDetail.map(d => {
+
+    if(
+      d.type === "CB" &&
+      !d.mois &&
+      d.date
+    ){
+
+      return {
+
+        ...d,
+
+        mois: getMoisFromDate(d.date)
+
+      };
+
+    }
+
+    return d;
+
+  });
 
     window.epargneHistorique =
   epargne ? JSON.parse(epargne) : [];
@@ -162,6 +188,8 @@ window.especes =
 
 window.atelier =
   atelier ? JSON.parse(atelier) : [];
+
+
 
     // =========================
     // MIGRATION ATELIER
@@ -1840,11 +1868,9 @@ function renderCategorieDetail(){
     window.categorieActive;
 
   const liste =
-    window.depensesDetail.filter(
-      d =>
-        d.categorie ===
-        window.categorieActive
-    );
+  getDepensesDuMois().filter(
+    d => d.categorie === window.categorieActive
+  );
 
   container.innerHTML = "";
 
@@ -1902,5 +1928,27 @@ function renderCategorieDetail(){
     </div>
 
   `;
+
+}
+
+function getDepensesDuMois(){
+
+  return window.depensesDetail.filter(d => {
+
+    // CB
+    if(d.type === "CB"){
+
+      const mois =
+        d.mois ||
+        getMoisFromDate(d.date);
+
+      return mois === getMoisBudget();
+
+    }
+
+    // Fixes / variables
+    return true;
+
+  });
 
 }

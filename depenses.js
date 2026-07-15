@@ -740,6 +740,56 @@ function supprimerDepense(index){
   
 }
 
+// =========================
+// CLE UNIQUE TRANSACTION
+// =========================
+
+function getCleTransaction(transaction){
+
+  return [
+
+    transaction.date,
+
+    Number(transaction.montant)
+      .toFixed(2),
+
+    String(transaction.nom || "")
+      .trim()
+      .toLowerCase()
+
+  ].join("|");
+
+}
+
+// =========================
+// SUPPRESSION DOUBLONS CB
+// =========================
+
+function supprimerDoublonsCB(depenses){
+
+  const cles = new Set();
+
+  return depenses.filter(depense => {
+
+    // On ne touche pas aux dépenses fixes/variables
+    if(depense.type !== "CB"){
+      return true;
+    }
+
+    const cle = getCleTransaction(depense);
+
+    if(cles.has(cle)){
+      return false;
+    }
+
+    cles.add(cle);
+
+    return true;
+
+  });
+
+}
+
 async function importTransactionsCB(){
 
   const input =
@@ -765,6 +815,16 @@ async function importTransactionsCB(){
         .filter(l => l.trim());
 
     let imported = 0;
+
+    const transactionsExistantes = new Set(
+
+  window.depensesDetail
+
+    .filter(d => d.type === "CB")
+
+    .map(getCleTransaction)
+
+);
 
     lignes.forEach((ligne) => {
 
@@ -801,27 +861,33 @@ async function importTransactionsCB(){
       const libelle =
   (commercant || nom).trim();
 
-const existe =
-  window.depensesDetail.some(d =>
+const transaction = {
 
-    d.type === "CB" &&
+  date,
 
-    d.date === date &&
+  montant,
 
-    Number(d.montant) === montant &&
+  nom: libelle
 
-    d.nom === libelle
+};
 
-  );
+const cle =
+  getCleTransaction(transaction);
 
-      if(existe) return;
+if(
+  transactionsExistantes.has(cle)
+){
+  return;
+}
+
+transactionsExistantes.add(cle);
 
       // ajout dépense
      window.depensesDetail.push({
 
   id: Date.now() + Math.random(),
 
-  nom: commercant || nom,
+  nom: libelle,
 
   montant,
 
@@ -834,8 +900,8 @@ const existe =
   type: "CB",
 
   categorie: detecterCategorie(
-    commercant || nom
-  ),
+  libelle
+),
 
   commun: false
 

@@ -91,9 +91,31 @@ function editEspeces(){
 // =========================
 
 function getRevenusDuMois(mois){
+
   return window.revenusDetail
-    .filter(r => r.mois === mois)
-    .reduce((sum, r) => sum + (Number(r.montant) || 0), 0);
+
+    .filter(r => {
+
+      return (
+
+        r.moisBudget ||
+
+        r.mois
+
+      ) === mois;
+
+    })
+
+    .reduce(
+
+      (sum, r) =>
+
+        sum + (Number(r.montant) || 0),
+
+      0
+
+    );
+
 }
 
 function getTotalRevenus(){
@@ -449,11 +471,38 @@ function validerRevenu(){
       .getElementById("revenuMois");
 
   const annee =
-  getMoisBudget()
-    .slice(0,4);
+    getMoisBudget()
+      .slice(0,4);
 
   const mois =
     `${annee}-${moisInput.value}`;
+
+  // =========================
+  // MOIS BUDGET
+  // =========================
+
+  let moisBudget = mois;
+
+  if(
+    nom.trim().toLowerCase().startsWith("salaire")
+  ){
+
+    const [annee, moisNum] =
+      mois.split("-").map(Number);
+
+    const date =
+      new Date(
+        annee,
+        moisNum,
+        1
+      );
+
+    moisBudget =
+      `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2,"0")}`;
+
+  }
 
   // validation
   if(!nom || isNaN(montant) || montant <= 0){
@@ -470,6 +519,7 @@ function validerRevenu(){
   }
 
   // ajout revenu
+
   window.revenusDetail.push({
 
     id: Date.now(),
@@ -479,20 +529,18 @@ function validerRevenu(){
     montant:
       Math.round(montant * 100) / 100,
 
-    mois
+    mois,
+
+    moisBudget
 
   });
 
-  // sauvegarde
   saveAll();
 
-  // refresh UI
   refreshApp();
 
-  // fermeture modale
   closeModal();
 
-  // toast
   showToast?.("💰 Revenu ajouté");
 
 }

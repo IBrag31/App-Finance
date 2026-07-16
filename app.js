@@ -52,7 +52,24 @@ function getMoisFromDate(date){
 
   if(!date) return "";
 
-  return String(date).slice(0,7);
+  const propre = String(date).trim();
+
+  // Format Apple Pay :
+  // 14/07/2026 12:31
+
+  if(propre.includes("/")){
+
+    const [jour, mois, annee] =
+      propre.split(" ")[0].split("/");
+
+    return `${annee}-${mois}`;
+
+  }
+
+  // Format ISO :
+  // 2026-07-14
+
+  return propre.slice(0,7);
 
 }
 
@@ -155,11 +172,7 @@ window.depensesDetail =
 window.depensesDetail =
   window.depensesDetail.map(d => {
 
-    if(
-      d.type === "CB" &&
-      !d.mois &&
-      d.date
-    ){
+    if(d.type === "CB"){
 
       return {
 

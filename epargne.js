@@ -36,7 +36,16 @@ function getTotalEpargne(){
   }
 
   return window.epargneHistorique.reduce(
-    (sum,e) => sum + (Number(e.montant) || 0),
+    (sum, e) => {
+
+      const montant =
+        Number(e.montant) || 0;
+
+      return e.type === "retrait"
+        ? sum - montant
+        : sum + montant;
+
+    },
     0
   );
 
@@ -51,7 +60,16 @@ function getEpargneDuMois(mois){
   return window.epargneHistorique
     .filter(e => e.mois === mois)
     .reduce(
-      (sum,e) => sum + (Number(e.montant) || 0),
+      (sum, e) => {
+
+        const montant =
+          Number(e.montant) || 0;
+
+        return e.type === "retrait"
+          ? sum - montant
+          : sum + montant;
+
+      },
       0
     );
 
@@ -84,9 +102,14 @@ function renderEpargneHistorique(){
     .forEach((e) => {
 
       const montant =
-        Number(e.montant) || 0;
+  Number(e.montant) || 0;
 
-      total += montant;
+const estRetrait =
+  e.type === "retrait";
+
+total += estRetrait
+  ? -montant
+  : montant;
 
       const row =
         document.createElement("div");
@@ -137,15 +160,15 @@ function renderEpargneHistorique(){
     </div>
 
     <div style="
-      opacity:0.6;
-      font-size:13px;
-      color:#3b82f6;
-      margin-top:2px;
-    ">
+  opacity:0.8;
+  font-size:13px;
+  color:${estRetrait ? "#f97316" : "#3b82f6"};
+  margin-top:2px;
+">
 
-      ${euro(montant)}
+  ${estRetrait ? "−" : "+"}${euro(montant)}
 
-    </div>
+</div>
 
   </div>
 
@@ -172,8 +195,10 @@ row
 
     if(
       confirm(
-        "Supprimer ce versement ?"
-      )
+  e.type === "retrait"
+    ? "Supprimer ce retrait ?"
+    : "Supprimer ce versement ?"
+)
     ){
 
       supprimerEpargne(
@@ -340,6 +365,43 @@ function openAddVersementEpargne(){
 
 }
 
+function openRetraitEpargne(){
+
+  openModal("Retirer de l'épargne", `
+
+    <input
+      id="retraitEpargneMontant"
+      class="modal-input"
+      type="number"
+      inputmode="decimal"
+      placeholder="Montant"
+    >
+
+    <input
+      id="retraitEpargneMois"
+      class="modal-input"
+      type="month"
+      value="${getMoisBudget()}"
+    >
+
+    <button
+      id="btnRetraitEpargne"
+      class="modal-button"
+    >
+      Retirer
+    </button>
+
+  `);
+
+  document
+    .getElementById("btnRetraitEpargne")
+    ?.addEventListener(
+      "click",
+      validerRetraitEpargne
+    );
+
+}
+
 // =========================
 // CRUD (SYNC GLOBAL)
 // =========================
@@ -355,11 +417,18 @@ function validerEpargne(){
 
     );
 
-  const moisInput =
-    document
-      .getElementById("epargneMois");
+  const mois =
+  document
+    .getElementById("epargneMois")
+    ?.value;
 
-  const mois = moisInput.value;
+if(!mois){
+
+  showToast?.("⚠️ Mois invalide");
+
+  return;
+
+}
 
   // validation
   if(isNaN(montant) || montant <= 0){
@@ -378,7 +447,84 @@ function validerEpargne(){
   // ajout
   window.epargneHistorique.push({
 
+  id: Date.now(),
+
+  type: "versement",
+
+  montant:
+    Math.round(montant * 100) / 100,
+
+  mois
+
+});
+
+  saveAll();
+
+  refreshApp();
+
+  closeModal();
+
+  showToast?.("💶 Épargne ajoutée");
+
+}
+
+function validerRetraitEpargne(){
+
+  const montant =
+    parseFloat(
+      document
+        .getElementById("retraitEpargneMontant")
+        ?.value
+    );
+
+  const mois =
+    document
+      .getElementById("retraitEpargneMois")
+      ?.value;
+
+  // validation montant
+  if(isNaN(montant) || montant <= 0){
+
+    showToast?.("⚠️ Montant invalide");
+
+    return;
+
+  }
+
+  // validation mois
+  if(!mois){
+
+    showToast?.("⚠️ Mois invalide");
+
+    return;
+
+  }
+
+  // sécurité
+  if(!Array.isArray(window.epargneHistorique)){
+    window.epargneHistorique = [];
+  }
+
+  const totalDisponible =
+    getTotalEpargne();
+
+  // impossible de retirer plus que l'épargne disponible
+  if(montant > totalDisponible){
+
+    showToast?.(
+      `⚠️ Épargne disponible : ${euro(totalDisponible)}`
+    );
+
+    return;
+
+  }
+
+  // ajout du retrait
+  window.epargneHistorique.push({
+
     id: Date.now(),
+
+    type: "retrait",
 
     montant:
       Math.round(montant * 100) / 100,
@@ -393,7 +539,7 @@ function validerEpargne(){
 
   closeModal();
 
-  showToast?.("💶 Épargne ajoutée");
+  showToast?.("💸 Retrait enregistré");
 
 }
 

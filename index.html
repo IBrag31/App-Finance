@@ -26,7 +26,7 @@
   media="(prefers-color-scheme: dark)"
   content="#000000"
 >
-<meta name="application-name" content="Finance+">
+<meta name="application-name" content="Finance">
 <meta name="format-detection" content="telephone=no">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,9 +36,9 @@
 content="black-translucent">
 
 <meta name="apple-mobile-web-app-title"
-content="Finance+">
+content="Finance">
 
-<title>Finance+</title>
+<title>Finance</title>
 
 <link rel="stylesheet" href="styles.css">
 
@@ -442,25 +442,32 @@ content="Finance+">
   </button>
 
   <div
-    id="epargneQuickMenu"
-    class="epargne-quick-menu"
+  id="epargneQuickMenu"
+  class="epargne-quick-menu"
+>
+
+  <button
+    onclick="openAddVersementEpargne()"
+    class="quick-action"
   >
+    💶 Versement
+  </button>
 
-    <button
-      onclick="openAddVersementEpargne()"
-      class="quick-action"
-    >
-      💶 Versement
-    </button>
+  <button
+    onclick="openRetraitEpargne()"
+    class="quick-action"
+  >
+    💸 Retrait
+  </button>
 
-    <button
-      onclick="openAddObjectifEpargne()"
-      class="quick-action"
-    >
-      🎯 Objectif
-    </button>
+  <button
+    onclick="openAddObjectifEpargne()"
+    class="quick-action"
+  >
+    🎯 Objectif
+  </button>
 
-  </div>
+</div>
 
 </div>
 </div>
@@ -719,7 +726,7 @@ content="Finance+">
     class="action-btn-liquid settings-danger"
     onclick="resetApp()"
   >
-    🗑️ Réinitialiser Finance+
+    🗑️ Réinitialiser Finance
   </button>
 
 </div>

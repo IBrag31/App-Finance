@@ -230,6 +230,19 @@ window.revenusDetail =
       window.epargneHistorique =
     epargne ? JSON.parse(epargne) : [];
 
+    // =========================
+// MIGRATION TYPE EPARGNE
+// =========================
+
+window.epargneHistorique =
+  window.epargneHistorique.map(e => ({
+
+    ...e,
+
+    type: e.type || "versement"
+
+  }));
+
   window.objectifsEpargne =
     JSON.parse(
       localStorage.getItem("finance_objectifs_epargne")

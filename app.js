@@ -6,17 +6,10 @@
   window.atelier = [];
   window.categorieActive = null;
 
-  const date =
-    new Date();
-
-  date.setMonth(
-    date.getMonth() - 1
-  );
-
   window.moisSelectionne =
-    date
-      .toISOString()
-      .slice(0,7);
+  new Date()
+    .toISOString()
+    .slice(0,7);
 
   // =========================
   // MOIS GLOBAL

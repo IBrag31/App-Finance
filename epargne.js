@@ -156,10 +156,20 @@ total += estRetrait
   <div style="flex:1">
 
     <div>
-      ${formatMois(e.mois)}
-    </div>
+  ${formatMois(e.mois)}
+</div>
 
-    <div style="
+${estRetrait && e.motif ? `
+  <div style="
+    opacity:0.75;
+    font-size:13px;
+    margin-top:3px;
+  ">
+    ${e.motif}
+  </div>
+` : ""}
+
+<div style="
   opacity:0.8;
   font-size:13px;
   color:${estRetrait ? "#f97316" : "#3b82f6"};
@@ -370,6 +380,13 @@ function openRetraitEpargne(){
   openModal("Retirer de l'épargne", `
 
     <input
+      id="retraitEpargneMotif"
+      class="modal-input"
+      type="text"
+      placeholder="Motif du retrait"
+    >
+
+    <input
       id="retraitEpargneMontant"
       class="modal-input"
       type="number"
@@ -401,7 +418,6 @@ function openRetraitEpargne(){
     );
 
 }
-
 // =========================
 // CRUD (SYNC GLOBAL)
 // =========================
@@ -470,6 +486,12 @@ if(!mois){
 
 function validerRetraitEpargne(){
 
+  const motif =
+    document
+      .getElementById("retraitEpargneMotif")
+      ?.value
+      .trim();
+
   const montant =
     parseFloat(
       document
@@ -481,6 +503,15 @@ function validerRetraitEpargne(){
     document
       .getElementById("retraitEpargneMois")
       ?.value;
+
+  // validation motif
+  if(!motif){
+
+    showToast?.("⚠️ Motif du retrait obligatoire");
+
+    return;
+
+  }
 
   // validation montant
   if(isNaN(montant) || montant <= 0){
@@ -525,6 +556,8 @@ function validerRetraitEpargne(){
     id: Date.now(),
 
     type: "retrait",
+
+    motif,
 
     montant:
       Math.round(montant * 100) / 100,

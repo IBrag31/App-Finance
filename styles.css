@@ -2720,8 +2720,9 @@ body.theme-light .action-btn-liquid{
   border-top: 1px solid rgba(255,255,255,0.08);
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 
   font-size: 13px;
   opacity: 0.75;

@@ -338,25 +338,59 @@ else{
   });
 
   // totaux
-  setText(
-    "totalFixesPage",
-    euro(totalFixes)
-  );
+setText(
+  "totalFixesPage",
+  euro(totalFixes)
+);
 
-  setText(
-    "totalVariablesPage",
-    euro(totalVariables)
-  );
-  
-  setText(
+setText(
+  "totalVariablesPage",
+  euro(totalVariables)
+);
+
+setText(
   "totalCBPage",
   euro(totalCB)
-  );
+);
 
-  setText(
-    "depensesTotalPage",
-    euro(totalFixes + totalVariables + totalCB)
-  );
+// Total global
+const totalGlobal =
+  totalFixes +
+  totalVariables +
+  totalCB;
+
+setText(
+  "depensesTotalPage",
+  euro(totalGlobal)
+);
+
+// Total dépenses communes
+const totalCommunes =
+  window.depensesDetail.reduce((sum, d) => {
+
+    // Apple Pay uniquement pour le mois sélectionné
+    if(
+      d.type === "CB" &&
+      d.mois !== getMoisBudget()
+    ){
+      return sum;
+    }
+
+    const montant =
+      Number(d.montant) || 0;
+
+    return sum + (
+      d.commun
+        ? montant / 2
+        : 0
+    );
+
+  }, 0);
+
+setText(
+  "depensesCommunesPage",
+  euro(totalCommunes)
+);
 
 }
 

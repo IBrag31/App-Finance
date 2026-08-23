@@ -2713,3 +2713,22 @@ body.theme-light .action-btn-liquid{
   margin-left:auto;
   opacity:.5;
 }
+
+.depenses-communes-total {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.depenses-communes-total strong {
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 1;
+}
